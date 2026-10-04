@@ -21,6 +21,11 @@ jobs:
         with: { python-version: "3.12" }
       - name: i18n-Prüfung (PO/MO, Keys, Platzhalter)
         run: python3 scripts/ci/checks.py i18n
+      - name: Setup (Seed-DB + /tmp/opencode + .env für den Test-Import)
+        run: |
+          mkdir -p data /tmp/opencode
+          cp tests/fixtures/seed.db data/feedback.db
+          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
       - name: i18n-Tests
         run: |
           python -m pip install --upgrade pip
