@@ -1,0 +1,1644 @@
+# fr — KM-HR-Agent Landingpage (Phase 2)
+msgid ""
+msgstr ""
+"Project-Id-Version: km-hr-agent\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Zum Login"
+msgstr "Connexion"
+
+msgid "Registrieren"
+msgstr "S'inscrire"
+
+msgid "Abmelden"
+msgstr "Déconnexion"
+
+msgid "Sprache"
+msgstr "Langue"
+
+msgid "E-Mail"
+msgstr "E-mail"
+
+msgid "Passwort"
+msgstr "Mot de passe"
+
+msgid "Anmelden"
+msgstr "Se connecter"
+
+msgid "KI-gestützte HR-Plattform"
+msgstr "Plateforme RH assistée par IA"
+
+msgid "Recruiting zwischen"
+msgstr "Recrutement entre"
+
+msgid "Nordafrika"
+msgstr "Afrique du Nord"
+
+msgid "und"
+msgstr "et"
+
+msgid "Von der Bewerbung bis zum Onboarding."
+msgstr "De la candidature à l'intégration."
+
+msgid "▶ 30-Sekunden-Tour"
+msgstr "▶ Visite de 30 secondes"
+
+msgid "Der Ablauf – in 30 Sekunden"
+msgstr "Le processus – en 30 secondes"
+
+msgid "Für Arbeitgeber"
+msgstr "Pour les employeurs"
+
+msgid "Qualifizierte, visumbereite Fachkräfte – automatisch gematcht, geprüft und gerankt."
+msgstr "Des professionnels qualifiés, prêts pour le visa – mis en relation, vérifiés et classés automatiquement."
+
+msgid "Arbeitgeber-Registrieren"
+msgstr "Inscription employeur"
+
+msgid "Für Kandidaten"
+msgstr "Pour les candidats"
+
+msgid "Ihr Weg nach Deutschland: Profil, Matching, Sprachtest, Visum und Onboarding – begleitet."
+msgstr "Votre parcours vers l'Allemagne : profil, mise en relation, test de langue, visa et intégration – accompagné."
+
+msgid "Kandidat-Registrieren"
+msgstr "Inscription candidat"
+
+msgid "Warum KM-HR-Agent?"
+msgstr "Pourquoi KM-HR-Agent ?"
+
+msgid "10 Agent-Aufgaben"
+msgstr "10 tâches de l'agent"
+
+msgid "Vom Bestätigungs-Mail bis zur Benachrichtigung – alles läuft automatisch."
+msgstr "De l'e-mail de confirmation à la notification – entièrement automatisé."
+
+msgid "7 Matching-Kategorien"
+msgstr "7 catégories de mise en relation"
+
+msgid "Kern, Erfahrung, Bildung, Standort, Branche, Soft Skills, Sprache → Score 0–100."
+msgstr "Compétences clés, expérience, formation, lieu, secteur, soft skills, langue → score 0–100."
+
+msgid "Sprachtest CEFR A1–C1"
+msgstr "Test de langue CECRL A1–C1"
+
+msgid "Deutsch, Englisch, Französisch – direkt im Portal, mit Zertifikatsniveau."
+msgstr "Allemand, anglais, français – directement dans le portail, avec niveau certifié."
+
+msgid "Video-Pre-Screen"
+msgstr "Pré-entretien vidéo"
+
+msgid "Gespräch per VDO.Ninja – mit Einwilligungs-Regel, ohne Aufnahme."
+msgstr "Entretien via VDO.Ninja – avec règle de consentement, sans enregistrement."
+
+msgid "DSGVO-konform"
+msgstr "Conforme au RGPD"
+
+msgid "Bewerbungsdaten werden 183 Tage nach Abschluss gelöscht (Art. 17 DSGVO)."
+msgstr "Les données de candidature sont supprimées 183 jours après la clôture (art. 17 RGPD)."
+
+msgid "3 Rollen"
+msgstr "3 rôles"
+
+msgid "Kandidat, Arbeitgeber, Admin – getrennte Zugänge und Rechte."
+msgstr "Candidat, employeur, admin – accès et droits séparés."
+
+msgid "So funktioniert's"
+msgstr "Comment ça marche"
+
+msgid "Start – Kandidaten (Nordafrika) und Arbeitgeber (DE / FR / CH) als Netzwerk."
+msgstr "Départ – candidats (Afrique du Nord) et employeurs (DE / FR / CH) en réseau."
+
+msgid "CV-Upload → PDF-Extraktion."
+msgstr "Import du CV → extraction PDF."
+
+msgid "Agent-Kette mit 10 Tasks."
+msgstr "Chaîne d'agent avec 10 tâches."
+
+msgid "Matching-Score mit 7 Kategorien."
+msgstr "Score de mise en relation avec 7 catégories."
+
+msgid "Compliance DE / FR / CH."
+msgstr "Conformité DE / FR / CH."
+
+msgid "HR-Entscheidung (einladen, ablehnen, einstellen) → Video-Meeting per VDO.Ninja → Onboarding."
+msgstr "Décision RH (inviter, refuser, embaucher) → visioconférence via VDO.Ninja → intégration."
+
+msgid "Ende – Übergang zum Login, Quantenfeld als Vision."
+msgstr "Fin – transition vers la connexion, champ quantique comme vision."
+
+msgid "Häufige Fragen"
+msgstr "Questions fréquentes"
+
+msgid "Was ist der KM-HR-Agent?"
+msgstr "Qu'est-ce que KM-HR-Agent ?"
+
+msgid "Eine KI-gestützte HR-Plattform, die den Bewerbungsprozess zwischen Nordafrika und Deutschland, Frankreich und der Schweiz automatisiert."
+msgstr "Une plateforme RH assistée par IA qui automatise le processus de candidature entre l'Afrique du Nord et l'Allemagne, la France et la Suisse."
+
+msgid "Welche Sprachniveaus werden geprüft?"
+msgstr "Quels niveaux de langue sont testés ?"
+
+msgid "Deutsch, Englisch und Französisch – CEFR A1 bis C1, direkt im Portal per Sprachtest."
+msgstr "Allemand, anglais et français – CECRL A1 à C1, directement dans le portail via un test."
+
+msgid "Wie läuft die Visum-Begleitung?"
+msgstr "Comment se déroule l'accompagnement visa ?"
+
+msgid "Der Agent prüft den Visum-Bedarf und liefert nach Bestätigung die Schritte (Was / Wie / Wo) inklusive der zuständigen Behörde."
+msgstr "L'agent vérifie le besoin de visa et, après confirmation, fournit les étapes (quoi / comment / où), y compris l'autorité compétente."
+
+msgid "Wie werden meine Daten geschützt?"
+msgstr "Comment mes données sont-elles protégées ?"
+
+msgid "DSGVO-konform: Bewerbungsdaten werden 183 Tage nach Abschluss des Verfahrens gelöscht (Art. 17 DSGVO); Kontaktdaten erst nach der Einladung."
+msgstr "Conforme au RGPD : les données de candidature sont supprimées 183 jours après la fin de la procédure (art. 17 RGPD) ; les coordonnées seulement après l'invitation."
+
+msgid "Bereit, den Bewerbungsprozess zu automatisieren?"
+msgstr "Prêt à automatiser votre processus de candidature ?"
+
+msgid "Kostenlos registrieren – als Kandidat oder Arbeitgeber."
+msgstr "Inscrivez-vous gratuitement – comme candidat ou employeur."
+
+msgid "Jetzt registrieren"
+msgstr "S'inscrire maintenant"
+
+msgid "Impressum"
+msgstr "Mentions légales"
+
+msgid "Datenschutz"
+msgstr "Confidentialité"
+
+msgid "AGB"
+msgstr "CGV"
+
+msgid "Kontakt"
+msgstr "Contact"
+
+msgid "Start"
+msgstr "Départ"
+
+msgid "Das Netzwerk"
+msgstr "Le réseau"
+
+msgid "Kandidaten aus Nordafrika treffen auf Arbeitgeber in DE, FR und CH."
+msgstr "Des candidats d'Afrique du Nord rencontrent des employeurs en DE, FR et CH."
+
+msgid "Zoom 1"
+msgstr "Zoom 1"
+
+msgid "Der Lebenslauf wird hochgeladen und als Text ausgelesen."
+msgstr "Le CV est téléchargé et lu sous forme de texte."
+
+msgid "Zoom 2"
+msgstr "Zoom 2"
+
+msgid "Agent-Kette: 10 Tasks"
+msgstr "Chaîne d'agent : 10 tâches"
+
+msgid "Zehn Aufgaben laufen automatisch – von der Bestätigung bis zur Benachrichtigung."
+msgstr "Dix tâches s'exécutent automatiquement – de la confirmation à la notification."
+
+msgid "Zoom 3"
+msgstr "Zoom 3"
+
+msgid "Matching-Score: 7 Kategorien"
+msgstr "Score de mise en relation : 7 catégories"
+
+msgid "Sieben Kategorien ergeben einen Score von 0 bis 100."
+msgstr "Sept catégories donnent un score de 0 à 100."
+
+msgid "Zoom 4"
+msgstr "Zoom 4"
+
+msgid "Compliance DE / FR / CH"
+msgstr "Conformité DE / FR / CH"
+
+msgid "Rechtsprüfung nach Land – bevor es weitergeht."
+msgstr "Vérification juridique par pays – avant de continuer."
+
+msgid "Zoom 5"
+msgstr "Zoom 5"
+
+msgid "HR entscheidet"
+msgstr "Les RH décident"
+
+msgid "Einladen, ablehnen oder einstellen – dann Video-Meeting (VDO.Ninja) und Onboarding."
+msgstr "Inviter, refuser ou embaucher – puis visioconférence (VDO.Ninja) et intégration."
+
+msgid "Ende"
+msgstr "Fin"
+
+msgid "Das Quantenfeld"
+msgstr "Le champ quantique"
+
+msgid "Zeit sparen, rechtssicher, kulturell passend. Jetzt: Login."
+msgstr "Gagner du temps, en toute sécurité juridique, adapté culturellement. Maintenant : connexion."
+
+msgid "Kandidaten · Nordafrika"
+msgstr "Candidats · Afrique du Nord"
+
+msgid "Arbeitgeber · DE / FR / CH"
+msgstr "Employeurs · DE / FR / CH"
+
+msgid "HR-Entscheidung"
+msgstr "Décision RH"
+
+msgid "VDO.Ninja Meeting"
+msgstr "Réunion VDO.Ninja"
+
+msgid "Nochmal ansehen"
+msgstr "Revoir"
+
+msgid "CV-Upload → PDF-Extraktion"
+msgstr "Import du CV → extraction PDF"
+
+msgid "KI-gestuetztes Recruiting-Portal"
+msgstr "Portail de recrutement assisté par IA"
+
+msgid "Login"
+msgstr "Connexion"
+
+msgid "Arbeitgeber"
+msgstr "Employeur"
+
+msgid "Arbeitgeber+"
+msgstr "Employeur+"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Willkommen zurueck"
+msgstr "Bon retour"
+
+msgid "name@beispiel.de"
+msgstr "nom@exemple.fr"
+
+msgid "Mindestens 8 Zeichen"
+msgstr "Au moins 8 caractères"
+
+msgid "E-Mail gueltig"
+msgstr "E-mail valide"
+
+msgid "E-Mail und Passwort sind Pflichtfelder."
+msgstr "L'e-mail et le mot de passe sont obligatoires."
+
+msgid "Dies ist ein Arbeitgeber-Account ({firma}) – bitte im Tab Arbeitgeber einloggen."
+msgstr "Ceci est un compte employeur ({firma}) – veuillez vous connecter via l'onglet Employeur."
+
+msgid "Unbekannte E-Mail oder falsches Passwort."
+msgstr "E-mail inconnu ou mot de passe incorrect."
+
+msgid "Einloggen"
+msgstr "Se connecter"
+
+msgid "Neues Konto erstellen"
+msgstr "Créer un compte"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Vor- und Nachname"
+msgstr "Prénom et nom"
+
+msgid "Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "Le mot de passe doit comporter au moins 8 caractères."
+
+msgid "Registriert! Jetzt einloggen."
+msgstr "Inscrit ! Connectez-vous maintenant."
+
+msgid "E-Mail bereits registriert."
+msgstr "E-mail déjà enregistré."
+
+msgid "Arbeitgeber-Login"
+msgstr "Connexion employeur"
+
+msgid "Login fehlgeschlagen."
+msgstr "Échec de la connexion."
+
+msgid "Arbeitgeber registrieren"
+msgstr "Enregistrer un employeur"
+
+msgid "Firmen-E-Mail"
+msgstr "E-mail de l'entreprise"
+
+msgid "Firma"
+msgstr "Entreprise"
+
+msgid "Kontaktperson"
+msgstr "Personne de contact"
+
+msgid "Alle Felder sind Pflichtfelder."
+msgstr "Tous les champs sont obligatoires."
+
+msgid "Als Arbeitgeber registrieren"
+msgstr "S'inscrire comme employeur"
+
+msgid "Admin-Login"
+msgstr "Connexion admin"
+
+msgid "Admin-E-Mail"
+msgstr "E-mail admin"
+
+msgid "Admin angemeldet"
+msgstr "Admin connecté"
+
+msgid "Admin-Login fehlgeschlagen."
+msgstr "Échec de la connexion admin."
+
+msgid "Willkommen, {name}!"
+msgstr "Bienvenue, {name} !"
+
+msgid "Zurück"
+msgstr "Retour"
+
+msgid "Inhalt fehlt: {file}"
+msgstr "Contenu manquant : {file}"
+
+msgid "#{0}"
+msgstr "#{0}"
+
+msgid "#{0} {1} – {2} ({3}, {4})"
+msgstr "#{0} {1} – {2} ({3}, {4})"
+
+msgid "**Link:** [{0}]({1})"
+msgstr "**Lien :** [{0}]({1})"
+
+msgid "- {0}: {1}"
+msgstr "- {0} : {1}"
+
+msgid "Abbrechen"
+msgstr "Annuler"
+
+msgid "Abschluss"
+msgstr "Diplôme"
+
+msgid "Aktualisiert"
+msgstr "Mis à jour"
+
+msgid "Aktuelle Position"
+msgstr "Poste actuel"
+
+msgid "Aktueller Status"
+msgstr "Statut actuel"
+
+msgid "Aktuelles Passwort"
+msgstr "Mot de passe actuel"
+
+msgid "Anzahl Fragen"
+msgstr "Nombre de questions"
+
+msgid "Berufserfahrung"
+msgstr "Expérience professionnelle"
+
+msgid "Beschreibung"
+msgstr "Description"
+
+msgid "Bewerben"
+msgstr "Postuler"
+
+msgid "Bewerbung gesendet! Der Agent prueft Ihren Lebenslauf."
+msgstr "Candidature envoyée ! L'agent vérifie votre CV."
+
+msgid "Bewerbung zurückgezogen. Sie können sich später erneut bewerben."
+msgstr "Candidature retirée. Vous pouvez postuler à nouveau plus tard."
+
+msgid "Bewerbung: {0}"
+msgstr "Candidature : {0}"
+
+msgid "Bewerbungen nach Status"
+msgstr "Candidatures par statut"
+
+msgid "Beworben"
+msgstr "Postulé"
+
+msgid "Beworben am"
+msgstr "Postulé le"
+
+msgid "Bitte alle Felder ausfuellen."
+msgstr "Veuillez remplir tous les champs."
+
+msgid "Bitte wähle eine Antwort"
+msgstr "Veuillez choisir une réponse"
+
+msgid "Bitte zuerst Lebenslauf hochladen (Mein Profil → Lebenslauf)"
+msgstr "Veuillez d'abord télécharger votre CV (Mon profil → CV)"
+
+msgid "Branche"
+msgstr "Secteur"
+
+msgid "CEFR-Level"
+msgstr "Niveau CECR"
+
+msgid "CEFR: {0}"
+msgstr "CECR : {0}"
+
+msgid "Datei auswählen"
+msgstr "Choisir un fichier"
+
+msgid "Deine Ergebnisse"
+msgstr "Vos résultats"
+
+msgid "Der Arbeitgeber hat Sie eingestellt – die Checkliste wird gerade vorbereitet."
+msgstr "L'employeur vous a recruté – la liste de contrôle est en cours de préparation."
+
+msgid "Der Test enthält keine Fragen und wurde nicht gespeichert."
+msgstr "Le test ne contient aucune question et n'a pas été enregistré."
+
+msgid "Detailbegründung: agent-generierte Erklärung nach Ihrer Bewerbung (Skill explain-match)."
+msgstr "Explication détaillée : explication générée par l'agent après votre candidature (skill explain-match)."
+
+msgid "Details anzeigen"
+msgstr "Afficher les détails"
+
+msgid "Deutsch"
+msgstr "Allemand"
+
+msgid "Dokument geloescht."
+msgstr "Document supprimé."
+
+msgid "Dokumente"
+msgstr "Documents"
+
+msgid "Dokumente (PDF/TXT, mehrere moeglich):"
+msgstr "Documents (PDF/TXT, plusieurs autorisés) :"
+
+msgid "Dokumenttyp"
+msgstr "Type de document"
+
+msgid "Englisch"
+msgstr "Anglais"
+
+msgid "Erfahrung"
+msgstr "Expérience"
+
+msgid "Erneut speichern"
+msgstr "Enregistrer à nouveau"
+
+msgid "Erneut versuchen"
+msgstr "Réessayer"
+
+msgid "Fachkompetenzen"
+msgstr "Compétences techniques"
+
+msgid "Fehler beim Hochladen: {0}"
+msgstr "Erreur de téléchargement : {0}"
+
+msgid "Fehler beim Laden der Fragen: {0}"
+msgstr "Erreur lors du chargement des questions : {0}"
+
+msgid "Fehler: {0}"
+msgstr "Erreur : {0}"
+
+msgid "Frage {0}/{1}"
+msgstr "Question {0}/{1}"
+
+msgid "Französisch"
+msgstr "Français"
+
+msgid "Für {0} {1} konnten keine Fragen geladen werden."
+msgstr "Aucune question n'a pu être chargée pour {0} {1}."
+
+msgid "Gehalt"
+msgstr "Salaire"
+
+msgid "Gehaltsvorstellung"
+msgstr "Prétentions salariales"
+
+msgid "Groesse"
+msgstr "Taille"
+
+msgid "Hard Skills (kommasepariert)"
+msgstr "Compétences techniques (séparées par des virgules)"
+
+msgid "Herunterladen"
+msgstr "Télécharger"
+
+msgid "Ihr Ergebnis: {0}/{1} richtig ({2:.0f}%, CEFR {3}) — nicht in Ihrem Profil hinterlegt."
+msgstr "Votre résultat : {0}/{1} corrects ({2:.0f}%, CECR {3}) — non enregistré dans votre profil."
+
+msgid "Ihr Raum ist bereit!"
+msgstr "Votre salle est prête !"
+
+msgid "Jahre Erfahrung"
+msgstr "Années d'expérience"
+
+msgid "Keine Statushistorie"
+msgstr "Aucun historique de statut"
+
+msgid "Laufende Bewerbungen"
+msgstr "Candidatures en cours"
+
+msgid "Lebenslauf hochgeladen ({0} Zeichen)."
+msgstr "CV téléchargé ({0} caractères)."
+
+msgid "Lebenslauf hochladen"
+msgstr "Télécharger le CV"
+
+msgid "Lebenslauf vorhanden"
+msgstr "CV disponible"
+
+msgid "Letzte Änderung"
+msgstr "Dernière modification"
+
+msgid "Maximale Größe: 5 MB"
+msgstr "Taille maximale : 5 Mo"
+
+msgid "Meeting-Link"
+msgstr "Lien de réunion"
+
+msgid "Mein Status"
+msgstr "Mon statut"
+
+msgid "Meine Dokumente ({0})"
+msgstr "Mes documents ({0})"
+
+msgid "Motivation:"
+msgstr "Motivation :"
+
+msgid "Motivationstext (optional, max. 2000 Zeichen):"
+msgstr "Texte de motivation (facultatif, 2000 caractères max.) :"
+
+msgid "Must-Have-Skills:"
+msgstr "Compétences indispensables :"
+
+msgid "Nationalitaet"
+msgstr "Nationalité"
+
+msgid "Nehmen Sie ein kurzes Video auf (2-3 Minuten). Der Link wird mit Ihrer Bewerbung gesendet."
+msgstr "Enregistrez une courte vidéo (2-3 minutes). Le lien sera envoyé avec votre candidature."
+
+msgid "Neu laden"
+msgstr "Recharger"
+
+msgid "Neu veroeffentlichte Stellen"
+msgstr "Offres récemment publiées"
+
+msgid "Neuen Test starten"
+msgstr "Démarrer un nouveau test"
+
+msgid "Neues Passwort"
+msgstr "Nouveau mot de passe"
+
+msgid "Neues Passwort wiederholen"
+msgstr "Répéter le nouveau mot de passe"
+
+msgid "Niveau"
+msgstr "Niveau"
+
+msgid "Noch kein Lebenslauf hochgeladen"
+msgstr "Aucun CV téléchargé"
+
+msgid "Noch keine Skills erfasst"
+msgstr "Aucune compétence enregistrée"
+
+msgid "Noch nicht erfasst"
+msgstr "Pas encore enregistré"
+
+msgid "Nur .pdf/.txt erlaubt"
+msgstr "Seuls .pdf/.txt autorisés"
+
+msgid "PDF oder TXT-Datei ablegen"
+msgstr "Déposer un fichier PDF ou TXT"
+
+msgid "Passwoerter stimmen nicht ueberein."
+msgstr "Les mots de passe ne correspondent pas."
+
+msgid "Passwort aendern"
+msgstr "Changer le mot de passe"
+
+msgid "Persoenliche Daten"
+msgstr "Données personnelles"
+
+msgid "Profil bearbeiten"
+msgstr "Modifier le profil"
+
+msgid "Profil gespeichert!"
+msgstr "Profil enregistré !"
+
+msgid "Profil speichern"
+msgstr "Enregistrer le profil"
+
+msgid "Profil-Vollständigkeit"
+msgstr "Complétude du profil"
+
+msgid "Profil: {0} · Skills: {1}"
+msgstr "Profil : {0} · Compétences : {1}"
+
+msgid "Registriert"
+msgstr "Inscrit"
+
+msgid "Richtige Antworten"
+msgstr "Bonnes réponses"
+
+msgid "Score aus Startgewichten (Design-Entscheidung, keine externe Quelle) — Gewichte werden per Feedback-Loop nach echten Einstellungsentscheidungen kalibriert (siehe matching-criteria.md)."
+msgstr "Score à partir des poids initiaux (décision de conception, aucune source externe) — les poids sont calibrés par une boucle de rétroaction à partir de décisions de recrutement réelles (voir matching-criteria.md)."
+
+msgid "Score: {0:.0f}%"
+msgstr "Score : {0:.0f}%"
+
+msgid "Sie haben sich bereits auf diese Stelle beworben."
+msgstr "Vous avez déjà postulé à cette offre."
+
+msgid "Soft Skills"
+msgstr "Savoir-être"
+
+msgid "Soft Skills (kommasepariert)"
+msgstr "Savoir-être (séparés par des virgules)"
+
+msgid "Soft Skills:"
+msgstr "Savoir-être :"
+
+msgid "Sprachen"
+msgstr "Langues"
+
+msgid "Sprachtest"
+msgstr "Test de langue"
+
+msgid "Standort"
+msgstr "Lieu"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Stellentyp"
+msgstr "Type de contrat"
+
+msgid "Termin wird noch vereinbart."
+msgstr "Rendez-vous à confirmer."
+
+msgid "Termin: {0}"
+msgstr "Rendez-vous : {0}"
+
+msgid "Test starten"
+msgstr "Démarrer le test"
+
+msgid "Test wird geladen..."
+msgstr "Chargement du test..."
+
+msgid "Verfuegbarkeit"
+msgstr "Disponibilité"
+
+msgid "Verlauf"
+msgstr "Historique"
+
+msgid "Video-Link generiert und mit Ihrer Bewerbung gespeichert."
+msgstr "Lien vidéo généré et enregistré avec votre candidature."
+
+msgid "Visum-Status"
+msgstr "Statut du visa"
+
+msgid "Warum passt das?"
+msgstr "Pourquoi correspondre ?"
+
+msgid "Weiter →"
+msgstr "Continuer →"
+
+msgid "min. {0} Jahre"
+msgstr "min. {0} ans"
+
+msgid "{0} %"
+msgstr "{0} %"
+
+msgid "{0} % passend"
+msgstr "{0} % compatible"
+
+msgid "{0} Dokument(e) gespeichert als Typ '{1}'."
+msgstr "{0} document(s) enregistré(s) en tant que type « {1} »."
+
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+msgid "{0} – {1}"
+msgstr "{0} – {1}"
+
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+msgid "ℹ️ Sie hatten diese Bewerbung zurückgezogen. Beim erneuten Absenden beginnt sie neu (Status: Eingegangen)."
+msgstr "ℹ️ Vous aviez retiré cette candidature. Une nouvelle soumission la relancera (statut : Reçue)."
+
+msgid "→ Zum Lebenslauf-Upload"
+msgstr "→ Vers le téléchargement du CV"
+
+msgid "→ Zur Video-Vorstellung"
+msgstr "→ Vers la présentation vidéo"
+
+msgid "↩️ Zurückziehen"
+msgstr "↩️ Retirer"
+
+msgid "⏳ Einladung wird vorbereitet..."
+msgstr "⏳ Invitation en cours de préparation..."
+
+msgid "⚠️ Bewerbungen konnten nicht geladen werden. Fehler: {0}"
+msgstr "⚠️ Impossible de charger les candidatures. Erreur : {0}"
+
+msgid "⚠️ CV-Pflicht: Bewerben ist erst nach Lebenslauf-Upload möglich (👤 Mein Profil → Lebenslauf). Stellen ansehen ist erlaubt."
+msgstr "⚠️ CV obligatoire : vous ne pouvez postuler qu'après avoir téléchargé votre CV (👤 Mon profil → CV). Consulter les offres est autorisé."
+
+msgid "⚠️ CV-Pflicht: Laden Sie zuerst Ihren Lebenslauf hoch (Status: {0})"
+msgstr "⚠️ CV obligatoire : veuillez d'abord télécharger votre CV (statut : {0})"
+
+msgid "⚠️ Dashboard-Zahlen konnten nicht geladen werden: {0}"
+msgstr "⚠️ Impossible de charger les chiffres du tableau de bord : {0}"
+
+msgid "⚠️ Ergebnis konnte nicht gespeichert werden."
+msgstr "⚠️ Impossible d'enregistrer le résultat."
+
+msgid "⚠️ Status-Verteilung konnte nicht geladen werden: {0}"
+msgstr "⚠️ Impossible de charger la répartition des statuts : {0}"
+
+msgid "⚠️ {0}"
+msgstr "⚠️ {0}"
+
+msgid "✅ **Video-Link:** [{0}]({1})"
+msgstr "✅ **Lien vidéo :** [{0}]({1})"
+
+msgid "✅ Test beendet!"
+msgstr "✅ Test terminé !"
+
+msgid "✅ Video-Vorstellung bereits hinterlegt."
+msgstr "✅ Présentation vidéo déjà ajoutée."
+
+msgid "🎉 {0} – {1}"
+msgstr "🎉 {0} – {1}"
+
+msgid "🎥 Video-Link generieren"
+msgstr "🎥 Générer le lien vidéo"
+
+msgid "🎬 Optional: Sie können eine Video-Vorstellung (2–3 Minuten) hinterlegen."
+msgstr "🎬 Facultatif : vous pouvez ajouter une présentation vidéo (2–3 minutes)."
+
+msgid "🎬 Video-Vorstellung (optional)"
+msgstr "🎬 Présentation vidéo (facultative)"
+
+msgid "📅 Einladung"
+msgstr "📅 Invitation"
+
+msgid "📅 Termin in Kalender speichern (.ics)"
+msgstr "📅 Enregistrer le rendez-vous dans le calendrier (.ics)"
+
+msgid "📋 Status-Historie"
+msgstr "📋 Historique des statuts"
+
+msgid "📌 Merken Sie sich diesen Link für Ihr Bewerbungsgespräch."
+msgstr "📌 Conservez ce lien pour votre entretien d'embauche."
+
+msgid "📖 {0} — {1}"
+msgstr "📖 {0} — {1}"
+
+msgid "📥 Herunterladen"
+msgstr "📥 Télécharger"
+
+msgid "📹 Selbstpräsentation starten"
+msgstr "📹 Démarrer l'auto-présentation"
+
+msgid "🔒 Lebenslauf nötig"
+msgstr "🔒 CV requis"
+
+msgid "🔒 Session-gebunden: Testen Sie Ihr Sprachniveau (DE/EN/FR). Ergebnis landet in Ihrem Profil (CEFR-Level)."
+msgstr "🔒 Lié à la session : testez votre niveau de langue (DE/EN/FR). Le résultat est enregistré dans votre profil (niveau CECR)."
+
+msgid "🤝 Ihr Ansprechpartner (Mentor): {0}"
+msgstr "🤝 Votre interlocuteur (mentor) : {0}"
+
+msgid "Bewerbe dich im Tab 'Stellenangebote'."
+msgstr "Postulez dans l'onglet « Offres d'emploi »."
+
+msgid "CEFR-Niveautests"
+msgstr "Tests de niveau CECR"
+
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+msgid "Entdecke passende Stellen und bewirb dich mit einem Klick."
+msgstr "Découvrez des offres adaptées et postulez en un clic."
+
+msgid "Erneut bewerben"
+msgstr "Postuler à nouveau"
+
+msgid "Gehaltsvorstellung (EUR)"
+msgstr "Prétentions salariales (EUR)"
+
+msgid "Jetzt bewerben"
+msgstr "Postuler maintenant"
+
+msgid "Kandidaten-Uebersicht"
+msgstr "Vue d'ensemble du candidat"
+
+msgid "Keine Bewerbungen vorhanden"
+msgstr "Aucune candidature"
+
+msgid "Keine offenen Stellen"
+msgstr "Aucune offre ouverte"
+
+msgid "Mein Profil"
+msgstr "Mon profil"
+
+msgid "Meine Bewerbungen"
+msgstr "Mes candidatures"
+
+msgid "Noch kein Onboarding aktiv"
+msgstr "Aucun onboarding actif"
+
+msgid "Noch keine Bewerbungen"
+msgstr "Aucune candidature pour le moment"
+
+msgid "Noch keine Dokumente hochgeladen"
+msgstr "Aucun document téléchargé"
+
+msgid "Offene Positionen durchsuchen"
+msgstr "Parcourir les offres ouvertes"
+
+msgid "Onboarding"
+msgstr "Onboarding"
+
+msgid "Onboarding wird nach erfolgreicher Einstellung freigeschaltet."
+msgstr "L'onboarding est débloqué après un recrutement réussi."
+
+msgid "Pre-Screen"
+msgstr "Pré-sélection"
+
+msgid "Profil nicht gefunden"
+msgstr "Profil introuvable"
+
+msgid "Schau spaeter nochmal vorbei."
+msgstr "Revenez plus tard."
+
+msgid "Selbstpräsentation"
+msgstr "Auto-présentation"
+
+msgid "Status verfolgen"
+msgstr "Suivre le statut"
+
+msgid "Stellen durchsuchen"
+msgstr "Parcourir les offres"
+
+msgid "Stellen entdecken"
+msgstr "Découvrir des offres"
+
+msgid "Stellenangebote"
+msgstr "Offres d'emploi"
+
+msgid "→ Stellen ansehen"
+msgstr "→ Voir les offres"
+
+msgid "#{0} {1} – {2} ({3}) – {4}"
+msgstr "#{0} {1} – {2} ({3}) – {4}"
+
+msgid "(Stelle #{0} · Kandidat #{1})"
+msgstr "(Offre #{0} · Candidat #{1})"
+
+msgid "**📅 Einladungs-Termin:**"
+msgstr "**📅 Date d'invitation :**"
+
+msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
+msgstr "+ {0} candidature(s) supplémentaire(s) non affichée(s) (actives d'abord) – complet sous Offres d'emploi."
+
+msgid "+{0} weitere"
+msgstr "+{0} de plus"
+
+msgid "Ablehnen"
+msgstr "Refuser"
+
+msgid "Agent-Details"
+msgstr "Détails de l'agent"
+
+msgid "Agent-Ergebnisse + Tasks"
+msgstr "Résultats de l'agent + tâches"
+
+msgid "Agent-Tasks"
+msgstr "Tâches de l'agent"
+
+msgid "Aktion"
+msgstr "Action"
+
+msgid "Aktiver Mentor: {0}"
+msgstr "Mentor actif : {0}"
+
+msgid "Alle anzeigen"
+msgstr "Tout afficher"
+
+msgid "Anmerkungen"
+msgstr "Remarques"
+
+msgid "Arbeitgeber-Uebersicht"
+msgstr "Vue d'ensemble de l'employeur"
+
+msgid "Arbeitsort"
+msgstr "Lieu de travail"
+
+msgid "Auswahl"
+msgstr "Sélection"
+
+msgid "Begründung"
+msgstr "Motif"
+
+msgid "Beschreibung (min. 50 Zeichen)"
+msgstr "Description (min. 50 caractères)"
+
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
+msgstr "Candidat recruté. Veuillez définir le statut de l'offre sur « pourvue » (onglet Portail)."
+
+msgid "Bewerber-Status verwalten"
+msgstr "Gérer le statut des candidats"
+
+msgid "Bewerbung"
+msgstr "Candidature"
+
+msgid "Bewerbung #{0} · Gehalt/Mindestlohn + Formfall + NachwG-Checkliste (Quellen: knowledge/legal/contract-sources.md)"
+msgstr "Candidature #{0} · salaire/salaire minimum + cas formel + liste de contrôle NachwG (sources : knowledge/legal/contract-sources.md)"
+
+msgid "Bewerbung abgelehnt - Ablehnungs-Mail wurde NICHT eingereiht (heute bereits ein Task fuer diese Bewerbung oder Queue-Fehler)."
+msgstr "Candidature refusée – l'e-mail de refus n'a PAS été mis en file (déjà une tâche pour cette candidature aujourd'hui, ou erreur de file)."
+
+msgid "Bewerbung abgelehnt."
+msgstr "Candidature refusée."
+
+msgid "Bewerbung als angesehen markiert."
+msgstr "Candidature marquée comme consultée."
+
+msgid "Bewerbung eingegangen"
+msgstr "Candidature reçue"
+
+msgid "Bewerbung nicht gefunden."
+msgstr "Candidature introuvable."
+
+msgid "Bewerbung wirklich ablehnen?"
+msgstr "Refuser vraiment la candidature ?"
+
+msgid "Bewerbungen"
+msgstr "Candidatures"
+
+msgid "Bewertung (1-5):"
+msgstr "Évaluation (1-5) :"
+
+msgid "Bitte Mentor-Namen eingeben."
+msgstr "Veuillez saisir le nom du mentor."
+
+msgid "CSV Export"
+msgstr "Export CSV"
+
+msgid "Checkliste erstellen"
+msgstr "Créer la liste de contrôle"
+
+msgid "Compliance-Ergebnis"
+msgstr "Résultat de conformité"
+
+msgid "Datei"
+msgstr "Fichier"
+
+msgid "Datei liegt nicht im freigegebenen Ordner."
+msgstr "Le fichier n'est pas dans le dossier autorisé."
+
+msgid "Datei nicht mehr auf dem Server vorhanden."
+msgstr "Fichier plus disponible sur le serveur."
+
+msgid "Daten exportieren"
+msgstr "Exporter les données"
+
+msgid "Datum"
+msgstr "Date"
+
+msgid "Dauer (Min.)"
+msgstr "Durée (min)"
+
+msgid "Detaillierte Berichte"
+msgstr "Rapports détaillés"
+
+msgid "Deutsch-Level"
+msgstr "Niveau d'allemand"
+
+msgid "Dokument nicht (mehr) freigegeben."
+msgstr "Document non (ou plus) autorisé."
+
+msgid "Eingegangen: {0}"
+msgstr "Reçues : {0}"
+
+msgid "Eingeladen"
+msgstr "Invité"
+
+msgid "Eingeladen - Termin {0} {1} geplant."
+msgstr "Invité – rendez-vous {0} {1} planifié."
+
+msgid "Eingeladen?"
+msgstr "Invité ?"
+
+msgid "Einladen"
+msgstr "Inviter"
+
+msgid "Einstellen"
+msgstr "Recruter"
+
+msgid "Einstellung"
+msgstr "Recrutement"
+
+msgid "Empfehlung"
+msgstr "Recommandation"
+
+msgid "Englisch-Level"
+msgstr "Niveau d'anglais"
+
+msgid "Erfahrung (J.)"
+msgstr "Expérience (ans)"
+
+msgid "Erklaerung"
+msgstr "Explication"
+
+msgid "Erstelle zuerst eine Stelle."
+msgstr "Créez d'abord une offre."
+
+msgid "Erstellt: {0}"
+msgstr "Créé : {0}"
+
+msgid "Fachlich"
+msgstr "Technique"
+
+msgid "Feedback"
+msgstr "Feedback"
+
+msgid "Feedback aktualisiert (heute bereits vorhanden)."
+msgstr "Feedback mis à jour (existe déjà aujourd'hui)."
+
+msgid "Feedback gespeichert!"
+msgstr "Feedback enregistré !"
+
+msgid "Finaler Status erreicht."
+msgstr "Statut final atteint."
+
+msgid "Firmenprofil"
+msgstr "Profil de l'entreprise"
+
+msgid "Firmenprofil & Stellen"
+msgstr "Profil de l'entreprise & offres"
+
+msgid "Gehalt: {0}"
+msgstr "Salaire : {0}"
+
+msgid "Gehaltsrahmen bis (EUR)"
+msgstr "Fourchette de salaire jusqu'à (EUR)"
+
+msgid "Gehaltsrahmen von (EUR)"
+msgstr "Fourchette de salaire à partir de (EUR)"
+
+msgid "Hauptstandort"
+msgstr "Lieu principal"
+
+msgid "Hochgeladen"
+msgstr "Téléchargé"
+
+msgid "Hochgeladene Dateien"
+msgstr "Fichiers téléchargés"
+
+msgid "Interne Notiz (optional, nicht sichtbar fuer den Kandidaten)"
+msgstr "Note interne (facultative, non visible par le candidat)"
+
+msgid "Interview"
+msgstr "Entretien"
+
+msgid "Interview geplant"
+msgstr "Entretien planifié"
+
+msgid "Ja, ablehnen"
+msgstr "Oui, refuser"
+
+msgid "Kandidat"
+msgstr "Candidat"
+
+msgid "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle)."
+msgstr "Le candidat #{0} n'est pas un candidat de cet employeur et n'atteint pas de match passif (au moins 1 compétence indispensable et >= 50 % de l'expérience requise pour une offre active)."
+
+msgid "Kandidat ablehnen"
+msgstr "Refuser le candidat"
+
+msgid "Kandidat einladen"
+msgstr "Inviter le candidat"
+
+msgid "Kandidat einstellen"
+msgstr "Recruter le candidat"
+
+msgid "Kandidat wählen."
+msgstr "Sélectionnez un candidat."
+
+msgid "Kandidaten"
+msgstr "Candidats"
+
+msgid "Kandidaten erscheinen hier, nachdem sie eingestellt wurden."
+msgstr "Les candidats apparaissent ici après leur recrutement."
+
+msgid "Kandidaten erscheinen hier, sobald sie sich beworben haben. Passive Matches stehen darunter."
+msgstr "Les candidats apparaissent ici dès qu'ils ont postulé. Les matchs passifs figurent ci-dessous."
+
+msgid "Kandidaten mit Lebenslauf"
+msgstr "Candidats avec CV"
+
+msgid "Kandidaten-Feedback speichern"
+msgstr "Enregistrer le feedback du candidat"
+
+msgid "Kandidaten-Liste als CSV-Datei herunterladen."
+msgstr "Télécharger la liste des candidats en CSV."
+
+msgid "Kandidaten-Status"
+msgstr "Statut du candidat"
+
+msgid "Kandidaten-Suche"
+msgstr "Recherche de candidats"
+
+msgid "Kategorie"
+msgstr "Catégorie"
+
+msgid "Keine Bewerbung für Preflight."
+msgstr "Aucune candidature pour le preflight."
+
+msgid "Keine Dokumente vorhanden"
+msgstr "Aucun document disponible"
+
+msgid "Keine Kandidaten fuer Onboarding"
+msgstr "Aucun candidat pour l'onboarding"
+
+msgid "Keine Kandidaten gefunden"
+msgstr "Aucun candidat trouvé"
+
+msgid "Keine Kandidaten mit Bewerbungen"
+msgstr "Aucun candidat avec candidature"
+
+msgid "Keine Kandidaten verfügbar."
+msgstr "Aucun candidat disponible."
+
+msgid "Keine Kandidaten vorhanden"
+msgstr "Aucun candidat disponible"
+
+msgid "Keine Stellen vorhanden"
+msgstr "Aucune offre disponible"
+
+msgid "Keine aktive Patenschaft gefunden."
+msgstr "Aucun mentorat actif trouvé."
+
+msgid "Keine aktiven Bewerbungen"
+msgstr "Aucune candidature active"
+
+msgid "Keine archivierten Bewerbungen."
+msgstr "Aucune candidature archivée."
+
+msgid "Keine zurechenbaren Archiv-Einträge."
+msgstr "Aucune entrée d'archive attribuable."
+
+msgid "Kurzprofil (max. 500 Zeichen)"
+msgstr "Profil court (max. 500 caractères)"
+
+msgid "Land"
+msgstr "Pays"
+
+msgid "Land: {0}"
+msgstr "Pays : {0}"
+
+msgid "Live-Score aus DB"
+msgstr "Score en direct depuis la BD"
+
+msgid "Match-Ergebnis"
+msgstr "Résultat du match"
+
+msgid "Match-Score"
+msgstr "Score de match"
+
+msgid "Match-Score (0-100)"
+msgstr "Score de match (0-100)"
+
+msgid "Meine Stellen"
+msgstr "Mes offres"
+
+msgid "Mentor (Name):"
+msgstr "Mentor (nom) :"
+
+msgid "Mentor zuweisen"
+msgstr "Attribuer un mentor"
+
+msgid "Mentor {0} zugewiesen."
+msgstr "Mentor {0} attribué."
+
+msgid "Min. Berufserfahrung (Jahre)"
+msgstr "Expérience professionnelle min. (années)"
+
+msgid "Mitarbeiterzahl"
+msgstr "Nombre d'employés"
+
+msgid "Motivation: {0}"
+msgstr "Motivation : {0}"
+
+msgid "Must-Have-Skills (kommasepariert)"
+msgstr "Compétences indispensables (séparées par des virgules)"
+
+msgid "Must-Have-Treffer: {0}"
+msgstr "Correspondances indispensables : {0}"
+
+msgid "Neues Feedback"
+msgstr "Nouveau feedback"
+
+msgid "Noch kein Feedback"
+msgstr "Pas encore de feedback"
+
+msgid "Noch keine Agent-Tasks"
+msgstr "Pas encore de tâches de l'agent"
+
+msgid "Noch keine Compliance-Pruefung"
+msgstr "Pas encore de contrôle de conformité"
+
+msgid "Noch keine Stellen ausgeschrieben"
+msgstr "Aucune offre publiée"
+
+msgid "Offene Stellen"
+msgstr "Offres ouvertes"
+
+msgid "PDF Export"
+msgstr "Export PDF"
+
+msgid "Patenschaft beenden"
+msgstr "Terminer le mentorat"
+
+msgid "Patenschaft beendet."
+msgstr "Mentorat terminé."
+
+msgid "Portal"
+msgstr "Portail"
+
+msgid "Pre-Screening abgeschlossen"
+msgstr "Pré-sélection terminée"
+
+msgid "Preflight heute bereits gequeued (idempotent)."
+msgstr "Preflight déjà mis en file aujourd'hui (idempotent)."
+
+msgid "Prüfpunkt: {0}"
+msgstr "Point de contrôle : {0}"
+
+msgid "Rechtliche Pruefung"
+msgstr "Vérification juridique"
+
+msgid "Schließen"
+msgstr "Fermer"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Screening fuer Kandidaten"
+msgstr "Screening pour les candidats"
+
+msgid "Skills"
+msgstr "Compétences"
+
+msgid "Sprachtests"
+msgstr "Tests de langue"
+
+msgid "Status Bewerbung"
+msgstr "Statut de la candidature"
+
+msgid "Status ändern"
+msgstr "Changer le statut"
+
+msgid "Status-Verteilung"
+msgstr "Répartition des statuts"
+
+msgid "Status: {0}"
+msgstr "Statut : {0}"
+
+msgid "Stelle"
+msgstr "Offre"
+
+msgid "Stelle #{0} · Kandidat #{1}"
+msgstr "Offre #{0} · Candidat #{1}"
+
+msgid "Stelle ausschreiben"
+msgstr "Publier une offre"
+
+msgid "Stelle unbekannt"
+msgstr "Offre inconnue"
+
+msgid "Stellen"
+msgstr "Offres"
+
+msgid "Suche (Name oder Skills)"
+msgstr "Recherche (nom ou compétences)"
+
+msgid "Suchen..."
+msgstr "Rechercher..."
+
+msgid "Task-Queue (Datenbank)"
+msgstr "File de tâches (base de données)"
+
+msgid "Task-Status"
+msgstr "Statut de la tâche"
+
+msgid "Tasks werden bei Bewerbungsprozessen gestartet."
+msgstr "Les tâches sont lancées lors des processus de candidature."
+
+msgid "Telefon"
+msgstr "Téléphone"
+
+msgid "Titel"
+msgstr "Titre"
+
+msgid "Typ"
+msgstr "Type"
+
+msgid "Uhrzeit"
+msgstr "Heure"
+
+msgid "Unbekannt"
+msgstr "Inconnu"
+
+msgid "Ungueltiger Statusuebergang (Bewerbung hat sich zwischenzeitlich geaendert)."
+msgstr "Transition de statut invalide (la candidature a changé entre-temps)."
+
+msgid "Ungueltiger Statusuebergang (Whitelist ALLOWED_TRANSITIONS)."
+msgstr "Transition de statut invalide (liste blanche ALLOWED_TRANSITIONS)."
+
+msgid "Ungueltiger Statusuebergang: 'Einstellen' erfordert den Status 'eingeladen' (Whitelist)."
+msgstr "Transition de statut invalide : « Recruter » exige le statut « invité » (liste blanche)."
+
+msgid "Unzulaessiger Statusuebergang (Bewerbung ist nicht mehr aktiv)."
+msgstr "Transition de statut non autorisée (la candidature n'est plus active)."
+
+msgid "Vertrags-Check gequeued (Task #{0}) – Report in Agent-Details."
+msgstr "Contrôle de contrat mis en file (tâche #{0}) – rapport dans les détails de l'agent."
+
+msgid "Visum-Antrag bestaetigen"
+msgstr "Confirmer la demande de visa"
+
+msgid "Visum-Schritte-Mail an Kandidaten ausgeloest."
+msgstr "E-mail des étapes de visa déclenché au candidat."
+
+msgid "Vorgang-Nr."
+msgstr "N° de dossier"
+
+msgid "Website"
+msgstr "Site web"
+
+msgid "Wird nach Agent-Ausfuehrung fuer Ihre Bewerbungen angezeigt."
+msgstr "Affiché pour vos candidatures après l'exécution de l'agent."
+
+msgid "unbekannt"
+msgstr "inconnu"
+
+msgid "z. B. Python"
+msgstr "p. ex. Python"
+
+msgid "z.B. Senior Python Developer"
+msgstr "p. ex. Senior Python Developer"
+
+msgid "{0} #{1}"
+msgstr "{0} #{1}"
+
+msgid "{0} {1} ({2})"
+msgstr "{0} {1} ({2})"
+
+msgid "{0} {1} {2} — {3:.0f}% ({4}){5}"
+msgstr "{0} {1} {2} — {3:.0f}% ({4}){5}"
+
+msgid "{0} {1} – {2} ({3}, {4})"
+msgstr "{0} {1} – {2} ({3}, {4})"
+
+msgid "{0} · {1}"
+msgstr "{0} · {1}"
+
+msgid "{0} – {1}\n\nDer Status wird endgültig auf „Abgelehnt“ gesetzt und eine Absage-Mail an den Kandidaten ausgelöst."
+msgstr "{0} – {1}\n\nLe statut est définitivement défini sur « Refusé » et un e-mail de refus est envoyé au candidat."
+
+msgid "{0} → {1}"
+msgstr "{0} → {1}"
+
+msgid "{0}/100 ({1})"
+msgstr "{0}/100 ({1})"
+
+msgid "· Bewerbung #{0}"
+msgstr "· Candidature #{0}"
+
+msgid "ℹ️ ICS-Datei noch nicht vorhanden."
+msgstr "ℹ️ Fichier ICS pas encore disponible."
+
+msgid "ℹ️ {0} Berichte sind keiner eigenen Stelle zuzuordnen (Stelle nicht vorhanden oder anderer Arbeitgeber) und werden hier nicht angezeigt."
+msgstr "ℹ️ {0} rapports ne peuvent être attribués à l'une de vos offres (offre absente ou autre employeur) et ne sont pas affichés ici."
+
+msgid "ℹ️ {0} ältere Protokolleinträge ohne Arbeitgeber-Bezug werden nicht angezeigt (sie könnten zu fremden Bewerbungen gehören)."
+msgstr "ℹ️ {0} anciennes entrées de journal sans référence à l'employeur ne sont pas affichées (elles pourraient appartenir à des candidatures d'autres employeurs)."
+
+msgid "→ {0}"
+msgstr "→ {0}"
+
+msgid "⚠️ Agent-Tasks konnten nicht geladen werden: {0}"
+msgstr "⚠️ Impossible de charger les tâches de l'agent : {0}"
+
+msgid "⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)"
+msgstr "⚠️ Enregistrement uniquement avec consentement explicite – règle de processus RH (Gate 9, knowledge/legal/recording-consent.md)"
+
+msgid "⚠️ Charts konnten nicht geladen werden: {0}"
+msgstr "⚠️ Impossible de charger les graphiques : {0}"
+
+msgid "⚠️ Keine passenden Kandidaten (mindestens 1 Must-Have-Skill nötig)."
+msgstr "⚠️ Aucun candidat correspondant (au moins 1 compétence indispensable requise)."
+
+msgid "⚡ Status-Übersicht:"
+msgstr "⚡ Aperçu des statuts :"
+
+msgid "⚪ {0}: Kein Bericht vorhanden"
+msgstr "⚪ {0} : Aucun rapport disponible"
+
+msgid "✅ Firmenprofil gespeichert."
+msgstr "✅ Profil de l'entreprise enregistré."
+
+msgid "✅ Status geändert: {0}"
+msgstr "✅ Statut modifié : {0}"
+
+msgid "✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich."
+msgstr "✅ Offre publiée : {0}. Le matching des candidats est désormais possible."
+
+msgid "✅ Visum-Schritte-Mail versendet."
+msgstr "✅ E-mail des étapes de visa envoyé."
+
+msgid "❌ Beschreibung muss mindestens 50 Zeichen haben."
+msgstr "❌ La description doit comporter au moins 50 caractères."
+
+msgid "❌ Fehler beim Erstellen der Stelle."
+msgstr "❌ Erreur lors de la création de l'offre."
+
+msgid "❌ Titel, Beschreibung, Arbeitsort und Must-Have-Skills sind Pflichtfelder."
+msgstr "❌ Le titre, la description, le lieu de travail et les compétences indispensables sont obligatoires."
+
+msgid "👥 {0} passiver Match (keine aktive Bewerbung; Score absteigend)"
+msgstr "👥 {0} match(s) passif(s) (aucune candidature active ; score décroissant)"
+
+msgid "💬 Feedback – {0}"
+msgstr "💬 Feedback – {0}"
+
+msgid "💾 Feedback speichern"
+msgstr "💾 Enregistrer le feedback"
+
+msgid "💾 Firmenprofil speichern"
+msgstr "💾 Enregistrer le profil de l'entreprise"
+
+msgid "💾 Status speichern"
+msgstr "💾 Enregistrer le statut"
+
+msgid "📄 Vertrags-Check starten"
+msgstr "📄 Démarrer le contrôle de contrat"
+
+msgid "📄 Vertragsmanagement (Contract Preflight)"
+msgstr "📄 Gestion des contrats (preflight)"
+
+msgid "📅 Einladungs-Termin (wird in die Automatik-Mail übernommen):"
+msgstr "📅 Date d'invitation (reprise dans l'e-mail automatique) :"
+
+msgid "📅 Termin in Kalender speichern (.ics) – HR"
+msgstr "📅 Enregistrer le rendez-vous dans le calendrier (.ics) – RH"
+
+msgid "📋 Aktuelle Berichte: check_compliance (Primärquelle)"
+msgstr "📋 Rapports actuels : check_compliance (source primaire)"
+
+msgid "📋 Archiv ({0}) – eingestellt / abgelehnt / zurückgezogen"
+msgstr "📋 Archive ({0}) – recruté / refusé / retiré"
+
+msgid "📢 Stelle ausschreiben"
+msgstr "📢 Publier une offre"
+
+msgid "📥 Aktive Bewerber ({0})"
+msgstr "📥 Candidats actifs ({0})"
+
+msgid "📩 Visum-Antrag bestaetigen"
+msgstr "📩 Confirmer la demande de visa"
+
+msgid "🔎 Gefiltert auf {0}"
+msgstr "🔎 Filtré sur {0}"
+
+msgid "🔒 DSGVO: Dokumente werden erst ab Bewerbungsstatus 'Eingeladen' sichtbar. Noch gesperrt: {0}"
+msgstr "🔒 RGPD : les documents ne sont visibles qu'à partir du statut « Invité ». Encore verrouillés : {0}"
+
+msgid "🔒 Read-only: Alle Agent-generierten Ergebnisse für einen Kandidaten: Dokumenten-Verifizierung, Visum-Check, DSGVO, Match-Erklaerung."
+msgstr "🔒 Lecture seule : tous les résultats générés par l'agent pour un candidat : vérification des documents, contrôle du visa, RGPD, explication du match."
+
+msgid "🔗 {0}"
+msgstr "🔗 {0}"
+
+msgid "🗄️ Archiv: compliance_protokoll (Legacy)"
+msgstr "🗄️ Archive : compliance_protokoll (hérité)"
+
+msgid "🤖 {0}"
+msgstr "🤖 {0}"
+
+msgid "🤝 Patenschaft (Mentoring)"
+msgstr "🤝 Mentorat (mentoring)"
+
+msgid "Akzeptiert: {0}"
+msgstr "Accepté : {0}"
+
+msgid "Alle als gelesen markieren"
+msgstr "Tout marquer comme lu"
+
+msgid "Alle als gelesen markiert"
+msgstr "Tout marqué comme lu"
+
+msgid "Anmerkungen:"
+msgstr "Remarques :"
+
+msgid "Ansehen"
+msgstr "Voir"
+
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+msgid "Bestätigen"
+msgstr "Confirmer"
+
+msgid "Bewertung (0–5):"
+msgstr "Évaluation (0–5) :"
+
+msgid "Bitte eine Stelle angeben (keine Vorbelegung gefunden)."
+msgstr "Veuillez indiquer une offre (aucune valeur par défaut trouvée)."
+
+msgid "Datei hier ablegen oder klicken"
+msgstr "Déposez le fichier ici ou cliquez"
+
+msgid "Empfehlung hilfreich"
+msgstr "Recommandation utile"
+
+msgid "Fachlich korrekt"
+msgstr "Techniquement correct"
+
+msgid "Feedback speichern"
+msgstr "Enregistrer le feedback"
+
+msgid "Gewicht: {0}%"
+msgstr "Poids : {0}%"
+
+msgid "Kandidat:"
+msgstr "Candidat :"
+
+msgid "Keine Benachrichtigungen"
+msgstr "Aucune notification"
+
+msgid "Keine Daten vorhanden"
+msgstr "Aucune donnée disponible"
+
+msgid "Keine Profile gefunden."
+msgstr "Aucun profil trouvé."
+
+msgid "Keine Profile gefunden. Profile entstehen automatisch, wenn Lebensläufe hochgeladen und extrahiert werden (Admin: Upload → Extract)."
+msgstr "Aucun profil trouvé. Les profils sont créés automatiquement lorsque des CV sont téléchargés et extraits (admin : Upload → Extract)."
+
+msgid "Keine Selbstpräsentationen vorhanden. Kandidaten können ihre Video-Vorstellung im eigenen Portal (Tab 🗣️ Sprachtest) generieren."
+msgstr "Aucune auto-présentation disponible. Les candidats peuvent générer leur présentation vidéo dans leur propre portail (onglet 🗣️ Test de langue)."
+
+msgid "Laden..."
+msgstr "Chargement..."
+
+msgid "Match-Score:"
+msgstr "Score de match :"
+
+msgid "Modus: 🔍 Recruiting – Screening für ausgewählten Kandidaten."
+msgstr "Mode : 🔍 Recrutement – screening pour le candidat sélectionné."
+
+msgid "Modus: 🧰 HR – Checkliste erstellen und freigeben."
+msgstr "Mode : 🧰 RH – créer et valider la liste de contrôle."
+
+msgid "Onboarding generieren"
+msgstr "Générer l'onboarding"
+
+msgid "Onboarding-Checkliste generieren"
+msgstr "Générer la liste de contrôle d'onboarding"
+
+msgid "Pre-Screen erstellen"
+msgstr "Créer la pré-sélection"
+
+msgid "Selbstpräsentationen der Kandidaten ({0})"
+msgstr "Auto-présentations des candidats ({0})"
+
+msgid "Skill 8: Feedback speichern"
+msgstr "Skill 8 : Enregistrer le feedback"
+
+msgid "Skills richtig"
+msgstr "Compétences correctes"
+
+msgid "Speichert Feedback in SQLite und passt Matching-Gewichtung dynamisch an."
+msgstr "Enregistre le feedback dans SQLite et ajuste dynamiquement la pondération du matching."
+
+msgid "Standort zutreffend"
+msgstr "Lieu exact"
+
+msgid "Startdatum:"
+msgstr "Date de début :"
+
+msgid "Stelle:"
+msgstr "Offre :"
+
+msgid "Stellenprofil:"
+msgstr "Profil du poste :"
+
+msgid "Vorschau"
+msgstr "Aperçu"
+
+msgid "{0}:"
+msgstr "{0} :"
+
+msgid "Dokumente (PDF/TXT/Video, mehrere moeglich):"
+msgstr "Documents (PDF/TXT/vidéo, plusieurs autorisés) :"

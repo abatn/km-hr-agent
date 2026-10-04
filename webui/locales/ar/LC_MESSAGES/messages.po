@@ -1,0 +1,1644 @@
+# ar — KM-HR-Agent Landingpage (Phase 2)
+msgid ""
+msgstr ""
+"Project-Id-Version: km-hr-agent\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+msgid "Zum Login"
+msgstr "تسجيل الدخول"
+
+msgid "Registrieren"
+msgstr "التسجيل"
+
+msgid "Abmelden"
+msgstr "تسجيل الخروج"
+
+msgid "Sprache"
+msgstr "اللغة"
+
+msgid "E-Mail"
+msgstr "البريد الإلكتروني"
+
+msgid "Passwort"
+msgstr "كلمة المرور"
+
+msgid "Anmelden"
+msgstr "دخول"
+
+msgid "KI-gestützte HR-Plattform"
+msgstr "منصة موارد بشرية مدعومة بالذكاء الاصطناعي"
+
+msgid "Recruiting zwischen"
+msgstr "التوظيف بين"
+
+msgid "Nordafrika"
+msgstr "شمال إفريقيا"
+
+msgid "und"
+msgstr "و"
+
+msgid "Von der Bewerbung bis zum Onboarding."
+msgstr "من التقديم إلى الانضمام."
+
+msgid "▶ 30-Sekunden-Tour"
+msgstr "▶ جولة 30 ثانية"
+
+msgid "Der Ablauf – in 30 Sekunden"
+msgstr "سير العملية – في 30 ثانية"
+
+msgid "Für Arbeitgeber"
+msgstr "لأصحاب العمل"
+
+msgid "Qualifizierte, visumbereite Fachkräfte – automatisch gematcht, geprüft und gerankt."
+msgstr "كفاءات مؤهلة وجاهزة للتأشيرة – تُطابق وتُدقّق وتُصنّف تلقائيًا."
+
+msgid "Arbeitgeber-Registrieren"
+msgstr "تسجيل صاحب العمل"
+
+msgid "Für Kandidaten"
+msgstr "للمرشحين"
+
+msgid "Ihr Weg nach Deutschland: Profil, Matching, Sprachtest, Visum und Onboarding – begleitet."
+msgstr "طريقك إلى ألمانيا: الملف، والمطابقة، واختبار اللغة، والتأشيرة، والانضمام – بمرافقة كاملة."
+
+msgid "Kandidat-Registrieren"
+msgstr "تسجيل المرشح"
+
+msgid "Warum KM-HR-Agent?"
+msgstr "لماذا KM-HR-Agent؟"
+
+msgid "10 Agent-Aufgaben"
+msgstr "10 مهام للوكيل"
+
+msgid "Vom Bestätigungs-Mail bis zur Benachrichtigung – alles läuft automatisch."
+msgstr "من بريد التأكيد إلى الإشعار – كل شيء تلقائي."
+
+msgid "7 Matching-Kategorien"
+msgstr "7 فئات للمطابقة"
+
+msgid "Kern, Erfahrung, Bildung, Standort, Branche, Soft Skills, Sprache → Score 0–100."
+msgstr "المهارات الأساسية، الخبرة، التعليم، الموقع، القطاع، المهارات الناعمة، اللغة → نتيجة 0–100."
+
+msgid "Sprachtest CEFR A1–C1"
+msgstr "اختبار اللغة CEFR A1–C1"
+
+msgid "Deutsch, Englisch, Französisch – direkt im Portal, mit Zertifikatsniveau."
+msgstr "الألمانية والإنجليزية والفرنسية – مباشرة في البوابة، بمستوى معتمد."
+
+msgid "Video-Pre-Screen"
+msgstr "فرز أولي بالفيديو"
+
+msgid "Gespräch per VDO.Ninja – mit Einwilligungs-Regel, ohne Aufnahme."
+msgstr "مقابلة عبر VDO.Ninja – بقاعدة الموافقة، وبدون تسجيل."
+
+msgid "DSGVO-konform"
+msgstr "متوافق مع اللائحة العامة لحماية البيانات"
+
+msgid "Bewerbungsdaten werden 183 Tage nach Abschluss gelöscht (Art. 17 DSGVO)."
+msgstr "تُحذف بيانات التقديم بعد 183 يومًا من الانتهاء (المادة 17 من اللائحة)."
+
+msgid "3 Rollen"
+msgstr "3 أدوار"
+
+msgid "Kandidat, Arbeitgeber, Admin – getrennte Zugänge und Rechte."
+msgstr "مرشح، صاحب عمل، مدير – وصول وحقوق منفصلة."
+
+msgid "So funktioniert's"
+msgstr "كيف تعمل"
+
+msgid "Start – Kandidaten (Nordafrika) und Arbeitgeber (DE / FR / CH) als Netzwerk."
+msgstr "البداية – المرشحون (شمال إفريقيا) وأصحاب العمل (ألمانيا / فرنسا / سويسرا) كشبكة."
+
+msgid "CV-Upload → PDF-Extraktion."
+msgstr "رفع السيرة الذاتية → استخراج النص."
+
+msgid "Agent-Kette mit 10 Tasks."
+msgstr "سلسلة الوكيل بـ 10 مهام."
+
+msgid "Matching-Score mit 7 Kategorien."
+msgstr "نتيجة المطابقة عبر 7 فئات."
+
+msgid "Compliance DE / FR / CH."
+msgstr "الامتثال في ألمانيا / فرنسا / سويسرا."
+
+msgid "HR-Entscheidung (einladen, ablehnen, einstellen) → Video-Meeting per VDO.Ninja → Onboarding."
+msgstr "قرار الموارد البشرية (دعوة، رفض، توظيف) → اجتماع فيديو عبر VDO.Ninja → الانضمام."
+
+msgid "Ende – Übergang zum Login, Quantenfeld als Vision."
+msgstr "النهاية – الانتقال إلى تسجيل الدخول، حقل كمّي كرؤية."
+
+msgid "Häufige Fragen"
+msgstr "الأسئلة الشائعة"
+
+msgid "Was ist der KM-HR-Agent?"
+msgstr "ما هو KM-HR-Agent؟"
+
+msgid "Eine KI-gestützte HR-Plattform, die den Bewerbungsprozess zwischen Nordafrika und Deutschland, Frankreich und der Schweiz automatisiert."
+msgstr "منصة موارد بشرية مدعومة بالذكاء الاصطناعي تُؤتمت عملية التقديم بين شمال إفريقيا وألمانيا وفرنسا وسويسرا."
+
+msgid "Welche Sprachniveaus werden geprüft?"
+msgstr "ما مستويات اللغة التي تُختبر؟"
+
+msgid "Deutsch, Englisch und Französisch – CEFR A1 bis C1, direkt im Portal per Sprachtest."
+msgstr "الألمانية والإنجليزية والفرنسية – من A1 إلى C1، مباشرة في البوابة عبر اختبار."
+
+msgid "Wie läuft die Visum-Begleitung?"
+msgstr "كيف تسير مرافقة التأشيرة؟"
+
+msgid "Der Agent prüft den Visum-Bedarf und liefert nach Bestätigung die Schritte (Was / Wie / Wo) inklusive der zuständigen Behörde."
+msgstr "يتحقق الوكيل من الحاجة إلى التأشيرة، وبعد التأكيد يقدّم الخطوات (ماذا / كيف / أين) بما في ذلك الجهة المختصة."
+
+msgid "Wie werden meine Daten geschützt?"
+msgstr "كيف تُحمى بياناتي؟"
+
+msgid "DSGVO-konform: Bewerbungsdaten werden 183 Tage nach Abschluss des Verfahrens gelöscht (Art. 17 DSGVO); Kontaktdaten erst nach der Einladung."
+msgstr "متوافق مع اللائحة: تُحذف بيانات التقديم بعد 183 يومًا من انتهاء الإجراء (المادة 17)؛ وبيانات الاتصال فقط بعد الدعوة."
+
+msgid "Bereit, den Bewerbungsprozess zu automatisieren?"
+msgstr "هل أنت مستعد لأتمتة عملية التقديم؟"
+
+msgid "Kostenlos registrieren – als Kandidat oder Arbeitgeber."
+msgstr "سجّل مجانًا – كمرشح أو صاحب عمل."
+
+msgid "Jetzt registrieren"
+msgstr "سجّل الآن"
+
+msgid "Impressum"
+msgstr "بيانات الناشر"
+
+msgid "Datenschutz"
+msgstr "الخصوصية"
+
+msgid "AGB"
+msgstr "الشروط"
+
+msgid "Kontakt"
+msgstr "اتصل"
+
+msgid "Start"
+msgstr "البداية"
+
+msgid "Das Netzwerk"
+msgstr "الشبكة"
+
+msgid "Kandidaten aus Nordafrika treffen auf Arbeitgeber in DE, FR und CH."
+msgstr "مرشحون من شمال إفريقيا يلتقون بأصحاب عمل في ألمانيا وفرنسا وسويسرا."
+
+msgid "Zoom 1"
+msgstr "تكبير 1"
+
+msgid "Der Lebenslauf wird hochgeladen und als Text ausgelesen."
+msgstr "تُرفع السيرة الذاتية وتُقرأ كنص."
+
+msgid "Zoom 2"
+msgstr "تكبير 2"
+
+msgid "Agent-Kette: 10 Tasks"
+msgstr "سلسلة الوكيل: 10 مهام"
+
+msgid "Zehn Aufgaben laufen automatisch – von der Bestätigung bis zur Benachrichtigung."
+msgstr "عشر مهام تعمل تلقائيًا – من التأكيد إلى الإشعار."
+
+msgid "Zoom 3"
+msgstr "تكبير 3"
+
+msgid "Matching-Score: 7 Kategorien"
+msgstr "نتيجة المطابقة: 7 فئات"
+
+msgid "Sieben Kategorien ergeben einen Score von 0 bis 100."
+msgstr "سبع فئات تُنتج نتيجة من 0 إلى 100."
+
+msgid "Zoom 4"
+msgstr "تكبير 4"
+
+msgid "Compliance DE / FR / CH"
+msgstr "الامتثال في ألمانيا / فرنسا / سويسرا"
+
+msgid "Rechtsprüfung nach Land – bevor es weitergeht."
+msgstr "مراجعة قانونية حسب البلد – قبل المتابعة."
+
+msgid "Zoom 5"
+msgstr "تكبير 5"
+
+msgid "HR entscheidet"
+msgstr "الموارد البشرية تقرر"
+
+msgid "Einladen, ablehnen oder einstellen – dann Video-Meeting (VDO.Ninja) und Onboarding."
+msgstr "دعوة أو رفض أو توظيف – ثم اجتماع فيديو (VDO.Ninja) والانضمام."
+
+msgid "Ende"
+msgstr "النهاية"
+
+msgid "Das Quantenfeld"
+msgstr "الحقل الكمّي"
+
+msgid "Zeit sparen, rechtssicher, kulturell passend. Jetzt: Login."
+msgstr "وفّر الوقت، بأمان قانوني، وملاءمة ثقافية. الآن: تسجيل الدخول."
+
+msgid "Kandidaten · Nordafrika"
+msgstr "المرشحون · شمال إفريقيا"
+
+msgid "Arbeitgeber · DE / FR / CH"
+msgstr "أصحاب العمل · ألمانيا / فرنسا / سويسرا"
+
+msgid "HR-Entscheidung"
+msgstr "قرار الموارد البشرية"
+
+msgid "VDO.Ninja Meeting"
+msgstr "اجتماع VDO.Ninja"
+
+msgid "Nochmal ansehen"
+msgstr "شاهد مرة أخرى"
+
+msgid "CV-Upload → PDF-Extraktion"
+msgstr "رفع السيرة الذاتية → استخراج النص"
+
+msgid "KI-gestuetztes Recruiting-Portal"
+msgstr "بوابة توظيف مدعومة بالذكاء الاصطناعي"
+
+msgid "Login"
+msgstr "دخول"
+
+msgid "Arbeitgeber"
+msgstr "صاحب العمل"
+
+msgid "Arbeitgeber+"
+msgstr "صاحب العمل+"
+
+msgid "Admin"
+msgstr "المدير"
+
+msgid "Willkommen zurueck"
+msgstr "مرحبًا بعودتك"
+
+msgid "name@beispiel.de"
+msgstr "name@example.com"
+
+msgid "Mindestens 8 Zeichen"
+msgstr "8 أحرف على الأقل"
+
+msgid "E-Mail gueltig"
+msgstr "بريد إلكتروني صالح"
+
+msgid "E-Mail und Passwort sind Pflichtfelder."
+msgstr "البريد الإلكتروني وكلمة المرور مطلوبان."
+
+msgid "Dies ist ein Arbeitgeber-Account ({firma}) – bitte im Tab Arbeitgeber einloggen."
+msgstr "هذا حساب صاحب عمل ({firma}) – يرجى تسجيل الدخول من تبويب صاحب العمل."
+
+msgid "Unbekannte E-Mail oder falsches Passwort."
+msgstr "بريد إلكتروني غير معروف أو كلمة مرور خاطئة."
+
+msgid "Einloggen"
+msgstr "تسجيل الدخول"
+
+msgid "Neues Konto erstellen"
+msgstr "إنشاء حساب جديد"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "Vor- und Nachname"
+msgstr "الاسم الأول واسم العائلة"
+
+msgid "Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل."
+
+msgid "Registriert! Jetzt einloggen."
+msgstr "تم التسجيل! سجّل الدخول الآن."
+
+msgid "E-Mail bereits registriert."
+msgstr "البريد الإلكتروني مسجّل بالفعل."
+
+msgid "Arbeitgeber-Login"
+msgstr "دخول صاحب العمل"
+
+msgid "Login fehlgeschlagen."
+msgstr "فشل تسجيل الدخول."
+
+msgid "Arbeitgeber registrieren"
+msgstr "تسجيل صاحب عمل"
+
+msgid "Firmen-E-Mail"
+msgstr "البريد الإلكتروني للشركة"
+
+msgid "Firma"
+msgstr "الشركة"
+
+msgid "Kontaktperson"
+msgstr "جهة الاتصال"
+
+msgid "Alle Felder sind Pflichtfelder."
+msgstr "جميع الحقول مطلوبة."
+
+msgid "Als Arbeitgeber registrieren"
+msgstr "التسجيل كصاحب عمل"
+
+msgid "Admin-Login"
+msgstr "دخول المدير"
+
+msgid "Admin-E-Mail"
+msgstr "البريد الإلكتروني للمدير"
+
+msgid "Admin angemeldet"
+msgstr "تم تسجيل دخول المدير"
+
+msgid "Admin-Login fehlgeschlagen."
+msgstr "فشل تسجيل دخول المدير."
+
+msgid "Willkommen, {name}!"
+msgstr "مرحبًا، {name}!"
+
+msgid "Zurück"
+msgstr "رجوع"
+
+msgid "Inhalt fehlt: {file}"
+msgstr "المحتوى مفقود: {file}"
+
+msgid "#{0}"
+msgstr "#{0}"
+
+msgid "#{0} {1} – {2} ({3}, {4})"
+msgstr "#{0} {1} – {2} ({3}, {4})"
+
+msgid "**Link:** [{0}]({1})"
+msgstr "**الرابط:** [{0}]({1})"
+
+msgid "- {0}: {1}"
+msgstr "- {0}: {1}"
+
+msgid "Abbrechen"
+msgstr "إلغاء"
+
+msgid "Abschluss"
+msgstr "المؤهل الدراسي"
+
+msgid "Aktualisiert"
+msgstr "تم التحديث"
+
+msgid "Aktuelle Position"
+msgstr "المنصب الحالي"
+
+msgid "Aktueller Status"
+msgstr "الحالة الحالية"
+
+msgid "Aktuelles Passwort"
+msgstr "كلمة المرور الحالية"
+
+msgid "Anzahl Fragen"
+msgstr "عدد الأسئلة"
+
+msgid "Berufserfahrung"
+msgstr "الخبرة المهنية"
+
+msgid "Beschreibung"
+msgstr "الوصف"
+
+msgid "Bewerben"
+msgstr "تقديم طلب"
+
+msgid "Bewerbung gesendet! Der Agent prueft Ihren Lebenslauf."
+msgstr "تم إرسال الطلب! يتحقق الوكيل من سيرتك الذاتية."
+
+msgid "Bewerbung zurückgezogen. Sie können sich später erneut bewerben."
+msgstr "تم سحب الطلب. يمكنك التقديم مرة أخرى لاحقًا."
+
+msgid "Bewerbung: {0}"
+msgstr "الطلب: {0}"
+
+msgid "Bewerbungen nach Status"
+msgstr "الطلبات حسب الحالة"
+
+msgid "Beworben"
+msgstr "تم التقديم"
+
+msgid "Beworben am"
+msgstr "تاريخ التقديم"
+
+msgid "Bitte alle Felder ausfuellen."
+msgstr "يرجى ملء جميع الحقول."
+
+msgid "Bitte wähle eine Antwort"
+msgstr "يرجى اختيار إجابة"
+
+msgid "Bitte zuerst Lebenslauf hochladen (Mein Profil → Lebenslauf)"
+msgstr "يرجى تحميل سيرتك الذاتية أولًا (ملفي الشخصي → السيرة الذاتية)"
+
+msgid "Branche"
+msgstr "القطاع"
+
+msgid "CEFR-Level"
+msgstr "المستوى CEFR"
+
+msgid "CEFR: {0}"
+msgstr "CEFR: {0}"
+
+msgid "Datei auswählen"
+msgstr "اختيار ملف"
+
+msgid "Deine Ergebnisse"
+msgstr "نتائجك"
+
+msgid "Der Arbeitgeber hat Sie eingestellt – die Checkliste wird gerade vorbereitet."
+msgstr "لقد قام صاحب العمل بتوظيفك – يتم الآن تجهيز قائمة التحقق."
+
+msgid "Der Test enthält keine Fragen und wurde nicht gespeichert."
+msgstr "لا يحتوي الاختبار على أسئلة ولم يتم حفظه."
+
+msgid "Detailbegründung: agent-generierte Erklärung nach Ihrer Bewerbung (Skill explain-match)."
+msgstr "شرح مفصل: شرح منشأ بواسطة الوكيل بعد تقديم طلبك (مهارة explain-match)."
+
+msgid "Details anzeigen"
+msgstr "عرض التفاصيل"
+
+msgid "Deutsch"
+msgstr "الألمانية"
+
+msgid "Dokument geloescht."
+msgstr "تم حذف المستند."
+
+msgid "Dokumente"
+msgstr "المستندات"
+
+msgid "Dokumente (PDF/TXT, mehrere moeglich):"
+msgstr "المستندات (PDF/TXT، يمكن رفع عدة ملفات):"
+
+msgid "Dokumenttyp"
+msgstr "نوع المستند"
+
+msgid "Englisch"
+msgstr "الإنجليزية"
+
+msgid "Erfahrung"
+msgstr "الخبرة"
+
+msgid "Erneut speichern"
+msgstr "حفظ مرة أخرى"
+
+msgid "Erneut versuchen"
+msgstr "إعادة المحاولة"
+
+msgid "Fachkompetenzen"
+msgstr "المهارات التقنية"
+
+msgid "Fehler beim Hochladen: {0}"
+msgstr "خطأ في الرفع: {0}"
+
+msgid "Fehler beim Laden der Fragen: {0}"
+msgstr "خطأ في تحميل الأسئلة: {0}"
+
+msgid "Fehler: {0}"
+msgstr "خطأ: {0}"
+
+msgid "Frage {0}/{1}"
+msgstr "السؤال {0}/{1}"
+
+msgid "Französisch"
+msgstr "الفرنسية"
+
+msgid "Für {0} {1} konnten keine Fragen geladen werden."
+msgstr "تعذر تحميل أسئلة لـ {0} {1}."
+
+msgid "Gehalt"
+msgstr "الراتب"
+
+msgid "Gehaltsvorstellung"
+msgstr "التوقعات المالية"
+
+msgid "Groesse"
+msgstr "الحجم"
+
+msgid "Hard Skills (kommasepariert)"
+msgstr "المهارات التقنية (مفصولة بفواصل)"
+
+msgid "Herunterladen"
+msgstr "تنزيل"
+
+msgid "Ihr Ergebnis: {0}/{1} richtig ({2:.0f}%, CEFR {3}) — nicht in Ihrem Profil hinterlegt."
+msgstr "نتيجتك: {0}/{1} إجابة صحيحة ({2:.0f}%، CEFR {3}) — لم يتم حفظها في ملفك الشخصي."
+
+msgid "Ihr Raum ist bereit!"
+msgstr "غرفتك جاهزة!"
+
+msgid "Jahre Erfahrung"
+msgstr "سنوات الخبرة"
+
+msgid "Keine Statushistorie"
+msgstr "لا يوجد سجل للحالات"
+
+msgid "Laufende Bewerbungen"
+msgstr "الطلبات الجارية"
+
+msgid "Lebenslauf hochgeladen ({0} Zeichen)."
+msgstr "تم تحميل السيرة الذاتية ({0} حرفًا)."
+
+msgid "Lebenslauf hochladen"
+msgstr "تحميل السيرة الذاتية"
+
+msgid "Lebenslauf vorhanden"
+msgstr "السيرة الذاتية متوفرة"
+
+msgid "Letzte Änderung"
+msgstr "آخر تعديل"
+
+msgid "Maximale Größe: 5 MB"
+msgstr "الحجم الأقصى: 5 ميغابايت"
+
+msgid "Meeting-Link"
+msgstr "رابط الاجتماع"
+
+msgid "Mein Status"
+msgstr "حالتي"
+
+msgid "Meine Dokumente ({0})"
+msgstr "مستنداتي ({0})"
+
+msgid "Motivation:"
+msgstr "الدافعية:"
+
+msgid "Motivationstext (optional, max. 2000 Zeichen):"
+msgstr "نص الدافعية (اختياري، بحد أقصى 2000 حرف):"
+
+msgid "Must-Have-Skills:"
+msgstr "المهارات الأساسية:"
+
+msgid "Nationalitaet"
+msgstr "الجنسية"
+
+msgid "Nehmen Sie ein kurzes Video auf (2-3 Minuten). Der Link wird mit Ihrer Bewerbung gesendet."
+msgstr "سجّل فيديو قصيرًا (2-3 دقائق). سيُرسل الرابط مع طلبك."
+
+msgid "Neu laden"
+msgstr "إعادة التحميل"
+
+msgid "Neu veroeffentlichte Stellen"
+msgstr "الوظائف المنشورة حديثًا"
+
+msgid "Neuen Test starten"
+msgstr "بدء اختبار جديد"
+
+msgid "Neues Passwort"
+msgstr "كلمة مرور جديدة"
+
+msgid "Neues Passwort wiederholen"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+msgid "Niveau"
+msgstr "المستوى"
+
+msgid "Noch kein Lebenslauf hochgeladen"
+msgstr "لم يتم تحميل سيرة ذاتية بعد"
+
+msgid "Noch keine Skills erfasst"
+msgstr "لا توجد مهارات مسجلة بعد"
+
+msgid "Noch nicht erfasst"
+msgstr "غير مسجل بعد"
+
+msgid "Nur .pdf/.txt erlaubt"
+msgstr "يُسمح بـ ‎.pdf/.txt فقط"
+
+msgid "PDF oder TXT-Datei ablegen"
+msgstr "ضع ملف PDF أو TXT هنا"
+
+msgid "Passwoerter stimmen nicht ueberein."
+msgstr "كلمتا المرور غير متطابقتين."
+
+msgid "Passwort aendern"
+msgstr "تغيير كلمة المرور"
+
+msgid "Persoenliche Daten"
+msgstr "البيانات الشخصية"
+
+msgid "Profil bearbeiten"
+msgstr "تعديل الملف الشخصي"
+
+msgid "Profil gespeichert!"
+msgstr "تم حفظ الملف الشخصي!"
+
+msgid "Profil speichern"
+msgstr "حفظ الملف الشخصي"
+
+msgid "Profil-Vollständigkeit"
+msgstr "اكتمال الملف الشخصي"
+
+msgid "Profil: {0} · Skills: {1}"
+msgstr "الملف الشخصي: {0} · المهارات: {1}"
+
+msgid "Registriert"
+msgstr "تم التسجيل"
+
+msgid "Richtige Antworten"
+msgstr "الإجابات الصحيحة"
+
+msgid "Score aus Startgewichten (Design-Entscheidung, keine externe Quelle) — Gewichte werden per Feedback-Loop nach echten Einstellungsentscheidungen kalibriert (siehe matching-criteria.md)."
+msgstr "النتيجة من الأوزان الأولية (قرار تصميم، لا يوجد مصدر خارجي) — تُعاير الأوزان عبر حلقة تغذية راجعة من قرارات التوظيف الفعلية (انظر matching-criteria.md)."
+
+msgid "Score: {0:.0f}%"
+msgstr "النتيجة: {0:.0f}%"
+
+msgid "Sie haben sich bereits auf diese Stelle beworben."
+msgstr "لقد تقدمت بالفعل لهذه الوظيفة."
+
+msgid "Soft Skills"
+msgstr "المهارات الشخصية"
+
+msgid "Soft Skills (kommasepariert)"
+msgstr "المهارات الشخصية (مفصولة بفواصل)"
+
+msgid "Soft Skills:"
+msgstr "المهارات الشخصية:"
+
+msgid "Sprachen"
+msgstr "اللغات"
+
+msgid "Sprachtest"
+msgstr "اختبار اللغة"
+
+msgid "Standort"
+msgstr "الموقع"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Stellentyp"
+msgstr "نوع التوظيف"
+
+msgid "Termin wird noch vereinbart."
+msgstr "سيتم تحديد الموعد لاحقًا."
+
+msgid "Termin: {0}"
+msgstr "الموعد: {0}"
+
+msgid "Test starten"
+msgstr "بدء الاختبار"
+
+msgid "Test wird geladen..."
+msgstr "جارٍ تحميل الاختبار..."
+
+msgid "Verfuegbarkeit"
+msgstr "التوفر"
+
+msgid "Verlauf"
+msgstr "السجل"
+
+msgid "Video-Link generiert und mit Ihrer Bewerbung gespeichert."
+msgstr "تم إنشاء رابط الفيديو وحفظه مع طلبك."
+
+msgid "Visum-Status"
+msgstr "حالة التأشيرة"
+
+msgid "Warum passt das?"
+msgstr "لماذا يناسبك هذا؟"
+
+msgid "Weiter →"
+msgstr "التالي ←"
+
+msgid "min. {0} Jahre"
+msgstr "الحد الأدنى {0} سنوات"
+
+msgid "{0} %"
+msgstr "{0} %"
+
+msgid "{0} % passend"
+msgstr "{0} % مطابقة"
+
+msgid "{0} Dokument(e) gespeichert als Typ '{1}'."
+msgstr "تم حفظ {0} مستند كنوع '{1}'."
+
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+msgid "{0} – {1}"
+msgstr "{0} – {1}"
+
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+msgid "ℹ️ Sie hatten diese Bewerbung zurückgezogen. Beim erneuten Absenden beginnt sie neu (Status: Eingegangen)."
+msgstr "ℹ️ كنت قد سحبت هذا الطلب. إعادة الإرسال تعني البدء من جديد (الحالة: تم الاستلام)."
+
+msgid "→ Zum Lebenslauf-Upload"
+msgstr "← إلى تحميل السيرة الذاتية"
+
+msgid "→ Zur Video-Vorstellung"
+msgstr "← إلى العرض الفيديوي"
+
+msgid "↩️ Zurückziehen"
+msgstr "↩️ سحب"
+
+msgid "⏳ Einladung wird vorbereitet..."
+msgstr "⏳ جارٍ تجهيز الدعوة..."
+
+msgid "⚠️ Bewerbungen konnten nicht geladen werden. Fehler: {0}"
+msgstr "⚠️ تعذر تحميل الطلبات. خطأ: {0}"
+
+msgid "⚠️ CV-Pflicht: Bewerben ist erst nach Lebenslauf-Upload möglich (👤 Mein Profil → Lebenslauf). Stellen ansehen ist erlaubt."
+msgstr "⚠️ السيرة الذاتية مطلوبة: يمكنك التقديم فقط بعد تحميل سيرتك الذاتية (👤 ملفي الشخصي → السيرة الذاتية). يُسمح بتصفح الوظائف."
+
+msgid "⚠️ CV-Pflicht: Laden Sie zuerst Ihren Lebenslauf hoch (Status: {0})"
+msgstr "⚠️ السيرة الذاتية مطلوبة: يرجى تحميل سيرتك الذاتية أولًا (الحالة: {0})"
+
+msgid "⚠️ Dashboard-Zahlen konnten nicht geladen werden: {0}"
+msgstr "⚠️ تعذر تحميل أرقام لوحة المعلومات: {0}"
+
+msgid "⚠️ Ergebnis konnte nicht gespeichert werden."
+msgstr "⚠️ تعذر حفظ النتيجة."
+
+msgid "⚠️ Status-Verteilung konnte nicht geladen werden: {0}"
+msgstr "⚠️ تعذر تحميل توزيع الحالات: {0}"
+
+msgid "⚠️ {0}"
+msgstr "⚠️ {0}"
+
+msgid "✅ **Video-Link:** [{0}]({1})"
+msgstr "✅ **رابط الفيديو:** [{0}]({1})"
+
+msgid "✅ Test beendet!"
+msgstr "✅ انتهى الاختبار!"
+
+msgid "✅ Video-Vorstellung bereits hinterlegt."
+msgstr "✅ تمت إضافة العرض الفيديوي بالفعل."
+
+msgid "🎉 {0} – {1}"
+msgstr "🎉 {0} – {1}"
+
+msgid "🎥 Video-Link generieren"
+msgstr "🎥 إنشاء رابط الفيديو"
+
+msgid "🎬 Optional: Sie können eine Video-Vorstellung (2–3 Minuten) hinterlegen."
+msgstr "🎬 اختياري: يمكنك إضافة عرض فيديوي (2–3 دقائق)."
+
+msgid "🎬 Video-Vorstellung (optional)"
+msgstr "🎬 العرض الفيديوي (اختياري)"
+
+msgid "📅 Einladung"
+msgstr "📅 دعوة"
+
+msgid "📅 Termin in Kalender speichern (.ics)"
+msgstr "📅 حفظ الموعد في التقويم (.ics)"
+
+msgid "📋 Status-Historie"
+msgstr "📋 سجل الحالات"
+
+msgid "📌 Merken Sie sich diesen Link für Ihr Bewerbungsgespräch."
+msgstr "📌 احتفظ بهذا الرابط لمقابلتك الوظيفية."
+
+msgid "📖 {0} — {1}"
+msgstr "📖 {0} — {1}"
+
+msgid "📥 Herunterladen"
+msgstr "📥 تنزيل"
+
+msgid "📹 Selbstpräsentation starten"
+msgstr "📹 بدء العرض الذاتي"
+
+msgid "🔒 Lebenslauf nötig"
+msgstr "🔒 السيرة الذاتية مطلوبة"
+
+msgid "🔒 Session-gebunden: Testen Sie Ihr Sprachniveau (DE/EN/FR). Ergebnis landet in Ihrem Profil (CEFR-Level)."
+msgstr "🔒 مرتبط بالجلسة: اختبر مستوى لغتك (DE/EN/FR). تُحفظ النتيجة في ملفك الشخصي (مستوى CEFR)."
+
+msgid "🤝 Ihr Ansprechpartner (Mentor): {0}"
+msgstr "🤝 جهة اتصالك (الموجه): {0}"
+
+msgid "Bewerbe dich im Tab 'Stellenangebote'."
+msgstr "قدّم طلبك من تبويب 'الوظائف'."
+
+msgid "CEFR-Niveautests"
+msgstr "اختبارات مستوى CEFR"
+
+msgid "Dashboard"
+msgstr "لوحة المعلومات"
+
+msgid "Entdecke passende Stellen und bewirb dich mit einem Klick."
+msgstr "اكتشف الوظائف المناسبة وقدّم بضغطة واحدة."
+
+msgid "Erneut bewerben"
+msgstr "التقديم مرة أخرى"
+
+msgid "Gehaltsvorstellung (EUR)"
+msgstr "التوقعات المالية (يورو)"
+
+msgid "Jetzt bewerben"
+msgstr "قدّم الآن"
+
+msgid "Kandidaten-Uebersicht"
+msgstr "نظرة عامة على المرشح"
+
+msgid "Keine Bewerbungen vorhanden"
+msgstr "لا توجد طلبات"
+
+msgid "Keine offenen Stellen"
+msgstr "لا توجد وظائف مفتوحة"
+
+msgid "Mein Profil"
+msgstr "ملفي الشخصي"
+
+msgid "Meine Bewerbungen"
+msgstr "طلباتي"
+
+msgid "Noch kein Onboarding aktiv"
+msgstr "لا يوجد إعداد وظيفي نشط بعد"
+
+msgid "Noch keine Bewerbungen"
+msgstr "لا توجد طلبات بعد"
+
+msgid "Noch keine Dokumente hochgeladen"
+msgstr "لم يتم رفع أي مستندات بعد"
+
+msgid "Offene Positionen durchsuchen"
+msgstr "تصفح الوظائف المفتوحة"
+
+msgid "Onboarding"
+msgstr "الإعداد الوظيفي"
+
+msgid "Onboarding wird nach erfolgreicher Einstellung freigeschaltet."
+msgstr "يتم تفعيل الإعداد الوظيفي بعد التوظيف الناجح."
+
+msgid "Pre-Screen"
+msgstr "الفرز الأولي"
+
+msgid "Profil nicht gefunden"
+msgstr "لم يتم العثور على الملف الشخصي"
+
+msgid "Schau spaeter nochmal vorbei."
+msgstr "تحقق مرة أخرى لاحقًا."
+
+msgid "Selbstpräsentation"
+msgstr "العرض الذاتي"
+
+msgid "Status verfolgen"
+msgstr "تتبع الحالة"
+
+msgid "Stellen durchsuchen"
+msgstr "تصفح الوظائف"
+
+msgid "Stellen entdecken"
+msgstr "اكتشف الوظائف"
+
+msgid "Stellenangebote"
+msgstr "الوظائف"
+
+msgid "→ Stellen ansehen"
+msgstr "← عرض الوظائف"
+
+msgid "#{0} {1} – {2} ({3}) – {4}"
+msgstr "#{0} {1} – {2} ({3}) – {4}"
+
+msgid "(Stelle #{0} · Kandidat #{1})"
+msgstr "(وظيفة #{0} · مرشح #{1})"
+
+msgid "**📅 Einladungs-Termin:**"
+msgstr "**📅 موعد الدعوة:**"
+
+msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
+msgstr "+ {0} طلب/طلبات إضافية غير معروضة (النشطة أولًا) – الكل تحت الوظائف."
+
+msgid "+{0} weitere"
+msgstr "+{0} المزيد"
+
+msgid "Ablehnen"
+msgstr "رفض"
+
+msgid "Agent-Details"
+msgstr "تفاصيل الوكيل"
+
+msgid "Agent-Ergebnisse + Tasks"
+msgstr "نتائج الوكيل + المهام"
+
+msgid "Agent-Tasks"
+msgstr "مهام الوكيل"
+
+msgid "Aktion"
+msgstr "إجراء"
+
+msgid "Aktiver Mentor: {0}"
+msgstr "الموجه النشط: {0}"
+
+msgid "Alle anzeigen"
+msgstr "عرض الكل"
+
+msgid "Anmerkungen"
+msgstr "ملاحظات"
+
+msgid "Arbeitgeber-Uebersicht"
+msgstr "نظرة عامة على صاحب العمل"
+
+msgid "Arbeitsort"
+msgstr "مكان العمل"
+
+msgid "Auswahl"
+msgstr "تحديد"
+
+msgid "Begründung"
+msgstr "السبب"
+
+msgid "Beschreibung (min. 50 Zeichen)"
+msgstr "الوصف (50 حرفًا على الأقل)"
+
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
+msgstr "تم توظيف المتقدم. يرجى تعيين حالة الوظيفة إلى 'مشغولة' (تبويب البوابة)."
+
+msgid "Bewerber-Status verwalten"
+msgstr "إدارة حالة المتقدمين"
+
+msgid "Bewerbung"
+msgstr "الطلب"
+
+msgid "Bewerbung #{0} · Gehalt/Mindestlohn + Formfall + NachwG-Checkliste (Quellen: knowledge/legal/contract-sources.md)"
+msgstr "الطلب #{0} · الراتب/الحد الأدنى للأجور + الحالة الشكلية + قائمة NachwG (المصادر: knowledge/legal/contract-sources.md)"
+
+msgid "Bewerbung abgelehnt - Ablehnungs-Mail wurde NICHT eingereiht (heute bereits ein Task fuer diese Bewerbung oder Queue-Fehler)."
+msgstr "تم رفض الطلب – لم يتم إدراج بريد الرفض (توجد مهمة بالفعل لهذا الطلب اليوم، أو خطأ في قائمة الانتظار)."
+
+msgid "Bewerbung abgelehnt."
+msgstr "تم رفض الطلب."
+
+msgid "Bewerbung als angesehen markiert."
+msgstr "تم وضع الطلب كـ مُطّلع عليه."
+
+msgid "Bewerbung eingegangen"
+msgstr "تم استلام الطلب"
+
+msgid "Bewerbung nicht gefunden."
+msgstr "لم يتم العثور على الطلب."
+
+msgid "Bewerbung wirklich ablehnen?"
+msgstr "هل تريد حقًا رفض الطلب؟"
+
+msgid "Bewerbungen"
+msgstr "الطلبات"
+
+msgid "Bewertung (1-5):"
+msgstr "التقييم (1-5):"
+
+msgid "Bitte Mentor-Namen eingeben."
+msgstr "يرجى إدخال اسم الموجه."
+
+msgid "CSV Export"
+msgstr "تصدير CSV"
+
+msgid "Checkliste erstellen"
+msgstr "إنشاء قائمة التحقق"
+
+msgid "Compliance-Ergebnis"
+msgstr "نتيجة الامتثال"
+
+msgid "Datei"
+msgstr "ملف"
+
+msgid "Datei liegt nicht im freigegebenen Ordner."
+msgstr "الملف ليس في المجلد المسموح به."
+
+msgid "Datei nicht mehr auf dem Server vorhanden."
+msgstr "الملف لم يعد موجودًا على الخادم."
+
+msgid "Daten exportieren"
+msgstr "تصدير البيانات"
+
+msgid "Datum"
+msgstr "التاريخ"
+
+msgid "Dauer (Min.)"
+msgstr "المدة (دقيقة)"
+
+msgid "Detaillierte Berichte"
+msgstr "تقارير مفصلة"
+
+msgid "Deutsch-Level"
+msgstr "مستوى الألمانية"
+
+msgid "Dokument nicht (mehr) freigegeben."
+msgstr "المستند غير مُفرج عنه (أو لم يعد)."
+
+msgid "Eingegangen: {0}"
+msgstr "المستلمة: {0}"
+
+msgid "Eingeladen"
+msgstr "مدعو"
+
+msgid "Eingeladen - Termin {0} {1} geplant."
+msgstr "تمت الدعوة – الموعد {0} {1} مجدول."
+
+msgid "Eingeladen?"
+msgstr "مدعو؟"
+
+msgid "Einladen"
+msgstr "دعوة"
+
+msgid "Einstellen"
+msgstr "توظيف"
+
+msgid "Einstellung"
+msgstr "التوظيف"
+
+msgid "Empfehlung"
+msgstr "التوصية"
+
+msgid "Englisch-Level"
+msgstr "مستوى الإنجليزية"
+
+msgid "Erfahrung (J.)"
+msgstr "الخبرة (سنوات)"
+
+msgid "Erklaerung"
+msgstr "الشرح"
+
+msgid "Erstelle zuerst eine Stelle."
+msgstr "أنشئ وظيفة أولًا."
+
+msgid "Erstellt: {0}"
+msgstr "أُنشئ: {0}"
+
+msgid "Fachlich"
+msgstr "تقني"
+
+msgid "Feedback"
+msgstr "التقييم"
+
+msgid "Feedback aktualisiert (heute bereits vorhanden)."
+msgstr "تم تحديث التقييم (موجود بالفعل اليوم)."
+
+msgid "Feedback gespeichert!"
+msgstr "تم حفظ التقييم!"
+
+msgid "Finaler Status erreicht."
+msgstr "تم الوصول إلى الحالة النهائية."
+
+msgid "Firmenprofil"
+msgstr "الملف التعريفي للشركة"
+
+msgid "Firmenprofil & Stellen"
+msgstr "ملف الشركة والوظائف"
+
+msgid "Gehalt: {0}"
+msgstr "الراتب: {0}"
+
+msgid "Gehaltsrahmen bis (EUR)"
+msgstr "نطاق الراتب حتى (يورو)"
+
+msgid "Gehaltsrahmen von (EUR)"
+msgstr "نطاق الراتب من (يورو)"
+
+msgid "Hauptstandort"
+msgstr "الموقع الرئيسي"
+
+msgid "Hochgeladen"
+msgstr "تم الرفع"
+
+msgid "Hochgeladene Dateien"
+msgstr "الملفات المرفوعة"
+
+msgid "Interne Notiz (optional, nicht sichtbar fuer den Kandidaten)"
+msgstr "ملاحظة داخلية (اختيارية، غير مرئية للمرشح)"
+
+msgid "Interview"
+msgstr "المقابلة"
+
+msgid "Interview geplant"
+msgstr "المقابلة مجدولة"
+
+msgid "Ja, ablehnen"
+msgstr "نعم، رفض"
+
+msgid "Kandidat"
+msgstr "المرشح"
+
+msgid "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle)."
+msgstr "المرشح #{0} ليس متقدمًا لدى صاحب العمل هذا ولا يحقق مطابقة سلبية (مهارة أساسية واحدة على الأقل و>= 50% من الخبرة المطلوبة لوظيفة نشطة)."
+
+msgid "Kandidat ablehnen"
+msgstr "رفض المرشح"
+
+msgid "Kandidat einladen"
+msgstr "دعوة المرشح"
+
+msgid "Kandidat einstellen"
+msgstr "توظيف المرشح"
+
+msgid "Kandidat wählen."
+msgstr "اختر مرشحًا."
+
+msgid "Kandidaten"
+msgstr "المرشحون"
+
+msgid "Kandidaten erscheinen hier, nachdem sie eingestellt wurden."
+msgstr "يظهر المرشحون هنا بعد توظيفهم."
+
+msgid "Kandidaten erscheinen hier, sobald sie sich beworben haben. Passive Matches stehen darunter."
+msgstr "يظهر المرشحون هنا بمجرد تقديمهم. المطابقات السلبية أدناه."
+
+msgid "Kandidaten mit Lebenslauf"
+msgstr "المرشحون مع سيرة ذاتية"
+
+msgid "Kandidaten-Feedback speichern"
+msgstr "حفظ تقييم المرشح"
+
+msgid "Kandidaten-Liste als CSV-Datei herunterladen."
+msgstr "تنزيل قائمة المرشحين كملف CSV."
+
+msgid "Kandidaten-Status"
+msgstr "حالة المرشح"
+
+msgid "Kandidaten-Suche"
+msgstr "البحث عن مرشحين"
+
+msgid "Kategorie"
+msgstr "الفئة"
+
+msgid "Keine Bewerbung für Preflight."
+msgstr "لا يوجد طلب للفحص المسبق."
+
+msgid "Keine Dokumente vorhanden"
+msgstr "لا توجد مستندات"
+
+msgid "Keine Kandidaten fuer Onboarding"
+msgstr "لا يوجد مرشحون للإعداد الوظيفي"
+
+msgid "Keine Kandidaten gefunden"
+msgstr "لم يتم العثور على مرشحين"
+
+msgid "Keine Kandidaten mit Bewerbungen"
+msgstr "لا يوجد مرشحون لديهم طلبات"
+
+msgid "Keine Kandidaten verfügbar."
+msgstr "لا يوجد مرشحون متاحون."
+
+msgid "Keine Kandidaten vorhanden"
+msgstr "لا يوجد مرشحون"
+
+msgid "Keine Stellen vorhanden"
+msgstr "لا توجد وظائف"
+
+msgid "Keine aktive Patenschaft gefunden."
+msgstr "لم يتم العثور على إرشاد نشط."
+
+msgid "Keine aktiven Bewerbungen"
+msgstr "لا توجد طلبات نشطة"
+
+msgid "Keine archivierten Bewerbungen."
+msgstr "لا توجد طلبات مؤرشفة."
+
+msgid "Keine zurechenbaren Archiv-Einträge."
+msgstr "لا توجد إدخالات أرشيف قابلة للنسبة."
+
+msgid "Kurzprofil (max. 500 Zeichen)"
+msgstr "ملف موجز (بحد أقصى 500 حرف)"
+
+msgid "Land"
+msgstr "البلد"
+
+msgid "Land: {0}"
+msgstr "البلد: {0}"
+
+msgid "Live-Score aus DB"
+msgstr "النتيجة المباشرة من قاعدة البيانات"
+
+msgid "Match-Ergebnis"
+msgstr "نتيجة المطابقة"
+
+msgid "Match-Score"
+msgstr "نتيجة المطابقة"
+
+msgid "Match-Score (0-100)"
+msgstr "نتيجة المطابقة (0-100)"
+
+msgid "Meine Stellen"
+msgstr "وظائفي"
+
+msgid "Mentor (Name):"
+msgstr "الموجه (الاسم):"
+
+msgid "Mentor zuweisen"
+msgstr "تعيين موجه"
+
+msgid "Mentor {0} zugewiesen."
+msgstr "تم تعيين الموجه {0}."
+
+msgid "Min. Berufserfahrung (Jahre)"
+msgstr "الحد الأدنى للخبرة المهنية (سنوات)"
+
+msgid "Mitarbeiterzahl"
+msgstr "عدد الموظفين"
+
+msgid "Motivation: {0}"
+msgstr "الدافعية: {0}"
+
+msgid "Must-Have-Skills (kommasepariert)"
+msgstr "المهارات الأساسية (مفصولة بفواصل)"
+
+msgid "Must-Have-Treffer: {0}"
+msgstr "مطابقات المهارات الأساسية: {0}"
+
+msgid "Neues Feedback"
+msgstr "تقييم جديد"
+
+msgid "Noch kein Feedback"
+msgstr "لا يوجد تقييم بعد"
+
+msgid "Noch keine Agent-Tasks"
+msgstr "لا توجد مهام للوكيل بعد"
+
+msgid "Noch keine Compliance-Pruefung"
+msgstr "لا يوجد فحص امتثال بعد"
+
+msgid "Noch keine Stellen ausgeschrieben"
+msgstr "لم يتم نشر أي وظائف بعد"
+
+msgid "Offene Stellen"
+msgstr "الوظائف المفتوحة"
+
+msgid "PDF Export"
+msgstr "تصدير PDF"
+
+msgid "Patenschaft beenden"
+msgstr "إنهاء الإرشاد"
+
+msgid "Patenschaft beendet."
+msgstr "تم إنهاء الإرشاد."
+
+msgid "Portal"
+msgstr "البوابة"
+
+msgid "Pre-Screening abgeschlossen"
+msgstr "اكتمل الفرز الأولي"
+
+msgid "Preflight heute bereits gequeued (idempotent)."
+msgstr "تم إدراج الفحص المسبق اليوم بالفعل (خامل)."
+
+msgid "Prüfpunkt: {0}"
+msgstr "نقطة التحقق: {0}"
+
+msgid "Rechtliche Pruefung"
+msgstr "المراجعة القانونية"
+
+msgid "Schließen"
+msgstr "إغلاق"
+
+msgid "Score"
+msgstr "النتيجة"
+
+msgid "Screening fuer Kandidaten"
+msgstr "الفرز للمرشحين"
+
+msgid "Skills"
+msgstr "المهارات"
+
+msgid "Sprachtests"
+msgstr "اختبارات اللغة"
+
+msgid "Status Bewerbung"
+msgstr "حالة الطلب"
+
+msgid "Status ändern"
+msgstr "تغيير الحالة"
+
+msgid "Status-Verteilung"
+msgstr "توزيع الحالات"
+
+msgid "Status: {0}"
+msgstr "الحالة: {0}"
+
+msgid "Stelle"
+msgstr "الوظيفة"
+
+msgid "Stelle #{0} · Kandidat #{1}"
+msgstr "وظيفة #{0} · مرشح #{1}"
+
+msgid "Stelle ausschreiben"
+msgstr "نشر وظيفة"
+
+msgid "Stelle unbekannt"
+msgstr "وظيفة غير معروفة"
+
+msgid "Stellen"
+msgstr "الوظائف"
+
+msgid "Suche (Name oder Skills)"
+msgstr "بحث (الاسم أو المهارات)"
+
+msgid "Suchen..."
+msgstr "بحث..."
+
+msgid "Task-Queue (Datenbank)"
+msgstr "قائمة المهام (قاعدة البيانات)"
+
+msgid "Task-Status"
+msgstr "حالة المهمة"
+
+msgid "Tasks werden bei Bewerbungsprozessen gestartet."
+msgstr "تبدأ المهام أثناء عمليات التقديم."
+
+msgid "Telefon"
+msgstr "الهاتف"
+
+msgid "Titel"
+msgstr "العنوان"
+
+msgid "Typ"
+msgstr "النوع"
+
+msgid "Uhrzeit"
+msgstr "الوقت"
+
+msgid "Unbekannt"
+msgstr "غير معروف"
+
+msgid "Ungueltiger Statusuebergang (Bewerbung hat sich zwischenzeitlich geaendert)."
+msgstr "انتقال حالة غير صالح (تغيّر الطلب في الأثناء)."
+
+msgid "Ungueltiger Statusuebergang (Whitelist ALLOWED_TRANSITIONS)."
+msgstr "انتقال حالة غير صالح (القائمة البيضاء ALLOWED_TRANSITIONS)."
+
+msgid "Ungueltiger Statusuebergang: 'Einstellen' erfordert den Status 'eingeladen' (Whitelist)."
+msgstr "انتقال حالة غير صالح: يتطلب 'توظيف' الحالة 'مدعو' (القائمة البيضاء)."
+
+msgid "Unzulaessiger Statusuebergang (Bewerbung ist nicht mehr aktiv)."
+msgstr "انتقال حالة غير مسموح (الطلب لم يعد نشطًا)."
+
+msgid "Vertrags-Check gequeued (Task #{0}) – Report in Agent-Details."
+msgstr "تم إدراج فحص العقد (المهمة #{0}) – التقرير في تفاصيل الوكيل."
+
+msgid "Visum-Antrag bestaetigen"
+msgstr "تأكيد طلب التأشيرة"
+
+msgid "Visum-Schritte-Mail an Kandidaten ausgeloest."
+msgstr "تم إرسال بريد خطوات التأشيرة إلى المرشح."
+
+msgid "Vorgang-Nr."
+msgstr "رقم العملية"
+
+msgid "Website"
+msgstr "الموقع الإلكتروني"
+
+msgid "Wird nach Agent-Ausfuehrung fuer Ihre Bewerbungen angezeigt."
+msgstr "يُعرض لطلباتك بعد تنفيذ الوكيل."
+
+msgid "unbekannt"
+msgstr "غير معروف"
+
+msgid "z. B. Python"
+msgstr "مثال: Python"
+
+msgid "z.B. Senior Python Developer"
+msgstr "مثال: Senior Python Developer"
+
+msgid "{0} #{1}"
+msgstr "{0} #{1}"
+
+msgid "{0} {1} ({2})"
+msgstr "{0} {1} ({2})"
+
+msgid "{0} {1} {2} — {3:.0f}% ({4}){5}"
+msgstr "{0} {1} {2} — {3:.0f}% ({4}){5}"
+
+msgid "{0} {1} – {2} ({3}, {4})"
+msgstr "{0} {1} – {2} ({3}, {4})"
+
+msgid "{0} · {1}"
+msgstr "{0} · {1}"
+
+msgid "{0} – {1}\n\nDer Status wird endgültig auf „Abgelehnt“ gesetzt und eine Absage-Mail an den Kandidaten ausgelöst."
+msgstr "{0} – {1}\n\nيتم تعيين الحالة نهائيًا على «مرفوض» وإرسال بريد رفض إلى المرشح."
+
+msgid "{0} → {1}"
+msgstr "{0} → {1}"
+
+msgid "{0}/100 ({1})"
+msgstr "{0}/100 ({1})"
+
+msgid "· Bewerbung #{0}"
+msgstr "· الطلب #{0}"
+
+msgid "ℹ️ ICS-Datei noch nicht vorhanden."
+msgstr "ℹ️ ملف ICS غير متوفر بعد."
+
+msgid "ℹ️ {0} Berichte sind keiner eigenen Stelle zuzuordnen (Stelle nicht vorhanden oder anderer Arbeitgeber) und werden hier nicht angezeigt."
+msgstr "ℹ️ {0} تقريرًا لا يمكن نسبته إلى إحدى وظائفك (الوظيفة غير موجودة أو صاحب عمل آخر) ولا تُعرض هنا."
+
+msgid "ℹ️ {0} ältere Protokolleinträge ohne Arbeitgeber-Bezug werden nicht angezeigt (sie könnten zu fremden Bewerbungen gehören)."
+msgstr "ℹ️ {0} من إدخالات السجل الأقدم دون ارتباط بصاحب العمل لا تُعرض (قد تنتمي إلى طلبات أصحاب عمل آخرين)."
+
+msgid "→ {0}"
+msgstr "← {0}"
+
+msgid "⚠️ Agent-Tasks konnten nicht geladen werden: {0}"
+msgstr "⚠️ تعذر تحميل مهام الوكيل: {0}"
+
+msgid "⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)"
+msgstr "⚠️ التسجيل فقط بموافقة صريحة – قاعدة عملية الموارد البشرية (Gate 9, knowledge/legal/recording-consent.md)"
+
+msgid "⚠️ Charts konnten nicht geladen werden: {0}"
+msgstr "⚠️ تعذر تحميل الرسوم البيانية: {0}"
+
+msgid "⚠️ Keine passenden Kandidaten (mindestens 1 Must-Have-Skill nötig)."
+msgstr "⚠️ لا يوجد مرشحون مطابقون (مطلوب مهارة أساسية واحدة على الأقل)."
+
+msgid "⚡ Status-Übersicht:"
+msgstr "⚡ نظرة عامة على الحالات:"
+
+msgid "⚪ {0}: Kein Bericht vorhanden"
+msgstr "⚪ {0}: لا يوجد تقرير"
+
+msgid "✅ Firmenprofil gespeichert."
+msgstr "✅ تم حفظ ملف الشركة."
+
+msgid "✅ Status geändert: {0}"
+msgstr "✅ تم تغيير الحالة: {0}"
+
+msgid "✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich."
+msgstr "✅ تم نشر الوظيفة: {0}. أصبحت مطابقة المرشحين ممكنة الآن."
+
+msgid "✅ Visum-Schritte-Mail versendet."
+msgstr "✅ تم إرسال بريد خطوات التأشيرة."
+
+msgid "❌ Beschreibung muss mindestens 50 Zeichen haben."
+msgstr "❌ يجب أن يتكون الوصف من 50 حرفًا على الأقل."
+
+msgid "❌ Fehler beim Erstellen der Stelle."
+msgstr "❌ خطأ في إنشاء الوظيفة."
+
+msgid "❌ Titel, Beschreibung, Arbeitsort und Must-Have-Skills sind Pflichtfelder."
+msgstr "❌ العنوان والوصف ومكان العمل والمهارات الأساسية حقول إلزامية."
+
+msgid "👥 {0} passiver Match (keine aktive Bewerbung; Score absteigend)"
+msgstr "👥 {0} مطابقة سلبية (لا يوجد طلب نشط؛ النتيجة تنازلية)"
+
+msgid "💬 Feedback – {0}"
+msgstr "💬 التقييم – {0}"
+
+msgid "💾 Feedback speichern"
+msgstr "💾 حفظ التقييم"
+
+msgid "💾 Firmenprofil speichern"
+msgstr "💾 حفظ ملف الشركة"
+
+msgid "💾 Status speichern"
+msgstr "💾 حفظ الحالة"
+
+msgid "📄 Vertrags-Check starten"
+msgstr "📄 بدء فحص العقد"
+
+msgid "📄 Vertragsmanagement (Contract Preflight)"
+msgstr "📄 إدارة العقود (الفحص المسبق)"
+
+msgid "📅 Einladungs-Termin (wird in die Automatik-Mail übernommen):"
+msgstr "📅 موعد الدعوة (سيُدرج في البريد التلقائي):"
+
+msgid "📅 Termin in Kalender speichern (.ics) – HR"
+msgstr "📅 حفظ الموعد في التقويم (.ics) – الموارد البشرية"
+
+msgid "📋 Aktuelle Berichte: check_compliance (Primärquelle)"
+msgstr "📋 التقارير الحالية: check_compliance (المصدر الأساسي)"
+
+msgid "📋 Archiv ({0}) – eingestellt / abgelehnt / zurückgezogen"
+msgstr "📋 الأرشيف ({0}) – تم التوظيف / مرفوض / مسحوب"
+
+msgid "📢 Stelle ausschreiben"
+msgstr "📢 نشر وظيفة"
+
+msgid "📥 Aktive Bewerber ({0})"
+msgstr "📥 المتقدمون النشطون ({0})"
+
+msgid "📩 Visum-Antrag bestaetigen"
+msgstr "📩 تأكيد طلب التأشيرة"
+
+msgid "🔎 Gefiltert auf {0}"
+msgstr "🔎 مفلتر على {0}"
+
+msgid "🔒 DSGVO: Dokumente werden erst ab Bewerbungsstatus 'Eingeladen' sichtbar. Noch gesperrt: {0}"
+msgstr "🔒 GDPR: لا تظهر المستندات إلا بدءًا من حالة الطلب 'مدعو'. لا تزال مقفلة: {0}"
+
+msgid "🔒 Read-only: Alle Agent-generierten Ergebnisse für einen Kandidaten: Dokumenten-Verifizierung, Visum-Check, DSGVO, Match-Erklaerung."
+msgstr "🔒 للقراءة فقط: جميع النتائج التي أنشأها الوكيل لمرشح: التحقق من المستندات، فحص التأشيرة، GDPR، شرح المطابقة."
+
+msgid "🔗 {0}"
+msgstr "🔗 {0}"
+
+msgid "🗄️ Archiv: compliance_protokoll (Legacy)"
+msgstr "🗄️ الأرشيف: compliance_protokoll (قديم)"
+
+msgid "🤖 {0}"
+msgstr "🤖 {0}"
+
+msgid "🤝 Patenschaft (Mentoring)"
+msgstr "🤝 الإرشاد (التوجيه)"
+
+msgid "Akzeptiert: {0}"
+msgstr "المقبول: {0}"
+
+msgid "Alle als gelesen markieren"
+msgstr "تحديد الكل كمقروء"
+
+msgid "Alle als gelesen markiert"
+msgstr "تم تحديد الكل كمقروء"
+
+msgid "Anmerkungen:"
+msgstr "ملاحظات:"
+
+msgid "Ansehen"
+msgstr "عرض"
+
+msgid "Benachrichtigungen"
+msgstr "الإشعارات"
+
+msgid "Bestätigen"
+msgstr "تأكيد"
+
+msgid "Bewertung (0–5):"
+msgstr "التقييم (0-5):"
+
+msgid "Bitte eine Stelle angeben (keine Vorbelegung gefunden)."
+msgstr "يرجى تحديد وظيفة (لم يتم العثور على قيمة افتراضية)."
+
+msgid "Datei hier ablegen oder klicken"
+msgstr "أسقط الملف هنا أو انقر"
+
+msgid "Empfehlung hilfreich"
+msgstr "التوصية مفيدة"
+
+msgid "Fachlich korrekt"
+msgstr "صحيح تقنيًا"
+
+msgid "Feedback speichern"
+msgstr "حفظ التقييم"
+
+msgid "Gewicht: {0}%"
+msgstr "الوزن: {0}%"
+
+msgid "Kandidat:"
+msgstr "المرشح:"
+
+msgid "Keine Benachrichtigungen"
+msgstr "لا توجد إشعارات"
+
+msgid "Keine Daten vorhanden"
+msgstr "لا توجد بيانات"
+
+msgid "Keine Profile gefunden."
+msgstr "لم يتم العثور على ملفات تعريف."
+
+msgid "Keine Profile gefunden. Profile entstehen automatisch, wenn Lebensläufe hochgeladen und extrahiert werden (Admin: Upload → Extract)."
+msgstr "لم يتم العثور على ملفات تعريف. تُنشأ الملفات تلقائيًا عند رفع السير الذاتية واستخراجها (المشرف: Upload → Extract)."
+
+msgid "Keine Selbstpräsentationen vorhanden. Kandidaten können ihre Video-Vorstellung im eigenen Portal (Tab 🗣️ Sprachtest) generieren."
+msgstr "لا توجد عروض ذاتية. يمكن للمرشحين إنشاء عرضهم المرئي في بوابتهم الخاصة (تبويب 🗣️ اختبار اللغة)."
+
+msgid "Laden..."
+msgstr "جارٍ التحميل..."
+
+msgid "Match-Score:"
+msgstr "نتيجة المطابقة:"
+
+msgid "Modus: 🔍 Recruiting – Screening für ausgewählten Kandidaten."
+msgstr "الوضع: 🔍 التوظيف – الفرز للمرشح المحدد."
+
+msgid "Modus: 🧰 HR – Checkliste erstellen und freigeben."
+msgstr "الوضع: 🧰 الموارد البشرية – إنشاء قائمة التحقق وإتاحتها."
+
+msgid "Onboarding generieren"
+msgstr "إنشاء الإعداد الوظيفي"
+
+msgid "Onboarding-Checkliste generieren"
+msgstr "إنشاء قائمة تحقق الإعداد الوظيفي"
+
+msgid "Pre-Screen erstellen"
+msgstr "إنشاء الفرز الأولي"
+
+msgid "Selbstpräsentationen der Kandidaten ({0})"
+msgstr "العروض الذاتية للمرشحين ({0})"
+
+msgid "Skill 8: Feedback speichern"
+msgstr "المهارة 8: حفظ التقييم"
+
+msgid "Skills richtig"
+msgstr "المهارات صحيحة"
+
+msgid "Speichert Feedback in SQLite und passt Matching-Gewichtung dynamisch an."
+msgstr "يحفظ التقييم في SQLite ويضبط أوزان المطابقة ديناميكيًا."
+
+msgid "Standort zutreffend"
+msgstr "الموقع صحيح"
+
+msgid "Startdatum:"
+msgstr "تاريخ البدء:"
+
+msgid "Stelle:"
+msgstr "الوظيفة:"
+
+msgid "Stellenprofil:"
+msgstr "ملف الوظيفة:"
+
+msgid "Vorschau"
+msgstr "معاينة"
+
+msgid "{0}:"
+msgstr "{0}:"
+
+msgid "Dokumente (PDF/TXT/Video, mehrere moeglich):"
+msgstr "المستندات (PDF/TXT/فيديو، يمكن رفع عدة ملفات):"

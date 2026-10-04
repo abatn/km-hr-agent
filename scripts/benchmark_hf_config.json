@@ -1,0 +1,9 @@
+{
+  "endpoint_base": "https://datasets-server.huggingface.co/rows",
+  "dataset": "DjallelBr/job-matching-dataset",
+  "config": "default",
+  "split": "test",
+  "max_rows": 500,
+  "page_size": 100,
+  "source": "Benchmark-Quelle (P4/N4, Phase-E Runde 3, 25.09.2026): offizielle HuggingFace Datasets-Server-API (rows-Endpoint) des Datensatzes DjallelBr/job-matching-dataset - LLM-Referenzscore (GPT-4 o.ä.) auf 4 Kriterien (Skills match, Education match, Experience match, Career alignment). Beweggrund: harte Fremd-URLs gehoeren nicht in den Code (Tool-Namen-Pflicht / 'keine Fremd-URLs im Code'); sie werden hier als Daten gefuehrt. Beleg der Datensatzbeschreibung: ergebnisse/benchmark-huggingface-dataset.md:4-6 und :18."
+}

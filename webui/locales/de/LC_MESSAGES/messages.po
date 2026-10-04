@@ -1,0 +1,1644 @@
+# de — KM-HR-Agent Landingpage (Phase 2)
+msgid ""
+msgstr ""
+"Project-Id-Version: km-hr-agent\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Zum Login"
+msgstr "Zum Login"
+
+msgid "Registrieren"
+msgstr "Registrieren"
+
+msgid "Abmelden"
+msgstr "Abmelden"
+
+msgid "Sprache"
+msgstr "Sprache"
+
+msgid "E-Mail"
+msgstr "E-Mail"
+
+msgid "Passwort"
+msgstr "Passwort"
+
+msgid "Anmelden"
+msgstr "Anmelden"
+
+msgid "KI-gestützte HR-Plattform"
+msgstr "KI-gestützte HR-Plattform"
+
+msgid "Recruiting zwischen"
+msgstr "Recruiting zwischen"
+
+msgid "Nordafrika"
+msgstr "Nordafrika"
+
+msgid "und"
+msgstr "und"
+
+msgid "Von der Bewerbung bis zum Onboarding."
+msgstr "Von der Bewerbung bis zum Onboarding."
+
+msgid "▶ 30-Sekunden-Tour"
+msgstr "▶ 30-Sekunden-Tour"
+
+msgid "Der Ablauf – in 30 Sekunden"
+msgstr "Der Ablauf – in 30 Sekunden"
+
+msgid "Für Arbeitgeber"
+msgstr "Für Arbeitgeber"
+
+msgid "Qualifizierte, visumbereite Fachkräfte – automatisch gematcht, geprüft und gerankt."
+msgstr "Qualifizierte, visumbereite Fachkräfte – automatisch gematcht, geprüft und gerankt."
+
+msgid "Arbeitgeber-Registrieren"
+msgstr "Arbeitgeber-Registrieren"
+
+msgid "Für Kandidaten"
+msgstr "Für Kandidaten"
+
+msgid "Ihr Weg nach Deutschland: Profil, Matching, Sprachtest, Visum und Onboarding – begleitet."
+msgstr "Ihr Weg nach Deutschland: Profil, Matching, Sprachtest, Visum und Onboarding – begleitet."
+
+msgid "Kandidat-Registrieren"
+msgstr "Kandidat-Registrieren"
+
+msgid "Warum KM-HR-Agent?"
+msgstr "Warum KM-HR-Agent?"
+
+msgid "10 Agent-Aufgaben"
+msgstr "10 Agent-Aufgaben"
+
+msgid "Vom Bestätigungs-Mail bis zur Benachrichtigung – alles läuft automatisch."
+msgstr "Vom Bestätigungs-Mail bis zur Benachrichtigung – alles läuft automatisch."
+
+msgid "7 Matching-Kategorien"
+msgstr "7 Matching-Kategorien"
+
+msgid "Kern, Erfahrung, Bildung, Standort, Branche, Soft Skills, Sprache → Score 0–100."
+msgstr "Kern, Erfahrung, Bildung, Standort, Branche, Soft Skills, Sprache → Score 0–100."
+
+msgid "Sprachtest CEFR A1–C1"
+msgstr "Sprachtest CEFR A1–C1"
+
+msgid "Deutsch, Englisch, Französisch – direkt im Portal, mit Zertifikatsniveau."
+msgstr "Deutsch, Englisch, Französisch – direkt im Portal, mit Zertifikatsniveau."
+
+msgid "Video-Pre-Screen"
+msgstr "Video-Pre-Screen"
+
+msgid "Gespräch per VDO.Ninja – mit Einwilligungs-Regel, ohne Aufnahme."
+msgstr "Gespräch per VDO.Ninja – mit Einwilligungs-Regel, ohne Aufnahme."
+
+msgid "DSGVO-konform"
+msgstr "DSGVO-konform"
+
+msgid "Bewerbungsdaten werden 183 Tage nach Abschluss gelöscht (Art. 17 DSGVO)."
+msgstr "Bewerbungsdaten werden 183 Tage nach Abschluss gelöscht (Art. 17 DSGVO)."
+
+msgid "3 Rollen"
+msgstr "3 Rollen"
+
+msgid "Kandidat, Arbeitgeber, Admin – getrennte Zugänge und Rechte."
+msgstr "Kandidat, Arbeitgeber, Admin – getrennte Zugänge und Rechte."
+
+msgid "So funktioniert's"
+msgstr "So funktioniert's"
+
+msgid "Start – Kandidaten (Nordafrika) und Arbeitgeber (DE / FR / CH) als Netzwerk."
+msgstr "Start – Kandidaten (Nordafrika) und Arbeitgeber (DE / FR / CH) als Netzwerk."
+
+msgid "CV-Upload → PDF-Extraktion."
+msgstr "CV-Upload → PDF-Extraktion."
+
+msgid "Agent-Kette mit 10 Tasks."
+msgstr "Agent-Kette mit 10 Tasks."
+
+msgid "Matching-Score mit 7 Kategorien."
+msgstr "Matching-Score mit 7 Kategorien."
+
+msgid "Compliance DE / FR / CH."
+msgstr "Compliance DE / FR / CH."
+
+msgid "HR-Entscheidung (einladen, ablehnen, einstellen) → Video-Meeting per VDO.Ninja → Onboarding."
+msgstr "HR-Entscheidung (einladen, ablehnen, einstellen) → Video-Meeting per VDO.Ninja → Onboarding."
+
+msgid "Ende – Übergang zum Login, Quantenfeld als Vision."
+msgstr "Ende – Übergang zum Login, Quantenfeld als Vision."
+
+msgid "Häufige Fragen"
+msgstr "Häufige Fragen"
+
+msgid "Was ist der KM-HR-Agent?"
+msgstr "Was ist der KM-HR-Agent?"
+
+msgid "Eine KI-gestützte HR-Plattform, die den Bewerbungsprozess zwischen Nordafrika und Deutschland, Frankreich und der Schweiz automatisiert."
+msgstr "Eine KI-gestützte HR-Plattform, die den Bewerbungsprozess zwischen Nordafrika und Deutschland, Frankreich und der Schweiz automatisiert."
+
+msgid "Welche Sprachniveaus werden geprüft?"
+msgstr "Welche Sprachniveaus werden geprüft?"
+
+msgid "Deutsch, Englisch und Französisch – CEFR A1 bis C1, direkt im Portal per Sprachtest."
+msgstr "Deutsch, Englisch und Französisch – CEFR A1 bis C1, direkt im Portal per Sprachtest."
+
+msgid "Wie läuft die Visum-Begleitung?"
+msgstr "Wie läuft die Visum-Begleitung?"
+
+msgid "Der Agent prüft den Visum-Bedarf und liefert nach Bestätigung die Schritte (Was / Wie / Wo) inklusive der zuständigen Behörde."
+msgstr "Der Agent prüft den Visum-Bedarf und liefert nach Bestätigung die Schritte (Was / Wie / Wo) inklusive der zuständigen Behörde."
+
+msgid "Wie werden meine Daten geschützt?"
+msgstr "Wie werden meine Daten geschützt?"
+
+msgid "DSGVO-konform: Bewerbungsdaten werden 183 Tage nach Abschluss des Verfahrens gelöscht (Art. 17 DSGVO); Kontaktdaten erst nach der Einladung."
+msgstr "DSGVO-konform: Bewerbungsdaten werden 183 Tage nach Abschluss des Verfahrens gelöscht (Art. 17 DSGVO); Kontaktdaten erst nach der Einladung."
+
+msgid "Bereit, den Bewerbungsprozess zu automatisieren?"
+msgstr "Bereit, den Bewerbungsprozess zu automatisieren?"
+
+msgid "Kostenlos registrieren – als Kandidat oder Arbeitgeber."
+msgstr "Kostenlos registrieren – als Kandidat oder Arbeitgeber."
+
+msgid "Jetzt registrieren"
+msgstr "Jetzt registrieren"
+
+msgid "Impressum"
+msgstr "Impressum"
+
+msgid "Datenschutz"
+msgstr "Datenschutz"
+
+msgid "AGB"
+msgstr "AGB"
+
+msgid "Kontakt"
+msgstr "Kontakt"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Das Netzwerk"
+msgstr "Das Netzwerk"
+
+msgid "Kandidaten aus Nordafrika treffen auf Arbeitgeber in DE, FR und CH."
+msgstr "Kandidaten aus Nordafrika treffen auf Arbeitgeber in DE, FR und CH."
+
+msgid "Zoom 1"
+msgstr "Zoom 1"
+
+msgid "Der Lebenslauf wird hochgeladen und als Text ausgelesen."
+msgstr "Der Lebenslauf wird hochgeladen und als Text ausgelesen."
+
+msgid "Zoom 2"
+msgstr "Zoom 2"
+
+msgid "Agent-Kette: 10 Tasks"
+msgstr "Agent-Kette: 10 Tasks"
+
+msgid "Zehn Aufgaben laufen automatisch – von der Bestätigung bis zur Benachrichtigung."
+msgstr "Zehn Aufgaben laufen automatisch – von der Bestätigung bis zur Benachrichtigung."
+
+msgid "Zoom 3"
+msgstr "Zoom 3"
+
+msgid "Matching-Score: 7 Kategorien"
+msgstr "Matching-Score: 7 Kategorien"
+
+msgid "Sieben Kategorien ergeben einen Score von 0 bis 100."
+msgstr "Sieben Kategorien ergeben einen Score von 0 bis 100."
+
+msgid "Zoom 4"
+msgstr "Zoom 4"
+
+msgid "Compliance DE / FR / CH"
+msgstr "Compliance DE / FR / CH"
+
+msgid "Rechtsprüfung nach Land – bevor es weitergeht."
+msgstr "Rechtsprüfung nach Land – bevor es weitergeht."
+
+msgid "Zoom 5"
+msgstr "Zoom 5"
+
+msgid "HR entscheidet"
+msgstr "HR entscheidet"
+
+msgid "Einladen, ablehnen oder einstellen – dann Video-Meeting (VDO.Ninja) und Onboarding."
+msgstr "Einladen, ablehnen oder einstellen – dann Video-Meeting (VDO.Ninja) und Onboarding."
+
+msgid "Ende"
+msgstr "Ende"
+
+msgid "Das Quantenfeld"
+msgstr "Das Quantenfeld"
+
+msgid "Zeit sparen, rechtssicher, kulturell passend. Jetzt: Login."
+msgstr "Zeit sparen, rechtssicher, kulturell passend. Jetzt: Login."
+
+msgid "Kandidaten · Nordafrika"
+msgstr "Kandidaten · Nordafrika"
+
+msgid "Arbeitgeber · DE / FR / CH"
+msgstr "Arbeitgeber · DE / FR / CH"
+
+msgid "HR-Entscheidung"
+msgstr "HR-Entscheidung"
+
+msgid "VDO.Ninja Meeting"
+msgstr "VDO.Ninja Meeting"
+
+msgid "Nochmal ansehen"
+msgstr "Nochmal ansehen"
+
+msgid "CV-Upload → PDF-Extraktion"
+msgstr "CV-Upload → PDF-Extraktion"
+
+msgid "KI-gestuetztes Recruiting-Portal"
+msgstr "KI-gestuetztes Recruiting-Portal"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Arbeitgeber"
+msgstr "Arbeitgeber"
+
+msgid "Arbeitgeber+"
+msgstr "Arbeitgeber+"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Willkommen zurueck"
+msgstr "Willkommen zurueck"
+
+msgid "name@beispiel.de"
+msgstr "name@beispiel.de"
+
+msgid "Mindestens 8 Zeichen"
+msgstr "Mindestens 8 Zeichen"
+
+msgid "E-Mail gueltig"
+msgstr "E-Mail gueltig"
+
+msgid "E-Mail und Passwort sind Pflichtfelder."
+msgstr "E-Mail und Passwort sind Pflichtfelder."
+
+msgid "Dies ist ein Arbeitgeber-Account ({firma}) – bitte im Tab Arbeitgeber einloggen."
+msgstr "Dies ist ein Arbeitgeber-Account ({firma}) – bitte im Tab Arbeitgeber einloggen."
+
+msgid "Unbekannte E-Mail oder falsches Passwort."
+msgstr "Unbekannte E-Mail oder falsches Passwort."
+
+msgid "Einloggen"
+msgstr "Einloggen"
+
+msgid "Neues Konto erstellen"
+msgstr "Neues Konto erstellen"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Vor- und Nachname"
+msgstr "Vor- und Nachname"
+
+msgid "Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "Passwort muss mindestens 8 Zeichen lang sein."
+
+msgid "Registriert! Jetzt einloggen."
+msgstr "Registriert! Jetzt einloggen."
+
+msgid "E-Mail bereits registriert."
+msgstr "E-Mail bereits registriert."
+
+msgid "Arbeitgeber-Login"
+msgstr "Arbeitgeber-Login"
+
+msgid "Login fehlgeschlagen."
+msgstr "Login fehlgeschlagen."
+
+msgid "Arbeitgeber registrieren"
+msgstr "Arbeitgeber registrieren"
+
+msgid "Firmen-E-Mail"
+msgstr "Firmen-E-Mail"
+
+msgid "Firma"
+msgstr "Firma"
+
+msgid "Kontaktperson"
+msgstr "Kontaktperson"
+
+msgid "Alle Felder sind Pflichtfelder."
+msgstr "Alle Felder sind Pflichtfelder."
+
+msgid "Als Arbeitgeber registrieren"
+msgstr "Als Arbeitgeber registrieren"
+
+msgid "Admin-Login"
+msgstr "Admin-Login"
+
+msgid "Admin-E-Mail"
+msgstr "Admin-E-Mail"
+
+msgid "Admin angemeldet"
+msgstr "Admin angemeldet"
+
+msgid "Admin-Login fehlgeschlagen."
+msgstr "Admin-Login fehlgeschlagen."
+
+msgid "Willkommen, {name}!"
+msgstr "Willkommen, {name}!"
+
+msgid "Zurück"
+msgstr "Zurück"
+
+msgid "Inhalt fehlt: {file}"
+msgstr "Inhalt fehlt: {file}"
+
+msgid "#{0}"
+msgstr "#{0}"
+
+msgid "#{0} {1} – {2} ({3}, {4})"
+msgstr "#{0} {1} – {2} ({3}, {4})"
+
+msgid "**Link:** [{0}]({1})"
+msgstr "**Link:** [{0}]({1})"
+
+msgid "- {0}: {1}"
+msgstr "- {0}: {1}"
+
+msgid "Abbrechen"
+msgstr "Abbrechen"
+
+msgid "Abschluss"
+msgstr "Abschluss"
+
+msgid "Aktualisiert"
+msgstr "Aktualisiert"
+
+msgid "Aktuelle Position"
+msgstr "Aktuelle Position"
+
+msgid "Aktueller Status"
+msgstr "Aktueller Status"
+
+msgid "Aktuelles Passwort"
+msgstr "Aktuelles Passwort"
+
+msgid "Anzahl Fragen"
+msgstr "Anzahl Fragen"
+
+msgid "Berufserfahrung"
+msgstr "Berufserfahrung"
+
+msgid "Beschreibung"
+msgstr "Beschreibung"
+
+msgid "Bewerben"
+msgstr "Bewerben"
+
+msgid "Bewerbung gesendet! Der Agent prueft Ihren Lebenslauf."
+msgstr "Bewerbung gesendet! Der Agent prueft Ihren Lebenslauf."
+
+msgid "Bewerbung zurückgezogen. Sie können sich später erneut bewerben."
+msgstr "Bewerbung zurückgezogen. Sie können sich später erneut bewerben."
+
+msgid "Bewerbung: {0}"
+msgstr "Bewerbung: {0}"
+
+msgid "Bewerbungen nach Status"
+msgstr "Bewerbungen nach Status"
+
+msgid "Beworben"
+msgstr "Beworben"
+
+msgid "Beworben am"
+msgstr "Beworben am"
+
+msgid "Bitte alle Felder ausfuellen."
+msgstr "Bitte alle Felder ausfuellen."
+
+msgid "Bitte wähle eine Antwort"
+msgstr "Bitte wähle eine Antwort"
+
+msgid "Bitte zuerst Lebenslauf hochladen (Mein Profil → Lebenslauf)"
+msgstr "Bitte zuerst Lebenslauf hochladen (Mein Profil → Lebenslauf)"
+
+msgid "Branche"
+msgstr "Branche"
+
+msgid "CEFR-Level"
+msgstr "CEFR-Level"
+
+msgid "CEFR: {0}"
+msgstr "CEFR: {0}"
+
+msgid "Datei auswählen"
+msgstr "Datei auswählen"
+
+msgid "Deine Ergebnisse"
+msgstr "Deine Ergebnisse"
+
+msgid "Der Arbeitgeber hat Sie eingestellt – die Checkliste wird gerade vorbereitet."
+msgstr "Der Arbeitgeber hat Sie eingestellt – die Checkliste wird gerade vorbereitet."
+
+msgid "Der Test enthält keine Fragen und wurde nicht gespeichert."
+msgstr "Der Test enthält keine Fragen und wurde nicht gespeichert."
+
+msgid "Detailbegründung: agent-generierte Erklärung nach Ihrer Bewerbung (Skill explain-match)."
+msgstr "Detailbegründung: agent-generierte Erklärung nach Ihrer Bewerbung (Skill explain-match)."
+
+msgid "Details anzeigen"
+msgstr "Details anzeigen"
+
+msgid "Deutsch"
+msgstr "Deutsch"
+
+msgid "Dokument geloescht."
+msgstr "Dokument geloescht."
+
+msgid "Dokumente"
+msgstr "Dokumente"
+
+msgid "Dokumente (PDF/TXT, mehrere moeglich):"
+msgstr "Dokumente (PDF/TXT, mehrere moeglich):"
+
+msgid "Dokumenttyp"
+msgstr "Dokumenttyp"
+
+msgid "Englisch"
+msgstr "Englisch"
+
+msgid "Erfahrung"
+msgstr "Erfahrung"
+
+msgid "Erneut speichern"
+msgstr "Erneut speichern"
+
+msgid "Erneut versuchen"
+msgstr "Erneut versuchen"
+
+msgid "Fachkompetenzen"
+msgstr "Fachkompetenzen"
+
+msgid "Fehler beim Hochladen: {0}"
+msgstr "Fehler beim Hochladen: {0}"
+
+msgid "Fehler beim Laden der Fragen: {0}"
+msgstr "Fehler beim Laden der Fragen: {0}"
+
+msgid "Fehler: {0}"
+msgstr "Fehler: {0}"
+
+msgid "Frage {0}/{1}"
+msgstr "Frage {0}/{1}"
+
+msgid "Französisch"
+msgstr "Französisch"
+
+msgid "Für {0} {1} konnten keine Fragen geladen werden."
+msgstr "Für {0} {1} konnten keine Fragen geladen werden."
+
+msgid "Gehalt"
+msgstr "Gehalt"
+
+msgid "Gehaltsvorstellung"
+msgstr "Gehaltsvorstellung"
+
+msgid "Groesse"
+msgstr "Groesse"
+
+msgid "Hard Skills (kommasepariert)"
+msgstr "Hard Skills (kommasepariert)"
+
+msgid "Herunterladen"
+msgstr "Herunterladen"
+
+msgid "Ihr Ergebnis: {0}/{1} richtig ({2:.0f}%, CEFR {3}) — nicht in Ihrem Profil hinterlegt."
+msgstr "Ihr Ergebnis: {0}/{1} richtig ({2:.0f}%, CEFR {3}) — nicht in Ihrem Profil hinterlegt."
+
+msgid "Ihr Raum ist bereit!"
+msgstr "Ihr Raum ist bereit!"
+
+msgid "Jahre Erfahrung"
+msgstr "Jahre Erfahrung"
+
+msgid "Keine Statushistorie"
+msgstr "Keine Statushistorie"
+
+msgid "Laufende Bewerbungen"
+msgstr "Laufende Bewerbungen"
+
+msgid "Lebenslauf hochgeladen ({0} Zeichen)."
+msgstr "Lebenslauf hochgeladen ({0} Zeichen)."
+
+msgid "Lebenslauf hochladen"
+msgstr "Lebenslauf hochladen"
+
+msgid "Lebenslauf vorhanden"
+msgstr "Lebenslauf vorhanden"
+
+msgid "Letzte Änderung"
+msgstr "Letzte Änderung"
+
+msgid "Maximale Größe: 5 MB"
+msgstr "Maximale Größe: 5 MB"
+
+msgid "Meeting-Link"
+msgstr "Meeting-Link"
+
+msgid "Mein Status"
+msgstr "Mein Status"
+
+msgid "Meine Dokumente ({0})"
+msgstr "Meine Dokumente ({0})"
+
+msgid "Motivation:"
+msgstr "Motivation:"
+
+msgid "Motivationstext (optional, max. 2000 Zeichen):"
+msgstr "Motivationstext (optional, max. 2000 Zeichen):"
+
+msgid "Must-Have-Skills:"
+msgstr "Must-Have-Skills:"
+
+msgid "Nationalitaet"
+msgstr "Nationalitaet"
+
+msgid "Nehmen Sie ein kurzes Video auf (2-3 Minuten). Der Link wird mit Ihrer Bewerbung gesendet."
+msgstr "Nehmen Sie ein kurzes Video auf (2-3 Minuten). Der Link wird mit Ihrer Bewerbung gesendet."
+
+msgid "Neu laden"
+msgstr "Neu laden"
+
+msgid "Neu veroeffentlichte Stellen"
+msgstr "Neu veroeffentlichte Stellen"
+
+msgid "Neuen Test starten"
+msgstr "Neuen Test starten"
+
+msgid "Neues Passwort"
+msgstr "Neues Passwort"
+
+msgid "Neues Passwort wiederholen"
+msgstr "Neues Passwort wiederholen"
+
+msgid "Niveau"
+msgstr "Niveau"
+
+msgid "Noch kein Lebenslauf hochgeladen"
+msgstr "Noch kein Lebenslauf hochgeladen"
+
+msgid "Noch keine Skills erfasst"
+msgstr "Noch keine Skills erfasst"
+
+msgid "Noch nicht erfasst"
+msgstr "Noch nicht erfasst"
+
+msgid "Nur .pdf/.txt erlaubt"
+msgstr "Nur .pdf/.txt erlaubt"
+
+msgid "PDF oder TXT-Datei ablegen"
+msgstr "PDF oder TXT-Datei ablegen"
+
+msgid "Passwoerter stimmen nicht ueberein."
+msgstr "Passwoerter stimmen nicht ueberein."
+
+msgid "Passwort aendern"
+msgstr "Passwort aendern"
+
+msgid "Persoenliche Daten"
+msgstr "Persoenliche Daten"
+
+msgid "Profil bearbeiten"
+msgstr "Profil bearbeiten"
+
+msgid "Profil gespeichert!"
+msgstr "Profil gespeichert!"
+
+msgid "Profil speichern"
+msgstr "Profil speichern"
+
+msgid "Profil-Vollständigkeit"
+msgstr "Profil-Vollständigkeit"
+
+msgid "Profil: {0} · Skills: {1}"
+msgstr "Profil: {0} · Skills: {1}"
+
+msgid "Registriert"
+msgstr "Registriert"
+
+msgid "Richtige Antworten"
+msgstr "Richtige Antworten"
+
+msgid "Score aus Startgewichten (Design-Entscheidung, keine externe Quelle) — Gewichte werden per Feedback-Loop nach echten Einstellungsentscheidungen kalibriert (siehe matching-criteria.md)."
+msgstr "Score aus Startgewichten (Design-Entscheidung, keine externe Quelle) — Gewichte werden per Feedback-Loop nach echten Einstellungsentscheidungen kalibriert (siehe matching-criteria.md)."
+
+msgid "Score: {0:.0f}%"
+msgstr "Score: {0:.0f}%"
+
+msgid "Sie haben sich bereits auf diese Stelle beworben."
+msgstr "Sie haben sich bereits auf diese Stelle beworben."
+
+msgid "Soft Skills"
+msgstr "Soft Skills"
+
+msgid "Soft Skills (kommasepariert)"
+msgstr "Soft Skills (kommasepariert)"
+
+msgid "Soft Skills:"
+msgstr "Soft Skills:"
+
+msgid "Sprachen"
+msgstr "Sprachen"
+
+msgid "Sprachtest"
+msgstr "Sprachtest"
+
+msgid "Standort"
+msgstr "Standort"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Stellentyp"
+msgstr "Stellentyp"
+
+msgid "Termin wird noch vereinbart."
+msgstr "Termin wird noch vereinbart."
+
+msgid "Termin: {0}"
+msgstr "Termin: {0}"
+
+msgid "Test starten"
+msgstr "Test starten"
+
+msgid "Test wird geladen..."
+msgstr "Test wird geladen..."
+
+msgid "Verfuegbarkeit"
+msgstr "Verfuegbarkeit"
+
+msgid "Verlauf"
+msgstr "Verlauf"
+
+msgid "Video-Link generiert und mit Ihrer Bewerbung gespeichert."
+msgstr "Video-Link generiert und mit Ihrer Bewerbung gespeichert."
+
+msgid "Visum-Status"
+msgstr "Visum-Status"
+
+msgid "Warum passt das?"
+msgstr "Warum passt das?"
+
+msgid "Weiter →"
+msgstr "Weiter →"
+
+msgid "min. {0} Jahre"
+msgstr "min. {0} Jahre"
+
+msgid "{0} %"
+msgstr "{0} %"
+
+msgid "{0} % passend"
+msgstr "{0} % passend"
+
+msgid "{0} Dokument(e) gespeichert als Typ '{1}'."
+msgstr "{0} Dokument(e) gespeichert als Typ '{1}'."
+
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+msgid "{0} – {1}"
+msgstr "{0} – {1}"
+
+msgid "{0}/{1}"
+msgstr "{0}/{1}"
+
+msgid "ℹ️ Sie hatten diese Bewerbung zurückgezogen. Beim erneuten Absenden beginnt sie neu (Status: Eingegangen)."
+msgstr "ℹ️ Sie hatten diese Bewerbung zurückgezogen. Beim erneuten Absenden beginnt sie neu (Status: Eingegangen)."
+
+msgid "→ Zum Lebenslauf-Upload"
+msgstr "→ Zum Lebenslauf-Upload"
+
+msgid "→ Zur Video-Vorstellung"
+msgstr "→ Zur Video-Vorstellung"
+
+msgid "↩️ Zurückziehen"
+msgstr "↩️ Zurückziehen"
+
+msgid "⏳ Einladung wird vorbereitet..."
+msgstr "⏳ Einladung wird vorbereitet..."
+
+msgid "⚠️ Bewerbungen konnten nicht geladen werden. Fehler: {0}"
+msgstr "⚠️ Bewerbungen konnten nicht geladen werden. Fehler: {0}"
+
+msgid "⚠️ CV-Pflicht: Bewerben ist erst nach Lebenslauf-Upload möglich (👤 Mein Profil → Lebenslauf). Stellen ansehen ist erlaubt."
+msgstr "⚠️ CV-Pflicht: Bewerben ist erst nach Lebenslauf-Upload möglich (👤 Mein Profil → Lebenslauf). Stellen ansehen ist erlaubt."
+
+msgid "⚠️ CV-Pflicht: Laden Sie zuerst Ihren Lebenslauf hoch (Status: {0})"
+msgstr "⚠️ CV-Pflicht: Laden Sie zuerst Ihren Lebenslauf hoch (Status: {0})"
+
+msgid "⚠️ Dashboard-Zahlen konnten nicht geladen werden: {0}"
+msgstr "⚠️ Dashboard-Zahlen konnten nicht geladen werden: {0}"
+
+msgid "⚠️ Ergebnis konnte nicht gespeichert werden."
+msgstr "⚠️ Ergebnis konnte nicht gespeichert werden."
+
+msgid "⚠️ Status-Verteilung konnte nicht geladen werden: {0}"
+msgstr "⚠️ Status-Verteilung konnte nicht geladen werden: {0}"
+
+msgid "⚠️ {0}"
+msgstr "⚠️ {0}"
+
+msgid "✅ **Video-Link:** [{0}]({1})"
+msgstr "✅ **Video-Link:** [{0}]({1})"
+
+msgid "✅ Test beendet!"
+msgstr "✅ Test beendet!"
+
+msgid "✅ Video-Vorstellung bereits hinterlegt."
+msgstr "✅ Video-Vorstellung bereits hinterlegt."
+
+msgid "🎉 {0} – {1}"
+msgstr "🎉 {0} – {1}"
+
+msgid "🎥 Video-Link generieren"
+msgstr "🎥 Video-Link generieren"
+
+msgid "🎬 Optional: Sie können eine Video-Vorstellung (2–3 Minuten) hinterlegen."
+msgstr "🎬 Optional: Sie können eine Video-Vorstellung (2–3 Minuten) hinterlegen."
+
+msgid "🎬 Video-Vorstellung (optional)"
+msgstr "🎬 Video-Vorstellung (optional)"
+
+msgid "📅 Einladung"
+msgstr "📅 Einladung"
+
+msgid "📅 Termin in Kalender speichern (.ics)"
+msgstr "📅 Termin in Kalender speichern (.ics)"
+
+msgid "📋 Status-Historie"
+msgstr "📋 Status-Historie"
+
+msgid "📌 Merken Sie sich diesen Link für Ihr Bewerbungsgespräch."
+msgstr "📌 Merken Sie sich diesen Link für Ihr Bewerbungsgespräch."
+
+msgid "📖 {0} — {1}"
+msgstr "📖 {0} — {1}"
+
+msgid "📥 Herunterladen"
+msgstr "📥 Herunterladen"
+
+msgid "📹 Selbstpräsentation starten"
+msgstr "📹 Selbstpräsentation starten"
+
+msgid "🔒 Lebenslauf nötig"
+msgstr "🔒 Lebenslauf nötig"
+
+msgid "🔒 Session-gebunden: Testen Sie Ihr Sprachniveau (DE/EN/FR). Ergebnis landet in Ihrem Profil (CEFR-Level)."
+msgstr "🔒 Session-gebunden: Testen Sie Ihr Sprachniveau (DE/EN/FR). Ergebnis landet in Ihrem Profil (CEFR-Level)."
+
+msgid "🤝 Ihr Ansprechpartner (Mentor): {0}"
+msgstr "🤝 Ihr Ansprechpartner (Mentor): {0}"
+
+msgid "Bewerbe dich im Tab 'Stellenangebote'."
+msgstr "Bewerbe dich im Tab 'Stellenangebote'."
+
+msgid "CEFR-Niveautests"
+msgstr "CEFR-Niveautests"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Entdecke passende Stellen und bewirb dich mit einem Klick."
+msgstr "Entdecke passende Stellen und bewirb dich mit einem Klick."
+
+msgid "Erneut bewerben"
+msgstr "Erneut bewerben"
+
+msgid "Gehaltsvorstellung (EUR)"
+msgstr "Gehaltsvorstellung (EUR)"
+
+msgid "Jetzt bewerben"
+msgstr "Jetzt bewerben"
+
+msgid "Kandidaten-Uebersicht"
+msgstr "Kandidaten-Uebersicht"
+
+msgid "Keine Bewerbungen vorhanden"
+msgstr "Keine Bewerbungen vorhanden"
+
+msgid "Keine offenen Stellen"
+msgstr "Keine offenen Stellen"
+
+msgid "Mein Profil"
+msgstr "Mein Profil"
+
+msgid "Meine Bewerbungen"
+msgstr "Meine Bewerbungen"
+
+msgid "Noch kein Onboarding aktiv"
+msgstr "Noch kein Onboarding aktiv"
+
+msgid "Noch keine Bewerbungen"
+msgstr "Noch keine Bewerbungen"
+
+msgid "Noch keine Dokumente hochgeladen"
+msgstr "Noch keine Dokumente hochgeladen"
+
+msgid "Offene Positionen durchsuchen"
+msgstr "Offene Positionen durchsuchen"
+
+msgid "Onboarding"
+msgstr "Onboarding"
+
+msgid "Onboarding wird nach erfolgreicher Einstellung freigeschaltet."
+msgstr "Onboarding wird nach erfolgreicher Einstellung freigeschaltet."
+
+msgid "Pre-Screen"
+msgstr "Pre-Screen"
+
+msgid "Profil nicht gefunden"
+msgstr "Profil nicht gefunden"
+
+msgid "Schau spaeter nochmal vorbei."
+msgstr "Schau spaeter nochmal vorbei."
+
+msgid "Selbstpräsentation"
+msgstr "Selbstpräsentation"
+
+msgid "Status verfolgen"
+msgstr "Status verfolgen"
+
+msgid "Stellen durchsuchen"
+msgstr "Stellen durchsuchen"
+
+msgid "Stellen entdecken"
+msgstr "Stellen entdecken"
+
+msgid "Stellenangebote"
+msgstr "Stellenangebote"
+
+msgid "→ Stellen ansehen"
+msgstr "→ Stellen ansehen"
+
+msgid "#{0} {1} – {2} ({3}) – {4}"
+msgstr "#{0} {1} – {2} ({3}) – {4}"
+
+msgid "(Stelle #{0} · Kandidat #{1})"
+msgstr "(Stelle #{0} · Kandidat #{1})"
+
+msgid "**📅 Einladungs-Termin:**"
+msgstr "**📅 Einladungs-Termin:**"
+
+msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
+msgstr "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
+
+msgid "+{0} weitere"
+msgstr "+{0} weitere"
+
+msgid "Ablehnen"
+msgstr "Ablehnen"
+
+msgid "Agent-Details"
+msgstr "Agent-Details"
+
+msgid "Agent-Ergebnisse + Tasks"
+msgstr "Agent-Ergebnisse + Tasks"
+
+msgid "Agent-Tasks"
+msgstr "Agent-Tasks"
+
+msgid "Aktion"
+msgstr "Aktion"
+
+msgid "Aktiver Mentor: {0}"
+msgstr "Aktiver Mentor: {0}"
+
+msgid "Alle anzeigen"
+msgstr "Alle anzeigen"
+
+msgid "Anmerkungen"
+msgstr "Anmerkungen"
+
+msgid "Arbeitgeber-Uebersicht"
+msgstr "Arbeitgeber-Uebersicht"
+
+msgid "Arbeitsort"
+msgstr "Arbeitsort"
+
+msgid "Auswahl"
+msgstr "Auswahl"
+
+msgid "Begründung"
+msgstr "Begründung"
+
+msgid "Beschreibung (min. 50 Zeichen)"
+msgstr "Beschreibung (min. 50 Zeichen)"
+
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
+msgstr "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
+
+msgid "Bewerber-Status verwalten"
+msgstr "Bewerber-Status verwalten"
+
+msgid "Bewerbung"
+msgstr "Bewerbung"
+
+msgid "Bewerbung #{0} · Gehalt/Mindestlohn + Formfall + NachwG-Checkliste (Quellen: knowledge/legal/contract-sources.md)"
+msgstr "Bewerbung #{0} · Gehalt/Mindestlohn + Formfall + NachwG-Checkliste (Quellen: knowledge/legal/contract-sources.md)"
+
+msgid "Bewerbung abgelehnt - Ablehnungs-Mail wurde NICHT eingereiht (heute bereits ein Task fuer diese Bewerbung oder Queue-Fehler)."
+msgstr "Bewerbung abgelehnt - Ablehnungs-Mail wurde NICHT eingereiht (heute bereits ein Task fuer diese Bewerbung oder Queue-Fehler)."
+
+msgid "Bewerbung abgelehnt."
+msgstr "Bewerbung abgelehnt."
+
+msgid "Bewerbung als angesehen markiert."
+msgstr "Bewerbung als angesehen markiert."
+
+msgid "Bewerbung eingegangen"
+msgstr "Bewerbung eingegangen"
+
+msgid "Bewerbung nicht gefunden."
+msgstr "Bewerbung nicht gefunden."
+
+msgid "Bewerbung wirklich ablehnen?"
+msgstr "Bewerbung wirklich ablehnen?"
+
+msgid "Bewerbungen"
+msgstr "Bewerbungen"
+
+msgid "Bewertung (1-5):"
+msgstr "Bewertung (1-5):"
+
+msgid "Bitte Mentor-Namen eingeben."
+msgstr "Bitte Mentor-Namen eingeben."
+
+msgid "CSV Export"
+msgstr "CSV Export"
+
+msgid "Checkliste erstellen"
+msgstr "Checkliste erstellen"
+
+msgid "Compliance-Ergebnis"
+msgstr "Compliance-Ergebnis"
+
+msgid "Datei"
+msgstr "Datei"
+
+msgid "Datei liegt nicht im freigegebenen Ordner."
+msgstr "Datei liegt nicht im freigegebenen Ordner."
+
+msgid "Datei nicht mehr auf dem Server vorhanden."
+msgstr "Datei nicht mehr auf dem Server vorhanden."
+
+msgid "Daten exportieren"
+msgstr "Daten exportieren"
+
+msgid "Datum"
+msgstr "Datum"
+
+msgid "Dauer (Min.)"
+msgstr "Dauer (Min.)"
+
+msgid "Detaillierte Berichte"
+msgstr "Detaillierte Berichte"
+
+msgid "Deutsch-Level"
+msgstr "Deutsch-Level"
+
+msgid "Dokument nicht (mehr) freigegeben."
+msgstr "Dokument nicht (mehr) freigegeben."
+
+msgid "Eingegangen: {0}"
+msgstr "Eingegangen: {0}"
+
+msgid "Eingeladen"
+msgstr "Eingeladen"
+
+msgid "Eingeladen - Termin {0} {1} geplant."
+msgstr "Eingeladen - Termin {0} {1} geplant."
+
+msgid "Eingeladen?"
+msgstr "Eingeladen?"
+
+msgid "Einladen"
+msgstr "Einladen"
+
+msgid "Einstellen"
+msgstr "Einstellen"
+
+msgid "Einstellung"
+msgstr "Einstellung"
+
+msgid "Empfehlung"
+msgstr "Empfehlung"
+
+msgid "Englisch-Level"
+msgstr "Englisch-Level"
+
+msgid "Erfahrung (J.)"
+msgstr "Erfahrung (J.)"
+
+msgid "Erklaerung"
+msgstr "Erklaerung"
+
+msgid "Erstelle zuerst eine Stelle."
+msgstr "Erstelle zuerst eine Stelle."
+
+msgid "Erstellt: {0}"
+msgstr "Erstellt: {0}"
+
+msgid "Fachlich"
+msgstr "Fachlich"
+
+msgid "Feedback"
+msgstr "Feedback"
+
+msgid "Feedback aktualisiert (heute bereits vorhanden)."
+msgstr "Feedback aktualisiert (heute bereits vorhanden)."
+
+msgid "Feedback gespeichert!"
+msgstr "Feedback gespeichert!"
+
+msgid "Finaler Status erreicht."
+msgstr "Finaler Status erreicht."
+
+msgid "Firmenprofil"
+msgstr "Firmenprofil"
+
+msgid "Firmenprofil & Stellen"
+msgstr "Firmenprofil & Stellen"
+
+msgid "Gehalt: {0}"
+msgstr "Gehalt: {0}"
+
+msgid "Gehaltsrahmen bis (EUR)"
+msgstr "Gehaltsrahmen bis (EUR)"
+
+msgid "Gehaltsrahmen von (EUR)"
+msgstr "Gehaltsrahmen von (EUR)"
+
+msgid "Hauptstandort"
+msgstr "Hauptstandort"
+
+msgid "Hochgeladen"
+msgstr "Hochgeladen"
+
+msgid "Hochgeladene Dateien"
+msgstr "Hochgeladene Dateien"
+
+msgid "Interne Notiz (optional, nicht sichtbar fuer den Kandidaten)"
+msgstr "Interne Notiz (optional, nicht sichtbar fuer den Kandidaten)"
+
+msgid "Interview"
+msgstr "Interview"
+
+msgid "Interview geplant"
+msgstr "Interview geplant"
+
+msgid "Ja, ablehnen"
+msgstr "Ja, ablehnen"
+
+msgid "Kandidat"
+msgstr "Kandidat"
+
+msgid "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle)."
+msgstr "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle)."
+
+msgid "Kandidat ablehnen"
+msgstr "Kandidat ablehnen"
+
+msgid "Kandidat einladen"
+msgstr "Kandidat einladen"
+
+msgid "Kandidat einstellen"
+msgstr "Kandidat einstellen"
+
+msgid "Kandidat wählen."
+msgstr "Kandidat wählen."
+
+msgid "Kandidaten"
+msgstr "Kandidaten"
+
+msgid "Kandidaten erscheinen hier, nachdem sie eingestellt wurden."
+msgstr "Kandidaten erscheinen hier, nachdem sie eingestellt wurden."
+
+msgid "Kandidaten erscheinen hier, sobald sie sich beworben haben. Passive Matches stehen darunter."
+msgstr "Kandidaten erscheinen hier, sobald sie sich beworben haben. Passive Matches stehen darunter."
+
+msgid "Kandidaten mit Lebenslauf"
+msgstr "Kandidaten mit Lebenslauf"
+
+msgid "Kandidaten-Feedback speichern"
+msgstr "Kandidaten-Feedback speichern"
+
+msgid "Kandidaten-Liste als CSV-Datei herunterladen."
+msgstr "Kandidaten-Liste als CSV-Datei herunterladen."
+
+msgid "Kandidaten-Status"
+msgstr "Kandidaten-Status"
+
+msgid "Kandidaten-Suche"
+msgstr "Kandidaten-Suche"
+
+msgid "Kategorie"
+msgstr "Kategorie"
+
+msgid "Keine Bewerbung für Preflight."
+msgstr "Keine Bewerbung für Preflight."
+
+msgid "Keine Dokumente vorhanden"
+msgstr "Keine Dokumente vorhanden"
+
+msgid "Keine Kandidaten fuer Onboarding"
+msgstr "Keine Kandidaten fuer Onboarding"
+
+msgid "Keine Kandidaten gefunden"
+msgstr "Keine Kandidaten gefunden"
+
+msgid "Keine Kandidaten mit Bewerbungen"
+msgstr "Keine Kandidaten mit Bewerbungen"
+
+msgid "Keine Kandidaten verfügbar."
+msgstr "Keine Kandidaten verfügbar."
+
+msgid "Keine Kandidaten vorhanden"
+msgstr "Keine Kandidaten vorhanden"
+
+msgid "Keine Stellen vorhanden"
+msgstr "Keine Stellen vorhanden"
+
+msgid "Keine aktive Patenschaft gefunden."
+msgstr "Keine aktive Patenschaft gefunden."
+
+msgid "Keine aktiven Bewerbungen"
+msgstr "Keine aktiven Bewerbungen"
+
+msgid "Keine archivierten Bewerbungen."
+msgstr "Keine archivierten Bewerbungen."
+
+msgid "Keine zurechenbaren Archiv-Einträge."
+msgstr "Keine zurechenbaren Archiv-Einträge."
+
+msgid "Kurzprofil (max. 500 Zeichen)"
+msgstr "Kurzprofil (max. 500 Zeichen)"
+
+msgid "Land"
+msgstr "Land"
+
+msgid "Land: {0}"
+msgstr "Land: {0}"
+
+msgid "Live-Score aus DB"
+msgstr "Live-Score aus DB"
+
+msgid "Match-Ergebnis"
+msgstr "Match-Ergebnis"
+
+msgid "Match-Score"
+msgstr "Match-Score"
+
+msgid "Match-Score (0-100)"
+msgstr "Match-Score (0-100)"
+
+msgid "Meine Stellen"
+msgstr "Meine Stellen"
+
+msgid "Mentor (Name):"
+msgstr "Mentor (Name):"
+
+msgid "Mentor zuweisen"
+msgstr "Mentor zuweisen"
+
+msgid "Mentor {0} zugewiesen."
+msgstr "Mentor {0} zugewiesen."
+
+msgid "Min. Berufserfahrung (Jahre)"
+msgstr "Min. Berufserfahrung (Jahre)"
+
+msgid "Mitarbeiterzahl"
+msgstr "Mitarbeiterzahl"
+
+msgid "Motivation: {0}"
+msgstr "Motivation: {0}"
+
+msgid "Must-Have-Skills (kommasepariert)"
+msgstr "Must-Have-Skills (kommasepariert)"
+
+msgid "Must-Have-Treffer: {0}"
+msgstr "Must-Have-Treffer: {0}"
+
+msgid "Neues Feedback"
+msgstr "Neues Feedback"
+
+msgid "Noch kein Feedback"
+msgstr "Noch kein Feedback"
+
+msgid "Noch keine Agent-Tasks"
+msgstr "Noch keine Agent-Tasks"
+
+msgid "Noch keine Compliance-Pruefung"
+msgstr "Noch keine Compliance-Pruefung"
+
+msgid "Noch keine Stellen ausgeschrieben"
+msgstr "Noch keine Stellen ausgeschrieben"
+
+msgid "Offene Stellen"
+msgstr "Offene Stellen"
+
+msgid "PDF Export"
+msgstr "PDF Export"
+
+msgid "Patenschaft beenden"
+msgstr "Patenschaft beenden"
+
+msgid "Patenschaft beendet."
+msgstr "Patenschaft beendet."
+
+msgid "Portal"
+msgstr "Portal"
+
+msgid "Pre-Screening abgeschlossen"
+msgstr "Pre-Screening abgeschlossen"
+
+msgid "Preflight heute bereits gequeued (idempotent)."
+msgstr "Preflight heute bereits gequeued (idempotent)."
+
+msgid "Prüfpunkt: {0}"
+msgstr "Prüfpunkt: {0}"
+
+msgid "Rechtliche Pruefung"
+msgstr "Rechtliche Pruefung"
+
+msgid "Schließen"
+msgstr "Schließen"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Screening fuer Kandidaten"
+msgstr "Screening fuer Kandidaten"
+
+msgid "Skills"
+msgstr "Skills"
+
+msgid "Sprachtests"
+msgstr "Sprachtests"
+
+msgid "Status Bewerbung"
+msgstr "Status Bewerbung"
+
+msgid "Status ändern"
+msgstr "Status ändern"
+
+msgid "Status-Verteilung"
+msgstr "Status-Verteilung"
+
+msgid "Status: {0}"
+msgstr "Status: {0}"
+
+msgid "Stelle"
+msgstr "Stelle"
+
+msgid "Stelle #{0} · Kandidat #{1}"
+msgstr "Stelle #{0} · Kandidat #{1}"
+
+msgid "Stelle ausschreiben"
+msgstr "Stelle ausschreiben"
+
+msgid "Stelle unbekannt"
+msgstr "Stelle unbekannt"
+
+msgid "Stellen"
+msgstr "Stellen"
+
+msgid "Suche (Name oder Skills)"
+msgstr "Suche (Name oder Skills)"
+
+msgid "Suchen..."
+msgstr "Suchen..."
+
+msgid "Task-Queue (Datenbank)"
+msgstr "Task-Queue (Datenbank)"
+
+msgid "Task-Status"
+msgstr "Task-Status"
+
+msgid "Tasks werden bei Bewerbungsprozessen gestartet."
+msgstr "Tasks werden bei Bewerbungsprozessen gestartet."
+
+msgid "Telefon"
+msgstr "Telefon"
+
+msgid "Titel"
+msgstr "Titel"
+
+msgid "Typ"
+msgstr "Typ"
+
+msgid "Uhrzeit"
+msgstr "Uhrzeit"
+
+msgid "Unbekannt"
+msgstr "Unbekannt"
+
+msgid "Ungueltiger Statusuebergang (Bewerbung hat sich zwischenzeitlich geaendert)."
+msgstr "Ungueltiger Statusuebergang (Bewerbung hat sich zwischenzeitlich geaendert)."
+
+msgid "Ungueltiger Statusuebergang (Whitelist ALLOWED_TRANSITIONS)."
+msgstr "Ungueltiger Statusuebergang (Whitelist ALLOWED_TRANSITIONS)."
+
+msgid "Ungueltiger Statusuebergang: 'Einstellen' erfordert den Status 'eingeladen' (Whitelist)."
+msgstr "Ungueltiger Statusuebergang: 'Einstellen' erfordert den Status 'eingeladen' (Whitelist)."
+
+msgid "Unzulaessiger Statusuebergang (Bewerbung ist nicht mehr aktiv)."
+msgstr "Unzulaessiger Statusuebergang (Bewerbung ist nicht mehr aktiv)."
+
+msgid "Vertrags-Check gequeued (Task #{0}) – Report in Agent-Details."
+msgstr "Vertrags-Check gequeued (Task #{0}) – Report in Agent-Details."
+
+msgid "Visum-Antrag bestaetigen"
+msgstr "Visum-Antrag bestaetigen"
+
+msgid "Visum-Schritte-Mail an Kandidaten ausgeloest."
+msgstr "Visum-Schritte-Mail an Kandidaten ausgeloest."
+
+msgid "Vorgang-Nr."
+msgstr "Vorgang-Nr."
+
+msgid "Website"
+msgstr "Website"
+
+msgid "Wird nach Agent-Ausfuehrung fuer Ihre Bewerbungen angezeigt."
+msgstr "Wird nach Agent-Ausfuehrung fuer Ihre Bewerbungen angezeigt."
+
+msgid "unbekannt"
+msgstr "unbekannt"
+
+msgid "z. B. Python"
+msgstr "z. B. Python"
+
+msgid "z.B. Senior Python Developer"
+msgstr "z.B. Senior Python Developer"
+
+msgid "{0} #{1}"
+msgstr "{0} #{1}"
+
+msgid "{0} {1} ({2})"
+msgstr "{0} {1} ({2})"
+
+msgid "{0} {1} {2} — {3:.0f}% ({4}){5}"
+msgstr "{0} {1} {2} — {3:.0f}% ({4}){5}"
+
+msgid "{0} {1} – {2} ({3}, {4})"
+msgstr "{0} {1} – {2} ({3}, {4})"
+
+msgid "{0} · {1}"
+msgstr "{0} · {1}"
+
+msgid "{0} – {1}\n\nDer Status wird endgültig auf „Abgelehnt“ gesetzt und eine Absage-Mail an den Kandidaten ausgelöst."
+msgstr "{0} – {1}\n\nDer Status wird endgültig auf „Abgelehnt“ gesetzt und eine Absage-Mail an den Kandidaten ausgelöst."
+
+msgid "{0} → {1}"
+msgstr "{0} → {1}"
+
+msgid "{0}/100 ({1})"
+msgstr "{0}/100 ({1})"
+
+msgid "· Bewerbung #{0}"
+msgstr "· Bewerbung #{0}"
+
+msgid "ℹ️ ICS-Datei noch nicht vorhanden."
+msgstr "ℹ️ ICS-Datei noch nicht vorhanden."
+
+msgid "ℹ️ {0} Berichte sind keiner eigenen Stelle zuzuordnen (Stelle nicht vorhanden oder anderer Arbeitgeber) und werden hier nicht angezeigt."
+msgstr "ℹ️ {0} Berichte sind keiner eigenen Stelle zuzuordnen (Stelle nicht vorhanden oder anderer Arbeitgeber) und werden hier nicht angezeigt."
+
+msgid "ℹ️ {0} ältere Protokolleinträge ohne Arbeitgeber-Bezug werden nicht angezeigt (sie könnten zu fremden Bewerbungen gehören)."
+msgstr "ℹ️ {0} ältere Protokolleinträge ohne Arbeitgeber-Bezug werden nicht angezeigt (sie könnten zu fremden Bewerbungen gehören)."
+
+msgid "→ {0}"
+msgstr "→ {0}"
+
+msgid "⚠️ Agent-Tasks konnten nicht geladen werden: {0}"
+msgstr "⚠️ Agent-Tasks konnten nicht geladen werden: {0}"
+
+msgid "⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)"
+msgstr "⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)"
+
+msgid "⚠️ Charts konnten nicht geladen werden: {0}"
+msgstr "⚠️ Charts konnten nicht geladen werden: {0}"
+
+msgid "⚠️ Keine passenden Kandidaten (mindestens 1 Must-Have-Skill nötig)."
+msgstr "⚠️ Keine passenden Kandidaten (mindestens 1 Must-Have-Skill nötig)."
+
+msgid "⚡ Status-Übersicht:"
+msgstr "⚡ Status-Übersicht:"
+
+msgid "⚪ {0}: Kein Bericht vorhanden"
+msgstr "⚪ {0}: Kein Bericht vorhanden"
+
+msgid "✅ Firmenprofil gespeichert."
+msgstr "✅ Firmenprofil gespeichert."
+
+msgid "✅ Status geändert: {0}"
+msgstr "✅ Status geändert: {0}"
+
+msgid "✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich."
+msgstr "✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich."
+
+msgid "✅ Visum-Schritte-Mail versendet."
+msgstr "✅ Visum-Schritte-Mail versendet."
+
+msgid "❌ Beschreibung muss mindestens 50 Zeichen haben."
+msgstr "❌ Beschreibung muss mindestens 50 Zeichen haben."
+
+msgid "❌ Fehler beim Erstellen der Stelle."
+msgstr "❌ Fehler beim Erstellen der Stelle."
+
+msgid "❌ Titel, Beschreibung, Arbeitsort und Must-Have-Skills sind Pflichtfelder."
+msgstr "❌ Titel, Beschreibung, Arbeitsort und Must-Have-Skills sind Pflichtfelder."
+
+msgid "👥 {0} passiver Match (keine aktive Bewerbung; Score absteigend)"
+msgstr "👥 {0} passiver Match (keine aktive Bewerbung; Score absteigend)"
+
+msgid "💬 Feedback – {0}"
+msgstr "💬 Feedback – {0}"
+
+msgid "💾 Feedback speichern"
+msgstr "💾 Feedback speichern"
+
+msgid "💾 Firmenprofil speichern"
+msgstr "💾 Firmenprofil speichern"
+
+msgid "💾 Status speichern"
+msgstr "💾 Status speichern"
+
+msgid "📄 Vertrags-Check starten"
+msgstr "📄 Vertrags-Check starten"
+
+msgid "📄 Vertragsmanagement (Contract Preflight)"
+msgstr "📄 Vertragsmanagement (Contract Preflight)"
+
+msgid "📅 Einladungs-Termin (wird in die Automatik-Mail übernommen):"
+msgstr "📅 Einladungs-Termin (wird in die Automatik-Mail übernommen):"
+
+msgid "📅 Termin in Kalender speichern (.ics) – HR"
+msgstr "📅 Termin in Kalender speichern (.ics) – HR"
+
+msgid "📋 Aktuelle Berichte: check_compliance (Primärquelle)"
+msgstr "📋 Aktuelle Berichte: check_compliance (Primärquelle)"
+
+msgid "📋 Archiv ({0}) – eingestellt / abgelehnt / zurückgezogen"
+msgstr "📋 Archiv ({0}) – eingestellt / abgelehnt / zurückgezogen"
+
+msgid "📢 Stelle ausschreiben"
+msgstr "📢 Stelle ausschreiben"
+
+msgid "📥 Aktive Bewerber ({0})"
+msgstr "📥 Aktive Bewerber ({0})"
+
+msgid "📩 Visum-Antrag bestaetigen"
+msgstr "📩 Visum-Antrag bestaetigen"
+
+msgid "🔎 Gefiltert auf {0}"
+msgstr "🔎 Gefiltert auf {0}"
+
+msgid "🔒 DSGVO: Dokumente werden erst ab Bewerbungsstatus 'Eingeladen' sichtbar. Noch gesperrt: {0}"
+msgstr "🔒 DSGVO: Dokumente werden erst ab Bewerbungsstatus 'Eingeladen' sichtbar. Noch gesperrt: {0}"
+
+msgid "🔒 Read-only: Alle Agent-generierten Ergebnisse für einen Kandidaten: Dokumenten-Verifizierung, Visum-Check, DSGVO, Match-Erklaerung."
+msgstr "🔒 Read-only: Alle Agent-generierten Ergebnisse für einen Kandidaten: Dokumenten-Verifizierung, Visum-Check, DSGVO, Match-Erklaerung."
+
+msgid "🔗 {0}"
+msgstr "🔗 {0}"
+
+msgid "🗄️ Archiv: compliance_protokoll (Legacy)"
+msgstr "🗄️ Archiv: compliance_protokoll (Legacy)"
+
+msgid "🤖 {0}"
+msgstr "🤖 {0}"
+
+msgid "🤝 Patenschaft (Mentoring)"
+msgstr "🤝 Patenschaft (Mentoring)"
+
+msgid "Akzeptiert: {0}"
+msgstr "Akzeptiert: {0}"
+
+msgid "Alle als gelesen markieren"
+msgstr "Alle als gelesen markieren"
+
+msgid "Alle als gelesen markiert"
+msgstr "Alle als gelesen markiert"
+
+msgid "Anmerkungen:"
+msgstr "Anmerkungen:"
+
+msgid "Ansehen"
+msgstr "Ansehen"
+
+msgid "Benachrichtigungen"
+msgstr "Benachrichtigungen"
+
+msgid "Bestätigen"
+msgstr "Bestätigen"
+
+msgid "Bewertung (0–5):"
+msgstr "Bewertung (0–5):"
+
+msgid "Bitte eine Stelle angeben (keine Vorbelegung gefunden)."
+msgstr "Bitte eine Stelle angeben (keine Vorbelegung gefunden)."
+
+msgid "Datei hier ablegen oder klicken"
+msgstr "Datei hier ablegen oder klicken"
+
+msgid "Empfehlung hilfreich"
+msgstr "Empfehlung hilfreich"
+
+msgid "Fachlich korrekt"
+msgstr "Fachlich korrekt"
+
+msgid "Feedback speichern"
+msgstr "Feedback speichern"
+
+msgid "Gewicht: {0}%"
+msgstr "Gewicht: {0}%"
+
+msgid "Kandidat:"
+msgstr "Kandidat:"
+
+msgid "Keine Benachrichtigungen"
+msgstr "Keine Benachrichtigungen"
+
+msgid "Keine Daten vorhanden"
+msgstr "Keine Daten vorhanden"
+
+msgid "Keine Profile gefunden."
+msgstr "Keine Profile gefunden."
+
+msgid "Keine Profile gefunden. Profile entstehen automatisch, wenn Lebensläufe hochgeladen und extrahiert werden (Admin: Upload → Extract)."
+msgstr "Keine Profile gefunden. Profile entstehen automatisch, wenn Lebensläufe hochgeladen und extrahiert werden (Admin: Upload → Extract)."
+
+msgid "Keine Selbstpräsentationen vorhanden. Kandidaten können ihre Video-Vorstellung im eigenen Portal (Tab 🗣️ Sprachtest) generieren."
+msgstr "Keine Selbstpräsentationen vorhanden. Kandidaten können ihre Video-Vorstellung im eigenen Portal (Tab 🗣️ Sprachtest) generieren."
+
+msgid "Laden..."
+msgstr "Laden..."
+
+msgid "Match-Score:"
+msgstr "Match-Score:"
+
+msgid "Modus: 🔍 Recruiting – Screening für ausgewählten Kandidaten."
+msgstr "Modus: 🔍 Recruiting – Screening für ausgewählten Kandidaten."
+
+msgid "Modus: 🧰 HR – Checkliste erstellen und freigeben."
+msgstr "Modus: 🧰 HR – Checkliste erstellen und freigeben."
+
+msgid "Onboarding generieren"
+msgstr "Onboarding generieren"
+
+msgid "Onboarding-Checkliste generieren"
+msgstr "Onboarding-Checkliste generieren"
+
+msgid "Pre-Screen erstellen"
+msgstr "Pre-Screen erstellen"
+
+msgid "Selbstpräsentationen der Kandidaten ({0})"
+msgstr "Selbstpräsentationen der Kandidaten ({0})"
+
+msgid "Skill 8: Feedback speichern"
+msgstr "Skill 8: Feedback speichern"
+
+msgid "Skills richtig"
+msgstr "Skills richtig"
+
+msgid "Speichert Feedback in SQLite und passt Matching-Gewichtung dynamisch an."
+msgstr "Speichert Feedback in SQLite und passt Matching-Gewichtung dynamisch an."
+
+msgid "Standort zutreffend"
+msgstr "Standort zutreffend"
+
+msgid "Startdatum:"
+msgstr "Startdatum:"
+
+msgid "Stelle:"
+msgstr "Stelle:"
+
+msgid "Stellenprofil:"
+msgstr "Stellenprofil:"
+
+msgid "Vorschau"
+msgstr "Vorschau"
+
+msgid "{0}:"
+msgstr "{0}:"
+
+msgid "Dokumente (PDF/TXT/Video, mehrere moeglich):"
+msgstr "Dokumente (PDF/TXT/Video, mehrere moeglich):"

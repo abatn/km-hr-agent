@@ -1,0 +1,83 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--no-sandbox"],
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/batnini/mimo-agents/km-hr-agent"],
+      "enabled": true
+    },
+    "fetch": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-fetch"],
+      "enabled": true
+    },
+    "pdf-reader": {
+      "type": "local",
+      "command": ["/home/batnini/mimo-agents/km-hr-agent/.venv-pdf/bin/python3", "/home/batnini/mimo-agents/km-hr-agent/mcp-pdf-server.py"],
+      "enabled": true
+    },
+    "meeting-tools": {
+      "type": "local",
+      "command": ["/home/batnini/mimo-agents/km-hr-agent/.venv-pdf/bin/python3", "/home/batnini/mimo-agents/km-hr-agent/mcp-meeting-server.py"],
+      "enabled": true
+    },
+    "ansvar-german-law": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote@0.1.38", "https://gateway.ansvar.eu/mcp"],
+      "enabled": true
+    },
+    "ansvar-french-law": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote@0.1.38", "https://gateway.ansvar.eu/mcp"],
+      "enabled": true
+    },
+    "ansvar-swiss-law": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote@0.1.38", "https://gateway.ansvar.eu/mcp"],
+      "enabled": true
+    },
+    "email-sender": {
+      "type": "local",
+      "command": ["/home/batnini/mimo-agents/km-hr-agent/.venv-pdf/bin/python3", "/home/batnini/mimo-agents/km-hr-agent/mcp-email-server.py"],
+      "enabled": true
+    },
+    "anysearch": {
+      "type": "remote",
+      "url": "https://api.anysearch.com/mcp",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "X-Anysearch-Client": "mcp/1.0.0"
+      }
+    },
+    "hr-benchmark": {
+      "type": "local",
+      "command": ["python3", "connectors/hr-benchmark-server.py"],
+      "enabled": true,
+      "_comment": "ZYTHR-Formel: (score/max) × weight"
+    },
+    "salary-data": {
+      "type": "local",
+      "command": ["python3", "connectors/salary-data-server.py"],
+      "enabled": true,
+      "_comment": "BambooHR-Formel: Min/Mid/Max = 25th/50th/75th"
+    },
+    "prescreen-config": {
+      "type": "local",
+      "command": ["python3", "connectors/prescreen-config-server.py"],
+      "enabled": true,
+      "_comment": "CareerPlug: 15-30 Minuten"
+    },
+    "language-test": {
+      "type": "local",
+      "command": ["python3", "scripts/language-test-server.py"],
+      "enabled": true,
+      "_comment": "CEFR-Niveautests: generate_test, score_answer, get_cefr_level"
+    }
+  }
+}
