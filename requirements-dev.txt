@@ -1,5 +1,7 @@
 # Test-/Tool-Abhängigkeiten — KEINE Produktions-Dependencies (P2, §H-15, 26.09.2026)
 # Design-Entscheidung (keine Doku-Quelle, die Dev-Deps fordert): Kennzeichnungspflicht nach Lab-Prinzip.
-# Produktiv-Dependencies stehen unverändert in requirements.txt (streamlit, PyMuPDF, python-dateutil, fastmcp).
-playwright>=1.63.0   # 20 py-Dateien in tests/ + scripts/visual_audit.py; webui/ = 0; PyPI v1.63.0, Apache-2.0 (Abruf 25.09.2026)
-pytest               # 26 Unit-Tests (AGENTS.md Quickstart)
+# Produktiv-Dependencies stehen in requirements.txt.
+pytest
+pytest-asyncio>=1.0       # `asyncio_mode = auto` (pytest.ini) + NiceGUI async-Fixture `user`
+pyflakes                  # Lint (CI + tests/test_no_undefined_names.py)
+playwright>=1.63.0        # 20 py-Dateien in tests/ + scripts/visual_audit.py; PyPI v1.63.0, Apache-2.0 (Abruf 25.09.2026)
