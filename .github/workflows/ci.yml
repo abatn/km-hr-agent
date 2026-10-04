@@ -107,6 +107,9 @@ jobs:
           mkdir -p data
           cp tests/fixtures/seed.db data/feedback.db
 
+      - name: /tmp/opencode anlegen (conftest-Spiegel-Verzeichnis)
+        run: mkdir -p /tmp/opencode
+
       - name: .env (CI-Dummy, keine echten Secrets)
         run: |
           printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
