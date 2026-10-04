@@ -1,4 +1,24 @@
+# Produktiv-Dependencies des KM-HR-Agenten (NiceGUI-App + Runner + Connectoren)
+# Stand 04.10.2026 — ermittelt aus den tatsächlichen Importen (webui/, scripts/, connectors/).
+
+# UI (einzige App)
+nicegui>=3.0.0            # webui/ (24× importiert)
+babel>=2.11               # i18n-Katalog-Kompilierung (webui/locales/*.po → .mo)
+
+# Sicherheit / HTTP
+argon2-cffi>=23.1         # argon2id-Passwort-Hashing (webui/logic.py)
+requests>=2.31            # direkte NVIDIA-API im Runner (scripts/agent-runner.py)
+
+# Dokumente / PDF
+PyMuPDF>=1.23.0           # PDF-Textextraktion (mcp-pdf-server.py, verify-documents)
+reportlab>=4.0            # PDF-Export (webui/components.py export_candidates_pdf)
+Pillow>=10.0              # Bildverarbeitung (PIL)
+
+# MCP-Server
+fastmcp>=4.0.0            # mcp-*-server.py + connectors/
+
+# Utilities
+python-dateutil>=2.8.0    # Datumsarithmetik
+
+# Archiviert (Streamlit-Altstand app.py — nur Paritäts-Referenz, nicht gestartet)
 streamlit>=1.30.0
-PyMuPDF>=1.23.0
-python-dateutil>=2.8.0
-fastmcp>=4.0.0

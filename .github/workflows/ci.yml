@@ -1,0 +1,120 @@
+name: CI
+
+# Läuft bei jedem Push auf main und bei jedem Pull Request.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────
+  # Qualität: Lint, Compile, Secret-Scan, i18n — braucht KEINE Datenbank.
+  # ──────────────────────────────────────────────────────────────────────
+  quality:
+    name: Qualität (Lint · Compile · Secrets · i18n)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Dependencies installieren
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt pyflakes
+
+      - name: Lint (pyflakes — nur blockierende Fehler)
+        # Das Projekt hat keine Lint-Config (AGENTS.md: „Formatting/linting: None configured").
+        # Blockiert wird nur, was echte Bugs ist (undefined name, Syntax); Hinweise
+        # (unbenutzte Importe, f-Strings) werden berichtet, aber nicht gewertet.
+        run: |
+          set -e
+          python -m pyflakes webui/ scripts/ connectors/ tests/ > /tmp/pyflakes.txt 2>&1 || true
+          echte=$(grep -viE "imported but unused|f-string is missing placeholders|assigned to but never used|redefinition of unused|unable to detect undefined names" /tmp/pyflakes.txt || true)
+          if [ -n "$echte" ]; then
+            echo "::error::pyflakes: blockierende Fehler"; echo "$echte"; exit 1
+          fi
+          echo "pyflakes: keine blockierenden Fehler ✓ ($(wc -l < /tmp/pyflakes.txt) Hinweise)"
+
+      - name: Syntax-Compile
+        run: python -m compileall -q webui/ scripts/ connectors/
+
+      - name: Secret-Scan (keine Tokens/Keys im Repo)
+        run: |
+          set -e
+          treffer=$(grep -rInE "github_pat_[A-Za-z0-9_]{20,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----" \
+            --include="*.py" --include="*.md" --include="*.json" --include="*.yml" --include="*.yaml" \
+            --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.venv-streamlit \
+            --exclude-dir=.venv-pdf --exclude-dir=personio-mcp-server . || true)
+          if [ -n "$treffer" ]; then
+            echo "::error::Mögliches Secret im Repo gefunden:"; echo "$treffer"; exit 1
+          fi
+          echo "Secret-Scan sauber ✓"
+
+      - name: i18n-Kataloge konsistent
+        run: |
+          python - <<'PY'
+          import gettext, pathlib, sys
+          loc = pathlib.Path("webui/locales")
+          langs = ["de", "en", "fr", "ar"]
+          cats = {}
+          for l in langs:
+              mo = loc / l / "LC_MESSAGES" / "messages.mo"
+              if not mo.is_file():
+                  sys.exit(f"FEHLT: {mo}")
+              with open(mo, "rb") as f:
+                  cats[l] = {k for k in gettext.GNUTranslations(f)._catalog if k}
+          base = cats["de"]
+          for l in langs:
+              if cats[l] != base:
+                  sys.exit(f"{l}: Key-Menge != DE ({cats[l] ^ base})")
+          print(f"i18n OK: {len(base)} Keys × {len(langs)} Sprachen ✓")
+          PY
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Tests: brauchen data/feedback.db. Die echte DB ist (DSGVO) NICHT im Repo
+  # — stattdessen der ANONYMISIERTE Seed tests/fixtures/seed.db
+  # (erzeugt mit scripts/seed_ci_db.py; IDs/Status/Fixtures bleiben, Personenbezug raus).
+  # ──────────────────────────────────────────────────────────────────────
+  tests:
+    name: Tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Dependencies installieren
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Seed-DB bereitstellen (anonymisiert)
+        run: |
+          mkdir -p data
+          cp tests/fixtures/seed.db data/feedback.db
+
+      - name: .env (CI-Dummy, keine echten Secrets)
+        run: |
+          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
+
+      - name: pytest
+        # Ausgeschlossen (Daten nicht im Repo, DSGVO): Tests, die die
+        # ergebnisse/-Compliance-Reports bzw. testdaten/-Profile benötigen.
+        run: |
+          pytest -q \
+            --ignore=tests/test_r33_compliance_reports.py \
+            --deselect tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname

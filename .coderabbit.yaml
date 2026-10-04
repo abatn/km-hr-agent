@@ -1,0 +1,53 @@
+# CodeRabbit-Konfiguration — KM-HR-Agent
+# Docs: https://docs.coderabbit.ai/reference/configuration
+
+language: de
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+
+  path_instructions:
+    - path: "webui/**"
+      instructions: >-
+        NiceGUI-App. Frameworkfreie Layer (db.py/logic.py) strikt von der UI trennen.
+        Deutsche UI. i18n: kein f-String in `_()` → `_("…{0}…").format(x=…)`;
+        UI-Strings aus Modul-Konstanten erst zur RENDERZEIT übersetzen (nie beim Import).
+        Änderungen an `_MENU_ITEMS`/`_TAB_MAP`/`PAGE_MAP` auf Renderzeit-Auflösung prüfen.
+    - path: "knowledge/**"
+      instructions: >-
+        Source of Truth (MD-first). Jede Zahl/Regel braucht eine externe Quelle
+        (Gesetz/Studie/offizielle Doku) oder die Kennzeichnung „Design-Entscheidung".
+        Bei MD↔Code-Konflikten gilt: MD korrigieren, nicht den Code.
+    - path: "skills/**"
+      instructions: >-
+        Skill-Definitionen (SKILL.md). Müssen konsistent zum Code und zu knowledge/ sein.
+    - path: "scripts/**"
+      instructions: >-
+        agent-runner.py + MCP-Server. Externe Dienste nur über die Connectoren aus
+        opencode.json. LLM-Aufrufe nur über die dokumentierte NVIDIA-API (mit Backoff).
+    - path: "tests/**"
+      instructions: >-
+        Tests nutzen den DB-Spiegel aus tests/conftest.py — nie direkt in die Live-DB
+        schreiben. E2E nur isoliert über tests/e2e_isolation.py.
+    - path: ".github/workflows/**"
+      instructions: >-
+        CI: Lint (nur blockierende pyflakes-Fehler), Compile, Secret-Scan, i18n-Check
+        und pytest mit dem anonymisierten Seed (tests/fixtures/seed.db).
+
+  tools:
+    markdownlint:
+      enabled: true
+
+chat:
+  auto_reply: true
