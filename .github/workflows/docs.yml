@@ -1,0 +1,32 @@
+name: Docs & Schema
+
+# Prüft Wissen/Markdown/Recht + DB-Schema — nur wenn Doku/Wissen geändert wurde.
+on:
+  push:
+    branches: [main]
+    paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/fixtures/**", "scripts/ci/**"]
+  pull_request:
+    paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/fixtures/**", "scripts/ci/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: Wissen · Recht · Schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Interne Links (knowledge/, skills/)
+        run: python3 scripts/ci/checks.py docs
+      - name: Recht — Mehrsprachigkeit + Fassungshinweis
+        run: python3 scripts/ci/checks.py legal
+      - name: DB-Schema ↔ erwartete Tabellen
+        run: python3 scripts/ci/checks.py schema
+      - name: Markdown-Struktur (Markdownlint)
+        uses: DavidAnson/markdownlint-cli2-action@v17
+        continue-on-error: true
+        with:
+          globs: "knowledge/**/*.md skills/**/*.md README.md CONTRIBUTING.md"

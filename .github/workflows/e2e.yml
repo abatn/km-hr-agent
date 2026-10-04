@@ -1,0 +1,49 @@
+name: E2E
+
+# Playwright-E2E über den Isolations-Harness (tests/e2e_isolation.py).
+# Startet eine isolierte App-Instanz (Spiegel-DB, eigener Port) — NIE gegen die Live-App.
+# Die Skripte brauchen die ergebnisse/ + testdaten/-Daten NICHT zwingend; nicht lauffähige
+# Skripte werden im Harness als Fehler gemeldet (seit dem Fehlerweitergabe-Fix).
+on:
+  pull_request:
+    paths: ["webui/**", "scripts/**", "tests/e2e_*.py", "tests/e2e_isolation.py", "tests/e2e_harness.py", "tests/fixtures/**"]
+  schedule:
+    - cron: "0 3 * * *"   # nightly
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    name: E2E isoliert (Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+      - name: Playwright-Browser installieren
+        run: python -m playwright install --with-deps chromium
+      - name: Seed-DB + /tmp/opencode + .env
+        run: |
+          mkdir -p data /tmp/opencode
+          cp tests/fixtures/seed.db data/feedback.db
+          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
+      - name: E2E isoliert ausführen
+        # Freier Port wird im Harness gesetzt; Ergebnis-Logs landen unter /tmp/opencode/e2e-iso-*
+        run: python3 tests/e2e_isolation.py --port 8097
+      - name: Artefakte sichern (Logs/Screenshots bei Fehler)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-logs
+          path: |
+            /tmp/opencode/e2e-iso-*
+            **/*.png
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,0 +1,49 @@
+name: Scripts & Runner
+
+# Shell-Skripte + Agent-Runner-Smoke (dry-run, keine Nebenwirkungen).
+on:
+  push:
+    branches: [main]
+    paths: ["*.sh", "scripts/**"]
+  pull_request:
+    paths: ["*.sh", "scripts/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  shell:
+    name: ShellCheck + bash -n
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: bash -n (Syntax)
+        run: |
+          set -e
+          for f in $(git ls-files '*.sh'); do
+            echo "→ $f"; bash -n "$f"
+          done
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        continue-on-error: true
+        with:
+          scandir: "."
+
+  runner:
+    name: Agent-Runner Dry-Run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Seed-DB + .env
+        run: |
+          mkdir -p data /tmp/opencode
+          cp tests/fixtures/seed.db data/feedback.db
+          printf 'KMHR_STORAGE_SECRET=ci\nKMHR_ADMIN_SEED_PASSWORD=ci\n' > .env
+      - name: Runner --once --dry-run (keine Mails, keine LLM-Calls)
+        run: python3 scripts/agent-runner.py --once --dry-run

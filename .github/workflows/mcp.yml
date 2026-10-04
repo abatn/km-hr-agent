@@ -1,0 +1,30 @@
+name: MCP-Connectoren
+
+# Contract-Tests der lokalen MCP-Server + opencode.json-Validität.
+# Remote-Server werden NICHT kontaktiert (externe Erreichbarkeit = kein CI-Gate).
+on:
+  push:
+    branches: [main]
+    paths: ["opencode.json", "connectors/**", "scripts/language-test-server.py", "scripts/ci/**", "mcp-*.py"]
+  pull_request:
+    paths: ["opencode.json", "connectors/**", "scripts/language-test-server.py", "scripts/ci/**", "mcp-*.py"]
+
+permissions:
+  contents: read
+
+jobs:
+  mcp:
+    name: opencode.json + Handshake
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: opencode.json validieren (Pfade, Befehle)
+        run: python3 scripts/ci/checks.py mcp
+      - name: Handshake + tools/list (portable Server)
+        run: python3 scripts/ci/mcp_handshake.py

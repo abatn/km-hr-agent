@@ -37,9 +37,12 @@ jobs:
         # Das Projekt hat keine Lint-Config (AGENTS.md: „Formatting/linting: None configured").
         # Blockiert wird nur, was echte Bugs ist (undefined name, Syntax); Hinweise
         # (unbenutzte Importe, f-Strings) werden berichtet, aber nicht gewertet.
+        # Aktiver Code inkl. Root-MCP-Server; app.py (archiviert) und
+        # docs/sphinxats-github-app.py (Referenz) sind bewusst ausgenommen.
         run: |
           set -e
-          python -m pyflakes webui/ scripts/ connectors/ tests/ > /tmp/pyflakes.txt 2>&1 || true
+          python -m pyflakes webui/ scripts/ connectors/ tests/ \
+            mcp-pdf-server.py mcp-meeting-server.py mcp-email-server.py > /tmp/pyflakes.txt 2>&1 || true
           echte=$(grep -viE "imported but unused|f-string is missing placeholders|assigned to but never used|redefinition of unused|unable to detect undefined names" /tmp/pyflakes.txt || true)
           if [ -n "$echte" ]; then
             echo "::error::pyflakes: blockierende Fehler"; echo "$echte"; exit 1

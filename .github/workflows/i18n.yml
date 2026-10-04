@@ -1,0 +1,28 @@
+name: i18n
+
+# Katalog-Konsistenz, PO-Syntax, Platzhalter, PO↔MO, RTL.
+on:
+  push:
+    branches: [main]
+    paths: ["webui/locales/**", "webui/i18n.py", "knowledge/system/i18n.md", "scripts/ci/**"]
+  pull_request:
+    paths: ["webui/locales/**", "webui/i18n.py", "knowledge/system/i18n.md", "scripts/ci/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  i18n:
+    name: Kataloge + Platzhalter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: i18n-Prüfung (PO/MO, Keys, Platzhalter)
+        run: python3 scripts/ci/checks.py i18n
+      - name: i18n-Tests
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+          pytest -q tests/test_i18n.py

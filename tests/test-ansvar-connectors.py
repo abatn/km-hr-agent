@@ -216,7 +216,10 @@ def main():
     print(f"{'-'*40}")
     passed = sum(1 for _, ok in results if ok)
     print(f"Gesamt: {passed}/{len(results)} bestanden")
+    # CI-Fix (04.10.2026): fehlgeschlagene Prüfungen müssen einen Fehlerstatus
+    # erzeugen (vorher immer Exit 0 → CI hätte Fehler nie bemerkt).
+    return 0 if passed == len(results) else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

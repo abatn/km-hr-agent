@@ -214,7 +214,12 @@ def main() -> int:
 
     if args.no_run:
         return 0
-    return 0 if (diff_rc == 0 and sha_rc == 0) else 1
+    # Fehlerweitergabe (CI-Fix 04.10.2026): Ein fehlgeschlagenes E2E-Skript MUSS den
+    # Gesamtlauf fehlschlagen lassen — vorher wurde nur DB-Diff/-Hash ausgewertet.
+    fehler = [n for n, rc, _ in results if rc != 0]
+    if fehler:
+        print(f"[iso] FEHLGESCHLAGENE Skripte ({len(fehler)}): {', '.join(fehler)}")
+    return 0 if (diff_rc == 0 and sha_rc == 0 and not fehler) else 1
 
 
 if __name__ == "__main__":
