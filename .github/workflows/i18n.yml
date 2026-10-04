@@ -8,6 +8,8 @@ on:
   pull_request:
     paths: ["webui/locales/**", "webui/i18n.py", "knowledge/system/i18n.md", "scripts/ci/**"]
 
+workflow_dispatch:
+
 permissions:
   contents: read
 

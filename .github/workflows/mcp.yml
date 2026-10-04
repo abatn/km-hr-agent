@@ -9,6 +9,8 @@ on:
   pull_request:
     paths: ["opencode.json", "connectors/**", "scripts/language-test-server.py", "scripts/ci/**", "mcp-*.py"]
 
+workflow_dispatch:
+
 permissions:
   contents: read
 

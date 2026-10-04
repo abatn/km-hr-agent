@@ -8,6 +8,8 @@ on:
   pull_request:
     paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/fixtures/**", "scripts/ci/**"]
 
+workflow_dispatch:
+
 permissions:
   contents: read
 
