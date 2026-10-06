@@ -187,6 +187,12 @@ Arbeite einen Skill nach dem anderen ab. Nicht alles auf einmal.
 
 **Recherche (15.09.2026):** 6 Quellen geprüft (ZYTHR, BambooHR, CareerPlug, Zainali8315/GitHub, SHRM, HuggingFace). Keine liefert validierte Matching-Gewichte. Die Gewichte werden durch den Feedback-Loop (Phase 4) iterativ optimiert.
 
+## CI/CD (neu 06.10.2026): Sync lokal → GitHub → Contabo VPS
+
+- **Ablauf:** lokal `git push` (RefSpec `remote.origin.push = master:main`, einmalig gesetzt) → GitHub-`CI` grün → **`deploy-contabo.yml`** (Workflow `workflow_run`) → SSH auf `root@169.58.83.32` → `git reset --hard $TARGET_SHA` + `git clean -fd` → `systemctl restart km-hr-agent` → Health-Check `curl 127.0.0.1:8080` → SHA-Abgleich.
+- **Auth:** Key-Paar `kmhr-deploy` (ed25519) — Pub-Key = read-only Deploy-Key im Repo (id 165560904), Privat-Key = Secret `CONTABO_SSH_KEY`; Server-Remote `git@github.com:…` mit `core.sshCommand`. Spec + Design-Entscheidungen: `knowledge/system/deploy-pipeline.md`; Beweislog: `ergebnisse/entscheidungen.md` 06.10.2026.
+- **Gilt nie als synchron** (gitignored, unberührt): `.env*`, `data/`, `testdaten/`, `ergebnisse/`, `.venv-*/`. Rollback = SSH `git reset --hard <SHA>` (gleiche Befehle).
+
 ## Conventions
 - Formatting/linting: None configured
 - Patterns to follow: NiceGUI-App (webui/, frameworkfreie Layer db.py/logic.py), German UI, MCP-Connectors for external services (filesystem, pdf-reader, meeting-tools, email-sender, ansvar-*-law, hr-benchmark, salary-data, prescreen-config), Lab-Prinzip (skills + knowledge + connector, no separate codebase); Tool-Namen-Pflicht: nur MCP-Server-Namen aus opencode.json (kein websearch/webfetch) — siehe `knowledge/system/mcp-connector-config.md` §Tool-Namen-Pflicht
