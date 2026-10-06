@@ -1,0 +1,77 @@
+name: Deploy Contabo
+
+# CD: nach grünem CI auf main -> SSH auf Contabo VPS -> git reset --hard -> App-Neustart.
+# Spec: knowledge/system/deploy-pipeline.md (Quellen: GitHub-Doku Continuous deployment + workflow_run + secrets + REST deploy keys)
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-contabo
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Contabo VPS (pull + restart)
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SSH-Key + known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          umask 077
+          printf '%s\n' "${{ secrets.CONTABO_SSH_KEY }}" > ~/.ssh/id_contabo
+          chmod 600 ~/.ssh/id_contabo
+          ssh-keyscan -H 169.58.83.32 >> ~/.ssh/known_hosts
+
+      - name: Deploy (reset auf CI-SHA + restart + health)
+        env:
+          TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          ssh -i "$HOME/.ssh/id_contabo" -o IdentitiesOnly=yes -o BatchMode=yes \
+            -o StrictHostKeyChecking=accept-new root@169.58.83.32 'bash -s' <<EOF
+          set -e
+          cd /opt/km-hr-agent
+          echo "TARGET_SHA=\$TARGET_SHA"
+          git fetch origin main
+          git reset --hard "\$TARGET_SHA"
+          git clean -fd
+          if git diff --name-only HEAD@{1} HEAD -- requirements.txt | grep -q .; then
+            echo "requirements.txt geaendert -> pip install"
+            .venv-streamlit/bin/pip install -r requirements.txt -q
+          else
+            echo "requirements.txt unveraendert -> pip uebersprungen"
+          fi
+          systemctl restart km-hr-agent
+          for i in \$(seq 1 12); do
+            if curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then
+              echo "health ok (try \$i)"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "HEALTH-FAIL nach 60s"
+          journalctl -u km-hr-agent -n 40 --no-pager
+          exit 1
+          EOF
+
+      - name: SHA-Abgleich (Server == GitHub)
+        env:
+          TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          SERVER_SHA=$(ssh -i "$HOME/.ssh/id_contabo" -o IdentitiesOnly=yes -o BatchMode=yes \
+            root@169.58.83.32 'cd /opt/km-hr-agent && git rev-parse HEAD')
+          echo "GitHub TARGET_SHA: $TARGET_SHA"
+          echo "Server HEAD:       $SERVER_SHA"
+          if [ "$SERVER_SHA" != "$TARGET_SHA" ]; then
+            echo "SHA-MISMATCH"; exit 1
+          fi
+          echo "SHA-Abgleich OK"
