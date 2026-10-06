@@ -37,12 +37,13 @@ jobs:
           TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           ssh -i "$HOME/.ssh/id_contabo" -o IdentitiesOnly=yes -o BatchMode=yes \
-            -o StrictHostKeyChecking=accept-new root@169.58.83.32 'bash -s' <<EOF
+            -o StrictHostKeyChecking=accept-new \
+            root@169.58.83.32 "TARGET_SHA=${TARGET_SHA} bash -s" <<'EOF'
           set -e
           cd /opt/km-hr-agent
-          echo "TARGET_SHA=\$TARGET_SHA"
+          echo "TARGET_SHA=$TARGET_SHA"
           git fetch origin main
-          git reset --hard "\$TARGET_SHA"
+          git reset --hard "$TARGET_SHA"
           git clean -fd
           if git diff --name-only HEAD@{1} HEAD -- requirements.txt | grep -q .; then
             echo "requirements.txt geaendert -> pip install"
@@ -51,9 +52,9 @@ jobs:
             echo "requirements.txt unveraendert -> pip uebersprungen"
           fi
           systemctl restart km-hr-agent
-          for i in \$(seq 1 12); do
+          for i in $(seq 1 12); do
             if curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then
-              echo "health ok (try \$i)"
+              echo "health ok (try $i)"
               exit 0
             fi
             sleep 5
