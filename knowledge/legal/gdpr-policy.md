@@ -60,7 +60,7 @@
 |---|---|
 | **Auskunft** (Art. 15) | Kandidat kann jederzeit Auskunft über gespeicherte Daten verlangen |
 | **Berichtigung** (Art. 16) | Unrichtige Daten werden unverzüglich korrigiert |
-| **Löschung** (Art. 17) | Daten werden nach 6 Monaten automatisch gelöscht – **seit Phase 4.5 (11.09.2026) technisch umgesetzt:** `dsgvo_cleanup()` bei App-Start löscht `applications` + `application_status_history` 183 Tage nach Prozessende (letzter Statuswechsel bei finalem Status; Details: `knowledge/lifecycle/application-status.md`) |
+| **Löschung** (Art. 17) | Daten werden nach 6 Monaten automatisch gelöscht – **seit Phase 4.5 (11.09.2026) technisch umgesetzt:** `dsgvo_cleanup()` bei App-Start löscht **4 Tabellen**: `applications` + `application_status_history` + passende `agent_tasks` (payload-`application_id`) sowie im zweiten Zweig `candidate_documents` (+ Dateien) — 183 Tage nach Prozessende bzw. Upload (Messung `dsgvo_cleanup()` ⓘ08.10.2026; frühere Fassung nannte 2 Tabellen; Details: `knowledge/lifecycle/application-status.md`) |
 | **Einschränkung** (Art. 18) | Auf Verlangen: Daten werden nur gespeichert, nicht verarbeitet |
 | **Datenübertragbarkeit** (Art. 20) | Kandidat kann Daten in maschinenlesbarem Format erhalten |
 | **Widerspruch** (Art. 21) | Kandidat kann der Verarbeitung widersprechen |
@@ -71,7 +71,7 @@
 
 ### 5a. Technische Maßnahmen
 - **Lokale Verarbeitung:** Keine DatenSendung an externe Server (ohne Einwilligung)
-- **Verschlüsselung:** AES-256 für gespeicherte Daten
+- **Verschlüsselung:** ⚠️ **nicht umgesetzt** — die frühere Behauptung „AES-256 für gespeicherte Daten" ist im Code **nicht belegt** (0 Treffer, Messung ⓘ08.10.2026). Real: Passwort-Hashing argon2id, DB/Dateien unverschlüsselt → **offener Punkt (Nutzer-Entscheidung nötig)**
 - **Zugriffskontrolle:** Nur autorisierte Personen
 - **Protokollierung:** Vollständiges Audit-Log
 
@@ -112,7 +112,7 @@
 - Bei Verstoß: Match wird nicht fortgesetzt
 
 ### 8b. Automatische Löschung
-- Cron-Job: Täglich prüfen, ob Daten älter als 6 Monate
+- Kein Cron-Job: `run_dsgvo_cleanup_once()` läuft beim **App-Start** (`app_bootstrap()`) — bei dauerhaft laufender App ohne Neustart kein Lauf; der Tages-Marker greift nur bei übergebenem Marker-Dict (Messung ⓘ08.10.2026; frühere Fassung „Cron-Job: Täglich" war falsch)
 - Löschung: Vollständig + Protokollierung
 - Ausnahme: Compliance-Daten (36 Monate Pflicht)
 

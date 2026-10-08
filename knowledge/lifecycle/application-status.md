@@ -72,7 +72,7 @@ eingegangen ──▶ angesehen ──▶ eingeladen ──▶ eingestellt
 |---|---|
 | **Prozessende** | Datum der letzten Statusänderung einer Bewerbung (`aktualisiert_am`) bei finalem Status (`abgelehnt`, `eingestellt`, `zurückgezogen`) |
 | **Frist** | 6 Monate (183 Tage) nach Prozessende |
-| **Was wird gelöscht** | Die `applications`-Zeile **und** alle zugehörigen `application_status_history`-Zeilen |
+| **Was wird gelöscht** | Die `applications`-Zeile, alle zugehörigen `application_status_history`-Zeilen **und** passende `agent_tasks` (payload-`application_id`) sowie im zweiten Zweig `candidate_documents` + Dateien — **4 Tabellen** (`dsgvo_cleanup()`, Messung ⓘ08.10.2026; frühere Fassung nannte nur 2) |
 | **Was bleibt** | Aktive Bewerbungen (`eingegangen/angesehen/eingeladen`) sind nie löschfähig; `candidates`/`employers`-Stammsätze bleiben (eigene Fristen, siehe `gdpr-policy.md`) |
 | **Ausführung** | `dsgvo_cleanup()` läuft beim App-Start (ein Durchlauf pro Session, nach `set_page_config`, vor dem Login-Gate); fehlgeschlagener Lauf blockiert die App nicht (try/except + Log) |
 | **Protokoll** | Ergebnis wird in `st.session_state['dsgvo_cleanup']` gehalten; gelöschte Zeilen werden gezählt und im Log vermerkt |

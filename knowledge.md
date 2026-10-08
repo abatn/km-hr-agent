@@ -16,7 +16,7 @@ A minimal web prototype for testing 23 HR recruiting skills using AI. NiceGUI (`
 
 **Sidebar entry:** "🏢 Arbeitgeber-Portal" – requires employer session (`employer_logged_in`).
 
-**4 tabs:**
+**4 Tabs (Streamlit-Ära) — heute 11 Seiten (NiceGUI `PAGE_MAP` `employer.py`, Stand 28.09.2026; Messung ⓘ08.10.2026):**
 
 | Tab | Funktion |
 |---|---|
@@ -25,7 +25,7 @@ A minimal web prototype for testing 23 HR recruiting skills using AI. NiceGUI (`
 | 👥 Kandidaten | Anonymized ranking (score 0–100) – DSGVO: pseudonym only ("Kandidat #12"), no contact data, no resume files; salary shown as compatibility only |
 | 💬 Feedback | 1–5 sliders (fachlich, skills, standort, empfehlung), stored in existing `feedback` table with match_id `employer-job-{job_id}-cand-{candidate_id}-{date}` |
 
-**Matching rule (Tab 👥):** candidate status ≥ `lebenslauf_hochgeladen` AND ≥ 1 must-have skill match AND experience ≥ 50 % of requirement. Score: skills 60 + experience 20 + language 10 + location 10 (capped at 100).
+**Matching rule (Tab 👥):** candidate status ≥ `lebenslauf_hochgeladen` AND ≥ 1 must-have skill match AND experience ≥ 50 % of requirement. Score: Baseline-Gewichte `BASELINE_GEWINCHTE` (kern 30, erfahrung 25, bildung 15, standort 10, branche 10, soft 10, sprache 0), normalisiert auf Summe 100 (Messung ⓘ08.10.2026; frühere Fassung „skills 60 + experience 20 + language 10 + location 10" war falsch).
 
 **E2E verified:** login → job posting → anonymized ranking → feedback saved (test employer: hr@techvision.de / sicher123, job #1 "Senior Cloud/DevOps Engineer")
 
@@ -46,11 +46,18 @@ source .venv-streamlit/bin/activate
 ```
 
 ## Dependencies
+Quelle: `requirements.txt` (Stand 04.10.2026, aus den tatsächlichen Importen) — die frühere Liste war veraltet (Streamlit an erster Stelle, `nicegui`/`babel`/`argon2-cffi` fehlten).
 ```
-streamlit>=1.30.0
-PyMuPDF>=1.23.0
-python-dateutil>=2.8.0
+nicegui>=3.0.0            # UI (einzige App, webui/)
+babel>=2.11               # i18n-Katalog-Kompilierung
+argon2-cffi>=23.1         # argon2id-Passwort-Hashing
+requests>=2.31            # direkte NVIDIA-API im Runner
+PyMuPDF>=1.23.0           # PDF-Textextraktion
+reportlab>=4.0            # PDF-Export
+Pillow>=10.0
 fastmcp>=4.0.0
+python-dateutil>=2.8.0
+streamlit>=1.30.0         # Archiviert (Altstand app.py, nur Paritäts-Referenz)
 ```
 
 ## Project Structure
@@ -60,7 +67,7 @@ fastmcp>=4.0.0
 | `app.py` | **ARCHIVIERT 23.09.2026** — Streamlit-Altstand (4040 Z., Stand 23.09.2026, damals 20 Skills), nur Paritäts-Referenz; Main-App = `webui/` (NiceGUI, 23 Skills) |
 | `testdaten/` | Test data: profiles (profil-*.md), resumes (*.txt/*.pdf), job descriptions (stellenprofil-*.txt) |
 | `ergebnisse/` | Generated results (match reports, compliance checks, emails, etc.) |
-| `knowledge/` | Knowledge base (**46 MD**, Stand 27.09.2026, `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l`): matching criteria, compliance rules, email templates, portal/lifecycle/legal/system-Specs + 4 Phase-D-Neuspecs (housing, relocation, contract, mentoring) + `system/mvp.md` (Phase-E Runde 2 P2) + 5 Phase-E-B1-Specs (25.09.2026: `legal/dsgvo-gate.md`, `portal/matching-filter.md`, `portal/cv-pflicht.md`, `portal/applicants-first.md`, `lifecycle/status-automation.md`) + `system/vdo-ninja-migration.md` + **`legal/recording-consent.md` (NEU 27.09.2026, Aufnahme-Einwilligung mit 12-Punkte-Gate)** |
+| `knowledge/` | Knowledge base (**66 MD**, Stand 08.10.2026 — Messung `find knowledge -name '*.md' -not -name '*.bak*' | wc -l` = 66 ⓘ08.10.2026; war 46 am 27.09.2026): matching criteria, compliance rules, email templates, portal/lifecycle/legal/system-Specs + 4 Phase-D-Neuspecs (housing, relocation, contract, mentoring) + `system/mvp.md` (Phase-E Runde 2 P2) + 5 Phase-E-B1-Specs (25.09.2026: `legal/dsgvo-gate.md`, `portal/matching-filter.md`, `portal/cv-pflicht.md`, `portal/applicants-first.md`, `lifecycle/status-automation.md`) + `system/vdo-ninja-migration.md` + **`legal/recording-consent.md` (NEU 27.09.2026, Aufnahme-Einwilligung mit 12-Punkte-Gate)** |
 | `skills/` | Skill definitions in SKILL.md files |
 | `data/feedback.db` | SQLite database for candidates, employers, jobs, applications, feedback + weighting history |
 | `connectors/` | MCP connector documentation |
@@ -73,7 +80,7 @@ fastmcp>=4.0.0
 - **Access control**: "Jobportal-Prinzip" – login gate is `if not check_login() and not check_employer_login():` (two session types: candidate `user_logged_in`, employer `employer_logged_in`). Candidates need resume upload (status ≥ `lebenslauf_hochgeladen`) for Skills 2–8. Employers register via the "🏢 Arbeitgeber-Registrieren" tab, manage jobs and see anonymized candidates in the Employer Portal
 - **Role-based access (v4.5 spec, two-plane model + ADMIN)**: source of truth is `knowledge/system/access-control.md` (v3.1) – **Agent-Ebene vs. Portal-Ebene**: Skills 0️⃣–5️⃣ (Upload-Ingestion, Extract, Match-Tool, Compliance-Tool, Contact, Culture Fit) run on the agent plane (opencode + MCP), invisible to CANDIDATE/EMPLOYER/GAST; current page counts (NiceGUI): **EMPLOYER 11 Seiten** (`employer.py:1492-1503`, Stand 24.09.2026), **CANDIDATE 7 Tabs** (`_TAB_MAP`, `webui/pages/candidate.py`, Stand 02.10.2026 — Upload/Dokumente in 👤 Mein Profil), **ADMIN 12 Seiten** incl. executable agent tools, no Candidate Portal; ADMIN login via `admins` table (seed: admin@km-hr-agent.local). Status: ✅ implemented 12.09.2026 (v4.5/v3.1), seit 20.09.2026 auf NiceGUI portiert; Details + Evolution (Phase 1/2) in `knowledge/system/access-control.md`
 - **SQLite storage**: Candidates, employers, jobs, applications, feedback and weighting history in `data/feedback.db` (16 tables, Stand 24.09.2026: `admins`, `agent_tasks`, `application_status_history`, `applications`, `candidate_documents`, `candidate_status_history`, `candidates`, `compliance_protokoll`, `employers`, `feedback`, `gewichtung_historie`, `job_status_history`, `jobs`, `language_tests`, `mentoring`, `notifications`)
-- **Closed feedback loop (Phase 4)**: every NEW feedback (INSERT, from Employer Portal Tab 4 AND Skill 8) calls `adjust_weights_from_feedback()` – success (eingeladen=Ja, score≥80) → Berufserfahrung +5, failure (Nein, <70) → Sprache +10; caps Baseline+15; scoring reads ONLY `get_current_weights()` (gewichtung_historie → raw weights → normalized to 100); baseline 30/25/15/10/10/10/0 (spec: `knowledge/lifecycle/matching-criteria.md`)
+- **Closed feedback loop (Phase 4)**: every NEW feedback (INSERT, from Employer Portal Tab 4 AND Skill 8) calls `adjust_weights_from_feedback()` – success (eingeladen=Ja, score ≥ Erfolgsschwelle) → Berufserfahrung +5, failure (Nein, score < Misserfolgsschwelle) → Sprache +10 — Schwellen **kategorieabhängig**: 80/70 Fallback/„Strong", **60/60 bei Kategorie „Consider"** (hr-benchmark `get_score_category`, Messung ⓘ08.10.2026); caps Baseline+15; scoring reads ONLY `get_current_weights()` (gewichtung_historie → raw weights → normalized to 100); baseline 30/25/15/10/10/10/0 (spec: `knowledge/lifecycle/matching-criteria.md`)
 - **Feedback integrity (Phase 3)**: `feedback.match_id` UNIQUE (`idx_feedback_match_id`); save is idempotent (same day = UPDATE, next day = new row); Tab 4 candidate picker built from the actual ranking (applicants first, then passive matches)
 - **DSGVO auto-deletion (Phase 4.5)**: `dsgvo_cleanup()` runs at app start (once/day, failure-safe) – deletes `applications` + `application_status_history` 183 days after process end (final status `abgelehnt/eingestellt/zurückgezogen`); active applications never deleted (spec: `knowledge/lifecycle/application-status.md`, `knowledge/legal/gdpr-policy.md`)
 - **Branch score (Phase 4.6)**: `score_branche(branche, cv_text)` compares `employers.branche` (IT/IT-nah/fremd matrix) with candidate CV keywords; job context carries `branche` (joined in Tab 3 + feedback picker); NULL/old callers → previous heuristic fallback
@@ -150,7 +157,7 @@ Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Ph
 - **DSG Art. 6**: Datenschutz
 - **Mindestlohn**: Je nach Kanton
 
-## MCP-Connectors (7 active)
+## MCP-Connectors (14 in `opencode.json` konfiguriert — Messung `len(mcp)` = 14 ⓘ08.10.2026; frühere Fassung „7 active" war falsch)
 
 | Connector | Type | Auth | Purpose | Tools |
 |---|---|---|---|---|
@@ -162,6 +169,8 @@ Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Ph
 | meeting-tools | local (Python) | None | Screening questions + ICS | generate_screening_questions, generate_ics_file |
 | jitsi-meeting | ~~local (Node.js)~~ | — | **ENTFERNT 27.09.2026** (0 Aufrufe) | — |
 | email-sender | local (Python) | Gmail SMTP (seit 24.09.2026) | Send emails | send_email, send_interview_invitation |
+
+> **Ergänzung 08.10.2026 (Messung ⓘ08.10.2026):** `opencode.json` führt **14** MCP-Server. In der Tabelle oben fehlen: `anysearch`, `fetch`, `hr-benchmark`, `language-test`, `playwright`, `prescreen-config`, `salary-data`.
 
 ## Conventions
 
@@ -176,11 +185,11 @@ Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Ph
 - Streamlit session state used for login/auth (not secure for production)
 - MCP servers configured in `opencode.json` but not all are active
 - Test data must be manually created or uploaded via UI
-- **Tests: `pytest` (26 Unit-Tests, `.venv-streamlit/bin/python3 -m pytest -q`)** + E2E-Skripte `tests/e2e_*.py` (Playwright) — Stand 25.09.2026, Phase-E Runde 2
+- **Tests: `pytest` (409 Tests — Messung `.venv-streamlit/bin/python3 -m pytest --collect-only -q` = „409 tests collected" ⓘ08.10.2026; war 26 Unit-Tests am 25.09.2026)** + E2E-Skripte `tests/e2e_*.py` (Playwright) — Stand 25.09.2026, Phase-E Runde 2
 - Python venv must be activated before running (`source .venv-streamlit/bin/activate`)
 - Ansvar OAuth tokens expire after 15 min (auto-refresh available)
-- **Bekannte Paritäts-Lücke:** Sprachtest-Ergebnisse nicht im HR-Dokumente-Tab (NiceGUI) — `db.get_language_tests()` hat 0 Caller (Altstand `app.py:3725-3732`)
-- **Verbindliche Doku:** `AGENTS.md` (Lab-Prinzipien), `instructions.md` (v4.1), `ergebnisse/entscheidungen.md` (Entscheidungs-Log) — bei MD-vs-Code-Konflikt: MD korrigieren, nicht den Code (Lab-Schritt 3)
+- **Sprachtest-Ergebnisse im HR-Portal:** ✅ **Caller vorhanden** — Expander „Sprachtests" je Bewerber in `webui/pages/employer.py::_page_match` (`db.get_language_tests(c_id)`, `employer.py:1597`), portiert 30.09.2026 (R3-6/P2d); Test `tests/test_p2_block.py`. (Frühere Fassung „0 Caller" war falsch.)
+- **Verbindliche Doku:** `AGENTS.md` (Lab-Prinzipien), `instructions.md` (v4.5), `ergebnisse/entscheidungen.md` (Entscheidungs-Log) — bei MD-vs-Code-Konflikt: MD korrigieren, nicht den Code (Lab-Schritt 3)
 
 ## Agent-Automatisierung (Phase 5 – Spec v3 ✅ implementiert + **Spec v6 ✅ IMPLEMENTIERT 12.09.2026**: Visum-Workflow `verify_documents` (Bewerbung → Dokument-Check, Visum-INFO erst beim JA-Pfad) · `visa_confirmation` (HR-Klick „📩 Visum-Antrag bestätigen" an 💼 + 🏢 → Visum-Schritte-Mail WAS/WIE/WO an Kandidat) · Visa-Abschnitt in Onboarding-Freigabe-Report `ergebnisse/onboarding-freigabe-bewerbung-{app_id}.md` · **Onboarding-Mail #6 `send_onboarding_mail` ✅ implementiert 23.09.2026** (Guard `trigger` + Status `eingestellt`, selben Handler; NB6 geschlossen, DRY_RUN Task #149 verifiziert); E2E T1–T8 bestanden (AppTest + Runner-Simulation, keine echten Mails). **v6.1:** Dokumenten-Tab im Candidate Portal (`candidate_documents`, Typ-Auswahl, kein CV-Overwrite, Art.-17-Löschung, DSGVO-Frist-Löschung der Dateien) als typed Quelle für verify_documents — ✅ implementiert (E2E T1–T5))
 
@@ -190,7 +199,7 @@ Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Ph
 |---|---|
 | Queue | `agent_tasks`-Tabelle (data/feedback.db): task_type, status, payload (JSON), result_path, attempts |
 | Runner | `scripts/agent-runner.py`: 60-s-Loop, max. 5 Tasks/Run, PID-File · **Hybrid v2:** deterministische Tasks (Mails, ICS, Fragen, VDO.Ninja-Link-Raum) **direkt über die Projekt-MCP-Connectors** (kein LLM, handshake-getestet); LLM-Tasks (Extract/Match/Compliance/Culture-Fit + verify_documents + check_visa) via **direkte NVIDIA-API** (`requests.post`, Stand 13.09.2026 – `opencode run` verworfen: nur `step_start` ohne Text) |
-| Trigger | CV-Upload → Extract · Bewerbung → Match+Compliance+Culture-Fit (+Eingangs-Mail) · **Agent-JA (Score ≥ 60 UND COMPLIANT) → HR-Mail, dann warten** · Agent-NEIN → keine Mail, Ergebnisse bleiben für HR sichtbar (Suche/Talentpool) · HR-Klick eingeladen → Einladung (Jitsi/ICS/Mail) · HR-Klick abgelehnt → Absage-Mail (vom Agenten gesendet) · eingestellt → Onboarding-Freigabe |
+| Trigger | CV-Upload → Extract · Bewerbung → Match+Compliance+Culture-Fit (+Eingangs-Mail) · **Agent-JA (Score ≥ 60 UND COMPLIANT) → HR-Mail, dann warten** · Agent-NEIN → keine Mail, Ergebnisse bleiben für HR sichtbar (Suche/Talentpool) · HR-Klick eingeladen → Einladung (VDO.Ninja/ICS/Mail, seit 27.09.2026 ⓘ08.10.2026) · HR-Klick abgelehnt → Absage-Mail (vom Agenten gesendet) · eingestellt → Onboarding-Freigabe |
 | E-Mails | 6 implementiert: Eingangsbestätigung (Kandidat), Ergebnis-bereit (HR), Einladung (Kandidat), Absage (Kandidat), Visum-Schritte (v6, Kandidat), Onboarding-Begrüßung #6 (Kandidat, Status `eingestellt`, `send_onboarding_mail` Variante-A-Guard, 23.09.2026) – alle via email-sender MCP, nie SMTP in app.py |
 | Kandidaten-Sicht | 💼 Tab 2: VDO.Ninja-Link + ICS-Download bei `eingeladen`; Agent-Status anonymisiert |
 | HR-Sicht | Badge „🤖 Agent-Ergebnisse" an Bewerbern; 2️⃣/3️⃣-Sichten lesen die Agent-Berichte |
@@ -228,4 +237,4 @@ Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Ph
 | `guard-fix-visa-button-verifikation.md` | **Guard-Fix-Verifikation**: Visa-Button verschwindet sofort nach Klick (Runner pausiert = Bug-Fenster simuliert); 3/3 Checks via AppTest; Cleanup + Runner SIGCONT bestätigt |
 | `check_visa-kandidat-7-2026-09-13.md` | **check_visa erster LIVE-LLM-Lauf (13.09.2026)**: tunesischer Kandidat #7 × Stelle #1 → Visum ERFORDERLICH, Blue Card möglich (IT = Mangelberuf), Anerkennung freiwillig; Modell nemotron-120b via **direkte NVIDIA-API** (opencode run verworfen — nur `step_start` ohne Text) |
 
-**Index-Abdeckung:** Alle 85 Einträge in `ergebnisse/` sind entweder im Index genannt (Milestone-/Recherche-/Match-Berichte), gehören zu den generierten Agent-Artefakten (E-Mail-/Match-/Compliance-/Onboarding-/Einladungs-Berichte nach `ergebnisse/{type}-{name}-{date}.md`, indexed via naming convention), oder sind Unterverzeichnisse (`contact-candidate/` Mail-Entwürfe, `testdaten/`, `.ics`-Kalendereintrag). |
+**Index-Abdeckung:** Alle 366 Einträge in `ergebnisse/` (Messung `ls ergebnisse | wc -l` = 366, davon 344 `.md`, ⓘ08.10.2026; war 85) sind entweder im Index genannt (Milestone-/Recherche-/Match-Berichte), gehören zu den generierten Agent-Artefakten (E-Mail-/Match-/Compliance-/Onboarding-/Einladungs-Berichte nach `ergebnisse/{type}-{name}-{date}.md`, indexed via naming convention), oder sind Unterverzeichnisse (`contact-candidate/` Mail-Entwürfe, `testdaten/`, `.ics`-Kalendereintrag). |

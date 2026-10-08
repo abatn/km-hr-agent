@@ -26,7 +26,7 @@
 | `email-sender` | `send_email`, `send_interview_invitation`, `send_pre_screen_invitation` | MCP (Python) | ✅ FUNKTIONIERT | E-Mails via SMTP (Server aus `.env-email`; **seit 24.09.2026 Gmail** smtp.gmail.com:587 STARTTLS, davor Yahoo) |
 | `playwright` | `browser_navigate`, `browser_snapshot`, `browser_click`, `browser_fill_form`, `browser_find`, `browser_close` | MCP (npx) | ✅ FUNKTIONIERT | Browser-Automation (Chromium), Webseiten laden und auslesen |
 | `fetch` | `fetch` | MCP (uvx) | ✅ FUNKTIONIERT | HTTP-Fetch (Web-Inhalte laden) |
-| `anysearch` | `search`, `extract`, `batch_search`, `get_sub_domains` | MCP (remote) | 🟡 CONFIG VORBEREITET 26.09.2026 (Authorization-Zeile in `opencode.json` + `.env-anysearch`; Wirksamkeit erst nach OpenCode-Neustart durch den Nutzer, Erfolgsnachweis offen — siehe `ergebnisse/m1-anysearch-reparaturplan-2026-09-26.md`) | Websuche (Heimatland-Suche, Kurse) |
+| `anysearch` | `search`, `extract`, `batch_search`, `get_sub_domains` | MCP (remote) | ✅ **anonym/schlüsselfrei seit 01.10.2026** (nur `X-Anysearch-Client`; die `Authorization`-Zeile wurde am 01.10.2026 aus `opencode.json` **entfernt**, H9 geschlossen; wirksam nach OpenCode-Neustart) | Websuche (Heimatland-Suche, Kurse) |
 
 ### PDF-Extraktion (CLI, nicht MCP)
 
@@ -118,7 +118,7 @@ MATCHING → Ergebnis sehen
 |---|---|
 | **Kein Konto (GAST)** | ❌ NICHTS (nur Login-Bildschirm) |
 | **CANDIDATE-Session** | ✅ 📤 Upload (eigener CV) · 6️⃣ Pre-Screen (Selbstpräsentation) · 7️⃣ Onboarding (nur nach Arbeitgeber-Freigabe, read-only) · 👤 Candidate Portal (eigene Daten) · 💼 Stellenangebote (read + write) |
-| **EMPLOYER/HR-Session** | ✅ **9 Portal-Seiten:** 2️⃣ Match-Ergebnis (read-only) · 3️⃣ Compliance-Ergebnis (read-only) · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen (Recruiting-Modus + Kandidaten-Videos) · 7️⃣ Onboarding (erstellen + freigeben) · 8️⃣ Feedback · 💼 Stellenangebote (Bewerber-Status write) · 🏢 Arbeitgeber-Portal |
+| **EMPLOYER/HR-Session** | ✅ **11 Portal-Seiten** (`PAGE_MAP` in `webui/pages/employer.py`, gemessen 2753–2765 ⓘ08.10.2026): 📊 Dashboard · 🔍 Kandidaten-Suche (Bewerber-Verwaltung + einladen/ablehnen/eingestellt) · 2️⃣ Match-Ergebnis (read-only) · 3️⃣ Compliance-Ergebnis (read-only) · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen (Recruiting-Modus + Kandidaten-Videos) · 7️⃣ Onboarding (erstellen + freigeben) · 8️⃣ Feedback · 💼 Stellenangebote (Bewerber-Status write) · 🏢 Arbeitgeber-Portal |
 | **Agent-Ebene (kein UI für Portal-Rollen)** | Skills 0️⃣ Upload-Ingestion · 1️⃣ Extract · 2️⃣ Match-Tool · 3️⃣ Compliance-Tool · 4️⃣ Contact · 5️⃣ Culture Fit – laufen regulär über opencode + MCP-Connectors, für CANDIDATE/EMPLOYER/GAST unsichtbar |
 | **ADMIN-Session** | ✅ **12 Seiten (v4.3-Vollansicht + NiceGUI-Dashboard)**: 📊 Dashboard (NEU) + die Agent-Tools 0️⃣–5️⃣ sind **sichtbar und ausführbar** (Betrieb/Kontrolle der Agent-Ebene) + 6️⃣ Pre-Screen (Recruiting) · 7️⃣ Onboarding (HR) · 8️⃣ Feedback · 💼 Stellenangebote (HR-write) · 🏢 Portal. ❌ 👤 Candidate Portal (identitätsgebunden) |
 | **Kandidat + Lebenslauf** | ✅ Bewerbung möglich (CV-Pflicht, innerhalb CANDIDATE-Session) |
@@ -145,7 +145,7 @@ MATCHING → Ergebnis sehen
 
 **Hinweis ADMIN (v3.1):** Die Agent-Tool-Seiten (0️⃣–5️⃣ inkl. 2️⃣/3️⃣-Tool-Varianten) sind ausschließlich in der ADMIN-Session sichtbar und ausführbar; EMPLOYER sieht nur die read-only Ergebnis-Sichten von 2️⃣/3️⃣. Admin-Login: separater geschützter Zugang (Umsetzungsdetail, siehe `knowledge/system/access-control.md` §3.4).
 
-**Umsetzungsstatus:** ✅ **Implementiert (12.09.2026)** – Arbeitgeber-Menü auf 7 Portal-Seiten reduziert, 2 read-only Ergebnis-Sichten (Match/Compliance) neu, **ADMIN-Rolle mit geschütztem Login (admins-Tabelle, 11 Seiten, Agent-Tools sichtbar/ausführbar)**. Getestet: 18/18 AppTest-Checks bestanden, Server HTTP 200. Vorheriger Stand: v4.3 (11 Seiten für Arbeitgeber). **Stand 20.09.2026 (NiceGUI, `webui/pages/`, Phase 2): EMPLOYER 11 Seiten (`employer.py:1649-1660` PAGE_MAP, inkl. 💼 HR-write-Stellen-View), CANDIDATE 7 Tabs (`_TAB_MAP` `webui/pages/candidate.py`, Stand 02.10.2026, 📊 Dashboard als 1. Tab, Upload/Dokumente in 👤 Mein Profil), ADMIN 12 Seiten.**
+**Umsetzungsstatus:** ✅ **Implementiert (12.09.2026)** – Arbeitgeber-Menü auf 7 Portal-Seiten reduziert, 2 read-only Ergebnis-Sichten (Match/Compliance) neu, **ADMIN-Rolle mit geschütztem Login (admins-Tabelle; Stand 12.09.2026: 11 Seiten, Agent-Tools sichtbar/ausführbar)**. Getestet: 18/18 AppTest-Checks bestanden, Server HTTP 200. Vorheriger Stand: v4.3 (11 Seiten für Arbeitgeber). **Stand 20.09.2026 (NiceGUI, `webui/pages/`, Phase 2): EMPLOYER 11 Seiten (`PAGE_MAP` in `webui/pages/employer.py`, gemessen 2753–2765 ⓘ08.10.2026, inkl. 💼 HR-write-Stellen-View), CANDIDATE 7 Tabs (`_TAB_MAP` `webui/pages/candidate.py`, Stand 02.10.2026, 📊 Dashboard als 1. Tab, Upload/Dokumente in 👤 Mein Profil), ADMIN 12 Seiten (`PAGE_MAP` in `webui/pages/admin.py`).**
 
 ### Matching & Feedback (Phase 2–4.6, alle implementiert)
 
@@ -154,13 +154,15 @@ MATCHING → Ergebnis sehen
 | **2** | Scoring nach Doc-Gewichtung: Synonym-Matching (k8s↔Kubernetes), Gehaltscheck (`max=0` = offen, unbekannt = ❓), 7 Kategorien, Englisch zählt | `knowledge/lifecycle/matching-criteria.md` |
 | **3** | Feedback-Integrität: `feedback.match_id` UNIQUE, idempotentes Speichern (gleicher Tag = UPDATE, nächster Tag = neuer Datensatz), Tab-4-Kandidaten-Picker aus dem tatsächlichen Ranking | `knowledge/lifecycle/feedback-schema.md` |
 | **4** | Geschlossener Feedback-Loop: jedes NEUE Feedback (beide Trigger: Tab 4 + Skill 8) → `adjust_weights_from_feedback()` (Erfolg → Berufserfahrung +5, Misserfolg → Sprache +10, Cap Baseline+15); Scoring liest ausschließlich `get_current_weights()` (Historie → Normalisierung auf 100); Baseline 30/25/15/10/10/10/0 | `knowledge/lifecycle/matching-criteria.md` |
-| **4.5** | DSGVO-6-Monats-Löschung: `dsgvo_cleanup()` beim App-Start (1×/Tag, fehlersicher) löscht `applications` + Historie 183 Tage nach Prozessende (finaler Status); aktive Bewerbungen nie | `knowledge/lifecycle/application-status.md`, `knowledge/legal/gdpr-policy.md` |
+| **4.5** | DSGVO-6-Monats-Löschung: `dsgvo_cleanup()` beim App-Start (fehlersicher) löscht `applications` + Historie + `agent_tasks` + `candidate_documents` (4 Tabellen, Messung ⓘ08.10.2026) 183 Tage nach Prozessende (finaler Status); aktive Bewerbungen nie | `knowledge/lifecycle/application-status.md`, `knowledge/legal/gdpr-policy.md` |
 | **4.6** | Branchen-Score: `score_branche()` vergleicht `employers.branche` (IT/IT-nah/fremd) mit Kandidaten-CV; Job-Kontext trägt `branche` (JOIN in Tab 3 + Feedback-Picker); NULL → bisherige Heuristik als Fallback | `knowledge/lifecycle/matching-criteria.md` |
 | **5 (Spec v3)** | **Agent-Automatisierung**: Agent-Queue (`agent_tasks`) + Hybrid-Runner – deterministische Tasks (Mails, ICS, Fragen, VDO.Ninja-Raum) direkt über die Projekt-MCP-Connectors, LLM-Tasks (Extract/Match/Compliance/Culture-Fit + verify_documents + check_visa) via **direkte NVIDIA-API** (Stand 13.09.2026, statt `opencode run` — lieferte nur `step_start` ohne Text; NVIDIA, live getestet); Trigger: CV-Upload + Bewerbung → Agent-Kette automatisch; **Pförtner-Regel: Score ≥ 60 UND COMPLIANT → JA → HR-Mail (dann warten) · sonst NEIN → keine Mail, Ergebnisse bleiben für HR sichtbar**; **Variante A: Agent lädt/lehnt nie selbst ab** – HR-Klick `→ eingeladen` → Einladung (VDO.Ninja, + ICS + Mail), HR-Klick `→ abgelehnt` → Absage-Mail (vom Agenten gesendet); eingestellt → Onboarding-Freigabe. **Spec v6 (✅ IMPLEMENTIERT 12.09.2026):** Bewerbung → zusätzlich `verify_documents` (Zeugnisse/Sprachzeugnisse via pdf-reader + Law-Routing DE/FR/CH, HR-Badge „Dokumente ✅/⚠️", Visum-Bedarfs-INFO an HR) · HR-Klick „📩 Visum-Antrag bestätigen“ → Agent mailt dem Kandidaten die Visum-Schritte (Variante A) · eingestellt → Onboarding-Freigabe-Report `ergebnisse/onboarding-freigabe-bewerbung-{app_id}.md` (inkl. Visum-Abschnitt) · **Onboarding-Mail #6 `send_onboarding_mail` ✅ implementiert 23.09.2026** (NB6 geschlossen, Variante-A-Guard + DRY_RUN Task #149). **Spec v6.2 (✅ IMPLEMENTIERT + LIVE GETESTET 13.09.2026):** Bewerbung → zusätzlich `check_visa` (Visum-Pflicht §18a/b, Blue Card, Anerkennung BQRF; Agent-Ebene, HR-Badge im Portal vorhanden (app.py:2165-2172 + 3700-3708: `st.metric „Visum-Status"` + Report-Expander; NiceGUI: Badge-Parsing employer.py:926-939, C5 22.09.2026); erster Live-Run: tunesischer IT-Admin → Visum ERFORDERLICH — Bericht `ergebnisse/check_visa-kandidat-7-2026-09-13.md`). **v6.1:** 👤 Candidate Portal → Tab „🗂️ Dokumente" (Zeugnis/Zertifikat/Sprachzeugnis/Pass/Visa mit Typ-Auswahl, `candidate_documents`, kein CV-Overwrite, Kandidaten-Löschung Art. 17, DSGVO-Datei-Löschung frist-basiert) → typed Quelle für verify_documents | `knowledge/system/agent-automation.md` |
 
 > **✅ Konfiguration vollständig (v2, 12.09.2026; LLM-Ausführung aktualisiert 13.09.2026; `jitsi-meeting` entfernt 27.09.2026):** `email-sender` in `opencode.json` ergänzt und per JSON-RPC-Handshake getestet; LLM läuft seit 13.09.2026 über die **direkte NVIDIA-API** (`requests.post` auf integrate.api.nvidia.com — `opencode run` verworfen: nur `step_start`-Events ohne Text, Modell via API selbst korrekt). **Modell: `nvidia/nemotron-3-super-120b-a12b`** (live: Task #50 check_visa done); optional Reasoning: `moonshotai/kimi-k3` (HTTP 200, gleicher Key). (Details: `agent-automation.md` §10).
 
-### Umsetzung in app.py (IMPLEMENTIERT)
+### Umsetzung in app.py (Streamlit-Ära — ARCHIVIERT 23.09.2026)
+
+> ⚠️ **Hinweis ⓘ08.10.2026:** Streamlit `app.py` ist seit **23.09.2026 abgeschaltet** (Streamlit-Retirement; `start.sh` verweigert den Start). Die **laufende UI ist NiceGUI** (`webui/`, Start via `./start-webui.sh` bzw. `python3 -m webui.main`). Der Code unten ist historische Referenz des Streamlit-Login-Schutzes (Parität), nicht der laufenden UI.
 
 ```python
 # Login-Schutz (Session State)
@@ -230,7 +232,7 @@ SELECT status FROM candidates WHERE id = ?;
 
 ### Automatisiert: Agent-Queue + Hybrid-Runner (Spec v3, ✅ IMPLEMENTIERT 12.09.2026, 8/8 E2E-Checks – Details: `knowledge/system/agent-automation.md` §11–12)
 
-1. **Event im Portal** → app.py schreibt Task in `agent_tasks` (CV-Upload, Bewerbung, JA/NEIN-Entscheid, Einstellung)
+1. **Event im Portal** → die laufende App (NiceGUI `webui/`, bis 23.09.2026 Streamlit `app.py`) schreibt Task in `agent_tasks` (CV-Upload, Bewerbung, JA/NEIN-Entscheid, Einstellung)
 2. **Runner** (`scripts/agent-runner.py`) pickt pending Tasks (60-s-Loop, PID-File, max. 3 Versuche)
 3. **Ausführung (Hybrid v2):**
    - **MCP-direct (deterministisch, kein LLM):** Einladung (VDO.Ninja-Raum `https://vdo.ninja/?director=prescreening{code}` – seit 27.09.2026, KEIN Google Meet, KEIN Jitsi, + Fragen + ICS + Mail), Eingangs-/Absage-/HR-Mails via `email-sender`, ICS via `meeting-tools`
@@ -246,6 +248,6 @@ SELECT status FROM candidates WHERE id = ?;
 | Testdaten | `testdaten/` |
 | Knowledge | `knowledge/` |
 | Ergebnisse | `ergebnisse/` |
-| Feedback-Log | `data/feedback.md` |
+| Feedback | SQLite `feedback`-Tabelle in `data/feedback.db` (**Datei `data/feedback.md` existiert nicht** — frühere Angabe falsch; Claude-Altlog unter `ergebnisse/feedback-log.md`) |
 | SQLite (Kandidaten, Arbeitgeber, Stellen, **Bewerbungen**, Feedback) | `data/feedback.db` |
 | Error-Log | `logs/agent-errors.log` |

@@ -5,7 +5,9 @@
 > **Prinzip:** Wie ein echtes Jobportal – unregistrierte User können NICHTS machen
 > **Gegenstück:** `knowledge/portal/employer-portal-fields.md` (Arbeitgeber-Seite), `knowledge/lifecycle/application-status.md` (Bewerbungs-Status)
 
-> **NiceGUI-Umsetzung (Phase 2 am 20.09.2026, Tab-Zahl aktualisiert 02.10.2026)** = `_TAB_MAP` (`webui/pages/candidate.py`, Codemarke, Stand 02.10.2026) (7 Tabs, gerendert via `shell()` aus components.py): 📊 **Dashboard (NEU 01.10.2026, 1. Tab — Nutzerentscheidung: Landing nach Login)** · 👤 Mein Profil (**inkl. Lebenslauf-Upload + 🗂️ Dokumente als aufklappbare Kästen — seit 02.10.2026, frühere Sidebar-Tabs „Upload"/„Dokumente" entfallen**; Status-Historie) · 💼 Stellen · 📨 Bewerbungen (bewerben/zurückziehen) · 🗣️ Sprachtest (**P1.1**: voller Flow generate_test → Scoring → CEFR via MCP → DB) · 📹 Pre-Screen (**P2.2**: eigener Jitsi-Raum, Screening-Fragen, MD-Download) · 📋 Onboarding. Streamlit-Ära (app.py): Candidate Portal mit 6 Portal-Tabs + 5 Menü-Seiten.
+> **NiceGUI-Umsetzung (Phase 2 am 20.09.2026, Tab-Zahl aktualisiert 02.10.2026)** = `_TAB_MAP` (`webui/pages/candidate.py`, Codemarke, Stand 02.10.2026) (7 Tabs, gerendert via `shell()` aus components.py): 📊 **Dashboard (NEU 01.10.2026, 1. Tab — Nutzerentscheidung: Landing nach Login)** · 👤 Mein Profil (**inkl. Lebenslauf-Upload + 🗂️ Dokumente als aufklappbare Kästen — seit 02.10.2026, frühere Sidebar-Tabs „Upload"/„Dokumente" entfallen**; Status-Historie) · 💼 Stellen · 📨 Bewerbungen (bewerben/zurückziehen) · 🗣️ Sprachtest (**P1.1**: voller Flow generate_test → Scoring → CEFR via MCP → DB) · 📹 Pre-Screen (**P2.2**: eigener VDO.Ninja-Raum seit 27.09.2026 ⓘ08.10.2026 — vorher Jitsi-Raum, Screening-Fragen, MD-Download) · 📋 Onboarding. Streamlit-Ära (app.py): Candidate Portal mit 6 Portal-Tabs + 5 Menü-Seiten.
+
+> **Korrektur 08.10.2026 (VERIFY, Messung ⓘ08.10.2026):** `candidates` hat **22 Spalten** (PRAGMA `table_info`). 7 Felder dieser Datei sind **Phantom-Felder** (keine Spalte, werden nicht gespeichert): `geburtsdatum`, `aktuelles_unternehmen`, `referenzen`, `fachrichtung`, `zertifikate`, `andere_sprachen`, `gehalt_verhandelbar` — in den Tabellen unten durchgestrichen. Umgekehrt fehlte die Code-Spalte `franzoesisch` (optional, jetzt in der Sprachen-Tabelle).
 
 **AKTUELLER STATUS (10.09.2026):**
 - ✅ Skills 2-8 sind geschützt (brauchen Lebenslauf-Status)
@@ -33,7 +35,7 @@
 |---|---|---|
 | `telefon` | Text | Telefonnummer |
 | `standort` | Text | Stadt, Land |
-| `geburtsdatum` | Datum | TT.MM.JJJJ |
+| ~~`geburtsdatum`~~ | Datum | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
 | `nationalitaet` | Text | Staatsangehörigkeit |
 | `visum_status` | Auswahl | EU-Bürger / Arbeitsvisum / Kein Visum / Sonstiges |
 | `verfuegbarkeit` | Auswahl | Sofort / 1 Monat / 3 Monate / Kündigungslaufzeit |
@@ -44,8 +46,8 @@
 |---|---|---|
 | `berufserfahrung_jahre` | Zahl | Gesamte Berufserfahrung in Jahren |
 | `aktuelle_position` | Text | Aktuelle Stellenbezeichnung |
-| `aktuelles_unternehmen` | Text | Aktueller Arbeitgeber |
-| `referenzen` | Text | Referenzen (optional) |
+| ~~`aktuelles_unternehmen`~~ | Text | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
+| ~~`referenzen`~~ | Text | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
 
 ### Skills & Bildung
 
@@ -54,8 +56,8 @@
 | `hard_skills` | Liste | Technische Fähigkeiten (kommasepariert) |
 | `soft_skills` | Liste | Persönliche Fähigkeiten |
 | `abschluss` | Auswahl | Bachelor / Master / Diplom / PhD / Sonstiges |
-| `fachrichtung` | Text | Studienfach |
-| `zertifikate` | Liste | Führerschein, AWS, Scrum, etc. |
+| ~~`fachrichtung`~~ | Text | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
+| ~~`zertifikate`~~ | Liste | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
 
 ### Sprachen
 
@@ -63,14 +65,15 @@
 |---|---|---|
 | `deutsch` | Auswahl | A1 / A2 / B1 / B2 / C1 / C2 / Muttersprache |
 | `englisch` | Auswahl | A1 / A2 / B1 / B2 / C1 / C2 / Muttersprache |
-| `andere_sprachen` | Text | Weitere Sprachen mit Level |
+| `franzoesisch` | Auswahl | A1–C2/Muttersprache — **optional** (Code-Whitelist `_PROFIL_SPALTEN`, nur editierbar falls Spalte existiert; Live-DB ohne Spalte, PRAGMA ⓘ08.10.2026) |
+| ~~`andere_sprachen`~~ | Text | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
 
 ### Gehaltsvorstellung
 
 | Feld | Typ | Beschreibung |
 |---|---|---|
 | `gehaltsvorstellung` | Zahl | Brutto-Jahresgehalt in EUR |
-| `gehalt_verhandelbar` | Checkbox | Ja / Nein |
+| ~~`gehalt_verhandelbar`~~ | Checkbox | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
 
 ### Lebenslauf
 

@@ -85,13 +85,15 @@ KM-HR-Agent v3.0 | Automatische Benachrichtigung
 
 ### 3. Benachrichtigung versenden
 
-#### Via E-Mail (MCP-Connector):
-- Nutze `email-mcp` oder `smtp-connector`
+#### Via E-Mail (Ist-Implementierung):
+- Nutze **`email-sender`** (MCP, in `opencode.json`) → Tool `send_email`
 - Parameter: to, subject, body, attachment (optional)
+- Ausführung im Runner: `scripts/agent-runner.py` (`mcp_call(EMAIL_SERVER, …)`), nie SMTP in der App
+- ❌ ~~`email-mcp` / `smtp-connector`~~ existieren **nicht** (0 Treffer, Tool-Namen-Pflicht `knowledge/system/mcp-connector-config.md`)
 
-#### Via Slack (MCP-Connector):
-- Nutze `slack-mcp` oder `slack-webhook`
-- Parameter: channel, blocks/message
+#### Via Slack: **nicht umgesetzt** (Design-Entscheidung, Stand 08.10.2026)
+- ❌ ~~`slack-mcp` / `slack-webhook`~~ — **kein Slack im Projekt** (0 Treffer in `opencode.json` + Code)
+- Kanäle im Projekt: E-Mail (Pflicht) + Portal-Benachrichtigung (`notifications`-Tabelle, `webui/db.py`)
 
 ### 4. Protokollierung
 

@@ -54,7 +54,7 @@ Konsequenz: Die Agent-Ausgaben (`ergebnisse/*.md`, DB-Scores, E-Mail-Entwürfe) 
 
 ### 2.2 CANDIDATE – 7 Seiten/Tabs (NiceGUI, Stand 02.10.2026: 📊 Dashboard als 1. Tab, Upload/Dokumente in 👤 Mein Profil integriert; Phase 2 20.09.2026: 8; v2: 5, Phase 1: 7)
 
-> **NiceGUI-Umsetzung** = `_TAB_MAP` (`webui/pages/candidate.py`, Codemarke, Stand 02.10.2026) (7 Tabs, gerendert via shell()): 📊 **Dashboard (NEU, 1. Tab)** · 👤 Mein Profil (**enthält seit 02.10.2026 Lebenslauf-Upload + Dokumente als aufklappbare Kästen — die früheren Sidebar-Tabs „Upload"/„Dokumente" entfallen**) · 💼 Stellen · 📨 Bewerbungen · 🗣️ Sprachtest (**P1.1 portiert 20.09.2026**: voller Flow generate_test → Scoring → CEFR via MCP → DB) · 📹 Pre-Screen (**P2.2 portiert 20.09.2026**: eigener Jitsi-Raum, Screening-Fragen, MD-Download) · 📋 Onboarding.
+> **NiceGUI-Umsetzung** = `_TAB_MAP` (`webui/pages/candidate.py`, Codemarke, Stand 02.10.2026) (7 Tabs, gerendert via shell()): 📊 **Dashboard (NEU, 1. Tab)** · 👤 Mein Profil (**enthält seit 02.10.2026 Lebenslauf-Upload + Dokumente als aufklappbare Kästen — die früheren Sidebar-Tabs „Upload"/„Dokumente" entfallen**) · 💼 Stellen · 📨 Bewerbungen · 🗣️ Sprachtest (**P1.1 portiert 20.09.2026**: voller Flow generate_test → Scoring → CEFR via MCP → DB) · 📹 Pre-Screen (**P2.2 portiert 20.09.2026**: eigener VDO.Ninja-Raum seit 27.09.2026 ⓘ08.10.2026 (vorher Jitsi-Raum), Screening-Fragen, MD-Download) · 📋 Onboarding.
 
 > **Entscheidung 01.10.2026, Design-/Nutzerentscheidung — keine externe Quelle:** Der Kandidat landet nach dem Login im **📊 Dashboard** (erster Tab), nicht mehr im 📤 Upload. **02.10.2026:** Upload und Dokumente sind aus der Sidebar entfernt und als aufklappbare Kästen in **👤 Mein Profil** integriert — Tab-Count 9 → **7**.
 

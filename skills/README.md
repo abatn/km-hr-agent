@@ -96,7 +96,7 @@ Feedback speichern (store-feedback)
 ### 5. pre-screen
 - **Profil lesen:** `filesystem` → `read_text_file`
 - **Fragen generieren:** `meeting-tools` → `generate_screening_questions`
-- **Meeting-Link:** `meeting-tools` → `create_meeting_link`
+- **Meeting-Link:** `meeting-tools` → `create_meeting_link` (**LEGACY** — liefert seit 27.09.2026 `https://vdo.ninja/?director=…` statt Jitsi; **0 Aufrufer**, neuere Wege: `scripts/agent-runner.py` Director/Gast-URL; s. `knowledge/system/vdo-ninja-migration.md`)
 
 ### 6. handle-errors
 - **Fehler loggen:** `filesystem` → `write_file`

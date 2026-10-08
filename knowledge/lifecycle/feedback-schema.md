@@ -6,6 +6,8 @@
 > **Voraussetzung:** Login + Lebenslauf-Upload (Jobportal-Prinzip)
 
 > **Phase 4 (11.09.2026) – Geschlossener Loop:** `gewichtung_historie` ist jetzt Quelle UND Leser. Jedes **neue** Feedback (INSERT, nicht same-day-UPDATE) ruft `adjust_weights_from_feedback()` auf – aus **beiden** Trigger-Punkten: Employer-Portal Tab 4 UND Skill 8. Erfolg (`eingeladen='Ja'` UND score ≥ 80) → Berufserfahrung +5 (Roh); Misserfolg (`eingeladen='Nein'` UND score < 70) → Sprache +10 (Roh). Caps: Baseline+15 je Kategorie (Sprache: max 15). Scoring liest ausschließlich `get_current_weights()` (Historie → Rohgewichte → Normalisierung auf Summe 100). Gewichte-Detailmodell: `knowledge/lifecycle/matching-criteria.md`.
+>
+> **⚠️ Korrektur 08.10.2026 (VERIFY, Messung ⓘ08.10.2026):** Die Schwellen sind im Code **kategorieabhängig** (`adjust_weights_from_feedback()` mit hr-benchmark `get_score_category`): Fallback bzw. „Strong"/„Weak" = **80/70** wie oben, Kategorie **„Consider" = 60/60** (Erfolg ab score ≥ 60, Misserfolg ab score < 60). 80/70 gilt also nicht pauschal. Beide Schwellenpaare ohne externe Quelle (Design-Entscheidung).
 
 ---
 

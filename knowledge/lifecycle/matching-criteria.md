@@ -39,10 +39,10 @@ Die historische Tabelle summierte 115 (30/30/15/10/10/10/10) – ein Rechenfehle
 | Regel | Beschreibung |
 |---|---|
 | **Auslöser** | Jedes **neue** Feedback (INSERT, nicht same-day-UPDATE) – aus Tab 4 (Arbeitgeber-Portal) **und** Skill 8 (HR-Tool); beide rufen dieselbe Funktion `adjust_weights_from_feedback()` auf |
-| **Erfolg** | `eingeladen = 'Ja'` UND `score >= 80` → **Berufserfahrung +5** (Rohgewicht) |
-| **Misserfolg** | `eingeladen = 'Nein'` UND `score < 70` → **Sprache +10** (Rohgewicht) |
+| **Erfolg** | `eingeladen = 'Ja'` UND `score >=` Erfolgsschwelle → **Berufserfahrung +5** (Rohgewicht) — Schwelle **80** (Fallback/„Strong"/„Weak") bzw. **60** bei Kategorie „Consider" (Messung `adjust_weights_from_feedback()` ⓘ08.10.2026) |
+| **Misserfolg** | `eingeladen = 'Nein'` UND `score <` Misserfolgsschwelle → **Sprache +10** (Rohgewicht) — Schwelle **70** (Fallback) bzw. **60** bei Kategorie „Consider" (Messung `adjust_weights_from_feedback()` ⓘ08.10.2026) |
 
-> ⚠️ **Design-Entscheidung (15.09.2026):** Die Schwellen 80 (Erfolg) und 70 (Misserfolg) haben **keine externe Quelle**. Sie wurden willkürlich gewählt, um den Feedback-Loop zu initialisieren. **Alternative:** Schwellen aus eigener Datenanalyse ableiten (z.B. Median-Score aller Eingeladenen). **Validierung:** Nach 20+ Feedback-Einträgen prüfen ob die Schwellen sinnvoll trennen.
+> ⚠️ **Design-Entscheidung (15.09.2026):** Die Schwellen 80 (Erfolg) und 70 (Misserfolg) haben **keine externe Quelle**. Sie wurden willkürlich gewählt, um den Feedback-Loop zu initialisieren. **Alternative:** Schwellen aus eigener Datenanalyse ableiten (z.B. Median-Score aller Eingeladenen). **Validierung:** Nach 20+ Feedback-Einträgen prüfen ob die Schwellen sinnvoll trennen. **Nachtrag 08.10.2026 (VERIFY):** Der Code weicht für Kategorie „Consider" (hr-benchmark `get_score_category`) auf **60/60** ab — ebenfalls ohne externe Quelle (Design-Entscheidung, Messung ⓘ08.10.2026).
 | **Caps** | Max. Abweichung vom Baseline-Wert: **+15 Punkte** (nie über Baseline+15, nie unter 0); Sprache: Baseline 0 → Max 15. Cap erreicht → keine weitere Anpassung (Meldung „Cap erreicht") |
 | **Lesen** | `get_current_weights()` leitet Rohgewichte aus `gewichtung_historie` ab (letzte Zeile je Kategorie) und skaliert auf Summe 100; `berechne_match_score()` nutzt ausschließlich diese Funktion |
 | **DB-first** | `gewichtung_historie` ist die Quelle der Wahrheit. Leere Historie → Baseline |

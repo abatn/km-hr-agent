@@ -15,14 +15,18 @@ description: Exportiert Match-Ergebnisse als MD-Datei
 
 ### 1. Export-Format wählen
 
-| Format | Use Case | Connector |
-|---|---|---|
-| PDF | Ausdruck, Archiv, E-Mail-Anhang | aspose-pdf-foss-mcp |
-| Excel | Analyse, Filterung, Datenimport | excel-mcp |
+| Format | Use Case | Connector | Status ⓘ08.10.2026 |
+|---|---|---|---|
+| **Markdown** (Ist-Implementierung) | Bericht in `ergebnisse/` | keiner nötig (Runner schreibt MD) | ✅ aktiv (`export_report` in `scripts/agent-runner.py`) |
+| **PDF** (HR-Liste) | Ausdruck, Archiv, E-Mail-Anhang | **reportlab** (kein MCP) | ✅ aktiv (`export_candidates_pdf` in `webui/components.py`) |
+| ~~PDF via MCP~~ | – | ~~aspose-pdf-foss-mcp~~ | ❌ **nicht installiert** (`opencode.json` ohne Eintrag, 0 Treffer) |
+| ~~Excel~~ | – | ~~excel-mcp~~ | ❌ **nicht installiert** — wird auch nicht benötigt (`instructions.md` Status „Nicht installiert / Nicht benötigt") |
 
-### 2. PDF-Export
+> **Nur Markdown/PDF verwenden.** Die beiden MCP-Connector in der Tabelle sind **Phantom-Werkzeuge** (Tool-Namen-Pflicht: nur Server aus `opencode.json`, Spec `knowledge/system/mcp-connector-config.md`). Die folgenden Abschnitte 2+3 sind **Zukunftsoption / nicht umgesetzt** (Design-Entscheidung, Stand 08.10.2026).
 
-#### Via aspose-pdf-foss-mcp:
+### 2. PDF-Export (Zukunftsoption, NICHT umgesetzt)
+
+#### Via aspose-pdf-foss-mcp (❌ nicht installiert):
 1. Lese Template-Platzhalter aus `knowledge/export-templates/README.md`
 2. Ersetze Platzhalter mit Match-Daten:
    - `{{KANDIDAT_NAME}}`, `{{STELLE}}`, `{{SCORE}}
@@ -58,9 +62,9 @@ description: Exportiert Match-Ergebnisse als MD-Datei
 └─────────────────────────────────────────────┘
 ```
 
-### 3. Excel-Export
+### 3. Excel-Export (Zukunftsoption, NICHT umgesetzt)
 
-#### Via excel-mcp:
+#### Via excel-mcp (❌ nicht installiert):
 1. Erstelle Arbeitsmappe mit 3 Blättern:
    - **Blatt 1: Match-Übersicht** (eine Zeile pro Match)
    - **Blatt 2: Detaillierte Bewertung** (alle Kategorien)

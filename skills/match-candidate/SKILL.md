@@ -1,21 +1,21 @@
 ---
 description: Vergleicht Kandidatenprofil mit Stellenprofil und erstellt Match-Score mit Begründung
 tools:
-  - resume-parser-ats (CLI)
+  - pdf-reader (MCP)
   - filesystem (MCP)
-  - semantic-search-mcp (optional)
 ---
 
-## Regime: Vollständig lokal – keine externen APIs
+## Regime: LLM-Lauf über NVIDIA-API (seit 13.09.2026), kein Such-Index
 
-## Verfügbare Tools
+## Verfügbare Tools (Ist ⓘ08.10.2026)
 
-| Tool | Typ | Zweck |
-|---|---|---|
-| `resume-parser-ats` | CLI (npm) | Kandidaten-Profil parsen → strukturierte Daten |
-| `filesystem` | MCP (local) | Profile und Stellen lesen/schreiben |
-| `semantic-search-mcp` | MCP (optional) | Semantische Suche über FAISS + sentence-transformers |
-| LLM (Agent) | Inferenz | Semantisches Matching + Score-Berechnung |
+| Tool | Typ | Zweck | Status |
+|---|---|---|---|
+| `pdf-reader` | MCP (local) | Lebenslauf-Text extrahieren | ✅ aktiv |
+| `filesystem` | MCP (local) | Profile und Stellen lesen/schreiben | ✅ aktiv |
+| LLM (Agent) | Inferenz (direkte NVIDIA-API) | Semantisches Matching + Score-Berechnung | ✅ aktiv |
+| ~~`resume-parser-ats`~~ | CLI (npm) | Profil parsen | ❌ **nicht installiert / nicht konfiguriert** (0 Treffer in `opencode.json`) |
+| ~~`semantic-search-mcp`~~ | MCP | Semantische Suche (FAISS) | ❌ **nicht installiert** (0 Treffer) → „Methode B" unten **nicht umgesetzt** |
 
 ## Schritte
 
@@ -129,9 +129,11 @@ Einladung mit Hinweis auf Terraform-Lücke – Kandidatin zeigt Lernbereitschaft
 
 ---
 
-### Methode B: Mit semantic-search-mcp (für viele Kandidaten)
+### Methode B: Mit semantic-search-mcp — ❌ NICHT umgesetzt (Zukunftsoption)
 
-#### Voraussetzung
+> **Status 08.10.2026:** `semantic-search-mcp` ist **nicht installiert** (0 Treffer in `opencode.json`). Dieser Abschnitt ist ein Entwurf, kein Ausführungsweg. Tatsächlich liefert die Kandidatenliste `_page_kandidaten`/`_page_match` (`webui/pages/employer.py`), das Matching rechnet `berechne_match_score()` (`webui/logic.py`) über die DB — kein Index, kein CLI-Aufruf.
+
+#### Voraussetzung (nicht erfüllt)
 - semantic-search-mcp installiert
 - Profile als Markdown im knowledge/profiles/ Verzeichnis
 
