@@ -13,11 +13,14 @@ Quellen: app.py (Zeilen in ergebnisse/nicegui-phase-0-bereinigung.md).
 from __future__ import annotations
 
 import os
+import asyncio
+import atexit
 import json
 import re
 import sqlite3
 import subprocess
 import sys
+import threading
 from datetime import datetime
 from pathlib import Path
 
@@ -235,43 +238,353 @@ SALARY_DATA_SERVER = BASE_DIR / "connectors" / "salary-data-server.py"
 PRESCREEN_CONFIG_SERVER = BASE_DIR / "connectors" / "prescreen-config-server.py"
 
 
+def _run_coro_blocking(coro):
+    """Führt `coro` synchron aus — in einem EIGENEN Thread mit eigenem Event-Loop.
+
+    Design-Entscheidung (kein `asyncio.run(coro)` im aufrufenden Thread, P4
+    05.10.2026): `_mcp_connector_call` wird u. a. aus dem NiceGUI-Event-Loop-
+    Thread aufgerufen (`match_content` → `berechne_match_score`/`gehalt_check`).
+    Dort läuft bereits ein Event-Loop → `asyncio.run` wirft RuntimeError
+    ("cannot be called from a running event loop"). Ein frischer Thread hat
+    keinen laufenden Loop und darf `asyncio.run` gefahrlos ausführen; das
+    funktioniert symmetrisch aus Event-Loop- und normalen Threads.
+    """
+    result: dict = {}
+    error: dict = {}
+
+    def _target():
+        try:
+            result["value"] = asyncio.run(coro)
+        except BaseException as ex:  # noqa: BLE001 — an Aufrufer weiterreichen
+            error["exc"] = ex
+
+    thread = threading.Thread(target=_target, daemon=True)
+    thread.start()
+    thread.join()
+    if error:
+        raise error["exc"]
+    return result.get("value", {})
+
+
+def _parse_mcp_tool_result(result) -> dict:
+    """Extrahiert das dict aus einem `CallToolResult` (P4-Verhalten, P6.1).
+
+    Quelle: installierte `mcp 2.2.0` (`CallToolResult.content`/`is_error`).
+    Identisch zum bisherigen Inline-Parsing in `_mcp_call_async`, damit
+    Session- und Altpfad exakt dasselbe Ergebnisformat liefern.
+    """
+    if getattr(result, "is_error", False):
+        return {}
+    text = ""
+    for block in getattr(result, "content", []) or []:
+        candidate_text = getattr(block, "text", None)
+        if candidate_text is not None:
+            text = candidate_text
+            break
+    if text:
+        if text.startswith("FEHLER") or text.startswith("DRY-RUN"):
+            return {}
+        return json.loads(text)
+    structured = getattr(result, "structured_content", None)
+    if structured:
+        return structured
+    return {}
+
+
+async def _mcp_call_async(server_py: Path, tool: str, args: dict,
+                          python_path: str = None) -> dict:
+    """Async-Kern: offizieller MCP-Client (stdio) — P4, 05.10.2026.
+
+    Spez: knowledge/system/event-loop-blockieren.md §Phase 4.
+    Quelle: installierte `mcp 2.2.0` (ClientSession/stdin_client-API).
+    `env=dict(os.environ)` ist PFLICHT: `StdioServerParameters(env=None)`
+    vererbt nur DEFAULT_INHERITED_ENV_VARS (HOME/LOGNAME/PATH/SHELL/TERM/USER)
+    → NVIDIA_API_KEY/KMHR_LLM_MODEL fehlten den Servern sonst.
+    `read_timeout_seconds=60` = Design-Entscheidung (§Phase 4).
+
+    P6.1 (05.10.2026): bleibt als **Ein-Schuss-Fallback** erhalten (wird
+    genutzt, wenn `KMHR_MCP_SESSION=0` oder die persistente Session
+    scheitert). Signatur/Verhalten unverändert.
+    """
+    from mcp import ClientSession
+    from mcp.client.stdio import stdio_client, StdioServerParameters
+
+    params = StdioServerParameters(
+        command=python_path or sys.executable,
+        args=[str(server_py)],
+        env=dict(os.environ),
+        cwd=str(BASE_DIR),
+    )
+    async with stdio_client(params) as (read, write):
+        async with ClientSession(read, write, read_timeout_seconds=60) as session:
+            await session.initialize()
+            result = await session.call_tool(tool, args)
+            return _parse_mcp_tool_result(result)
+
+
+# ─── P6.1 (05.10.2026): persistente MCP-Session + Host-Cache ────────────────
+# Spec: knowledge/system/mcp-tool-lazy-gating.md §Phase 6.1.
+# Quelle (offiziell, MCP „Client Best Practices", abgerufen 05.10.2026):
+#   * „Cache tool definitions — once fetched … memoize the definition
+#     host-side so re-injecting it later doesn't need another tools/list
+#     round trip."   → `list_tools` genau EINMAL je Session.
+#   * „Dynamic Server Management" (Server nur bei Bedarf verbinden/trennen).
+# Implementierung (ein Hintergrund-Thread + Event-Loop, Queue-Worker je
+# Server, Sync-Brücke, Reconnect/Fallback, `KMHR_MCP_SESSION=0`) =
+# Design-Entscheidung (kein Paket nötig, nur `mcp` + stdlib).
+#
+# Warum ein Queue-Worker-Task und nicht „offene Session global speichern":
+# `stdio_client`/`ClientSession` sind async-Kontextmanager; anyio-Cancel-Scopes
+# sind TASK-LOKAL. Ein `__aenter__` in Task A und `__aexit__` in Task B wirft
+# „Attempted to exit cancel scope in a different task". Deshalb öffnet und
+# schließt genau EIN langlebiger Worker-Task die Verbindung und bedient alle
+# Aufrufe über seine Queue.
+
+_MCP_START_TIMEOUT = 25.0   # Design-Entscheidung: Kaltstart 1,5–2,2 s + Puffer
+_MCP_CALL_TIMEOUT = 60.0    # Design-Entscheidung: wie `read_timeout_seconds` (P4)
+
+# Test-/Diagnosezähler: beweist, dass initialize/list_tools/spawn NICHT je
+# Aufruf passieren (siehe tests/test_mcp_session.py).
+_MCP_SESSION_STATS: dict = {
+    "spawn": 0, "initialize": 0, "list_tools": 0, "reconnect": 0,
+}
+
+_SESSION_LOCK = threading.Lock()
+_LOOP_LOCK = threading.Lock()
+_SESSION_LOOP = None
+_SESSION_THREAD = None
+_SESSIONS: dict = {}
+
+
+class _SessionUnavailable(RuntimeError):
+    """Intern: Session nicht (mehr) nutzbar → Aufrufer fällt auf den Altpfad."""
+
+
+class _McpServerSession:
+    __slots__ = ("server_py", "python_path", "loop", "queue", "ready",
+                 "done", "alive", "error", "tools")
+
+    def __init__(self, server_py: Path, python_path, loop):
+        self.server_py = server_py
+        self.python_path = python_path
+        self.loop = loop
+        self.queue = None
+        self.ready = threading.Event()
+        self.done = threading.Event()
+        self.alive = False
+        self.error = None
+        self.tools = None
+
+
+def _session_enabled() -> bool:
+    # KMHR_MCP_SESSION=0 → immer der alte Ein-Schuss-Pfad (Rollback/Test;
+    # Design-Entscheidung). Dynamisch gelesen, damit Tests per Env umschalten.
+    return os.environ.get("KMHR_MCP_SESSION") != "0"
+
+
+def _get_session_loop():
+    """Startet (einmalig) den Hintergrund-Thread mit eigenem Event-Loop."""
+    global _SESSION_LOOP, _SESSION_THREAD
+    with _LOOP_LOCK:
+        if (_SESSION_LOOP is not None and _SESSION_THREAD is not None
+                and _SESSION_THREAD.is_alive()):
+            return _SESSION_LOOP
+        loop = asyncio.new_event_loop()
+        ready = threading.Event()
+
+        def _run():
+            asyncio.set_event_loop(loop)
+            ready.set()
+            loop.run_forever()
+
+        thread = threading.Thread(target=_run, name="mcp-session-loop",
+                                  daemon=True)
+        thread.start()
+        ready.wait(5)
+        _SESSION_LOOP = loop
+        _SESSION_THREAD = thread
+        return loop
+
+
+async def _mcp_session_worker(handle: _McpServerSession) -> None:
+    """Hält EINE offene stdio/ClientSession-Verbindung (ein Task = ein Scope).
+
+    Öffnet → `initialize` (1×) → `list_tools` (1×, Host-Cache) → bedient die
+    Queue. Transportfehler beenden den Worker, damit die Session beim nächsten
+    Aufruf frisch aufgebaut wird.
+    """
+    from mcp import ClientSession
+    from mcp.client.stdio import stdio_client, StdioServerParameters
+
+    params = StdioServerParameters(
+        command=handle.python_path or sys.executable,
+        args=[str(handle.server_py)],
+        env=dict(os.environ),
+        cwd=str(BASE_DIR),
+    )
+    queue: asyncio.Queue = asyncio.Queue()
+    handle.queue = queue
+    try:
+        async with stdio_client(params) as (read, write):
+            async with ClientSession(read, write,
+                                     read_timeout_seconds=60) as session:
+                await session.initialize()
+                _MCP_SESSION_STATS["initialize"] += 1
+                handle.tools = await session.list_tools()
+                _MCP_SESSION_STATS["list_tools"] += 1
+                handle.alive = True
+                handle.ready.set()
+                while True:
+                    item = await queue.get()
+                    if item is None:
+                        break
+                    tool, args, fut = item
+                    if fut.done():      # Aufrufer hat aufgegeben (Timeout)
+                        continue
+                    try:
+                        result = await session.call_tool(tool, args)
+                        if not fut.done():
+                            fut.set_result(_parse_mcp_tool_result(result))
+                    except BaseException as ex:  # noqa: BLE001
+                        if not fut.done():
+                            fut.set_exception(ex)
+                        break                    # Transportfehler → neu starten
+    except BaseException as ex:  # noqa: BLE001 — niemals nach außen crashen
+        handle.error = ex
+    finally:
+        handle.alive = False
+        handle.ready.set()   # weckt wartende Startaufrufe AUCH im Fehlerfall
+        handle.done.set()
+
+
+async def _mcp_session_submit(handle: _McpServerSession, tool: str,
+                              args: dict) -> dict:
+    queue = handle.queue
+    if queue is None or not handle.alive:
+        raise _SessionUnavailable("Session nicht bereit")
+    fut: asyncio.Future = asyncio.get_running_loop().create_future()
+    await queue.put((tool, args, fut))
+    return await fut
+
+
+def _get_or_start_handle(server_py: Path, python_path):
+    """Liefert eine lebende Session oder startet sie (unter `_SESSION_LOCK`)."""
+    key = (str(server_py), python_path)
+    with _SESSION_LOCK:
+        handle = _SESSIONS.get(key)
+        if handle is not None and handle.alive:
+            return handle
+        loop = _get_session_loop()
+        handle = _McpServerSession(server_py, python_path, loop)
+        _SESSIONS[key] = handle
+        _MCP_SESSION_STATS["spawn"] += 1
+        asyncio.run_coroutine_threadsafe(_mcp_session_worker(handle), loop)
+        if not handle.ready.wait(_MCP_START_TIMEOUT) or not handle.alive:
+            _SESSIONS.pop(key, None)
+            raise _SessionUnavailable(
+                f"MCP-Session {getattr(server_py, 'name', server_py)} "
+                f"nicht bereit")
+        return handle
+
+
+def _invalidate_handle(handle: _McpServerSession) -> None:
+    """Markiert eine Session als tot und bittet den Worker zu beenden."""
+    handle.alive = False
+    with _SESSION_LOCK:
+        key = (str(handle.server_py), handle.python_path)
+        if _SESSIONS.get(key) is handle:
+            _SESSIONS.pop(key, None)
+    if handle.queue is not None:
+        try:
+            asyncio.run_coroutine_threadsafe(handle.queue.put(None),
+                                             handle.loop)
+        except Exception:
+            pass
+
+
+def _session_call_blocking(server_py: Path, tool: str, args: dict,
+                           python_path: str = None) -> dict:
+    """Sync-Brücke zum Session-Thread (Timeout + Reconnect beim nächsten Ruf)."""
+    handle = _get_or_start_handle(server_py, python_path)
+    cfut = asyncio.run_coroutine_threadsafe(
+        _mcp_session_submit(handle, tool, args), handle.loop)
+    try:
+        return cfut.result(timeout=_MCP_CALL_TIMEOUT)
+    except Exception:
+        cfut.cancel()
+        _invalidate_handle(handle)
+        raise
+
+
+def _close_all_sessions() -> None:
+    """Stoppt alle Session-Worker sauber (gleicher Task → korrekter Scope-Exit)."""
+    with _SESSION_LOCK:
+        handles = list(_SESSIONS.values())
+        _SESSIONS.clear()
+    for handle in handles:
+        handle.alive = False
+        if handle.queue is not None:
+            try:
+                asyncio.run_coroutine_threadsafe(handle.queue.put(None),
+                                                 handle.loop)
+            except Exception:
+                pass
+    for handle in handles:
+        handle.done.wait(5)   # Kontextmanager-Exit abwarten (Subprozess-Reap)
+
+
+def _shutdown_session_loop() -> None:
+    """atexit: Sessions schließen, dann Loop-Thread beenden (kein Hang)."""
+    _close_all_sessions()
+    loop = _SESSION_LOOP
+    if loop is not None:
+        try:
+            loop.call_soon_threadsafe(loop.stop)
+        except Exception:
+            pass
+
+
+atexit.register(_shutdown_session_loop)
+
+
+def _mcp_connector_call_once(server_py: Path, tool: str, args: dict,
+                             python_path: str = None) -> dict:
+    """Bisheriger Ein-Schuss-Pfad (P4): frischer Thread + Subprozess je Ruf."""
+    try:
+        return _run_coro_blocking(
+            _mcp_call_async(server_py, tool, args, python_path))
+    except Exception:
+        return {}
+
+
 def _mcp_connector_call(server_py: Path, tool: str, args: dict,
                          python_path: str = None) -> dict:
     """Ruft ein Tool eines lokalen FastMCP-Servers auf (MCP-Protokoll).
-    1:1-Kopie aus app.py:38-75 (framework-unabhängig).
-    python_path:.Optional Python-Interpreter (default: sys.executable).
-                 Für pdf-reader: .venv-pdf/bin/python3 (pymupdf)."""
-    try:
-        init_req = {"jsonrpc": "2.0", "id": 1, "method": "initialize",
-                    "params": {"protocolVersion": "2024-11-05",
-                               "capabilities": {},
-                               "clientInfo": {"name": "km-hr-app", "version": "1.0"}}}
-        initialized_note = {"jsonrpc": "2.0", "method": "notifications/initialized"}
-        call_req = {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
-                    "params": {"name": tool, "arguments": args}}
-        py = python_path or sys.executable
-        proc = subprocess.Popen([py, str(server_py)], stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        for r in (init_req, initialized_note, call_req):
-            proc.stdin.write((json.dumps(r) + "\n").encode("utf-8"))
-        proc.stdin.flush()
-        resp_text = ""
-        for line in proc.stdout:
-            line = line.decode("utf-8", errors="replace").strip()
-            if line.startswith("{"):
-                try:
-                    e = json.loads(line)
-                    if e.get("id") == 2:
-                        resp_text = e.get("result", {}).get("content", [{}])[0].get("text", "{}")
-                        break
-                except json.JSONDecodeError:
-                    pass
-        proc.stdin.close(); proc.terminate(); proc.wait(timeout=5)
-        if resp_text.startswith("FEHLER") or resp_text.startswith("DRY-RUN"):
-            return {}
-        return json.loads(resp_text)
-    except Exception:
+
+    P4 (05.10.2026): Popen-Pipe ersetzt durch den offiziellen `mcp.Client`
+    (stdio). Signatur/Aufrufer unverändert. python_path: optionaler
+    Interpreter (default: sys.executable), z. B. .venv-pdf für pdf-reader.
+
+    P6.1 (05.10.2026): nutzt zuerst die persistente Session (Host-Cache,
+    kein Subprozess-/`tools/list`-Roundtrip je Aufruf). Bei Fehler/Timeout
+    wird die Session verworfen und der Aufruf über den P4-Ein-Schuss-Pfad
+    wiederholt — niemals crashen, bei echtem Fehler `{}`. Mit
+    `KMHR_MCP_SESSION=0` wird immer der Altpfad benutzt.
+    """
+    if os.environ.get("KMHR_MCP_DRY_RUN"):
+        # Laufzeit-Guard (Design-Entscheidung): analog Runner-`--dry-run`,
+        # aber per Env, da die NiceGUI-App kein argv-Flag besitzt.
+        print(f"[DRY-RUN] MCP {server_py.name}::{tool} "
+              f"args={json.dumps(args, default=str)[:120]}", file=sys.stderr)
         return {}
+    if _session_enabled():
+        try:
+            return _session_call_blocking(server_py, tool, args, python_path)
+        except _SessionUnavailable:
+            pass
+        except Exception:
+            _MCP_SESSION_STATS["reconnect"] += 1
+    return _mcp_connector_call_once(server_py, tool, args, python_path)
 
 
 # C3 (22.09.2026): Cache für statische hr-benchmark-Tools — get_score_category

@@ -86,6 +86,6 @@ Jeder Punkt **einzeln**, mit eigenem GO: S1 Quelle → S2 MD → Code (nur wo MD
 | 1 | P8.2 (Agent-Details aus DB) | ✅ im Arbeitsbaum (uncommitted) |
 | 2 | P2 (`run.io_bound`) + stdout-Leck | ✅ **umgesetzt** (Spec `event-loop-blockieren.md`; E2E 4/4 rc=0) |
 | 3 | P7 (Dependency-Pinning) | ✅ **umgesetzt** (Spec `dependency-pinning.md`; Guard-Test 2/2) |
-| 4 | P1/P3/P6.5/P6.6 | ⏭️ **entschieden (Messung):** SQLite `get_conn+select` = **0,070 ms** vs. Supavisor **130–204 ms** (~2000×) → P1 (Postgres-Pool), P3 (conn-Reuse), P6.5 (DB-Batching) für **SQLite+Contabo nicht erforderlich**. P6.6 (Chunked/Offload des Match-Renders) **nur bei Bedarf** (Render-Zeit messen, offen). |
+| 4 | P1/P3/P6.5/P6.6 | ⏭️ **entschieden (Messung):** SQLite `get_conn+select` = **0,070 ms** vs. Supavisor **130–204 ms** (~2000×) → P1 (Postgres-Pool)/P3 (conn-Reuse)/P6.5 (DB-Batching) für **SQLite+Contabo nicht erforderlich**. **P6.6 gemessen 08.10.2026** (Match-Render, isoliert): kalt ~4,97 s / warm ~2,0–2,1 s (29 Karten), Browser-Longtasks **0**, WS-Disconnects **0** → **kein Event-Loop-Block, P6.6 (Chunked/Skeleton) nicht erforderlich.** |
 | 5 | P6 MCP-Lazy-Gating | ⏭️ zurückgestellt (belegter Ist-Nutzen gering: Ist-Prompts hatten 0 Katalog-Zeichen) |
 | 6 | Cloud/DB Supabase/Render | ⏭️ **separate Entscheidung** (main = SQLite+Contabo) |
