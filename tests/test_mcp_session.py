@@ -17,6 +17,10 @@ Nachweise:
 
 Keine Live-DB, kein Postgres nötig (Connector-Aufrufe berühren keine DB).
 """
+import asyncio
+import threading
+from pathlib import Path
+
 from webui import logic
 
 
@@ -110,3 +114,124 @@ def test_e_daemon_thread_cleanup_and_restart(monkeypatch):
     r = logic._mcp_connector_call(
         logic.HR_BENCHMARK_SERVER, "get_score_category", {"score": 70})
     assert r.get("category") == "Consider"
+
+
+# ─── (f) Option 1: Per-Key-Lock — verschiedene Keys parallel, gleicher Key
+#          serialisiert (08.10.2026) ──────────────────────────────────────────
+#
+# Beweist, dass Session-Starts UNTERSCHIEDLICHER Server nicht durch einen
+# globalen Lock gegenseitig blockieren, während DERSELBE Key serialisiert
+# bleibt. Deterministisch, ohne echte Subprozesse: Fake-Handle, Dummy-Loop und
+# ein Worker, der an einem expliziten Start-Gate (threading.Event) parkt.
+
+class _FakeMcpSession:
+    """Minimal-Ersatz für `logic._McpServerSession` (kein Subprozess)."""
+
+    def __init__(self, server_py, python_path, loop):
+        self.server_py = server_py
+        self.python_path = python_path
+        self.loop = loop
+        self.queue = None
+        self.ready = threading.Event()
+        self.done = threading.Event()
+        self.alive = True
+        self.error = None
+        self.tools = None
+
+
+class _FakeAsyncio:
+    """Ersatz für `logic.asyncio`: führt die Worker-Coroutine in eigenem
+    Thread aus (der reale Event-Loop wird hier nur durch eine Attrappe
+    vertreten)."""
+
+    @staticmethod
+    def run_coroutine_threadsafe(coro, loop):
+        threading.Thread(target=lambda: asyncio.run(coro),
+                         daemon=True).start()
+
+
+def test_f_per_key_lock_parallel_starts(monkeypatch):
+    monkeypatch.delenv("KMHR_MCP_SESSION", raising=False)
+
+    starts = {"n": 0}
+    starts_lock = threading.Lock()
+    state = {
+        "gate": threading.Event(),
+        "one_started": threading.Event(),
+        "two_started": threading.Event(),
+    }
+
+    async def fake_worker(handle):
+        # Parkt am Start-Gate und wird erst danach „bereit" — so lässt sich
+        # beobachten, wie viele Starts gleichzeitig im Lock hängen.
+        with starts_lock:
+            starts["n"] += 1
+            n = starts["n"]
+        if n >= 1:
+            state["one_started"].set()
+        if n >= 2:
+            state["two_started"].set()
+        assert state["gate"].wait(10), "Start-Gate nicht rechtzeitig gelöst"
+        handle.ready.set()
+
+    monkeypatch.setattr(logic, "_McpServerSession", _FakeMcpSession)
+    monkeypatch.setattr(logic, "_get_session_loop", lambda: object())
+    monkeypatch.setattr(logic, "_mcp_session_worker", fake_worker)
+    monkeypatch.setattr(logic, "asyncio", _FakeAsyncio)
+
+    logic._SESSIONS.clear()
+    logic._SESSION_LOCKS.clear()
+
+    def _start(store, key):
+        try:
+            store[key] = logic._get_or_start_handle(Path(key), None)
+        except BaseException as ex:  # noqa: BLE001
+            store[key] = ex
+
+    # ── Teil 1: verschiedene Keys → Starts laufen parallel ─────────────────
+    out = {}
+    ta = threading.Thread(target=_start, args=(out, "A.py"))
+    tb = threading.Thread(target=_start, args=(out, "B.py"))
+    ta.start()
+    tb.start()
+
+    # Beide Worker parken am Gate, obwohl der jeweils erste Aufruf noch im
+    # Per-Key-Lock steht → kein gegenseitiges Blockieren.
+    assert state["two_started"].wait(10), "verschiedene Keys nicht parallel"
+    assert ta.is_alive() and tb.is_alive()
+    assert out == {} and not state["gate"].is_set()
+    state["gate"].set()
+
+    ta.join(10)
+    tb.join(10)
+    assert not ta.is_alive() and not tb.is_alive()
+    assert out["A.py"] is not out["B.py"]
+    assert out["A.py"].server_py == Path("A.py")
+    assert out["B.py"].server_py == Path("B.py")
+
+    # ── Teil 2: gleicher Key → serialisiert, lebende Session wiederverwendet
+    logic._SESSIONS.clear()
+    logic._SESSION_LOCKS.clear()
+    state["gate"] = threading.Event()
+    state["one_started"].clear()
+    state["two_started"].clear()
+    with starts_lock:
+        starts["n"] = 0
+
+    res1, res2 = {}, {}
+    t1 = threading.Thread(target=_start, args=(res1, "A.py"))
+    t2 = threading.Thread(target=_start, args=(res2, "A.py"))
+    t1.start()
+    t2.start()
+
+    assert state["one_started"].wait(10), "kein Worker für Key A gestartet"
+    # Zweiter Start darf nicht parallel laufen (gleicher Per-Key-Lock) …
+    assert not state["two_started"].wait(0.5), "gleicher Key parallel gestartet"
+    state["gate"].set()
+
+    t1.join(10)
+    t2.join(10)
+    assert not t1.is_alive() and not t2.is_alive()
+    # … und die bereits lebende Session wird statt eines Neustarts verwendet.
+    assert starts["n"] == 1, "gleicher Key startete mehr als einmal"
+    assert res1["A.py"] is res2["A.py"], "Session nicht wiederverwendet"

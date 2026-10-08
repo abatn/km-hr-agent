@@ -350,6 +350,10 @@ _MCP_SESSION_STATS: dict = {
 }
 
 _SESSION_LOCK = threading.Lock()
+# Per-Key-Locks (Option 1, 08.10.2026): Session-Start je Server serialisieren,
+# aber verschiedene Server parallel. `_SESSION_LOCK` ist nur noch kurzer
+# Guard fuer _SESSIONS/_SESSION_LOCKS.
+_SESSION_LOCKS: dict = {}
 _LOOP_LOCK = threading.Lock()
 _SESSION_LOOP = None
 _SESSION_THREAD = None
@@ -467,20 +471,42 @@ async def _mcp_session_submit(handle: _McpServerSession, tool: str,
     return await fut
 
 
+def _key_lock(key):
+    with _SESSION_LOCK:
+        lk = _SESSION_LOCKS.get(key)
+        if lk is None:
+            lk = threading.Lock()
+            _SESSION_LOCKS[key] = lk
+        return lk
+
+
 def _get_or_start_handle(server_py: Path, python_path):
-    """Liefert eine lebende Session oder startet sie (unter `_SESSION_LOCK`)."""
+    """Liefert eine lebende Session oder startet sie.
+
+    Option 1 (08.10.2026): **Per-Key-Lock** statt globalem Lock — Session-Starts
+    fuer UNTERSCHIEDLICHE Server laufen parallel; nur derselbe Server wird
+    serialisiert (kein Doppel-Start). Der globale `_SESSION_LOCK` ist nur noch
+    kurzer Guard fuer `_SESSIONS`/`_SESSION_LOCKS` (nicht mehr ueber den Start).
+    """
     key = (str(server_py), python_path)
     with _SESSION_LOCK:
         handle = _SESSIONS.get(key)
         if handle is not None and handle.alive:
             return handle
+    with _key_lock(key):
+        with _SESSION_LOCK:
+            handle = _SESSIONS.get(key)
+            if handle is not None and handle.alive:
+                return handle
         loop = _get_session_loop()
         handle = _McpServerSession(server_py, python_path, loop)
-        _SESSIONS[key] = handle
+        with _SESSION_LOCK:
+            _SESSIONS[key] = handle
         _MCP_SESSION_STATS["spawn"] += 1
         asyncio.run_coroutine_threadsafe(_mcp_session_worker(handle), loop)
         if not handle.ready.wait(_MCP_START_TIMEOUT) or not handle.alive:
-            _SESSIONS.pop(key, None)
+            with _SESSION_LOCK:
+                _SESSIONS.pop(key, None)
             raise _SessionUnavailable(
                 f"MCP-Session {getattr(server_py, 'name', server_py)} "
                 f"nicht bereit")
@@ -1394,6 +1420,48 @@ def cefr_from_avg(avg: float) -> dict:
         return {"level": lv, "beschreibung": "", "empfehlung": ""}
 
 
+# ─── Warm-up der MCP-Sessions (Plan A, 08.10.2026) ──────────────────────────
+# Der erste Match-Render startete die MCP-Sessions/Caches synchron im Event-Loop
+# (Lag-Monitor: 2,97 s Block > pingTimeout 2 s). Diese Liste wärmt sie beim
+# App-Start in einem Daemon-Thread vor. Rollback: KMHR_MCP_WARMUP=0.
+_MCP_WARMUP_JOBS = (
+    (HR_BENCHMARK_SERVER, "get_score_category", {"score": 80}),
+    (SALARY_DATA_SERVER, "calculate_salary_tolerance", {"midpoint": 50000}),
+    (PRESCREEN_CONFIG_SERVER, "get_optimal_duration", {}),
+)
+
+
+def _warm_mcp_connectors_blocking() -> list:
+    """Ruft die Warm-up-Jobs PARALLEL auf (je ein Thread) — kürzere Gesamtdauer
+    (~3 s statt ~10 s), damit das Vorwärmen vor dem ersten Render fertig ist und
+    nicht mit ihm um den globalen `_SESSION_LOCK` konkurriert. Fehler ignorieren."""
+    results: list = [None] * len(_MCP_WARMUP_JOBS)
+
+    def _one(i, server_py, tool, args):
+        try:
+            results[i] = _mcp_connector_call(server_py, tool, args)
+        except Exception:
+            results[i] = None
+
+    threads = [threading.Thread(target=_one, args=(i, s, t, a),
+                                name=f"mcp-warmup-{i}", daemon=True)
+               for i, (s, t, a) in enumerate(_MCP_WARMUP_JOBS)]
+    for th in threads:
+        th.start()
+    for th in threads:
+        th.join()
+    return results
+
+
+def warm_mcp_connectors():
+    """Startet das Vorwärmen im Hintergrund-Thread; None bei KMHR_MCP_WARMUP=0."""
+    if os.environ.get("KMHR_MCP_WARMUP") == "0":
+        return None
+    th = threading.Thread(target=_warm_mcp_connectors_blocking, name="mcp-warmup", daemon=True)
+    th.start()
+    return th
+
+
 def app_bootstrap() -> None:
     """Wird von beiden Apps beim Start aufgerufen (app.py:855-863):
     DSGVO-Cleanup 1x/Tag + agent_tasks-Tabelle + Runner-Autostart."""
@@ -1404,3 +1472,4 @@ def app_bootstrap() -> None:
     except Exception as e:
         print(f"[Agent-Queue] Tabellen-Init fehlgeschlagen (App läuft weiter): {e}")
     ensure_agent_runner()
+    warm_mcp_connectors()

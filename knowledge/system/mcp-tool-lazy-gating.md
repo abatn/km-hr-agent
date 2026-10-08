@@ -106,6 +106,22 @@ Warm ≈ **500×** schneller als der Ein-Schuss-Pfad; der Kaltstart zahlt `initi
 - Isoliertes E2E via `tests/e2e_isolation.py --port <frei> --only e2e_gehalt_match`
   (nie gegen die Live-App :8080) → `rc=0`.
 
+## Warm-up der MCP-Sessions beim App-Start (Plan A, 08.10.2026)
+
+- **Befund (Lag-Monitor 08.10.2026):** Der ERSTE `/employer/match`-Render startet die MCP-Sessions/Connector-Caches synchron im NiceGUI-Event-Loop → **2,97 s Block** (> `pingTimeout=2000 ms` → sichtbarer Timeout beim ersten Aufruf). Gegenprobe P4-only: 9,4 s Block. Warm: kein Block.
+- **Lösung:** `webui/logic.py::warm_mcp_connectors()` startet beim App-Start (aus `app_bootstrap()`) einen **Daemon-Thread**, der die MCP-Sessions für hr-benchmark (`get_score_category`, score 80), salary-data (`calculate_salary_tolerance`, midpoint 50000) und prescreen-config (`get_optimal_duration`) per `_mcp_connector_call` **vorwärmt** (öffnet die persistenten Sessions + füllt die Caches). Danach ist der erste Render warm.
+- **Rollback:** Env `KMHR_MCP_WARMUP=0` deaktiviert das Vorwärmen (Design-Entscheidung).
+- **Quelle (S1):** Muster „Dynamic Server Management"/„pre-warm" = **Design-Entscheidung** (kein externer Zwang); die Latenz-Begründung = eigene Messung 08.10.2026.
+- **Verifikation:** `tests/test_mcp_warmup.py` + Lag-Monitor (kalt kein Block >1 s).
+
+## Per-Key-Session-Lock (Option 1, 08.10.2026)
+
+- **Befund (py-spy 08.10.2026):** `_get_or_start_handle` hielt den **globalen** `_SESSION_LOCK` über den GESAMTEN Session-Start (inkl. `handle.ready.wait(_MCP_START_TIMEOUT)` bis 25 s) → Session-Starts verschiedener Server **serialisiert** → der erste Match-Render blockierte >2 s (Ping-Timeout).
+- **Lösung:** **Per-Key-Lock** — `_SESSION_LOCKS: dict[key -> Lock]`; `_SESSION_LOCK` dient nur noch als kurzer Guard für `_SESSIONS`/`_SESSION_LOCKS`. Verschiedene Server starten **parallel**, derselbe Server bleibt serialisiert (kein Doppel-Start).
+- **Wirkung:** In Kombination mit dem Warm-up (Plan A) starten die 3 Sessions **parallel** (~3 s statt ~9 s) → vor dem ersten Render bereit → kein Kalt-Block.
+- **Kennzeichnung (S1):** Muster `run.io_bound`/Async = offiziell (NiceGUI-FAQ); Per-Key-Lock/Warm-up = **Design-Entscheidung**; Befund = eigene py-spy-Messung 08.10.2026.
+- **Verifikation:** `tests/test_mcp_session.py` (bestehend) + neuer Parallel-Test; Lag-Monitor (kalt 0 Blocks).
+
 ## Konsistenz (Schritt 3) / Transparenz (Schritt 4) / Iteration (Schritt 5)
 
 - Abgleich Spec ↔ `webui/logic.py` (Codemarken oben) bzw. `webui/pages/*`; bei Abweichung
