@@ -45,6 +45,31 @@ sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 
 from ansvar_gateway import ansvar_search, get_ansvar_token
 
+# ─── i18n (Variante B, P2/P3 07.10.2026) ────────────────────────────────
+# Spec: knowledge/system/i18n-runner-chain.md §7.1 Punkt 3–5. NUR die
+# framework-freie Kernschicht (gettext, kein NiceGUI) importieren — der Runner
+# läuft in einem eigenen Prozess ohne NiceGUI-Session.
+from webui.i18n_core import tr, SUPPORTED
+
+# ISO-Kürzel → Klarname für die LLM-Prompt-Anweisung (§7.1 Punkt 5).
+LANG_NAMES = {"de": "Deutsch", "en": "Englisch", "fr": "Französisch", "ar": "Arabisch"}
+
+
+def _lang(payload: dict) -> str:
+    """Payload-Sprache (Variante B): nur Werte aus SUPPORTED, sonst Default 'de'.
+
+    Alt-Tasks ohne `language` → `de` (Spec §7.1 Punkt 4, keine Rück-Übersetzung).
+    """
+    lang = (payload or {}).get("language")
+    return lang if lang in SUPPORTED else "de"
+
+
+def _ki_hinweis(lang: str) -> str:
+    """Signatur-Fußzeile aller Kandidaten-/HR-Mails (EU AI Act Art. 50)."""
+    return "\n\n--\n" + tr(
+        "Diese Nachricht wurde im Rahmen des Bewerbungsverfahrens "
+        "mit Unterstützung eines KI-Systems (EU AI Act Art. 50) erstellt.", lang)
+
 
 def _pdf_forensic_pre_scan(cand_id: int) -> str:
     """ pdf-verify-mcp Pre-Scan für verify_documents (SKILL.md Schritt 4a).
@@ -244,9 +269,6 @@ def mcp_connector_call(server_py: Path, tool: str, args: dict) -> dict:
 
 # ─── E-Mail-Aktionen (deterministisch via email-sender) ─────────────────
 
-TEMPLATE_KI_HINWEIS = ("\n\n--\nDiese Nachricht wurde im Rahmen des Bewerbungsverfahrens "
-                       "mit Unterstützung eines KI-Systems (EU AI Act Art. 50) erstellt.")
-
 def send_confirmation(payload: dict) -> dict:
     cid = payload.get("candidate_id")
     conn = sqlite3.connect(str(DB_PATH)); c = conn.cursor()
@@ -255,13 +277,17 @@ def send_confirmation(payload: dict) -> dict:
     if not row or not row[0]:
         raise RuntimeError(f"Kandidat #{cid} nicht gefunden / keine E-Mail")
     email, name = row
-    body = (f"Guten Tag {name},\n\n"
-            "vielen Dank für Ihre Bewerbung. Sie ist bei uns eingegangen und wird "
-            "in Kürze geprüft (Lebenslauf-Analyse, Match- und Compliance-Prüfung).\n\n"
-            "Wir melden uns, sobald ein Ergebnis vorliegt.\n\n"
-            "Ihr KM-HR-Agent-Team" + TEMPLATE_KI_HINWEIS)
+    lang = _lang(payload)
+    body = "\n\n".join([
+        tr("Guten Tag {name},", lang, name=name),
+        tr("vielen Dank für Ihre Bewerbung. Sie ist bei uns eingegangen und wird "
+           "in Kürze geprüft (Lebenslauf-Analyse, Match- und Compliance-Prüfung).", lang),
+        tr("Wir melden uns, sobald ein Ergebnis vorliegt.", lang),
+        tr("Ihr KM-HR-Agent-Team", lang),
+    ]) + _ki_hinweis(lang)
     out = mcp_call(EMAIL_SERVER, "send_email",
-                   {"to": email, "subject": "Ihre Bewerbung ist eingegangen",
+                   {"to": email,
+                    "subject": tr("Ihre Bewerbung ist eingegangen", lang),
                     "body": body})
     return {"mail": out[:200], "to": email}
 
@@ -331,29 +357,32 @@ def notify_hr(payload: dict, score: int, kategorie: str) -> dict:
     if not hr_mail:
         raise RuntimeError("Keine HR-Empfänger-E-Mail gefunden (employers.kontakt_email)")
     app_id = payload.get("application_id"); cid = payload.get("candidate_id")
+    lang = _lang(payload)
     # Spec v6: Visum-INFO erst beim JA-Pfad (User-Entscheidung) – aus verify_documents-Bericht
     visum = _visum_auswertung_from_ergebnisse(cid)
     visum_block = ""
     if visum:
-        visum_block = (f"\nVisum-Hinweis (aus der Dokumenten-Prüfung, agent-generiert):\n"
-                       f"WAS: {visum.get('was', '–')}\n"
-                       f"WIE: {visum.get('wie', '–')}\n"
-                       f"WO: {visum.get('wo', '–')}\n"
-                       "Der Agent stellt keinen Antrag – die Antragstellung obliegt dem Kandidaten.\n")
-    body = (f"Guten Tag,\n\n"
-            f"der Agent hat die Bewerbung von Kandidat #{cid} geprüft "
-            f"(Bewerbung #{app_id}).\n\n"
-            f"Match-Score: {score}/100 ({kategorie})\n"
-            f"Compliance: COMPLIANT\n"
-            f"Dokumente: siehe Bericht verify_documents-kandidat-{cid}.md\n"
-            f"{visum_block}"
-            f"\nDie ausführlichen Berichte (Match / Compliance / Culture-Fit / Dokumente) finden Sie "
-            "im Portal: 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis.\n"
-            "Entscheiden Sie im Portal (💼 Stellenangebote), ob Sie den Kandidaten "
-            "einladen möchten – der Agent versendet keine Einladung von sich aus.\n\n"
-            "Ihr KM-HR-Agent (automatische Benachrichtigung)" + TEMPLATE_KI_HINWEIS)
+        visum_block = ("\n" + tr("Visum-Hinweis (aus der Dokumenten-Prüfung, agent-generiert):", lang) + "\n"
+                       + tr("WAS: {0}", lang).format(visum.get('was', '–')) + "\n"
+                       + tr("WIE: {0}", lang).format(visum.get('wie', '–')) + "\n"
+                       + tr("WO: {0}", lang).format(visum.get('wo', '–')) + "\n"
+                       + tr("Der Agent stellt keinen Antrag – die Antragstellung obliegt dem Kandidaten.", lang) + "\n")
+    body = "\n\n".join([
+        tr("Guten Tag,", lang),
+        tr("der Agent hat die Bewerbung von Kandidat #{0} geprüft (Bewerbung #{1}).", lang).format(cid, app_id),
+        tr("Match-Score: {0}/100 ({1})", lang).format(score, tr(kategorie, lang)),
+        tr("Compliance: {0}", lang).format("COMPLIANT"),
+        tr("Dokumente: siehe Bericht verify_documents-kandidat-{0}.md", lang).format(cid),
+        visum_block.strip(),
+        tr("Die ausführlichen Berichte (Match / Compliance / Culture-Fit / Dokumente) finden Sie "
+           "im Portal: 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis.", lang),
+        tr("Entscheiden Sie im Portal (💼 Stellenangebote), ob Sie den Kandidaten "
+           "einladen möchten – der Agent versendet keine Einladung von sich aus.", lang),
+        tr("Ihr KM-HR-Agent (automatische Benachrichtigung)", lang),
+    ]) + _ki_hinweis(lang)
     out = mcp_call(EMAIL_SERVER, "send_email",
-                   {"to": hr_mail, "subject": f"Neues Agent-Ergebnis: Kandidat #{cid} – Score {score}/100",
+                   {"to": hr_mail,
+                    "subject": tr("Neues Agent-Ergebnis: Kandidat #{0} – Score {1}/100", lang).format(cid, score),
                     "body": body})
     return {"mail": out[:200], "to": hr_mail, "score": score,
             **({"visum": visum} if visum else {})}
@@ -372,20 +401,24 @@ def visa_confirmation(payload: dict) -> dict:
     if not row:
         raise RuntimeError(f"Kandidat #{cid} nicht gefunden")
     email, name = row
+    lang = _lang(payload)
     visum = _visum_auswertung_from_ergebnisse(cid)
     if not visum:
         raise RuntimeError("Keine Visum-Auswertung vorhanden (verify_documents: nicht relevant oder fehlt)")
-    body = (f"Guten Tag {name},\n\n"
-            f"Ihre Bewerbung war erfolgreich – für Ihren Arbeitsantritt benötigt Ihre "
-            f"Aufenthaltsgenehmigung Ihre Aufmerksamkeit. Hier die Schritte (agent-generiert, "
-            f"bitte verifizieren Sie die Angaben bei der zuständigen Stelle):\n\n"
-            f"WAS: {visum.get('was', '–')}\n"
-            f"WIE: {visum.get('wie', '–')}\n"
-            f"WO: {visum.get('wo', '–')}\n\n"
-            f"Der Agent stellt keinen Antrag – die Antragstellung obliegt Ihnen.\n\n"
-            f"Ihr KM-HR-Agent" + TEMPLATE_KI_HINWEIS)
+    body = "\n\n".join([
+        tr("Guten Tag {name},", lang, name=name),
+        tr("Ihre Bewerbung war erfolgreich – für Ihren Arbeitsantritt benötigt Ihre "
+           "Aufenthaltsgenehmigung Ihre Aufmerksamkeit. Hier die Schritte (agent-generiert, "
+           "bitte verifizieren Sie die Angaben bei der zuständigen Stelle):", lang),
+        tr("WAS: {0}", lang).format(visum.get('was', '–')) + "\n"
+        + tr("WIE: {0}", lang).format(visum.get('wie', '–')) + "\n"
+        + tr("WO: {0}", lang).format(visum.get('wo', '–')),
+        tr("Der Agent stellt keinen Antrag – die Antragstellung obliegt Ihnen.", lang),
+        tr("Ihr KM-HR-Agent", lang),
+    ]) + _ki_hinweis(lang)
     out = mcp_call(EMAIL_SERVER, "send_email",
-                   {"to": email, "subject": "Ihre Visum-Schritte zur Arbeitsaufnahme",
+                   {"to": email,
+                    "subject": tr("Ihre Visum-Schritte zur Arbeitsaufnahme", lang),
                     "body": body})
     return {"mail": out[:200], "to": email, "visum": visum}
 
@@ -422,44 +455,49 @@ def send_onboarding_mail(payload: dict) -> dict:
                   "AND status = 'aktiv' ORDER BY changed_at DESC LIMIT 1", (cid,))
         _mrow = c.fetchone()
         if _mrow and _mrow[0]:
-            mentor_block = f"Dein Ansprechpartner (Mentor): {_mrow[0]}\n\n"
+            mentor_block = _mrow[0]  # Name; Anzeige unten sprachabhängig
     except sqlite3.Error:
         mentor_block = ""  # Tabelle evtl. noch nicht angelegt – Mail trotzdem
     conn.close()
     if not row or not row[0]:
         raise RuntimeError(f"Kandidat #{cid} nicht gefunden / keine E-Mail")
     email, name, titel = row
+    lang = _lang(payload)
     if not titel:
-        titel = "Ihre neue Position"  # Fallback (Design-Entscheidung)
+        titel = tr("Ihre neue Position", lang)  # Fallback (Design-Entscheidung)
     # Visum-Abschnitt (optional, wie visa_confirmation/notify_hr)
     visum = _visum_auswertung_from_ergebnisse(cid)
     visum_block = ""
     if visum:
-        visum_block = (f"\n📋 Visum-Schritte (aus der Dokumenten-Prüfung, agent-generiert):\n"
-                       f"WAS: {visum.get('was', '–')}\n"
-                       f"WIE: {visum.get('wie', '–')}\n"
-                       f"WO: {visum.get('wo', '–')}\n"
-                       "Der Agent stellt keinen Antrag – die Antragstellung obliegt Ihnen.\n")
+        visum_block = ("\n" + tr("📋 Visum-Schritte (aus der Dokumenten-Prüfung, agent-generiert):", lang) + "\n"
+                       + tr("WAS: {0}", lang).format(visum.get('was', '–')) + "\n"
+                       + tr("WIE: {0}", lang).format(visum.get('wie', '–')) + "\n"
+                       + tr("WO: {0}", lang).format(visum.get('wo', '–')) + "\n"
+                       + tr("Der Agent stellt keinen Antrag – die Antragstellung obliegt Ihnen.", lang) + "\n")
+    # Mentor-Zeile (Phase D P10) – Anzeige, übersetzt
+    mentor_txt = tr("Dein Ansprechpartner (Mentor): {0}", lang).format(mentor_block) if mentor_block else ""
     # Onboarding-Kernpunkte kompakt (aus knowledge/onboarding-default.md)
-    body = (f"Guten Tag {name},\n\n"
-            "wir freuen uns, Sie offiziell bei uns begrüßen zu dürfen – "
-            "herzlichen Glückwunsch zu Ihrer Einstellung!\n\n"
-            f"Stelle: {titel}\n\n"
-            f"{mentor_block}"
-            "Ihr Onboarding im Überblick:\n"
-            "- Vertragliche Dokumente: Arbeitsvertrag (vor Eintritt), "
-            "Datenschutzeinwilligung und Arbeitszeitkonto (Tag 1)\n"
-            "- IT-Ausstattung: Laptop, E-Mail-Account, VPN und Chat-Zugang "
-            "(bereitgestellt von der IT-Abteilung)\n"
-            "- Einarbeitung Woche 1: Tag 1 Begrüßung & IT-Übergabe → Tag 2 Tools und "
-            "Team-Vorstellung → Tag 3 Prozess-Überblick → Tag 5 Rückfragen und erstes Feedback\n"
-            f"{visum_block}"
-            "\nDie vollständige Onboarding-Checkliste erhalten Sie über das "
-            "Candidate-Portal (Tab Onboarding).\n\n"
-            "Wir freuen uns auf die Zusammenarbeit!\n\n"
-            "Ihr KM-HR-Agent-Team" + TEMPLATE_KI_HINWEIS)
+    body = "\n\n".join([
+        tr("Guten Tag {name},", lang, name=name),
+        tr("wir freuen uns, Sie offiziell bei uns begrüßen zu dürfen – "
+           "herzlichen Glückwunsch zu Ihrer Einstellung!", lang),
+        tr("Stelle: {0}", lang).format(titel),
+        mentor_txt.strip(),
+        tr("Ihr Onboarding im Überblick:", lang),
+        tr("- Vertragliche Dokumente: Arbeitsvertrag (vor Eintritt), "
+           "Datenschutzeinwilligung und Arbeitszeitkonto (Tag 1)", lang),
+        tr("- IT-Ausstattung: Laptop, E-Mail-Account, VPN und Chat-Zugang "
+           "(bereitgestellt von der IT-Abteilung)", lang),
+        tr("- Einarbeitung Woche 1: Tag 1 Begrüßung & IT-Übergabe → Tag 2 Tools und "
+           "Team-Vorstellung → Tag 3 Prozess-Überblick → Tag 5 Rückfragen und erstes Feedback", lang),
+        visum_block.strip(),
+        tr("Die vollständige Onboarding-Checkliste erhalten Sie über das "
+           "Candidate-Portal (Tab Onboarding).", lang),
+        tr("Wir freuen uns auf die Zusammenarbeit!", lang),
+        tr("Ihr KM-HR-Agent-Team", lang),
+    ]) + _ki_hinweis(lang)
     out = mcp_call(EMAIL_SERVER, "send_email",
-                   {"to": email, "subject": "Willkommen im Team – Ihre Einstellung", "body": body})
+                   {"to": email, "subject": tr("Willkommen im Team – Ihre Einstellung", lang), "body": body})
     return {"mail": out[:200], "to": email, "app_id": app_id, "job": titel,
             **({"visum": visum} if visum else {})}
 
@@ -482,16 +520,20 @@ def send_rejection(payload: dict) -> dict:
     if not row or not row[0]:
         raise RuntimeError(f"Kandidat #{cid} nicht gefunden / keine E-Mail")
     email, name = row
+    lang = _lang(payload)
     # AGG-sicher: neutral, dankend, ohne Begründung, ohne Diskriminierungsmerkmale
-    body = (f"Guten Tag {name},\n\n"
-            "vielen Dank für Ihre Bewerbung und Ihr Interesse.\n\n"
-            "Nach sorgfältiger Prüfung aller Unterlagen haben wir uns entschlossen, "
-            "in diesem Verfahren anderenorts fortzufahren. Dies ist keine Bewertung "
-            "Ihrer Fähigkeiten und Persönlichkeit.\n\n"
-            "Wir wünschen Ihnen für Ihre berufliche und persönliche Zukunft alles Gute.\n\n"
-            "Ihr KM-HR-Agent-Team" + TEMPLATE_KI_HINWEIS)
+    body = "\n\n".join([
+        tr("Guten Tag {name},", lang, name=name),
+        tr("vielen Dank für Ihre Bewerbung und Ihr Interesse.", lang),
+        tr("Nach sorgfältiger Prüfung aller Unterlagen haben wir uns entschlossen, "
+           "in diesem Verfahren anderenorts fortzufahren. Dies ist keine Bewertung "
+           "Ihrer Fähigkeiten und Persönlichkeit.", lang),
+        tr("Wir wünschen Ihnen für Ihre berufliche und persönliche Zukunft alles Gute.", lang),
+        tr("Ihr KM-HR-Agent-Team", lang),
+    ]) + _ki_hinweis(lang)
     out = mcp_call(EMAIL_SERVER, "send_email",
-                   {"to": email, "subject": "Rückmeldung zu Ihrer Bewerbung",
+                   {"to": email,
+                    "subject": tr("Rückmeldung zu Ihrer Bewerbung", lang),
                     "body": body})
     return {"mail": out[:200], "to": email}
 
@@ -522,6 +564,7 @@ def create_invitation(payload: dict) -> dict:
     if not row:
         raise RuntimeError(f"Bewerbung #{app_id} nicht gefunden")
     email, name, titel = row
+    lang = _lang(payload)
     # 1) Meeting-Raum (Projektstandard seit 27.09.2026: VDO.Ninja, KEIN Google Meet,
     #    KEIN Jitsi – Jitsi-Aufzeichnung brauchte Jibri auf eigenem Server.
     #    Spec: knowledge/system/vdo-ninja-migration.md
@@ -587,23 +630,25 @@ def create_invitation(payload: dict) -> dict:
     # 2) Screening-Fragen (mit echtem Match-Score aus der DB, Spec: Lücke aus Phase-A-Analyse)
     score = _last_match_score(app_id)
     fragen = mcp_call(MEETING_SERVER, "generate_screening_questions",
-                      {"candidate_name": f"Kandidat #{payload.get('candidate_id')}",
+                      {"candidate_name": tr("Kandidat #{0}", lang).format(payload.get('candidate_id')),
                        "position": titel, "match_score": score, "cultural_fit_score": 75,
-                       "strengths": "siehe Match-Bericht", "gaps": "siehe Match-Bericht"})
+                       "strengths": tr("siehe Match-Bericht", lang),
+                       "gaps": tr("siehe Match-Bericht", lang),
+                       "language": lang})
     # 3) ICS (meet_url = VDO.Ninja-GAST-Raum, Gate 8)
     ics_text = mcp_call(MEETING_SERVER, "generate_ics_file",
-                        {"topic": f"Vorstellungsgespräch: {titel}", "date": datum,
+                        {"topic": tr("Vorstellungsgespräch: {0}", lang).format(titel), "date": datum,
                          "time": uhrzeit, "duration_minutes": dauer, "meet_url": vdo_ninja_gast_url,
-                         "description": "Online-Interview im Rahmen des Bewerbungsverfahrens."})
+                         "description": tr("Online-Interview im Rahmen des Bewerbungsverfahrens.", lang)})
     ics_path = ERGEBNISSE / f"einladung-ics-bewerbung-{app_id}.ics"
     if not DRY_RUN and not ics_text.startswith("FEHLER"):
         ics_path.write_text(ics_text, encoding="utf-8")
     # 3b) ICS für HR – enthält den DIRECTOR-Link (Rollentrennung, seit 28.09.2026);
     #     HR lädt die Datei über den Button „Termin in Kalender speichern (.ics) – HR“.
     ics_hr_text = mcp_call(MEETING_SERVER, "generate_ics_file",
-                        {"topic": f"Vorstellungsgespräch: {titel} (HR)", "date": datum,
+                        {"topic": tr("Vorstellungsgespräch: {0} (HR)", lang).format(titel), "date": datum,
                          "time": uhrzeit, "duration_minutes": dauer, "meet_url": vdo_ninja_url,
-                         "description": "Online-Interview (HR/Director-Ansicht)."})
+                         "description": tr("Online-Interview (HR/Director-Ansicht).", lang)})
     ics_path_hr = ERGEBNISSE / f"einladung-ics-hr-bewerbung-{app_id}.ics"
     if not DRY_RUN and not ics_hr_text.startswith("FEHLER"):
         ics_path_hr.write_text(ics_hr_text, encoding="utf-8")
@@ -611,11 +656,12 @@ def create_invitation(payload: dict) -> dict:
     mail_out = mcp_call(EMAIL_SERVER, "send_pre_screen_invitation",
                         {"to": email, "candidate_name": name, "position": titel,
                          "meet_url": vdo_ninja_gast_url, "date": datum, "time": uhrzeit,
-                         "questions_summary": fragen[:400]})
+                         "questions_summary": fragen[:400], "language": lang})
     return {"vdo_ninja_url": vdo_ninja_url, "vdo_ninja_gast_url": vdo_ninja_gast_url,
             "recording": False,  # Gate 10 (recording-consent.md): explizites Feld
             "ics_path": str(ics_path), "ics_path_hr": str(ics_path_hr),
-            "termin": f"{datum} {uhrzeit} Uhr ({dauer} Min.)", "mail": mail_out[:200], "to": email}
+            "termin": tr("{0} Uhr ({1} Min.)", lang).format(f"{datum} {uhrzeit}", dauer),
+            "mail": mail_out[:200], "to": email}
 
 
 def _last_match_score(app_id: int) -> int:
@@ -838,6 +884,24 @@ def _write_compliance_protokoll(payload: dict, agent_text: str, jid, cid, job_la
     return f"{aktion} ({match_id}, status={status})"
 
 
+def llm_report_header(task_type: str, cid, jid, datum: str, lang: str) -> str:
+    """Berichts-Header fuer LLM-Tasks in der Payload-Sprache (P9.5b, 07.10.2026).
+
+    Design-Entscheidung (Nutzer-GO 07.10.2026): der Task-Titel bleibt
+    englisch (Identifier = task_type.title(), entspricht Dateiname-Prefix und
+    Badge-Key), die Zusatze laufen ueber tr(). Bei lang='de' byte-identisch
+    mit dem Altbestand (Regression: tests/e2e_admin_downloads.py erwartet
+    "Extract Profile").
+    """
+    titel = task_type.replace("_", " ").title()
+    zeile = "# " + titel + " – " + tr("Kandidat #{0}", lang).format(cid)
+    if jid:
+        zeile += " / " + tr("Stelle #{0}", lang).format(jid)
+    return (zeile + "\n\n> " +
+            tr("Agent-Task (Phase 5, live {0}), Modell: {1}", lang).format(datum, LLM_MODEL) +
+            "\n\n")
+
+
 def run_llm_task(task_type: str, payload: dict) -> dict:
     cid = payload.get("candidate_id"); jid = payload.get("job_id")
     datum = datetime.now().strftime("%Y-%m-%d")
@@ -1021,6 +1085,20 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
     prompt = prompts.get(task_type)
     if not prompt:
         raise RuntimeError(f"Unbekannter LLM-Task: {task_type}")
+    # §7.1 Punkt 5: dem LLM sagen, in der Payload-Sprache zu antworten
+    # (nur Prompt-Instruktion, KEINE Nachbearbeitung der LLM-Ausgabe). Der
+    # Prompt ist deutsch → Anweisung mit deutschem Klarnamen (LANG_NAMES).
+    _langval = _lang(payload)
+    prompt += "\n\n" + f"Antworte in {LANG_NAMES.get(_langval, 'Deutsch')}."
+    # P9.5b (07.10.2026, Nutzer-GO "Prompt-Haertung"): die Status-Tokens sind
+    # das Fundament von _badge_icon (employer.py, 🔴/🟢/🟡) und duerfen bei
+    # FR/AR-Antwort nicht mituebersetzt werden. Interne Prompt-Regel wie
+    # "Antworte in <Klarname>" — fest deutsch, KEINE msgid (nicht nutzersichtbar).
+    prompt += ("\n\nAchtung: Die Status-Tokens COMPLIANT, NICHT_COMPLIANT, "
+               "KONFORM, NICHT_KONFORM, PLAUSIBEL, AUFFAELLIG, UNBEKANNT, "
+               "UNGEWISS, ERFORDERLICH und NICHT ERFORDERLICH gibst du IMMER "
+               "unveraendert aus (genau so, lateinische Buchstaben) — auch wenn "
+               "der Rest deiner Antwort eine andere Sprache ist.")
     result_path = str(ERGEBNISSE / f"{task_type}-kandidat-{cid}-{datum}.md")
     # ─── Hybrid: ansvar-Law als Rechtsquelle für check_visa/check_compliance ───
     if task_type in ("check_visa", "check_compliance"):
@@ -1139,9 +1217,7 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
     if not agent_text.strip():
         raise RuntimeError(f"Agent ohne Text-Antwort: {last_error}")
     # Runner persistiert (Permission-frei): Bericht selbst schreiben
-    header = (f"# {task_type.replace('_', ' ').title()} – Kandidat #{cid}" +
-              (f" / Stelle #{jid}" if jid else "") +
-              f"\n\n> Agent-Task (Phase 5, live {datum}), Modell: {LLM_MODEL}\n\n")
+    header = llm_report_header(task_type, cid, jid, datum, _langval)
     Path(result_path).write_text(header + agent_text + "\n", encoding="utf-8")
     size = Path(result_path).stat().st_size
     if size < 100:
@@ -1367,6 +1443,7 @@ def export_report(payload: dict) -> dict:
     """Exportiert Match-Ergebnisse als MD-Datei nach ergebnisse/."""
     cid = payload.get("candidate_id")
     jid = payload.get("job_id")
+    lang = _lang(payload)
     datum = datetime.now().strftime("%Y-%m-%d")
     # Match-Bericht lesen
     score, kategorie = _score_from_ergebnisse(cid, jid)
@@ -1387,24 +1464,25 @@ def export_report(payload: dict) -> dict:
                             break
         except Exception:
             continue
-    # Bericht erstellen
-    bericht = (f"# Match-Export – Kandidat #{cid} / Stelle #{jid}\n\n"
-               f"**Datum:** {datum}\n"
-               f"**Score:** {score}/100 ({kategorie})\n"
-               f"**Compliance:** {'COMPLIANT' if compliant else 'NICHT COMPLIANT'}\n"
-               f"**Kultur-Fit:** {kultur_score}/100\n\n"
-               f"---\n\n"
-               f"## Kategorien\n\n"
-               f"| Kategorie | Status |\n"
-               f"|---|---|\n"
-               f"| Kernkompetenzen | siehe Match-Bericht |\n"
-               f"| Berufserfahrung | siehe Match-Bericht |\n"
-               f"| Bildung | siehe Match-Bericht |\n"
-               f"| Standort | siehe Match-Bericht |\n"
-               f"| Branchenkenntnis | siehe Match-Bericht |\n"
-               f"| Soft Skills | siehe Match-Bericht |\n"
-               f"| Sprache | siehe Match-Bericht |\n\n"
-               f"*Exportiert am {datum} von Skill export-report.*\n")
+    # Bericht erstellen (P4c 07.10.2026: nutzersichtbare Strings via tr(), Spec §7)
+    siehe = tr("siehe Match-Bericht", lang)
+    zeilen = "\n".join(
+        tr("| {0} | {1} |", lang).format(tr(kat, lang), siehe)
+        for kat in ("Kernkompetenzen", "Berufserfahrung", "Bildung", "Standort",
+                    "Branchenkenntnis", "Soft Skills", "Sprache"))
+    compliance_token = "COMPLIANT" if compliant else "NICHT COMPLIANT"
+    bericht = (tr("# Match-Export – Kandidat #{0} / Stelle #{1}", lang).format(cid, jid) + "\n\n"
+               + tr("**Datum:** {0}", lang).format(datum) + "\n"
+               + tr("**Score:** {0}/100 ({1})", lang).format(score, tr(kategorie, lang)) + "\n"
+               + tr("**Compliance:** {0}", lang).format(compliance_token) + "\n"
+               + tr("**Kultur-Fit:** {cultural_fit_score}/100", lang,
+                    cultural_fit_score=kultur_score) + "\n\n"
+               + "---\n\n"
+               + tr("## Kategorien", lang) + "\n\n"
+               + tr("| Kategorie | Status |", lang) + "\n"
+               + "|---|---|\n"
+               + zeilen + "\n\n"
+               + tr("*Exportiert am {0} von Skill export-report.*", lang).format(datum) + "\n")
     pfad = ERGEBNISSE / f"export-kandidat-{cid}-job-{jid}-{datum}.md"
     pfad.write_text(bericht, encoding="utf-8")
     return {"result_path": str(pfad), "score": score, "kategorie": kategorie}
@@ -1489,6 +1567,7 @@ def contract_preflight(payload: dict) -> dict:
     app_id = payload.get("application_id")
     cand_id = payload.get("candidate_id")
     job_id = payload.get("job_id")
+    lang = _lang(payload)
     # job_id fehlt ggf. (Button ohne Lookup) → aus applications nachziehen
     conn = sqlite3.connect(str(DB_PATH))
     c = conn.cursor()
@@ -1507,7 +1586,7 @@ def contract_preflight(payload: dict) -> dict:
     cand_name = None
     if cand_id is not None:
         crow = c.execute("SELECT name FROM candidates WHERE id = ?", (cand_id,)).fetchone()
-        cand_name = crow[0] if crow else f"Kandidat #{cand_id}"
+        cand_name = crow[0] if crow else tr("Kandidat #{0}", lang).format(cand_id)
     conn.close()
     if not job:
         raise FileNotFoundError(f"contract_preflight: Job #{job_id} nicht gefunden")
@@ -1524,7 +1603,7 @@ def contract_preflight(payload: dict) -> dict:
             "(Key mindestlohn_2026) gefunden – MD aktualisieren")
     mindestlohn = float(m_val.group(1).replace(",", "."))
     # Quellenstatus (sekundär/amtlich) aus der Zeile mitschleppen
-    quellen_status = "⚠️ sekundär belegt" if "sekund" in ml_row.lower() else "siehe Katalog"
+    quellen_status = tr("⚠️ sekundär belegt", lang) if "sekund" in ml_row.lower() else tr("siehe Katalog", lang)
 
     # ── Gehalts-Check (DE, Stundenlohn) ──
     # Design-Entscheidung (24.09.2026): Vollzeit-Basis 40 h/Woche × 52 = 2080 h
@@ -1536,41 +1615,43 @@ def contract_preflight(payload: dict) -> dict:
             stundenlohn = float(gmin) / JAHRES_STUNDEN
             if stundenlohn >= mindestlohn:
                 gehalt_status = "✅"
-                gehalt_txt = (f"Mindestgehalt {gmin} €/Jahr ≈ {stundenlohn:.2f} €/h "
-                              f"≥ {mindestlohn:.2f} €/h Mindestlohn (Stand 2026)")
+                gehalt_txt = tr("Mindestgehalt {0} €/Jahr ≈ {1:.2f} €/h "
+                                "≥ {2:.2f} €/h Mindestlohn (Stand 2026)",
+                                lang).format(gmin, stundenlohn, mindestlohn)
             else:
                 gehalt_status = "❌"
-                gehalt_txt = (f"Mindestgehalt {gmin} €/Jahr ≈ {stundenlohn:.2f} €/h "
-                              f"< {mindestlohn:.2f} €/h Mindestlohn (Stand 2026) – "
-                              f"VOR Vertragsübergabe korrigieren")
+                gehalt_txt = tr("Mindestgehalt {0} €/Jahr ≈ {1:.2f} €/h "
+                                "< {2:.2f} €/h Mindestlohn (Stand 2026) – "
+                                "VOR Vertragsübergabe korrigieren",
+                                lang).format(gmin, stundenlohn, mindestlohn)
         else:
             gehalt_status = "⚠️"
-            gehalt_txt = ("Kein Gehaltsrahmen in der Stelle hinterlegt – HR ergänzt "
-                          "Gehalt vor Vertragsübergabe (HINWEIS, kein FEHLER, Parität "
-                          "app.py MiLoG-Logik)")
+            gehalt_txt = tr("Kein Gehaltsrahmen in der Stelle hinterlegt – HR ergänzt "
+                            "Gehalt vor Vertragsübergabe (HINWEIS, kein FEHLER, Parität "
+                            "app.py MiLoG-Logik)", lang)
     else:
         gehalt_status = "–"
-        gehalt_txt = (f"Stellenland {land or '?'} – Mindestlohn-Check DE (MiLoG) "
-                      f"nicht anwendbar; Landesrecht prüfen")
+        gehalt_txt = tr("Stellenland {0} – Mindestlohn-Check DE (MiLoG) "
+                        "nicht anwendbar; Landesrecht prüfen", lang).format(land or '?')
 
     # ── Formfall-Tabelle (statisch aus Spec contract-management.md §4) ──
     # URLs kommen aus dem Katalog-Dict, NICHT aus Literalen.
     def _u(key: str) -> str:
-        return urls.get(key, f"(Katalog-Key {key} ohne URL)")
+        return urls.get(key, tr("(Katalog-Key {0} ohne URL)", lang).format(key))
 
     formfallen = [
-        ("Unbefristet, unstrittig",
-         "formfrei; Nachweis Textform (§ 2 NachwG, E-Mail genügt)",
+        (tr("Unbefristet, unstrittig", lang),
+         tr("formfrei; Nachweis Textform (§ 2 NachwG, E-Mail genügt)", lang),
          f"[§ 611a BGB]({_u('bgb_611a')}) · [§ 2 NachwG]({_u('nachwg_2')})"),
-        ("Befristet",
-         "Schriftform; elektronisch nur mit QES",
+        (tr("Befristet", lang),
+         tr("Schriftform; elektronisch nur mit QES", lang),
          f"[§ 14 Abs. 4 TzBfG]({_u('tzbg_14')}) · [§ 126a BGB]({_u('bgb_126a')})"),
-        ("Kündigung / Aufhebungsvertrag",
-         "Schriftform, elektronische Form ausgeschlossen",
+        (tr("Kündigung / Aufhebungsvertrag", lang),
+         tr("Schriftform, elektronische Form ausgeschlossen", lang),
          f"[§ 623 BGB]({_u('bgb_623')})"),
-        ("QES allgemein",
-         "qualifizierte elektronische Signatur = handschriftliche Wirkung",
-         f"[eIDAS Art. 25]({_u('eidas_2014')}) (Volltext prüfen)"),
+        (tr("QES allgemein", lang),
+         tr("qualifizierte elektronische Signatur = handschriftliche Wirkung", lang),
+         f"[eIDAS Art. 25]({_u('eidas_2014')}) " + tr("(Volltext prüfen)", lang)),
     ]
 
     datum = datetime.now().strftime("%Y-%m-%d")
@@ -1579,52 +1660,52 @@ def contract_preflight(payload: dict) -> dict:
     ml_url = _u("mindestlohn_2026")
 
     lines = [
-        f"# Contract Preflight – Bewerbung #{app_id}",
+        tr("# Contract Preflight – Bewerbung #{0}", lang).format(app_id),
         "",
-        f"**Datum:** {datum}",
-        f"**Kandidat:** {cand_name or '–'} (#{cand_id})",
-        f"**Stelle:** {titel} (Job #{job_id}, {land or '?'}, {stellentyp or '–'})",
-        f"**Trigger:** {payload.get('trigger')} (Variante A: HR-Klick)",
+        "**" + tr("Datum:", lang) + f"** {datum}",
+        "**" + tr("Kandidat:", lang) + f"** {cand_name or '–'} (#{cand_id})",
+        "**" + tr("Stelle:", lang) + f"** {titel} (Job #{job_id}, {land or '?'}, {stellentyp or '–'})",
+        "**" + tr("Trigger:", lang) + f"** {payload.get('trigger')} ({tr('Variante A: HR-Klick', lang)})",
         "",
-        "## 1. Gehalts-Check (MiLoG)",
+        tr("## 1. Gehalts-Check (MiLoG)", lang),
         "",
-        f"| Status | Befund |",
-        f"|---|---|",
+        "| " + tr("Status", lang) + " | " + tr("Befund", lang) + " |",
+        "|---|---|",
         f"| {gehalt_status} | {gehalt_txt} |",
         "",
-        f"- **Mindestlohn-Wert (Stand 2026):** {mindestlohn:.2f} €/h "
-        f"– Quellenstatus: {quellen_status}",
-        f"- **Quelle (aus Link-Katalog):** {ml_url}",
-        f"- **Vergleichsbasis (Design-Entscheidung, 24.09.2026):** "
-        f"Jahresgehalt ÷ {JAHRES_STUNDEN} h (40 h/Woche × 52) → Stundenlohn",
-        f"- Stellenrahmen: min={gmin} max={gmax} €/Jahr",
+        "- **" + tr("Mindestlohn-Wert (Stand 2026):", lang) + f"** {mindestlohn:.2f} €/h "
+        f"– {tr('Quellenstatus:', lang)} {quellen_status}",
+        "- **" + tr("Quelle (aus Link-Katalog):", lang) + f"** {ml_url}",
+        "- **" + tr("Vergleichsbasis (Design-Entscheidung, 24.09.2026):", lang) + "** "
+        + tr("Jahresgehalt ÷ {0} h (40 h/Woche × 52) → Stundenlohn", lang).format(JAHRES_STUNDEN),
+        "- " + tr("Stellenrahmen: min={0} max={1} €/Jahr", lang).format(gmin, gmax),
         "",
-        "## 2. Formfall-Hinweise (HR wählt vor Versand)",
+        tr("## 2. Formfall-Hinweise (HR wählt vor Versand)", lang),
         "",
-        "| Fall | Form | Rechtsgrundlage |",
+        "| " + tr("Fall", lang) + " | " + tr("Form", lang) + " | " + tr("Rechtsgrundlage", lang) + " |",
         "|---|---|---|",
     ]
     for fall, form, basis in formfallen:
         lines.append(f"| {fall} | {form} | {basis} |")
     lines += [
         "",
-        "## 3. NachwG-Pflichtangaben (§ 2 Abs. 1 Nr. 1–15) – HR prüft",
+        tr("## 3. NachwG-Pflichtangaben (§ 2 Abs. 1 Nr. 1–15) – HR prüft", lang),
         "",
-        f"Volltext: {nachwg_url} (Key `nachwg_2` im Link-Katalog)",
+        tr("Volltext: {0} (Key `nachwg_2` im Link-Katalog)", lang).format(nachwg_url),
         "",
-        "- [ ] 1 Name/Anschrift · 2 Beginn/Dauer · 3 Arbeitsort · 4 Tätigkeit",
-        "- [ ] 5 Einstufung (tarifgebunden) · 6 Vergütung · 7 Arbeitszeit",
-        "- [ ] 8 Urlaub · 9 Kündigungsfristen · 10 Tarifvertrag/BV",
-        "- [ ] 11 Vorrang-Regeln · 12 E-Kommunikation · 13 Genehmigung",
-        "- [ ] 14 Entsendung/Auslandsrecht · 15 besondere Vertragsbestandteile",
+        tr("- [ ] 1 Name/Anschrift · 2 Beginn/Dauer · 3 Arbeitsort · 4 Tätigkeit", lang),
+        tr("- [ ] 5 Einstufung (tarifgebunden) · 6 Vergütung · 7 Arbeitszeit", lang),
+        tr("- [ ] 8 Urlaub · 9 Kündigungsfristen · 10 Tarifvertrag/BV", lang),
+        tr("- [ ] 11 Vorrang-Regeln · 12 E-Kommunikation · 13 Genehmigung", lang),
+        tr("- [ ] 14 Entsendung/Auslandsrecht · 15 besondere Vertragsbestandteile", lang),
         "",
-        "## 4. Vertragsskelett",
+        tr("## 4. Vertragsskelett", lang),
         "",
-        f"- Vorlage: `{vorlage}` (Skelett, HR füllt aus – Agent erstellt NICHT den Vertrag)",
+        tr("- Vorlage: `{0}` (Skelett, HR füllt aus – Agent erstellt NICHT den Vertrag)", lang).format(vorlage),
         "",
-        "## 5. Quellen (aus knowledge/legal/contract-sources.md, keine Hartkodierung)",
+        tr("## 5. Quellen (aus knowledge/legal/contract-sources.md, keine Hartkodierung)", lang),
         "",
-        "| Key | URL |",
+        "| " + tr("Key", lang) + " | URL |",
         "|---|---|",
     ]
     for key in ("bgb_126a", "bgb_623", "bgb_611a", "nachwg_2", "milog_1",
@@ -1635,9 +1716,9 @@ def contract_preflight(payload: dict) -> dict:
         "",
         "---",
         "",
-        "*Erstellt von Skill contract-management (Preflight). Der Agent prüft und "
-        "berichtet – er erstellt keinen Vertrag und signiert nicht (Variante A). "
-        "Signatur-Optionen A–F: knowledge/legal/contract-management.md §4.*",
+        tr("*Erstellt von Skill contract-management (Preflight). Der Agent prüft und "
+           "berichtet – er erstellt keinen Vertrag und signiert nicht (Variante A). "
+           "Signatur-Optionen A–F: knowledge/legal/contract-management.md §4.*", lang),
         "",
     ]
     rep = ERGEBNISSE / f"contract-preflight-bewerbung-{app_id}.md"
@@ -1684,25 +1765,27 @@ def finish_task(conn, task_id: int, ok: bool, result: dict | None = None,
 def _relocation_txt(bewerbung: dict) -> str:
     """Relocation-Abschnitt im Onboarding-Freigabe-Report (Phase E, P6-Option C, User-GO 25.09.2026).
     Nur-Text aus knowledge/lifecycle/relocation.md (§2 Prozess, §5 Lücken, §6 DSGVO) – keine
-    Adressen, keine URLs, keine erfundenen Zahlen; `bewerbung` = Task-Payload ohne Personenauswertung."""
+    Adressen, keine URLs, keine erfundenen Zahlen; `bewerbung` = Task-Payload ohne Personenauswertung.
+    Sprache aus dem Payload (Variante B, P3 07.10.2026)."""
+    lang = _lang(bewerbung)
     return (
-        "\n## 🏛️ Relocation / Umzug, Behörden, Anmeldung\n\n"
-        "- **Reihenfolge (bindend, Spec §2):** 1 Visum/Aufenthalt (`check_visa`) → 2 Wohnung suchen/beziehen → 3 Bürgeramt-Anmeldung (Meldebehörde) → 4 Steuer-ID → 5 Krankenkasse → 6 ELStAM.\n"
-        "- **Schritt 3 Bürgeramt (Spec §2):** Anmeldung **innerhalb von 2 Wochen nach Einzug**; Unterlagen: Meldeschein + Personalausweis/Pass/Passersatz + Wohnungsgeberbestätigung (Mietvertrag ersetzt sie NICHT); Nicht-EU: Anmeldung **vor** dem Aufenthaltstitel, eAT mit Nationalpass (BMG § 17/§ 23).\n"
-        "- **Schritte 4–6 (Spec §2):** Steuer-ID erst **nach** Schritt 3 (IdNr bei Zuzug aus dem Ausland zwingend) · Krankenkasse: Kandidat wählt GKV, Arbeitgeber meldet Beschäftigung spätestens 6 Wochen nach Beginn · ELStAM: IdNr + Geburtsdatum, ohne IdNr Steuerklasse VI (max. 3 Monate).\n"
-        "- **FR/CH (Design-Entscheidung, Spec §2):** FR Mairie → numéro fiscal → sécurité sociale; CH Einwohnerkontrolle/Gemeinde → AHV-Nummer → Krankenkasse – Details nicht recherchiert.\n"
-        "- **Variante A (Spec §3):** Der Agent lädt, meldet und beantragt nie bei einer Behörde – nur Information, Checkliste, E-Mail-Hinweis nach HR-Freigabe.\n"
-        "\n**Offen (Spec §5 – was NEU kommen müsste, noch nicht umgesetzt):**\n"
-        "- §5.1 Behörden-Infos live & kostenlos (Fristen/Öffnungen/Formulare) via `fetch` + `anysearch` → knowledge-MD – **offen**.\n"
-        "- §5.2 Relocation-Abschnitt in `knowledge/onboarding-default.md` + den 3 Land-Templates – **offen**.\n"
-        "- §5.3 Skill `relocation` (Agent-Ebene, analog `check-visa`) – **offen**.\n"
-        "- §5.4 ansvar-Query-Test `search(\"Bundesmeldegesetz Anmeldung 17\")` – **offen**.\n"
-        "- §5.5 MD-Korrektur `knowledge/legal/visa-rules.md:144` – **offen**.\n"
-        "- §5.6 Trigger/Task-Zeitpunkt des relocation-Checks (Design-Entscheidung) – **offen**.\n"
-        "\n**DSGVO (Spec §6):** Meldebestätigung/Meldeschein enthält die vollständige Wohnanschrift = Stammdaten "
-        "(Löschfrist 6 Monate, `gdpr-policy.md:48`); in Agent-Berichten nur Status speichern („Meldebestätigung: "
-        "ja/nein/Offen“, „Wohnungsgeberbestätigung: vorliegend/ja“), **keine** Adresse, **keine** Meldeschein-/"
-        "Pass-/eAT-Nummern (Art. 5 Abs. 1 c DSGVO); Meldeadresse nie in E-Mails an Dritte.\n"
+        "\n" + tr("## 🏛️ Relocation / Umzug, Behörden, Anmeldung", lang) + "\n\n"
+        + tr("- **Reihenfolge (bindend, Spec §2):** 1 Visum/Aufenthalt (`check_visa`) → 2 Wohnung suchen/beziehen → 3 Bürgeramt-Anmeldung (Meldebehörde) → 4 Steuer-ID → 5 Krankenkasse → 6 ELStAM.", lang) + "\n"
+        + tr("- **Schritt 3 Bürgeramt (Spec §2):** Anmeldung **innerhalb von 2 Wochen nach Einzug**; Unterlagen: Meldeschein + Personalausweis/Pass/Passersatz + Wohnungsgeberbestätigung (Mietvertrag ersetzt sie NICHT); Nicht-EU: Anmeldung **vor** dem Aufenthaltstitel, eAT mit Nationalpass (BMG § 17/§ 23).", lang) + "\n"
+        + tr("- **Schritte 4–6 (Spec §2):** Steuer-ID erst **nach** Schritt 3 (IdNr bei Zuzug aus dem Ausland zwingend) · Krankenkasse: Kandidat wählt GKV, Arbeitgeber meldet Beschäftigung spätestens 6 Wochen nach Beginn · ELStAM: IdNr + Geburtsdatum, ohne IdNr Steuerklasse VI (max. 3 Monate).", lang) + "\n"
+        + tr("- **FR/CH (Design-Entscheidung, Spec §2):** FR Mairie → numéro fiscal → sécurité sociale; CH Einwohnerkontrolle/Gemeinde → AHV-Nummer → Krankenkasse – Details nicht recherchiert.", lang) + "\n"
+        + tr("- **Variante A (Spec §3):** Der Agent lädt, meldet und beantragt nie bei einer Behörde – nur Information, Checkliste, E-Mail-Hinweis nach HR-Freigabe.", lang) + "\n"
+        + "\n" + tr("**Offen (Spec §5 – was NEU kommen müsste, noch nicht umgesetzt):**", lang) + "\n"
+        + tr("- §5.1 Behörden-Infos live & kostenlos (Fristen/Öffnungen/Formulare) via `fetch` + `anysearch` → knowledge-MD – **offen**.", lang) + "\n"
+        + tr("- §5.2 Relocation-Abschnitt in `knowledge/onboarding-default.md` + den 3 Land-Templates – **offen**.", lang) + "\n"
+        + tr("- §5.3 Skill `relocation` (Agent-Ebene, analog `check-visa`) – **offen**.", lang) + "\n"
+        + tr("- §5.4 ansvar-Query-Test `search(\"Bundesmeldegesetz Anmeldung 17\")` – **offen**.", lang) + "\n"
+        + tr("- §5.5 MD-Korrektur `knowledge/legal/visa-rules.md:144` – **offen**.", lang) + "\n"
+        + tr("- §5.6 Trigger/Task-Zeitpunkt des relocation-Checks (Design-Entscheidung) – **offen**.", lang) + "\n"
+        + "\n" + tr("**DSGVO (Spec §6):** Meldebestätigung/Meldeschein enthält die vollständige Wohnanschrift = Stammdaten "
+                    "(Löschfrist 6 Monate, `gdpr-policy.md:48`); in Agent-Berichten nur Status speichern („Meldebestätigung: "
+                    "ja/nein/Offen“, „Wohnungsgeberbestätigung: vorliegend/ja“), **keine** Adresse, **keine** Meldeschein-/"
+                    "Pass-/eAT-Nummern (Art. 5 Abs. 1 c DSGVO); Meldeadresse nie in E-Mails an Dritte.", lang) + "\n"
     )
 
 
@@ -1725,29 +1808,34 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
         elif task_type == "create_invitation":
             result = create_invitation(payload)
             # Einladungs-Bericht ablegen (Nachweispflicht, Spec §9)
+            _langval = _lang(payload)
             rep = ERGEBNISSE / f"einladung-bewerbung-{app_id}.md"
-            rep.write_text(f"# Einladung – Bewerbung #{app_id}\n\n"
-                           f"- Meeting (HR/Director): {result['vdo_ninja_url']}\n"
-                           f"- Meeting (Kandidat/Gast, Gate 8): {result.get('vdo_ninja_gast_url', result['vdo_ninja_url'])}\n"
-                           f"- Termin: {result['termin']}\n"
-                           f"- ICS (Kandidat/Gast): {result['ics_path']}\n"
-                           f"- ICS (HR/Director): {result.get('ics_path_hr', result['ics_path'])}\n"
-                           f"- Mail: {result['mail']}\n\n"
-                           f"*Ausgelöst durch HR-Klick ({payload.get('trigger')}) – Variante A.*\n",
+            rep.write_text(tr("# Einladung – Bewerbung #{0}", _langval).format(app_id) + "\n\n"
+                           + tr("- Meeting (HR/Director): {0}", _langval).format(result['vdo_ninja_url']) + "\n"
+                           + tr("- Meeting (Kandidat/Gast, Gate 8): {0}", _langval).format(
+                               result.get('vdo_ninja_gast_url', result['vdo_ninja_url'])) + "\n"
+                           + tr("- Termin: {0}", _langval).format(result['termin']) + "\n"
+                           + tr("- ICS (Kandidat/Gast): {0}", _langval).format(result['ics_path']) + "\n"
+                           + tr("- ICS (HR/Director): {0}", _langval).format(
+                               result.get('ics_path_hr', result['ics_path'])) + "\n"
+                           + tr("- Mail: {0}", _langval).format(result['mail']) + "\n\n"
+                           + tr("*Ausgelöst durch HR-Klick ({0}) – Variante A.*", _langval).format(payload.get('trigger'))
+                           + "\n",
                            encoding="utf-8")
             result_path = str(rep)
         elif task_type == "onboarding_release":
             # 7️⃣-Mechanismus zeigt die Checkliste automatisch bei Status 'eingestellt'
             # (app.py:1689); der Task dokumentiert die Freigabe (Spec §3).
+            _langval = _lang(payload)
             # Spec v6: Wenn Visum-Bedarf → Freigabe-Bericht enthält Visum-Abschnitt (WAS/WIE/WO)
             _visum = _visum_auswertung_from_ergebnisse(payload.get("candidate_id"))
             _visum_txt = ""
             if _visum:
-                _visum_txt = (f"\n## 📋 Visum-Schritt (agent-generiert)\n\n"
-                              f"- **WAS:** {_visum.get('was', '–')}\n"
-                              f"- **WIE:** {_visum.get('wie', '–')}\n"
-                              f"- **WO:** {_visum.get('wo', '–')}\n\n"
-                              f"Der Agent stellt keinen Antrag – die Antragstellung obliegt dem Kandidaten.\n")
+                _visum_txt = ("\n" + tr("## 📋 Visum-Schritt (agent-generiert)", _langval) + "\n\n"
+                              + tr("- **WAS:** {0}", _langval).format(_visum.get('was', '–')) + "\n"
+                              + tr("- **WIE:** {0}", _langval).format(_visum.get('wie', '–')) + "\n"
+                              + tr("- **WO:** {0}", _langval).format(_visum.get('wo', '–')) + "\n\n"
+                              + tr("Der Agent stellt keinen Antrag – die Antragstellung obliegt dem Kandidaten.", _langval) + "\n")
             # Mentoring (Phase D P10, Spec §5): aktiver Mentor im Freigabe-Report
             _mentor_txt = ""
             _mcid = payload.get("candidate_id")
@@ -1761,38 +1849,41 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
                     ).fetchone()
                     _mconn.close()
                     if _mrow and _mrow[0]:
-                        _mentor_txt = (f"\n## 🤝 Patenschaft (Mentoring)\n\n"
-                                       f"- **Mentor/Ansprechpartner:** {_mrow[0]}\n")
+                        _mentor_txt = ("\n" + tr("## 🤝 Patenschaft (Mentoring)", _langval) + "\n\n"
+                                       + tr("- **Mentor/Ansprechpartner:** {0}", _langval).format(_mrow[0]) + "\n")
                 except sqlite3.Error:
                     _mentor_txt = ""
             # Wohnungssuche (Phase D P6, Spec §5): Checkliste + freie Quellen
             # im Freigabe-Report (analog _visum_txt, KEIN Scraping/Listing-API)
-            _wohnung_txt = (f"\n## 🏠 Wohnungssuche (Checkliste + freie Quellen)\n\n"
-                            f"- **Checkliste:** Zielstadt + Einzugstermin festlegen → Bewerbungsmappe "
-                            f"(Selbstauskunft, SCHUFA, Einkommensnachweise) → Mietpreis-Range via "
-                            f"Open-Data-Mietspiegel prüfen → freie Quellen nutzen → Angebote manuell "
-                            f"auf Portalen (Browser) ansehen\n"
-                            f"- **Freie Quellen:** BMWSB-Ratgeber »Auf Wohnungssuche in Deutschland« · "
-                            f"Handbook Germany (9 Sprachen) · Statistikportal/Destatis Open Data · "
-                            f"kommunale Wohnungsämter\n"
-                            f"- **Portale (nur Link, manuell):** ImmoScout24 · Kleinanzeigen · "
-                            f"wg-gesucht · immowelt (AGB untersagt automatisiertes Scraping)\n"
-                            f"- Der Agent sucht keine Angebote und stellt keine Mietanfragen "
-                            f"(Variante A).\n")
+            _wohnung_txt = ("\n" + tr("## 🏠 Wohnungssuche (Checkliste + freie Quellen)", _langval) + "\n\n"
+                            + tr("- **Checkliste:** Zielstadt + Einzugstermin festlegen → Bewerbungsmappe "
+                                 "(Selbstauskunft, SCHUFA, Einkommensnachweise) → Mietpreis-Range via "
+                                 "Open-Data-Mietspiegel prüfen → freie Quellen nutzen → Angebote manuell "
+                                 "auf Portalen (Browser) ansehen", _langval) + "\n"
+                            + tr("- **Freie Quellen:** BMWSB-Ratgeber »Auf Wohnungssuche in Deutschland« · "
+                                 "Handbook Germany (9 Sprachen) · Statistikportal/Destatis Open Data · "
+                                 "kommunale Wohnungsämter", _langval) + "\n"
+                            + tr("- **Portale (nur Link, manuell):** ImmoScout24 · Kleinanzeigen · "
+                                 "wg-gesucht · immowelt (AGB untersagt automatisiertes Scraping)", _langval) + "\n"
+                            + tr("- Der Agent sucht keine Angebote und stellt keine Mietanfragen "
+                                 "(Variante A).", _langval) + "\n")
             # Relocation (Phase E P6-Option C, User-GO 25.09.2026): behördenrechtlicher
             # Abschnitt im Freigabe-Report (analog _wohnung_txt, Nur-Text Spec relocation.md)
             _relocation = _relocation_txt(payload)
-            result = {"released": True, "hinweis": "Checkliste via 7️⃣ Generate Onboarding freigeben (HR)",
+            result = {"released": True,
+                      "hinweis": tr("Checkliste via 7️⃣ Generate Onboarding freigeben (HR)", _langval),
                       **({"visum": _visum} if _visum else {})}
             rep = ERGEBNISSE / f"onboarding-freigabe-bewerbung-{app_id}.md"
-            rep.write_text(f"# Onboarding-Freigabe – Bewerbung #{app_id}\n\n"
-                           f"Kandidat #{payload.get('candidate_id')} eingestellt – HR erstellt die "
-                           f"Checkliste mit 7️⃣ Generate Onboarding und gibt sie frei."
-                           f"{_mentor_txt}"
-                           f"{_visum_txt}"
-                           f"{_wohnung_txt}"
-                           f"{_relocation}"
-                           f"\n*Task automatisch erzeugt beim Statuswechsel 'eingestellt'.*\n", encoding="utf-8")
+            rep.write_text(tr("# Onboarding-Freigabe – Bewerbung #{0}", _langval).format(app_id) + "\n\n"
+                           + tr("Kandidat #{0} eingestellt – HR erstellt die "
+                                "Checkliste mit 7️⃣ Generate Onboarding und gibt sie frei.",
+                                _langval).format(payload.get('candidate_id'))
+                           + _mentor_txt
+                           + _visum_txt
+                           + _wohnung_txt
+                           + _relocation
+                           + "\n" + tr("*Task automatisch erzeugt beim Statuswechsel 'eingestellt'.*", _langval) + "\n",
+                           encoding="utf-8")
             # Mail #6 (NB6, 23.09.2026): Onboarding-Begrüßungsmail an Kandidat
             _mail_res = send_onboarding_mail(payload)
             result["mail"] = _mail_res.get("mail", "")

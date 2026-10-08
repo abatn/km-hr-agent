@@ -28,9 +28,9 @@ EMP_EMAIL = "hr@techvision.de"
 EMP_PW = "sicher123"
 
 TASK_LABELS = [
-    "Extract Profile", "Match Candidate", "Check Compliance",
-    "Assess Culture-Fit", "Verify Documents", "Check Visa",
-    "Check GDPR", "Explain Match", "Notify User",
+    "Profil extrahieren", "Kandidat matchen", "Compliance pruefen",
+    "Culture Fit pruefen", "Dokumente verifizieren", "Visum pruefen",
+    "DSGVO pruefen", "Match erklaeren", "Kandidat benachrichtigen",
 ]
 
 
@@ -89,9 +89,9 @@ def main() -> int:
                     fails.append(f"cand17: Expander '{lbl} (' fehlt")
 
             # Badge-Farben via Expander-Label (gleicher Parser wie Badge-Zeile)
-            visa = page.get_by_text(re.compile(r"🔴 🛂 Check Visa \("))
-            gdpr = page.get_by_text(re.compile(r"🟢 🔒 Check GDPR \("))
-            vdoc = page.get_by_text(re.compile(r"🟡 📄 Verify Documents \("))
+            visa = page.get_by_text(re.compile(r"🔴 🛂 Visum pruefen \("))
+            gdpr = page.get_by_text(re.compile(r"🟢 🔒 DSGVO pruefen \("))
+            vdoc = page.get_by_text(re.compile(r"🟡 📄 Dokumente verifizieren \("))
             if visa.count() < 1:
                 fails.append("cand17: Check-Visa-Expander nicht 🔴")
             if gdpr.count() < 1:

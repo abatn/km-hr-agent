@@ -1642,3 +1642,1341 @@ msgstr "{0}:"
 
 msgid "Dokumente (PDF/TXT/Video, mehrere moeglich):"
 msgstr "المستندات (PDF/TXT/فيديو، يمكن رفع عدة ملفات):"
+
+msgid "Alle mit Lebenslauf"
+msgstr "الجميع مع السيرة الذاتية"
+
+msgid "Als angesehen markieren"
+msgstr "وضع علامة كمقروء"
+
+msgid "Kandidat #{0}"
+msgstr "المرشح #{0}"
+
+msgid "Match {0} · Compliance {1} · Culture-Fit {2}"
+msgstr "المطابقة {0} · الامتثال {1} · الملاءمة الثقافية {2}"
+
+msgid "(noch nicht gestartet)"
+msgstr "(لم يبدأ بعد)"
+
+msgid "Status geaendert: {0}"
+msgstr "تم تغيير الحالة: {0}"
+
+msgid ", Agent-Task '{0}' gequeued"
+msgstr "، تم إرسال مهمة الوكيل '{0}' إلى قائمة الانتظار"
+
+msgid "📩 Bewerber ({0})"
+msgstr "📩 متقدم ({0})"
+
+msgid "Bewerbungsstatus"
+msgstr "حالة الطلب"
+
+msgid "Deine Bewerbung bei {0} für {1}: {2}"
+msgstr "طلبك لدى {0} لوظيفة {1}: {2}"
+
+msgid "Bitte ein Einladungsdatum waehlen."
+msgstr "يرجى اختيار تاريخ الدعوة."
+
+msgid "Einladungsdatum ist ungueltig (erwartet JJJJ-MM-TT)."
+msgstr "تاريخ الدعوة غير صالح (الصيغة المتوقعة YYYY-MM-DD)."
+
+msgid "Uhrzeit ist ungueltig (erwartet HH:MM)."
+msgstr "الوقت غير صالح (الصيغة المتوقعة HH:MM)."
+
+msgid "Der Einladungstermin liegt in der Vergangenheit."
+msgstr "موعد الدعوة يقع في الماضي."
+
+msgid "Moechtest du {0} zur Stelle „{1}“ einladen?"
+msgstr "هل تريد دعوة {0} للوظيفة «{1}»؟"
+
+msgid "{0} fuer die Stelle „{1}“ ablehnen? (Andere Bewerbungen dieses Kandidaten bleiben unveraendert.)"
+msgstr "هل تريد رفض {0} للوظيفة «{1}»؟ (تبقى طلبات هذا المرشح الأخرى دون تغيير.)"
+
+msgid "{0} fuer die Stelle „{1}“ einstellen?"
+msgstr "هل تريد توظيف {0} للوظيفة «{1}»؟"
+
+msgid "📹 Einladung (Kandidat wurde benachrichtigt){0}"
+msgstr "📹 دعوة (تم إبلاغ المرشح){0}"
+
+msgid "Stelle #{0}"
+msgstr "الوظيفة #{0}"
+
+msgid "(keine Begründung im Bericht)"
+msgstr "(لا يوجد تبرير في التقرير)"
+
+msgid "Kandidat (gespeichert)"
+msgstr "المرشح (محفوظ)"
+
+msgid "Vorgangs-Nr."
+msgstr "رقم الملف"
+
+msgid "Score / Kategorie"
+msgstr "النتيجة / الفئة"
+
+msgid "Bewertung fachlich"
+msgstr "التقييم: التقني"
+
+msgid "Bewertung Skills"
+msgstr "التقييم: المهارات"
+
+msgid "Bewertung Standort"
+msgstr "التقييم: الموقع"
+
+msgid "Bewertung Empfehlung"
+msgstr "التقييم: التوصية"
+
+msgid "Hinweis"
+msgstr "ملاحظة"
+
+msgid "Kein Kandidat in der DB zuordenbar (Altbestand) — statt einer falschen Match-Seite wird der Datensatz gezeigt."
+msgstr "لا يمكن إسناد أي مرشح في قاعدة البيانات (سجل قديم) — يتم عرض السجل بدلاً من صفحة مطابقة خاطئة."
+
+msgid "Profil extrahieren"
+msgstr "استخراج الملف الشخصي"
+
+msgid "Kandidat matchen"
+msgstr "مطابقة المرشح"
+
+msgid "Compliance pruefen"
+msgstr "فحص الامتثال"
+
+msgid "Culture Fit pruefen"
+msgstr "فحص الملاءمة الثقافية"
+
+msgid "DSGVO pruefen"
+msgstr "فحص حماية البيانات"
+
+msgid "Visum pruefen"
+msgstr "فحص التأشيرة"
+
+msgid "Dokumente verifizieren"
+msgstr "التحقق من المستندات"
+
+msgid "Kandidat benachrichtigen"
+msgstr "إبلاغ المرشح"
+
+msgid "HR benachrichtigen"
+msgstr "إبلاغ الموارد البشرية"
+
+msgid "Einladung erstellen"
+msgstr "إنشاء الدعوة"
+
+msgid "Report exportieren"
+msgstr "تصدير التقرير"
+
+msgid "Anzahl: {0} Kandidaten"
+msgstr "العدد: {0} مرشح"
+
+msgid "Feedback gespeichert"
+msgstr "تم حفظ الملاحظات"
+
+msgid "ID"
+msgstr "المعرف"
+
+msgid "Kandidaten-Liste"
+msgstr "قائمة المرشحين"
+
+msgid "Onboarding-Checkliste gespeichert"
+msgstr "تم حفظ قائمة التحقق للتهيئة"
+
+msgid "Pre-Screen gespeichert"
+msgstr "تم حفظ الفحص الأولي"
+
+msgid "ℹ️ Korrektur (heute bereits vorhanden) – keine neue Gewichtungsanpassung."
+msgstr "ℹ️ تصحيح (موجود بالفعل اليوم) – لا تعديل جديد للأوزان."
+
+msgid "Technisch"
+msgstr "تقني"
+
+msgid "Lücke"
+msgstr "فجوة"
+
+msgid "Motivation"
+msgstr "الدافع"
+
+msgid "Praktisch"
+msgstr "عملي"
+
+msgid "Kultur"
+msgstr "الثقافة"
+
+msgid "Kandidaten-Portal"
+msgstr "بوابة المرشحين"
+
+msgid "Arbeitgeber-Portal"
+msgstr "بوابة أصحاب العمل"
+
+msgid "Admin-Portal"
+msgstr "بوابة المسؤول"
+
+msgid "Bewerbung zurückziehen?"
+msgstr "سحب الطلب؟"
+
+msgid "Der Status wird auf „Zurückgezogen\" gesetzt. Diese Aktion kann nicht rückgängig gemacht werden."
+msgstr "سيتم تعيين الحالة إلى \"مسحوب\". لا يمكن التراجع عن هذا الإجراء."
+
+msgid "Diese Datei wird vom Server entfernt. Dies kann nicht rückgängig gemacht werden."
+msgstr "سيتم حذف هذا الملف من الخادم. لا يمكن التراجع عن هذا الإجراء."
+
+msgid "Dokument löschen?"
+msgstr "حذف المستند؟"
+
+msgid "Ein Bewerber"
+msgstr "متقدم"
+
+msgid "Neue Bewerbung"
+msgstr "طلب جديد"
+
+msgid "{0} (nur .pdf/.txt/.webm/.mp4)"
+msgstr "{0} (فقط .pdf/.txt/.webm/.mp4)"
+
+msgid "{0} hat sich beworben: {1}"
+msgstr "{0} قدّم طلبًا: {1}"
+
+msgid "❌ {0} Dokument(e) konnten NICHT gespeichert werden: {1}{2} — bitte erneut versuchen oder Administrator kontaktieren."
+msgstr "❌ تعذر حفظ {0} من المستندات: {1}{2} — يرجى المحاولة مرة أخرى أو الاتصال بالمسؤول."
+
+msgid "Kern"
+msgstr "النواة"
+
+msgid "Bildung"
+msgstr "التعليم"
+
+msgid "Soft"
+msgstr "السلوكية"
+
+msgid "Profil"
+msgstr "الملف الشخصي"
+
+msgid "Alle"
+msgstr "الكل"
+
+msgid "{0} Jahre"
+msgstr "{0} سنة"
+
+msgid "Eingegangen"
+msgstr "واردة"
+
+msgid "Angesehen"
+msgstr "تم الاطلاع"
+
+msgid "Eingestellt"
+msgstr "تم التعيين"
+
+msgid "Abgelehnt"
+msgstr "مرفوض"
+
+msgid "Zurückgezogen"
+msgstr "مسحوب"
+
+msgid "Lebenslauf hochgeladen"
+msgstr "تم رفع السيرة الذاتية"
+
+msgid "Zugeordnet"
+msgstr "مُعيَّن"
+
+msgid "Aktiv"
+msgstr "نشط"
+
+msgid "Erledigt"
+msgstr "منجز"
+
+msgid "Fehlgeschlagen"
+msgstr "فشل"
+
+msgid "Läuft"
+msgstr "قيد التشغيل"
+
+msgid "In Warteschlange"
+msgstr "في قائمة الانتظار"
+
+msgid "Offen"
+msgstr "مفتوح"
+
+msgid "Pausiert"
+msgstr "متوقف مؤقتاً"
+
+msgid "Besetzt"
+msgstr "مشغول"
+
+msgid "Abgelaufen"
+msgstr "منتهي"
+
+msgid "Profil vollständig"
+msgstr "الملف الشخصي مكتمل"
+
+msgid "Profil geprüft"
+msgstr "تم التحقق من الملف الشخصي"
+
+msgid "Match berechnet"
+msgstr "تم حساب المطابقة"
+
+msgid "Hervorragend"
+msgstr "ممتاز"
+
+msgid "Bedingt"
+msgstr "مشروط"
+
+msgid "Schwach"
+msgstr "ضعيف"
+
+msgid "Gut"
+msgstr "جيد"
+
+msgid "❓ unbekannt"
+msgstr "❓ غير معروف"
+
+msgid "✅ offen"
+msgstr "✅ مفتوح"
+
+msgid "✅ passt (offen)"
+msgstr "✅ مطابق (مفتوح)"
+
+msgid "✅ passt"
+msgstr "✅ مطابق"
+
+msgid "⚠️ außerhalb Rahmen"
+msgstr "⚠️ خارج النطاق"
+
+msgid "IT"
+msgstr "تقنية المعلومات"
+
+msgid "Consulting"
+msgstr "الاستشارات"
+
+msgid "Industrie"
+msgstr "الصناعة"
+
+msgid "Handel"
+msgstr "التجارة"
+
+msgid "Gesundheit"
+msgstr "الصحة"
+
+msgid "Finanzen"
+msgstr "المالية"
+
+msgid "Sonstiges"
+msgstr "أخرى"
+
+msgid "1-10"
+msgstr "1-10"
+
+msgid "11-50"
+msgstr "11-50"
+
+msgid "51-200"
+msgstr "51-200"
+
+msgid "201-1000"
+msgstr "201-1000"
+
+msgid "1000+"
+msgstr "1000+"
+
+msgid "Vollzeit"
+msgstr "دوام كامل"
+
+msgid "Teilzeit"
+msgstr "دوام جزئي"
+
+msgid "Freelance"
+msgstr "مستقل"
+
+msgid "Hybrid"
+msgstr "هجين"
+
+msgid "Remote"
+msgstr "عن بُعد"
+
+msgid "Keine Anforderung"
+msgstr "لا يوجد متطلب"
+
+msgid "A1"
+msgstr "A1"
+
+msgid "A2"
+msgstr "A2"
+
+msgid "B1"
+msgstr "B1"
+
+msgid "B2"
+msgstr "B2"
+
+msgid "C1"
+msgstr "C1"
+
+msgid "C2"
+msgstr "C2"
+
+msgid "Muttersprache"
+msgstr "اللغة الأم"
+
+msgid "Egal"
+msgstr "لا يهم"
+
+msgid "Bachelor"
+msgstr "بكالوريوس"
+
+msgid "Master"
+msgstr "ماجستير"
+
+msgid "PhD"
+msgstr "دكتوراه"
+
+msgid "Zeugnis"
+msgstr "خطاب توصية"
+
+msgid "Zertifikat"
+msgstr "شهادة"
+
+msgid "Sprachzeugnis"
+msgstr "شهادة لغة"
+
+msgid "Pass"
+msgstr "جواز السفر"
+
+msgid "Visum/Aufenthaltstitel"
+msgstr "تأشيرة/تصريح إقامة"
+
+msgid "Ja"
+msgstr "نعم"
+
+msgid "Nein"
+msgstr "لا"
+
+msgid "Vorgemerkt"
+msgstr "مرشح مبدئياً"
+
+msgid "EU-Bürger"
+msgstr "مواطن في الاتحاد الأوروبي"
+
+msgid "Arbeitsvisum"
+msgstr "تأشيرة عمل"
+
+msgid "Kein Visum"
+msgstr "بدون تأشيرة"
+
+msgid "Sofort"
+msgstr "فوراً"
+
+msgid "1 Monat"
+msgstr "شهر واحد"
+
+msgid "3 Monate"
+msgstr "3 أشهر"
+
+msgid "Kündigungslaufzeit"
+msgstr "مدة الإشعار"
+
+msgid "Diplom"
+msgstr "دبلوم"
+
+msgid "# Feedback: {0}"
+msgstr "# ملاحظات: {0}"
+
+msgid "# Onboarding-Checkliste: {0}"
+msgstr "# قائمة التحقق من الإعداد: {0}"
+
+msgid "# Pre-Screening: {0}"
+msgstr "# التصفية المسبقة: {0}"
+
+msgid "# Selbstpräsentation: Kandidat #{0}"
+msgstr "# العرض الذاتي: المرشح رقم {0}"
+
+msgid "## 1. Willkommens-E-Mail"
+msgstr "## 1. بريد الترحيب"
+
+msgid "## 2. IT-Ausstattung"
+msgstr "## 2. تجهيزات تقنية المعلومات"
+
+msgid "## 3. Systemzugänge"
+msgstr "## 3. صلاحيات الأنظمة"
+
+msgid "## 4. Erstgespräche"
+msgstr "## 4. الاجتماعات الأولية"
+
+msgid "## 5. Einarbeitungsplan"
+msgstr "## 5. خطة الإعداد"
+
+msgid "## 6. Arbeitsvertrag"
+msgstr "## 6. عقد العمل"
+
+msgid "## Bewertung"
+msgstr "## التقييم"
+
+msgid "## Gewichtungsanpassung"
+msgstr "## تعديل الأوزان"
+
+msgid "## Ihr Meeting-Raum"
+msgstr "## غرفة اجتماعك"
+
+msgid "## Ihre Leitfragen"
+msgstr "## أسئلتك الإرشادية"
+
+msgid "## 📊 Zusammenfassung"
+msgstr "## 📊 ملخص"
+
+msgid "## 📋 Screening-Fragen"
+msgstr "## 📋 أسئلة التصفية"
+
+msgid "## 📹 Meeting-Details"
+msgstr "## 📹 تفاصيل الاجتماع"
+
+msgid "### Letzte Änderungen"
+msgstr "### التغييرات الأخيرة"
+
+msgid "**Anmerkungen:** {0}"
+msgstr "**ملاحظات:** {0}"
+
+msgid "**Betreff:** Willkommen bei TechVision GmbH!"
+msgstr "**الموضوع:** مرحباً بك في TechVision GmbH!"
+
+msgid "**Datum:** {0}"
+msgstr "**التاريخ:** {0}"
+
+msgid "**Eingeladen:** {0}"
+msgstr "**تمت الدعوة:** {0}"
+
+msgid "**Empfänger:** {0}"
+msgstr "**المستلم:** {0}"
+
+msgid "**Erstellt:** {0}"
+msgstr "**تم الإنشاء:** {0}"
+
+msgid "**Match-ID:** `{0}`"
+msgstr "**معرّف المطابقة:** `{0}`"
+
+msgid "**Match-Score:** {0}/100"
+msgstr "**درجة المطابقة:** {0}/100"
+
+msgid "**Modus:** Selbstpräsentation (CANDIDATE-Session)"
+msgstr "**الوضع:** عرض ذاتي (جلسة المرشح)"
+
+msgid "**Score:** {0}/100 ({1})"
+msgstr "**الدرجة:** {0}/100 ({1})"
+
+msgid "**Startdatum:** {0}"
+msgstr "**تاريخ البدء:** {0}"
+
+msgid "**Stelle:** {0}"
+msgstr "**الوظيفة:** {0}"
+
+msgid "*Erstellt am {0} vom KM-HR-Agenten.*"
+msgstr "*أُنشئ في {0} بواسطة وكيل KM-HR.*"
+
+msgid "- **Datum:** {0}"
+msgstr "- **التاريخ:** {0}"
+
+msgid "- **Dauer:** 45 Minuten"
+msgstr "- **المدة:** 45 دقيقة"
+
+msgid "- **Empfehlung:** 3–5 Minuten, Start mit Kurzvorstellung, dann die Fragen unten beantworten."
+msgstr "- **التوصية:** 3–5 دقائق، ابدأ بتقديم موجز ثم أجب عن الأسئلة أدناه."
+
+msgid "- **Fragen gesamt:** {0}"
+msgstr "- **إجمالي الأسئلة:** {0}"
+
+msgid "- **Link:** [{0}]({1})"
+msgstr "- **الرابط:** [{0}]({1})"
+
+msgid "- **Lücken-Fragen:** {0}"
+msgstr "- **أسئلة الفجوات:** {0}"
+
+msgid "- **Motivations-Fragen:** {0}"
+msgstr "- **أسئلة الدافع:** {0}"
+
+msgid "- **Sichtbarkeit:** HR sieht den Link im Recruiting-Modus ohne Status-Gate (zur Bewertung vor der Übernahme)."
+msgstr "- **الظهور:** يرى فريق الموارد البشرية الرابط في وضع التوظيف دون شرط الحالة (للتقييم قبل التعيين)."
+
+msgid "- **Sprach-Check:** {0}"
+msgstr "- **فحص اللغة:** {0}"
+
+msgid "- **Technische Fragen:** {0}"
+msgstr "- **الأسئلة التقنية:** {0}"
+
+msgid "- **Uhrzeit:** 10:00–10:45 Uhr"
+msgstr "- **الوقت:** 10:00–10:45"
+
+msgid "- Noch kein Raum generiert (Tab 📹 Pre-Screen)."
+msgstr "- لم يتم إنشاء غرفة بعد (تبويب 📹 التصفية المسبقة)."
+
+msgid "Beschreiben Sie Ihren Führungsstil."
+msgstr "صف أسلوبك القيادي."
+
+msgid "Beschreiben Sie ein konkretes Projekt mit {0}. Welche Ergebnisse wurden erzielt?"
+msgstr "صف مشروعاً محدداً باستخدام {0}. ما النتائج التي تحققت؟"
+
+msgid "Beschreiben Sie eine AWS-Migration, die Sie geleitet haben."
+msgstr "صف عملية ترحيل إلى AWS قدتها."
+
+msgid "Dein Ansprechpartner: {0}"
+msgstr "جهة الاتصال الخاصة بك: {0}"
+
+msgid "Erfahrung (Jahre)"
+msgstr "الخبرة (سنوات)"
+
+msgid "Geben Sie ein Beispiel, das Ihre Stärke in '{0}' zeigt."
+msgstr "أعطِ مثالاً يظهر قوتك في '{0}'."
+
+msgid "Haben Sie Erfahrung mit Infrastructure-as-Code (z.B. Terraform)?"
+msgstr "هل لديك خبرة في البنية التحتية ككود (مثل Terraform)؟"
+
+msgid "Ihre Gehaltsvorstellung?"
+msgstr "توقعاتك للراتب؟"
+
+msgid "Mit freundlichen Grüßen,\nHR Team"
+msgstr "مع أطيب التحيات،\nفريق الموارد البشرية"
+
+msgid "Sehr geehrte(r) {0},"
+msgstr "عزيزي(ة) {0}،"
+
+msgid "Wann könnten Sie starten?"
+msgstr "متى يمكنك البدء؟"
+
+msgid "Wann könnten Sie starten? Wie ist Ihre Gehaltsvorstellung?"
+msgstr "متى يمكنك البدء؟ ما هي توقعاتك للراتب؟"
+
+msgid "Was ist Ihr bevorzugter Arbeitsstil (Remote/Hybrid/Onsite)?"
+msgstr "ما هو أسلوب العمل المفضل لديك (عن بُعد/هجين/في الموقع)؟"
+
+msgid "Was reizt Sie an dieser Position?"
+msgstr "ما الذي يجذبك في هذه الوظيفة؟"
+
+msgid "Welche Cloud-Plattformen haben Sie eingesetzt?"
+msgstr "ما هي المنصات السحابية التي استخدمتها؟"
+
+msgid "Welche Rolle suchen Sie und warum?"
+msgstr "ما الدور الذي تبحث عنه ولماذا؟"
+
+msgid "Wie gehen Sie vor bei einem Kubernetes-Cluster-Ausfall?"
+msgstr "كيف تتصرف عند تعطل عنقود Kubernetes؟"
+
+msgid "Wie implementieren Sie CI/CD-Pipelines?"
+msgstr "كيف تنفذ خطوط CI/CD؟"
+
+msgid "Wie ist Ihr Deutsch-Level (B1/B2/C1)?"
+msgstr "ما هو مستواك في الألمانية (B1/B2/C1)؟"
+
+msgid "Wo sehen Sie sich in 3–5 Jahren?"
+msgstr "أين ترى نفسك خلال 3–5 سنوات؟"
+
+msgid "als **{0}** in unserem Team begrüßen zu dürfen."
+msgstr "أن نرحب بك بصفتك **{0}** في فريقنا."
+
+msgid "wir freuen uns sehr, Sie ab dem **{0}** "
+msgstr "يسعدنا جداً الترحيب بك ابتداءً من **{0}** "
+
+msgid "| **Durchschnitt** | **{0}/5** |"
+msgstr "| **المتوسط** | **{0}/5** |"
+
+msgid "| 1 | Orientierung | Umgebung kennenlernen, Zugänge testen |"
+msgstr "| 1 | التوجيه | التعرف على البيئة واختبار الوصول |"
+
+msgid "| 1 | Teamleitung | Willkommen + Rahmenbedingungen | Tag 1 |"
+msgstr "| 1 | قائد الفريق | ترحيب + الشروط العامة | اليوم 1 |"
+
+msgid "| 2 | Code-Basis | Repository durchlesen, erstes Ticket |"
+msgstr "| 2 | قاعدة الكود | قراءة المستودع وأول تذكرة |"
+
+msgid "| 2 | HR | Vertragsunterlagen + Benefits | Tag 1 |"
+msgstr "| 2 | الموارد البشرية | مستندات العقد + المزايا | اليوم 1 |"
+
+msgid "| 3 | IT-Onboarding | Systemzugänge + Geräte | Tag 1 |"
+msgstr "| 3 | إعداد تقنية المعلومات | صلاحيات الأنظمة + الأجهزة | اليوم 1 |"
+
+msgid "| 3 | Infrastruktur | AWS Cluster, Monitoring, Deployments |"
+msgstr "| 3 | البنية التحتية | عنقود AWS، المراقبة، عمليات النشر |"
+
+msgid "| 4 | Scrum Master | Agile Prozesse | Tag 2 |"
+msgstr "| 4 | Scrum Master | العمليات الرشيقة | اليوم 2 |"
+
+msgid "| 4 | erstes Feature | Kleine Änderung, PR, Review |"
+msgstr "| 4 | الميزة الأولى | تغيير صغير، طلب سحب، مراجعة |"
+
+msgid "| 5 | DevOps-Team | Technische Architektur | Tag 3 |"
+msgstr "| 5 | فريق DevOps | البنية المعمارية التقنية | اليوم 3 |"
+
+msgid "| 5 | Independence | Eigenständiges Ticket, Daily Standup |"
+msgstr "| 5 | الاستقلالية | تذكرة مستقلة، اجتماع يومي |"
+
+msgid "| 6 | K8s-Audit | Cluster-Review, Optimierungsvorschläge |"
+msgstr "| 6 | تدقيق K8s | مراجعة العنقود واقتراحات التحسين |"
+
+msgid "| 6 | Product Owner | Produktübersicht | Tag 5 |"
+msgstr "| 6 | مالك المنتج | نظرة عامة على المنتج | اليوم 5 |"
+
+msgid "| 7 | CTO | Technische Vision | Woche 2 |"
+msgstr "| 7 | المدير التقني | الرؤية التقنية | الأسبوع 2 |"
+
+msgid "| 8 | Kollegen | Team-Lunch | Woche 1 |"
+msgstr "| 8 | الزملاء | غداء الفريق | الأسبوع 1 |"
+
+msgid "| AWS Console | ☐ Angelegt | Tag 3 |"
+msgstr "| وحدة تحكم AWS | ☐ تم الإنشاء | اليوم 3 |"
+
+msgid "| Allowlist (Versicherung) | ☐ Ausgefüllt | Woche 1 |"
+msgstr "| القائمة المسموح بها (التأمين) | ☐ مكتمل | الأسبوع 1 |"
+
+msgid "| Arbeitsvertrag | ☐ Zugestellt | Vor Start |"
+msgstr "| عقد العمل | ☐ تم الإرسال | قبل البدء |"
+
+msgid "| Betriebsvereinbarung | ☐ Gelesen | Woche 1 |"
+msgstr "| اتفاقية العمل | ☐ مقروء | الأسبوع 1 |"
+
+msgid "| Confluence | ☐ Angelegt | Tag 1 |"
+msgstr "| Confluence | ☐ تم الإنشاء | اليوم 1 |"
+
+msgid "| DSGVO-Einwilligung | ☐ Unterschrieben | Tag 1 |"
+msgstr "| موافقة اللائحة العامة لحماية البيانات | ☐ موقّع | اليوم 1 |"
+
+msgid "| Datenschutzrichtlinie | ☐ Gelesen | Tag 1 |"
+msgstr "| سياسة الخصوصية | ☐ مقروءة | اليوم 1 |"
+
+msgid "| Dokument | Status | Frist |"
+msgstr "| المستند | الحالة | الموعد النهائي |"
+
+msgid "| E-Mail (Google Workspace) | ☐ Angelegt | Tag 1 |"
+msgstr "| البريد الإلكتروني (Google Workspace) | ☐ تم الإنشاء | اليوم 1 |"
+
+msgid "| Empfehlung hilfreich | {0}/5 |"
+msgstr "| التوصية مفيدة | {0}/5 |"
+
+msgid "| Fachlich korrekt | {0}/5 |"
+msgstr "| صحيح تقنياً | {0}/5 |"
+
+msgid "| Gerät | Status | Zuständig |"
+msgstr "| الجهاز | الحالة | المسؤول |"
+
+msgid "| GitHub | ☐ Angelegt | Tag 1 |"
+msgstr "| GitHub | ☐ تم الإنشاء | اليوم 1 |"
+
+msgid "| Headset | ☐ Bestellt | IT-Abteilung |"
+msgstr "| سماعة رأس | ☐ تم الطلب | قسم تقنية المعلومات |"
+
+msgid "| IT-Sicherheitsrichtlinie | ☐ Gelesen + unterschrieben | Tag 1 |"
+msgstr "| سياسة أمن تقنية المعلومات | ☐ مقروءة + موقّعة | اليوم 1 |"
+
+msgid "| Jira | ☐ Angelegt | Tag 1 |"
+msgstr "| Jira | ☐ تم الإنشاء | اليوم 1 |"
+
+msgid "| Kategorie | Alt | Neu | Grund |"
+msgstr "| الفئة | القديم | الجديد | السبب |"
+
+msgid "| Kriterium | Punkte |"
+msgstr "| المعيار | النقاط |"
+
+msgid "| Kubernetes Cluster | ☐ Angelegt | Tag 5 |"
+msgstr "| عنقود Kubernetes | ☐ تم الإنشاء | اليوم 5 |"
+
+msgid "| Laptop-Tasche | ☐ Bestellt | IT-Abteilung |"
+msgstr "| حقيبة حاسوب محمول | ☐ تم الطلب | قسم تقنية المعلومات |"
+
+msgid "| Linux-Workstation | ☐ Bestellt | IT-Abteilung |"
+msgstr "| محطة عمل Linux | ☐ تم الطلب | قسم تقنية المعلومات |"
+
+msgid "| MacBook Pro / ThinkPad | ☐ Bestellt | IT-Abteilung |"
+msgstr "| MacBook Pro / ThinkPad | ☐ تم الطلب | قسم تقنية المعلومات |"
+
+msgid "| Monitor (27 Zoll) | ☐ Bestellt | IT-Abteilung |"
+msgstr "| شاشة (27 بوصة) | ☐ تم الطلب | قسم تقنية المعلومات |"
+
+msgid "| NDA | ☐ Unterschrieben | Tag 1 |"
+msgstr "| اتفاقية عدم الإفصاح | ☐ موقّعة | اليوم 1 |"
+
+msgid "| Skills richtig | {0}/5 |"
+msgstr "| المهارات صحيحة | {0}/5 |"
+
+msgid "| Slack | ☐ Angelegt | Tag 1 |"
+msgstr "| Slack | ☐ تم الإنشاء | اليوم 1 |"
+
+msgid "| Standort zutreffend | {0}/5 |"
+msgstr "| الموقع مطابق | {0}/5 |"
+
+msgid "| System | Zugang | Frist |"
+msgstr "| النظام | الوصول | الموعد النهائي |"
+
+msgid "| Tastatur + Maus | ☐ Bestellt | IT-Abteilung |"
+msgstr "| لوحة مفاتيح + فأرة | ☐ تم الطلب | قسم تقنية المعلومات |"
+
+msgid "| Termin | Person | Thema | Datum |"
+msgstr "| الموعد | الشخص | الموضوع | التاريخ |"
+
+msgid "| VPN-Zugang | ☐ Angelegt | Tag 1 |"
+msgstr "| وصول VPN | ☐ تم الإنشاء | اليوم 1 |"
+
+msgid "| Woche | Thema | Ziel |"
+msgstr "| الأسبوع | الموضوع | الهدف |"
+
+msgid "| {0} | {1}% | {2}% | {3} |"
+msgstr "| {0} | {1}% | {2}% | {3} |"
+
+msgid "ℹ️ Cap erreicht ({0} = {1}) – keine Anpassung."
+msgstr "ℹ️ تم بلوغ الحد ({0} = {1}) – لا تعديل."
+
+msgid "✅ {0}: {1} → {2} (Rohgewicht, normalisiert auf 100)"
+msgstr "✅ {0}: {1} → {2} (الوزن الخام، مُطبيع إلى 100)"
+
+msgid "Diese Nachricht wurde im Rahmen des Bewerbungsverfahrens mit Unterstützung eines KI-Systems (EU AI Act Art. 50) erstellt."
+msgstr "تم إنشاء هذه الرسالة في إطار عملية التقديم بمساعدة نظام ذكاء اصطناعي (قانون الذكاء الاصطناعي الأوروبي، المادة 50)."
+
+msgid "Ihre neue Position"
+msgstr "منصبك الجديد"
+
+msgid "⚠️ sekundär belegt"
+msgstr "⚠️ مصدر ثانوي"
+
+msgid "siehe Katalog"
+msgstr "انظر الكتالوج"
+
+msgid "## 1. Gehalts-Check (MiLoG)"
+msgstr "## 1. فحص الراتب (MiLoG)"
+
+msgid "## 2. Formfall-Hinweise (HR wählt vor Versand)"
+msgstr "## 2. ملاحظات الشكل (يختار قسم الموارد البشرية قبل الإرسال)"
+
+msgid "## 3. NachwG-Pflichtangaben (§ 2 Abs. 1 Nr. 1–15) – HR prüft"
+msgstr "## 3. البيانات الإلزامية وفق NachwG (المادة 2 الفقرة 1 الأرقام 1–15) – يتحقق قسم الموارد البشرية"
+
+msgid "- [ ] 1 Name/Anschrift · 2 Beginn/Dauer · 3 Arbeitsort · 4 Tätigkeit"
+msgstr "- [ ] 1 الاسم/العنوان · 2 البداية/المدة · 3 مكان العمل · 4 النشاط"
+
+msgid "- [ ] 5 Einstufung (tarifgebunden) · 6 Vergütung · 7 Arbeitszeit"
+msgstr "- [ ] 5 التصنيف (خاضع للاتفاقية الجماعية) · 6 الأجر · 7 وقت العمل"
+
+msgid "- [ ] 8 Urlaub · 9 Kündigungsfristen · 10 Tarifvertrag/BV"
+msgstr "- [ ] 8 الإجازة · 9 مدد الإشعار · 10 الاتفاقية الجماعية/اتفاقية العمل"
+
+msgid "- [ ] 11 Vorrang-Regeln · 12 E-Kommunikation · 13 Genehmigung"
+msgstr "- [ ] 11 قواعد الأولوية · 12 التواصل الإلكتروني · 13 الموافقة"
+
+msgid "- [ ] 14 Entsendung/Auslandsrecht · 15 besondere Vertragsbestandteile"
+msgstr "- [ ] 14 الإيفاد/القانون الأجنبي · 15 مكونات العقد الخاصة"
+
+msgid "## 4. Vertragsskelett"
+msgstr "## 4. هيكل العقد"
+
+msgid "## 5. Quellen (aus knowledge/legal/contract-sources.md, keine Hartkodierung)"
+msgstr "## 5. المصادر (من knowledge/legal/contract-sources.md، بدون ترميز ثابت)"
+
+msgid "*Erstellt von Skill contract-management (Preflight). Der Agent prüft und berichtet – er erstellt keinen Vertrag und signiert nicht (Variante A). Signatur-Optionen A–F: knowledge/legal/contract-management.md §4.*"
+msgstr "*أنشأه مهارة إدارة العقود (فحص مسبق). يتحقق الوكيل ويقدّم تقريرًا – ولا ينشئ عقدًا ولا يوقّعه (الخيار A). خيارات التوقيع A–F: knowledge/legal/contract-management.md §4.*"
+
+msgid "Ihre Bewerbung ist eingegangen"
+msgstr "تم استلام طلبك"
+
+msgid "Ihre Visum-Schritte zur Arbeitsaufnahme"
+msgstr "خطوات تأشيرتك لبدء العمل"
+
+msgid "Willkommen im Team – Ihre Einstellung"
+msgstr "مرحبًا بك في الفريق – تم تعيينك"
+
+msgid "Rückmeldung zu Ihrer Bewerbung"
+msgstr "رد بشأن طلبك"
+
+msgid "Online-Interview im Rahmen des Bewerbungsverfahrens."
+msgstr "مقابلة عبر الإنترنت في إطار عملية التقديم."
+
+msgid "Online-Interview (HR/Director-Ansicht)."
+msgstr "مقابلة عبر الإنترنت (عرض الموارد البشرية/المدير)."
+
+msgid "Kein Gehaltsrahmen in der Stelle hinterlegt – HR ergänzt Gehalt vor Vertragsübergabe (HINWEIS, kein FEHLER, Parität app.py MiLoG-Logik)"
+msgstr "لا يوجد نطاق راتب مخزّن للوظيفة – يضيف قسم الموارد البشرية الراتب قبل تسليم العقد (ملاحظة، وليس خطأ، توافق مع منطق MiLoG في app.py)"
+
+msgid "Unbefristet, unstrittig"
+msgstr "دائم وغير متنازع عليه"
+
+msgid "formfrei; Nachweis Textform (§ 2 NachwG, E-Mail genügt)"
+msgstr "بدون شكل محدد؛ إثبات بالشكل النصي (المادة 2 NachwG، تكفي رسالة بريد إلكتروني)"
+
+msgid "Befristet"
+msgstr "محدد المدة"
+
+msgid "Schriftform; elektronisch nur mit QES"
+msgstr "الشكل الكتابي؛ إلكترونيًا فقط باستخدام QES"
+
+msgid "Kündigung / Aufhebungsvertrag"
+msgstr "الإنهاء / اتفاقية الإلغاء"
+
+msgid "Schriftform, elektronische Form ausgeschlossen"
+msgstr "الشكل الكتابي، الشكل الإلكتروني مستبعد"
+
+msgid "QES allgemein"
+msgstr "QES بشكل عام"
+
+msgid "qualifizierte elektronische Signatur = handschriftliche Wirkung"
+msgstr "التوقيع الإلكتروني المؤهل = تأثير التوقيع بخط اليد"
+
+msgid "**DSGVO (Spec §6):** Meldebestätigung/Meldeschein enthält die vollständige Wohnanschrift = Stammdaten (Löschfrist 6 Monate, `gdpr-policy.md:48`); in Agent-Berichten nur Status speichern („Meldebestätigung: ja/nein/Offen“, „Wohnungsgeberbestätigung: vorliegend/ja“), **keine** Adresse, **keine** Meldeschein-/Pass-/eAT-Nummern (Art. 5 Abs. 1 c DSGVO); Meldeadresse nie in E-Mails an Dritte."
+msgstr "**اللائحة العامة لحماية البيانات (المواصفة §6):** يحتوي تأكيد التسجيل/شهادة التسجيل على عنوان السكن الكامل = بيانات أساسية (مدة الحذف 6 أشهر، `gdpr-policy.md:48`)؛ في تقارير الوكيل، خزّن الحالة فقط («تأكيد التسجيل: نعم/لا/مفتوح»، «تأكيد المالك: موجود/نعم»)، **دون** عنوان، و**دون** أرقام شهادة التسجيل/جواز السفر/eAT (المادة 5 الفقرة 1 ج من اللائحة)؛ لا تُدرج العنوان المسجّل أبدًا في رسائل البريد الإلكتروني المرسلة إلى أطراف ثالثة."
+
+msgid "Guten Tag {name},"
+msgstr "عزيزي(ة) {name}،"
+
+msgid "vielen Dank für Ihre Bewerbung. Sie ist bei uns eingegangen und wird in Kürze geprüft (Lebenslauf-Analyse, Match- und Compliance-Prüfung)."
+msgstr "شكرًا لك على طلبك. لقد استلمناه وسيتم مراجعته قريبًا (تحليل السيرة الذاتية، وفحص المطابقة والامتثال)."
+
+msgid "Wir melden uns, sobald ein Ergebnis vorliegt."
+msgstr "سنعاود التواصل معك بمجرد توفر نتيجة."
+
+msgid "Ihr KM-HR-Agent-Team"
+msgstr "فريق KM-HR-Agent"
+
+msgid "Der Agent stellt keinen Antrag – die Antragstellung obliegt dem Kandidaten."
+msgstr "لا يقدّم الوكيل أي طلب – تقديم الطلب مسؤولية المرشح."
+
+msgid "Guten Tag,"
+msgstr "تحية طيبة،"
+
+msgid "Die ausführlichen Berichte (Match / Compliance / Culture-Fit / Dokumente) finden Sie im Portal: 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis."
+msgstr "تجد التقارير التفصيلية (المطابقة / الامتثال / التوافق الثقافي / المستندات) في البوابة: 2️⃣ نتيجة المطابقة · 3️⃣ نتيجة الامتثال."
+
+msgid "Entscheiden Sie im Portal (💼 Stellenangebote), ob Sie den Kandidaten einladen möchten – der Agent versendet keine Einladung von sich aus."
+msgstr "قرّر في البوابة (💼 الوظائف) ما إذا كنت ترغب في دعوة المرشح – لا يرسل الوكيل أي دعوة من تلقاء نفسه."
+
+msgid "Ihr KM-HR-Agent (automatische Benachrichtigung)"
+msgstr "KM-HR-Agent (إشعار تلقائي)"
+
+msgid "Ihre Bewerbung war erfolgreich – für Ihren Arbeitsantritt benötigt Ihre Aufenthaltsgenehmigung Ihre Aufmerksamkeit. Hier die Schritte (agent-generiert, bitte verifizieren Sie die Angaben bei der zuständigen Stelle):"
+msgstr "كان طلبك ناجحًا – يتطلب تصريح إقامتك اهتمامك لبدء العمل. إليك الخطوات (من إنشاء الوكيل، يرجى التحقق من التفاصيل لدى الجهة المختصة):"
+
+msgid "Der Agent stellt keinen Antrag – die Antragstellung obliegt Ihnen."
+msgstr "لا يقدّم الوكيل أي طلب – تقديم الطلب مسؤوليتك."
+
+msgid "Ihr KM-HR-Agent"
+msgstr "KM-HR-Agent"
+
+msgid "Dein Ansprechpartner (Mentor): {0}"
+msgstr "جهة الاتصال الخاصة بك (المرشد): {0}"
+
+msgid "wir freuen uns, Sie offiziell bei uns begrüßen zu dürfen – herzlichen Glückwunsch zu Ihrer Einstellung!"
+msgstr "يسعدنا أن نرحب بك رسميًا – تهانينا على تعيينك!"
+
+msgid "Ihr Onboarding im Überblick:"
+msgstr "نظرة عامة على الانضمام:"
+
+msgid "- Vertragliche Dokumente: Arbeitsvertrag (vor Eintritt), Datenschutzeinwilligung und Arbeitszeitkonto (Tag 1)"
+msgstr "- المستندات التعاقدية: عقد العمل (قبل البدء)، وموافقة حماية البيانات، وسجل ساعات العمل (اليوم 1)"
+
+msgid "- IT-Ausstattung: Laptop, E-Mail-Account, VPN und Chat-Zugang (bereitgestellt von der IT-Abteilung)"
+msgstr "- تجهيزات تقنية المعلومات: حاسوب محمول، وحساب بريد إلكتروني، وVPN، ووصول إلى المحادثة (يوفّرها قسم تقنية المعلومات)"
+
+msgid "- Einarbeitung Woche 1: Tag 1 Begrüßung & IT-Übergabe → Tag 2 Tools und Team-Vorstellung → Tag 3 Prozess-Überblick → Tag 5 Rückfragen und erstes Feedback"
+msgstr "- الأسبوع الأول من الانضمام: اليوم 1 ترحيب وتسليم تقنية المعلومات → اليوم 2 الأدوات وتعريف الفريق → اليوم 3 نظرة عامة على العمليات → اليوم 5 الأسئلة وأول تقييم"
+
+msgid "Die vollständige Onboarding-Checkliste erhalten Sie über das Candidate-Portal (Tab Onboarding)."
+msgstr "ستحصل على قائمة الانضمام الكاملة عبر بوابة المرشح (تبويب الانضمام)."
+
+msgid "Wir freuen uns auf die Zusammenarbeit!"
+msgstr "نتطلع إلى العمل معك!"
+
+msgid "vielen Dank für Ihre Bewerbung und Ihr Interesse."
+msgstr "شكرًا لك على طلبك واهتمامك."
+
+msgid "Nach sorgfältiger Prüfung aller Unterlagen haben wir uns entschlossen, in diesem Verfahren anderenorts fortzufahren. Dies ist keine Bewertung Ihrer Fähigkeiten und Persönlichkeit."
+msgstr "بعد مراجعة دقيقة لجميع المستندات، قررنا المضي قدمًا مع مرشحين آخرين في هذه العملية. وهذا ليس تقييمًا لمهاراتك وشخصيتك."
+
+msgid "Wir wünschen Ihnen für Ihre berufliche und persönliche Zukunft alles Gute."
+msgstr "نتمنى لك كل التوفيق في مستقبلك المهني والشخصي."
+
+msgid "{0} Uhr ({1} Min.)"
+msgstr "{0} ({1} دقيقة)"
+
+msgid "Stellenland {0} – Mindestlohn-Check DE (MiLoG) nicht anwendbar; Landesrecht prüfen"
+msgstr "بلد الوظيفة {0} – فحص الحد الأدنى للأجور الألماني (MiLoG) غير قابل للتطبيق؛ راجع القانون المحلي"
+
+msgid "(Volltext prüfen)"
+msgstr "(راجع النص الكامل)"
+
+msgid "# Contract Preflight – Bewerbung #{0}"
+msgstr "# فحص العقد المسبق – الطلب رقم {0}"
+
+msgid "Datum:"
+msgstr "التاريخ:"
+
+msgid "Trigger:"
+msgstr "المُشغِّل:"
+
+msgid "Befund"
+msgstr "النتيجة"
+
+msgid "Mindestlohn-Wert (Stand 2026):"
+msgstr "قيمة الحد الأدنى للأجور (حتى 2026):"
+
+msgid "Quelle (aus Link-Katalog):"
+msgstr "المصدر (من كتالوج الروابط):"
+
+msgid "Rechtsgrundlage"
+msgstr "الأساس القانوني"
+
+msgid "Volltext: {0} (Key `nachwg_2` im Link-Katalog)"
+msgstr "النص الكامل: {0} (المفتاح `nachwg_2` في كتالوج الروابط)"
+
+msgid "- Vorlage: `{0}` (Skelett, HR füllt aus – Agent erstellt NICHT den Vertrag)"
+msgstr "- القالب: `{0}` (هيكل، يملؤه قسم الموارد البشرية – الوكيل لا ينشئ العقد)"
+
+msgid "Key"
+msgstr "المفتاح"
+
+msgid "Neues Agent-Ergebnis: Kandidat #{0} – Score {1}/100"
+msgstr "نتيجة وكيل جديدة: المرشح رقم {0} – النتيجة {1}/100"
+
+msgid "Vorstellungsgespräch: {0}"
+msgstr "مقابلة عمل: {0}"
+
+msgid "Vorstellungsgespräch: {0} (HR)"
+msgstr "مقابلة عمل: {0} (الموارد البشرية)"
+
+msgid "Variante A: HR-Klick"
+msgstr "الخيار A: نقر الموارد البشرية"
+
+msgid "Quellenstatus:"
+msgstr "حالة المصدر:"
+
+msgid "Vergleichsbasis (Design-Entscheidung, 24.09.2026):"
+msgstr "أساس المقارنة (قرار تصميمي، 24.09.2026):"
+
+msgid "Jahresgehalt ÷ {0} h (40 h/Woche × 52) → Stundenlohn"
+msgstr "الراتب السنوي ÷ {0} ساعة (40 ساعة/أسبوع × 52) → الأجر بالساعة"
+
+msgid "Stellenrahmen: min={0} max={1} €/Jahr"
+msgstr "نطاق الوظيفة: الحد الأدنى={0} الحد الأقصى={1} يورو/سنة"
+
+msgid "der Agent hat die Bewerbung von Kandidat #{0} geprüft (Bewerbung #{1})."
+msgstr "راجع الوكيل طلب المرشح رقم {0} (الطلب رقم {1})."
+
+msgid "Match-Score: {0}/100 ({1})"
+msgstr "نتيجة المطابقة: {0}/100 ({1})"
+
+msgid "Dokumente: siehe Bericht verify_documents-kandidat-{0}.md"
+msgstr "المستندات: انظر التقرير verify_documents-kandidat-{0}.md"
+
+msgid "Stelle: {0}"
+msgstr "الوظيفة: {0}"
+
+msgid "Mindestgehalt {0} €/Jahr ≈ {1:.2f} €/h ≥ {2:.2f} €/h Mindestlohn (Stand 2026)"
+msgstr "الحد الأدنى للراتب {0} يورو/سنة ≈ {1:.2f} يورو/ساعة ≥ {2:.2f} يورو/ساعة الحد الأدنى للأجور (حتى 2026)"
+
+msgid "Mindestgehalt {0} €/Jahr ≈ {1:.2f} €/h < {2:.2f} €/h Mindestlohn (Stand 2026) – VOR Vertragsübergabe korrigieren"
+msgstr "الحد الأدنى للراتب {0} يورو/سنة ≈ {1:.2f} يورو/ساعة < {2:.2f} يورو/ساعة الحد الأدنى للأجور (حتى 2026) – صحّح ذلك قبل تسليم العقد"
+
+msgid "Form"
+msgstr "الشكل"
+
+msgid "- §5.6 Trigger/Task-Zeitpunkt des relocation-Checks (Design-Entscheidung) – **offen**."
+msgstr "- §5.6 مُشغِّل/توقيت فحص الانتقال (قرار تصميمي) – **مفتوح**."
+
+msgid "WO: {0}"
+msgstr "أين: {0}"
+
+msgid "Checkliste via 7️⃣ Generate Onboarding freigeben (HR)"
+msgstr "اعتماد القائمة عبر 7️⃣ Generate Onboarding (الموارد البشرية)"
+
+msgid "Fall"
+msgstr "الحالة"
+
+msgid "- §5.5 MD-Korrektur `knowledge/legal/visa-rules.md:144` – **offen**."
+msgstr "- §5.5 تصحيح ملف MD `knowledge/legal/visa-rules.md:144` – **مفتوح**."
+
+msgid "- Der Agent sucht keine Angebote und stellt keine Mietanfragen (Variante A)."
+msgstr "- لا يبحث الوكيل عن عروض ولا يقدّم طلبات إيجار (الخيار A)."
+
+msgid "WIE: {0}"
+msgstr "كيف: {0}"
+
+msgid "*Task automatisch erzeugt beim Statuswechsel 'eingestellt'.*"
+msgstr "*أُنشئت المهمة تلقائيًا عند تغيير الحالة إلى «تم التعيين».*"
+
+msgid "WAS: {0}"
+msgstr "ماذا: {0}"
+
+msgid "- §5.4 ansvar-Query-Test `search(\"Bundesmeldegesetz Anmeldung 17\")` – **offen**."
+msgstr "- §5.4 اختبار استعلام ansvar `search(\"Bundesmeldegesetz Anmeldung 17\")` – **مفتوح**."
+
+msgid "*Ausgelöst durch HR-Klick ({0}) – Variante A.*"
+msgstr "*أُطلق بنقرة من الموارد البشرية ({0}) – الخيار A.*"
+
+msgid "- **Portale (nur Link, manuell):** ImmoScout24 · Kleinanzeigen · wg-gesucht · immowelt (AGB untersagt automatisiertes Scraping)"
+msgstr "- **البوابات (رابط فقط، يدويًا):** ImmoScout24 · Kleinanzeigen · wg-gesucht · immowelt (الشروط تمنع الاستخلاص الآلي)"
+
+msgid "Visum-Hinweis (aus der Dokumenten-Prüfung, agent-generiert):"
+msgstr "ملاحظة التأشيرة (من فحص المستندات، من إنشاء الوكيل):"
+
+msgid "📋 Visum-Schritte (aus der Dokumenten-Prüfung, agent-generiert):"
+msgstr "📋 خطوات التأشيرة (من فحص المستندات، من إنشاء الوكيل):"
+
+msgid "- §5.3 Skill `relocation` (Agent-Ebene, analog `check-visa`) – **offen**."
+msgstr "- §5.3 مهارة `relocation` (على مستوى الوكيل، على غرار `check-visa`) – **مفتوح**."
+
+msgid "- Mail: {0}"
+msgstr "- البريد الإلكتروني: {0}"
+
+msgid "- **Freie Quellen:** BMWSB-Ratgeber »Auf Wohnungssuche in Deutschland« · Handbook Germany (9 Sprachen) · Statistikportal/Destatis Open Data · kommunale Wohnungsämter"
+msgstr "- **مصادر مجانية:** دليل BMWSB »Auf Wohnungssuche in Deutschland« · Handbook Germany (9 لغات) · بوابة الإحصاء/Destatis Open Data · مكاتب الإسكان البلدية"
+
+msgid "- **WO:** {0}"
+msgstr "- **أين:** {0}"
+
+msgid "## 🤝 Patenschaft (Mentoring)"
+msgstr "## 🤝 الرعاية (الإرشاد)"
+
+msgid "- **Mentor/Ansprechpartner:** {0}"
+msgstr "- **المرشد/جهة الاتصال:** {0}"
+
+msgid "- §5.2 Relocation-Abschnitt in `knowledge/onboarding-default.md` + den 3 Land-Templates – **offen**."
+msgstr "- §5.2 قسم الانتقال في `knowledge/onboarding-default.md` + قوالب البلدان الثلاثة – **مفتوح**."
+
+msgid "- ICS (HR/Director): {0}"
+msgstr "- ICS (الموارد البشرية/المدير): {0}"
+
+msgid "- **Checkliste:** Zielstadt + Einzugstermin festlegen → Bewerbungsmappe (Selbstauskunft, SCHUFA, Einkommensnachweise) → Mietpreis-Range via Open-Data-Mietspiegel prüfen → freie Quellen nutzen → Angebote manuell auf Portalen (Browser) ansehen"
+msgstr "- **قائمة التحقق:** تحديد المدينة المستهدفة + تاريخ الانتقال → ملف التقديم (إفصاح ذاتي، SCHUFA، إثباتات الدخل) → فحص نطاق الإيجار عبر مؤشر الإيجارات للبيانات المفتوحة → استخدام مصادر مجانية → عرض العروض يدويًا على البوابات (المتصفح)"
+
+msgid "- **WIE:** {0}"
+msgstr "- **كيف:** {0}"
+
+msgid "- §5.1 Behörden-Infos live & kostenlos (Fristen/Öffnungen/Formulare) via `fetch` + `anysearch` → knowledge-MD – **offen**."
+msgstr "- §5.1 معلومات الجهات المباشرة والمجانية (المواعيد/أوقات العمل/النماذج) عبر `fetch` + `anysearch` → ملف MD في knowledge – **مفتوح**."
+
+msgid "- ICS (Kandidat/Gast): {0}"
+msgstr "- ICS (المرشح/الضيف): {0}"
+
+msgid "## 🏠 Wohnungssuche (Checkliste + freie Quellen)"
+msgstr "## 🏠 البحث عن سكن (قائمة تحقق + مصادر مجانية)"
+
+msgid "## 📋 Visum-Schritt (agent-generiert)"
+msgstr "## 📋 خطوة التأشيرة (من إنشاء الوكيل)"
+
+msgid "- **WAS:** {0}"
+msgstr "- **ماذا:** {0}"
+
+msgid "Kandidat #{0} eingestellt – HR erstellt die Checkliste mit 7️⃣ Generate Onboarding und gibt sie frei."
+msgstr "تم تعيين المرشح رقم {0} – ينشئ قسم الموارد البشرية القائمة عبر 7️⃣ Generate Onboarding ويعتمدها."
+
+msgid "**Offen (Spec §5 – was NEU kommen müsste, noch nicht umgesetzt):**"
+msgstr "**مفتوح (المواصفة §5 – ما يلزم إضافته، لم يُنفَّذ بعد):**"
+
+msgid "- Termin: {0}"
+msgstr "- الموعد: {0}"
+
+msgid "# Onboarding-Freigabe – Bewerbung #{0}"
+msgstr "# اعتماد الانضمام – الطلب رقم {0}"
+
+msgid "- Meeting (Kandidat/Gast, Gate 8): {0}"
+msgstr "- الاجتماع (المرشح/الضيف، البوابة 8): {0}"
+
+msgid "- **Variante A (Spec §3):** Der Agent lädt, meldet und beantragt nie bei einer Behörde – nur Information, Checkliste, E-Mail-Hinweis nach HR-Freigabe."
+msgstr "- **الخيار A (المواصفة §3):** لا يدعو الوكيل ولا يسجّل ولا يقدّم طلبًا لدى أي جهة – فقط معلومات وقائمة تحقق وإشعار بالبريد الإلكتروني بعد اعتماد الموارد البشرية."
+
+msgid "- Meeting (HR/Director): {0}"
+msgstr "- الاجتماع (الموارد البشرية/المدير): {0}"
+
+msgid "- **FR/CH (Design-Entscheidung, Spec §2):** FR Mairie → numéro fiscal → sécurité sociale; CH Einwohnerkontrolle/Gemeinde → AHV-Nummer → Krankenkasse – Details nicht recherchiert."
+msgstr "- **FR/CH (قرار تصميمي، المواصفة §2):** FR البلدية → الرقم الضريبي → الضمان الاجتماعي؛ CH مكتب تسجيل السكان/البلدية → رقم AHV → التأمين الصحي – لم يتم البحث في التفاصيل."
+
+msgid "# Einladung – Bewerbung #{0}"
+msgstr "# دعوة – الطلب رقم {0}"
+
+msgid "- **Schritte 4–6 (Spec §2):** Steuer-ID erst **nach** Schritt 3 (IdNr bei Zuzug aus dem Ausland zwingend) · Krankenkasse: Kandidat wählt GKV, Arbeitgeber meldet Beschäftigung spätestens 6 Wochen nach Beginn · ELStAM: IdNr + Geburtsdatum, ohne IdNr Steuerklasse VI (max. 3 Monate)."
+msgstr "- **الخطوات 4–6 (المواصفة §2):** الرقم الضريبي فقط **بعد** الخطوة 3 (رقم IdNr إلزامي عند القدوم من الخارج) · التأمين الصحي: يختار المرشح التأمين القانوني، ويسجّل صاحب العمل التوظيف في موعد أقصاه 6 أسابيع بعد البدء · ELStAM: رقم IdNr + تاريخ الميلاد، وبدون IdNr الفئة الضريبية VI (بحد أقصى 3 أشهر)."
+
+msgid "- **Schritt 3 Bürgeramt (Spec §2):** Anmeldung **innerhalb von 2 Wochen nach Einzug**; Unterlagen: Meldeschein + Personalausweis/Pass/Passersatz + Wohnungsgeberbestätigung (Mietvertrag ersetzt sie NICHT); Nicht-EU: Anmeldung **vor** dem Aufenthaltstitel, eAT mit Nationalpass (BMG § 17/§ 23)."
+msgstr "- **الخطوة 3 مكتب تسجيل السكان (المواصفة §2):** التسجيل **خلال أسبوعين من الانتقال**؛ المستندات: استمارة التسجيل + بطاقة الهوية/جواز السفر/وثيقة بديلة + تأكيد المالك (عقد الإيجار لا يحل محله)؛ لغير مواطني الاتحاد الأوروبي: التسجيل **قبل** تصريح الإقامة، وeAT مع جواز السفر الوطني (BMG § 17/§ 23)."
+
+msgid "- **Reihenfolge (bindend, Spec §2):** 1 Visum/Aufenthalt (`check_visa`) → 2 Wohnung suchen/beziehen → 3 Bürgeramt-Anmeldung (Meldebehörde) → 4 Steuer-ID → 5 Krankenkasse → 6 ELStAM."
+msgstr "- **الترتيب (إلزامي، المواصفة §2):** 1 التأشيرة/الإقامة (`check_visa`) → 2 البحث عن سكن/الانتقال إليه → 3 التسجيل في مكتب السكان (جهة التسجيل) → 4 الرقم الضريبي → 5 التأمين الصحي → 6 ELStAM."
+
+msgid "## 🏛️ Relocation / Umzug, Behörden, Anmeldung"
+msgstr "## 🏛️ الانتقال / النقل، الجهات، التسجيل"
+
+msgid "Pre-Screening: {position}"
+msgstr "الفرز الأولي: {position}"
+
+msgid "wir möchten Sie herzlich zu einem kurzen Pre-Screening für die Position als **{position}** einladen."
+msgstr "يسعدنا أن ندعوك إلى فرز أولي قصير لوظيفة **{position}**."
+
+msgid "**Meeting-Details:**"
+msgstr "**تفاصيل الاجتماع:**"
+
+msgid "- **Link:** {meet_url}"
+msgstr "- **الرابط:** {meet_url}"
+
+msgid "- **Uhrzeit:** {uhrzeit}"
+msgstr "- **الوقت:** {uhrzeit}"
+
+msgid "- **Dauer:** ca. 30 Minuten"
+msgstr "- **المدة:** حوالي 30 دقيقة"
+
+msgid "**Themen:**"
+msgstr "**المواضيع:**"
+
+msgid "Bitte bestätigen Sie Ihre Teilnahme kurz per Rück-Mail."
+msgstr "يرجى تأكيد مشاركتك باختصار عبر البريد الإلكتروني."
+
+msgid "Hervorragend – Fokus auf Leadership & Vision"
+msgstr "ممتاز – التركيز على القيادة والرؤية"
+
+msgid "Gut – Fokus auf Skills & Kultur"
+msgstr "جيد – التركيز على المهارات والثقافة"
+
+msgid "Bedingt – Fokus auf Lücken klären"
+msgstr "مشروط – التركيز على توضيح الفجوات"
+
+msgid "Schwach – Grundlegende Eignung prüfen"
+msgstr "ضعيف – التحقق من الملاءمة الأساسية"
+
+msgid "{i}. **{s}:** Beschreiben Sie ein konkretes Projekt, in dem Sie {s} eingesetzt haben. Welche Ergebnisse wurden erzielt?"
+msgstr "{i}. **{s}:** صف مشروعًا ملموسًا استخدمت فيه {s}. ما النتائج التي تحققت؟"
+
+msgid "{i}. **{g}:** Inwieweit haben Sie Erfahrung mit {g}? Wie würden Sie sich hier einarbeiten?"
+msgstr "{i}. **{g}:** ما مدى خبرتك في {g}؟ كيف ستتعلم هذا المجال؟"
+
+msgid "1. Warum interessiert Sie die Position als {position}?"
+msgstr "1. لماذا تهتم بوظيفة {position}؟"
+
+msgid "2. Was sind Ihre beruflichen Ziele für die nächsten 3 Jahre?"
+msgstr "2. ما هي أهدافك المهنية للسنوات الثلاث القادمة؟"
+
+msgid "3. Wie beschreiben Sie Ihren idealen Arbeitsstil?"
+msgstr "3. كيف تصف أسلوب عملك المثالي؟"
+
+msgid "4. Welche Erwartungen haben Sie an das Gehalt?"
+msgstr "4. ما هي توقعاتك بشأن الراتب؟"
+
+msgid "1. Wann könnten Sie starten?"
+msgstr "1. متى يمكنك البدء؟"
+
+msgid "2. Sind Sie bereit, nach München zu ziehen / remote zu arbeiten?"
+msgstr "2. هل أنت مستعد للانتقال إلى ميونخ / العمل عن بُعد؟"
+
+msgid "3. Haben Sie Fragen an uns?"
+msgstr "3. هل لديك أي أسئلة لنا؟"
+
+msgid "=== SCREENING-FRAGEN: {candidate_name} ==="
+msgstr "=== أسئلة الفرز: {candidate_name} ==="
+
+msgid "**Kultur-Fit:** {cultural_fit_score}/100"
+msgstr "**التوافق الثقافي:** {cultural_fit_score}/100"
+
+msgid "**Kategorie:** {kategorie}"
+msgstr "**الفئة:** {kategorie}"
+
+msgid "## A. Technische Kompetenz (15 Min.)"
+msgstr "## أ. الكفاءة التقنية (15 دقيقة)"
+
+msgid "## B. Lücken klären (10 Min.)"
+msgstr "## ب. توضيح الفجوات (10 دقائق)"
+
+msgid "## C. Motivation & Kultur (10 Min.)"
+msgstr "## ج. الدافع والثقافة (10 دقائق)"
+
+msgid "## D. Praktische Details (5 Min.)"
+msgstr "## د. التفاصيل العملية (5 دقائق)"
+
+msgid "## Interviewer-Checkliste"
+msgstr "## قائمة تحقق المُحاور"
+
+msgid "- [ ] Profil-Check vor dem Gespräch"
+msgstr "- [ ] مراجعة الملف قبل المقابلة"
+
+msgid "- [ ] Technische Fragen vorbereitet"
+msgstr "- [ ] الأسئلة التقنية جاهزة"
+
+msgid "- [ ] Kultur-Fit-Fragen notiert"
+msgstr "- [ ] أسئلة التوافق الثقافي مدوّنة"
+
+msgid "- [ ] Nächste Schritte besprochen"
+msgstr "- [ ] مناقشة الخطوات التالية"
+
+msgid "- [ ] Feedback-Formular ausgefüllt"
+msgstr "- [ ] تم ملء نموذج التقييم"
+
+msgid "## Bewertungsbogen"
+msgstr "## ورقة التقييم"
+
+msgid "| Bereich | Score (1–5) | Notizen |"
+msgstr "| المجال | الدرجة (1–5) | ملاحظات |"
+
+msgid "| Technische Kompetenz | | |"
+msgstr "| الكفاءة التقنية | | |"
+
+msgid "| Erfahrungs-Relevanz | | |"
+msgstr "| ملاءمة الخبرة | | |"
+
+msgid "| Motivation & Kultur | | |"
+msgstr "| الدافع والثقافة | | |"
+
+msgid "| Kommunikation | | |"
+msgstr "| التواصل | | |"
+
+msgid "| **Gesamt** | /20 | |"
+msgstr "| **المجموع** | /20 | |"
+
+msgid "**Empfehlung:** ✅ Weiter / ⚠️ Klärungsbedarf / ❌ Absage"
+msgstr "**التوصية:** ✅ المتابعة / ⚠️ بحاجة إلى توضيح / ❌ رفض"
+
+msgid "siehe Match-Bericht"
+msgstr "انظر تقرير المطابقة"
+
+msgid "Compliance: {0}"
+msgstr "الامتثال: {0}"
+
+msgid "(Katalog-Key {0} ohne URL)"
+msgstr "(مفتاح الكتالوج {0} بدون رابط)"
+
+msgid "# Match-Export – Kandidat #{0} / Stelle #{1}"
+msgstr "# تصدير المطابقة – المرشح #{0} / الوظيفة #{1}"
+
+msgid "**Compliance:** {0}"
+msgstr "**الامتثال:** {0}"
+
+msgid "## Kategorien"
+msgstr "## الفئات"
+
+msgid "| Kategorie | Status |"
+msgstr "| الفئة | الحالة |"
+
+msgid "| {0} | {1} |"
+msgstr "| {0} | {1} |"
+
+msgid "Kernkompetenzen"
+msgstr "الكفاءات الأساسية"
+
+msgid "Branchenkenntnis"
+msgstr "معرفة القطاع"
+
+msgid "*Exportiert am {0} von Skill export-report.*"
+msgstr "*تم التصدير في {0} بواسطة المهارة export-report.*"
+
+msgid "📋 Profil extrahieren"
+msgstr "📋 استخراج الملف الشخصي"
+
+msgid "🎯 Kandidat matchen"
+msgstr "🎯 مطابقة المرشح"
+
+msgid "⚖️ Compliance pruefen"
+msgstr "⚖️ فحص الامتثال"
+
+msgid "🏢 Culture Fit pruefen"
+msgstr "🏢 فحص الملاءمة الثقافية"
+
+msgid "📄 Dokumente verifizieren"
+msgstr "📄 التحقق من المستندات"
+
+msgid "🛂 Visum pruefen"
+msgstr "🛂 فحص التأشيرة"
+
+msgid "🔒 DSGVO pruefen"
+msgstr "🔒 فحص حماية البيانات"
+
+msgid "💡 Match erklaeren"
+msgstr "💡 تفسير المطابقة"
+
+msgid "📧 Kandidat benachrichtigen"
+msgstr "📧 إبلاغ المرشح"
+
+msgid "Match erklaeren"
+msgstr "تفسير المطابقة"
+
+msgid "Agent-Task (Phase 5, live {0}), Modell: {1}"
+msgstr "مهمة الوكيل (المرحلة 5، بتاريخ {0})، النموذج: {1}"

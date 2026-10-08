@@ -242,10 +242,15 @@ STATUS_ICONS = {
 
 
 def status_label(status: str) -> str:
-    """DB-Slug → Klartext (fallback: underscores ersetzt, capitalized)."""
+    """DB-Slug → Klartext (fallback: underscores ersetzt, capitalized).
+
+    i18n P9.3 (06.10.2026): Der Slug bleibt Schluessel, der zurueckgegebene
+    Klartext laeuft durch `_()` (Anzeige-Layer). Der Fallback (Slug kaputt
+    geschrieben) ist kein Katalog-Key und wird unveraendert durchgereicht.
+    """
     if not status:
-        return "Unbekannt"
-    return STATUS_LABELS.get(status, str(status).replace("_", " ").capitalize())
+        return _("Unbekannt")
+    return _(STATUS_LABELS.get(status, str(status).replace("_", " ").capitalize()))
 
 
 def status_badge(status: str, pulse: bool = False) -> ui.badge:
@@ -610,7 +615,8 @@ def _md_result_card(container, title: str, filename: str, md: str) -> None:
 def prescreen_recruiting_section() -> None:
     """Skill 6 Recruiting-Modus (Employer/Admin). Paritaet: app.py:2238-2361.
 
-    #8 Einsicht: self-presentation-kandidat-*.md mit "Ansehen"-Download.
+    #8 Einsicht: self-presentation-kandidat-*.md — "Ansehen" oeffnet Dialog
+    (_show_file, seit 30.09.2026) statt Download; kein Download-Angebot.
     #9 Generator: Profil-Select (testdaten-Profile, D29) + Stelle + Score,
     fragen-Heuristik app.py:2286-2316, MD app.py:2319-2353.
     """
@@ -701,23 +707,23 @@ def prescreen_recruiting_section() -> None:
 
             # Fragen-Heuristik 1:1 app.py:2286-2316
             fragen: list[tuple[str, str]] = []
-            fragen.append(("Technisch", "Welche Cloud-Plattformen haben Sie eingesetzt?"))
+            fragen.append(("Technisch", _("Welche Cloud-Plattformen haben Sie eingesetzt?")))
             if "aws" in profil_lower:
-                fragen.append(("Technisch", "Beschreiben Sie eine AWS-Migration, die Sie geleitet haben."))
+                fragen.append(("Technisch", _("Beschreiben Sie eine AWS-Migration, die Sie geleitet haben.")))
             if "kubernetes" in profil_lower:
-                fragen.append(("Technisch", "Wie gehen Sie vor bei einem Kubernetes-Cluster-Ausfall?"))
-            fragen.append(("Technisch", "Wie implementieren Sie CI/CD-Pipelines?"))
+                fragen.append(("Technisch", _("Wie gehen Sie vor bei einem Kubernetes-Cluster-Ausfall?")))
+            fragen.append(("Technisch", _("Wie implementieren Sie CI/CD-Pipelines?")))
             if "terraform" not in profil_lower:
-                fragen.append(("Lücke", "Haben Sie Erfahrung mit Infrastructure-as-Code (z.B. Terraform)?"))
-            fragen.append(("Motivation", "Was reizt Sie an dieser Position?"))
-            fragen.append(("Motivation", "Wo sehen Sie sich in 3–5 Jahren?"))
-            fragen.append(("Motivation", "Was ist Ihr bevorzugter Arbeitsstil (Remote/Hybrid/Onsite)?"))
-            fragen.append(("Praktisch", "Wann könnten Sie starten?"))
-            fragen.append(("Praktisch", "Ihre Gehaltsvorstellung?"))
+                fragen.append(("Lücke", _("Haben Sie Erfahrung mit Infrastructure-as-Code (z.B. Terraform)?")))
+            fragen.append(("Motivation", _("Was reizt Sie an dieser Position?")))
+            fragen.append(("Motivation", _("Wo sehen Sie sich in 3–5 Jahren?")))
+            fragen.append(("Motivation", _("Was ist Ihr bevorzugter Arbeitsstil (Remote/Hybrid/Onsite)?")))
+            fragen.append(("Praktisch", _("Wann könnten Sie starten?")))
+            fragen.append(("Praktisch", _("Ihre Gehaltsvorstellung?")))
             if "teamführung" in profil_lower or "mentoring" in profil_lower:
-                fragen.append(("Kultur", "Beschreiben Sie Ihren Führungsstil."))
+                fragen.append(("Kultur", _("Beschreiben Sie Ihren Führungsstil.")))
             if "deutsch" not in profil_lower or "muttersprache" not in profil_lower:
-                fragen.append(("Sprache", "Wie ist Ihr Deutsch-Level (B1/B2/C1)?"))
+                fragen.append(("Sprache", _("Wie ist Ihr Deutsch-Level (B1/B2/C1)?")))
 
             stelle_val = (stelle.value or "").strip()
             if not stelle_val:
@@ -726,19 +732,19 @@ def prescreen_recruiting_section() -> None:
                 return
             score_val = int(score.value or 85)
 
-            # MD-Bau 1:1 app.py:2319-2353
-            md = f"# Pre-Screening: {name}\n\n"
-            md += f"**Stelle:** {stelle_val}\n"
-            md += f"**Match-Score:** {score_val}/100\n"
-            md += f"**Datum:** {datetime.now().strftime('%d.%m.%Y')}\n\n"
+            # MD-Bau 1:1 app.py:2319-2353 (i18n P9.4: MD in Erzeugungs-Sprache)
+            md = _("# Pre-Screening: {0}").format(name) + "\n\n"
+            md += _("**Stelle:** {0}").format(stelle_val) + "\n"
+            md += _("**Match-Score:** {0}/100").format(score_val) + "\n"
+            md += _("**Datum:** {0}").format(datetime.now().strftime('%d.%m.%Y')) + "\n\n"
             md += "---\n\n"
-            md += "## 📹 Meeting-Details\n\n"
-            md += f"- **Link:** [{meet_url}]({meet_url})\n"
-            md += f"- **Datum:** {(datetime.now() + timedelta(days=7)).strftime('%A, %d. %B %Y')}\n"
-            md += f"- **Uhrzeit:** 10:00–10:45 Uhr\n"
-            md += f"- **Dauer:** 45 Minuten\n\n"
+            md += _("## 📹 Meeting-Details") + "\n\n"
+            md += _("- **Link:** [{0}]({1})").format(meet_url, meet_url) + "\n"
+            md += _("- **Datum:** {0}").format((datetime.now() + timedelta(days=7)).strftime('%A, %d. %B %Y')) + "\n"
+            md += _("- **Uhrzeit:** 10:00–10:45 Uhr") + "\n"
+            md += _("- **Dauer:** 45 Minuten") + "\n\n"
             md += "---\n\n"
-            md += "## 📋 Screening-Fragen\n\n"
+            md += _("## 📋 Screening-Fragen") + "\n\n"
 
             fragen_count: dict[str, int] = {}
             for kategorie, _frage in fragen:
@@ -748,25 +754,25 @@ def prescreen_recruiting_section() -> None:
             aktuelle_kategorie = ""
             for kategorie, frage in fragen:
                 if kategorie != aktuelle_kategorie:
-                    md += f"\n### {kategorie}\n\n"
+                    md += f"\n### {_(kategorie)}\n\n"
                     aktuelle_kategorie = kategorie
                 md += f"{idx}. {frage}\n"
                 idx += 1
 
             md += "\n---\n\n"
-            md += "## 📊 Zusammenfassung\n\n"
-            md += f"- **Fragen gesamt:** {len(fragen)}\n"
-            md += f"- **Technische Fragen:** {fragen_count.get('Technisch', 0)}\n"
-            md += f"- **Lücken-Fragen:** {fragen_count.get('Lücke', 0)}\n"
-            md += f"- **Motivations-Fragen:** {fragen_count.get('Motivation', 0)}\n"
-            md += f"- **Sprach-Check:** {'Ja' if 'Sprache' in fragen_count else 'Nein'}\n\n"
+            md += _("## 📊 Zusammenfassung") + "\n\n"
+            md += _("- **Fragen gesamt:** {0}").format(len(fragen)) + "\n"
+            md += _("- **Technische Fragen:** {0}").format(fragen_count.get('Technisch', 0)) + "\n"
+            md += _("- **Lücken-Fragen:** {0}").format(fragen_count.get('Lücke', 0)) + "\n"
+            md += _("- **Motivations-Fragen:** {0}").format(fragen_count.get('Motivation', 0)) + "\n"
+            md += _("- **Sprach-Check:** {0}").format(_("Ja") if "Sprache" in fragen_count else _("Nein")) + "\n\n"
             md += "---\n\n"
-            md += f"*Erstellt am {datetime.now().strftime('%d.%m.%Y %H:%M')} vom KM-HR-Agenten.*\n"
+            md += _("*Erstellt am {0} vom KM-HR-Agenten.*").format(datetime.now().strftime('%d.%m.%Y %H:%M')) + "\n"
 
             kandidat_name = profil_path.stem.replace("profil-", "")
             filename = f"pre-screen-{kandidat_name}-{datetime.now().strftime('%Y-%m-%d')}.md"
             logic.save_result(filename, md)
-            _md_result_card(result_box, "Pre-Screen gespeichert", filename, md)
+            _md_result_card(result_box, _("Pre-Screen gespeichert"), filename, md)
 
         ui.button(_('Pre-Screen erstellen'), icon="videocam", on_click=create_prescreen).classes(C.BTN_PRIMARY + " mt-4")
 
@@ -830,20 +836,20 @@ def onboarding_generator_section(default_stelle: str = "") -> None:
             except (ValueError, TypeError):
                 sd = datetime.now() + timedelta(days=30)
 
-            # MD-Bau 1:1 app.py:2426-2507
-            md = f"# Onboarding-Checkliste: {name}\n\n"
-            md += f"**Stelle:** {stelle_val}\n"
-            md += f"**Startdatum:** {sd.strftime('%d.%m.%Y')}\n"
-            md += f"**Erstellt:** {datetime.now().strftime('%d.%m.%Y')}\n\n"
+            # MD-Bau 1:1 app.py:2426-2507 (i18n P9.4: MD in Erzeugungs-Sprache)
+            md = _("# Onboarding-Checkliste: {0}").format(name) + "\n\n"
+            md += _("**Stelle:** {0}").format(stelle_val) + "\n"
+            md += _("**Startdatum:** {0}").format(sd.strftime('%d.%m.%Y')) + "\n"
+            md += _("**Erstellt:** {0}").format(datetime.now().strftime('%d.%m.%Y')) + "\n\n"
             md += "---\n\n"
 
             # 1. Willkommens-E-Mail
-            md += "## 1. Willkommens-E-Mail\n\n"
-            md += f"**Empfänger:** {name}\n"
-            md += "**Betreff:** Willkommen bei TechVision GmbH!\n\n"
-            md += f"Sehr geehrte(r) {name},\n\n"
-            md += f"wir freuen uns sehr, Sie ab dem **{sd.strftime('%d.%m.%Y')}** "
-            md += f"als **{stelle_val}** in unserem Team begrüßen zu dürfen.\n\n"
+            md += _("## 1. Willkommens-E-Mail") + "\n\n"
+            md += _("**Empfänger:** {0}").format(name) + "\n"
+            md += _("**Betreff:** Willkommen bei TechVision GmbH!") + "\n\n"
+            md += _("Sehr geehrte(r) {0},").format(name) + "\n\n"
+            md += _("wir freuen uns sehr, Sie ab dem **{0}** ").format(sd.strftime('%d.%m.%Y'))
+            md += _("als **{0}** in unserem Team begrüßen zu dürfen.").format(stelle_val) + "\n\n"
             # Mentoring (Phase D P10, Spec §5): {MENTOR}-Materialisierung –
             # nur bei aktivem Mentor, sonst Zeile auslassen (SKILL-Regel 6)
             from webui import db as _db
@@ -862,89 +868,91 @@ def onboarding_generator_section(default_stelle: str = "") -> None:
             except Exception:
                 _mentor = None
             if _mentor:
-                md += f"Dein Ansprechpartner: {_mentor}\n\n"
-            md += "Mit freundlichen Grüßen,\nHR Team\n\n"
+                md += _("Dein Ansprechpartner: {0}").format(_mentor) + "\n\n"
+            md += _("Mit freundlichen Grüßen,\nHR Team") + "\n\n"
             md += "---\n\n"
 
             # 2. IT-Ausstattung
-            md += "## 2. IT-Ausstattung\n\n"
-            md += "| Gerät | Status | Zuständig |\n"
+            md += _("## 2. IT-Ausstattung") + "\n\n"
+            md += _("| Gerät | Status | Zuständig |") + "\n"
             md += "|---|---|---|\n"
-            md += "| MacBook Pro / ThinkPad | ☐ Bestellt | IT-Abteilung |\n"
-            md += "| Monitor (27 Zoll) | ☐ Bestellt | IT-Abteilung |\n"
-            md += "| Tastatur + Maus | ☐ Bestellt | IT-Abteilung |\n"
-            md += "| Headset | ☐ Bestellt | IT-Abteilung |\n"
-            md += "| Laptop-Tasche | ☐ Bestellt | IT-Abteilung |\n"
+            md += _("| MacBook Pro / ThinkPad | ☐ Bestellt | IT-Abteilung |") + "\n"
+            md += _("| Monitor (27 Zoll) | ☐ Bestellt | IT-Abteilung |") + "\n"
+            md += _("| Tastatur + Maus | ☐ Bestellt | IT-Abteilung |") + "\n"
+            md += _("| Headset | ☐ Bestellt | IT-Abteilung |") + "\n"
+            md += _("| Laptop-Tasche | ☐ Bestellt | IT-Abteilung |") + "\n"
             if "linux" in profil_lower or "ubuntu" in profil_lower:
-                md += "| Linux-Workstation | ☐ Bestellt | IT-Abteilung |\n"
+                md += _("| Linux-Workstation | ☐ Bestellt | IT-Abteilung |") + "\n"
             md += "\n"
 
             # 3. Systemzugänge
-            md += "## 3. Systemzugänge\n\n"
-            md += "| System | Zugang | Frist |\n"
+            md += _("## 3. Systemzugänge") + "\n\n"
+            md += _("| System | Zugang | Frist |") + "\n"
             md += "|---|---|---|\n"
-            md += "| E-Mail (Google Workspace) | ☐ Angelegt | Tag 1 |\n"
-            md += "| Slack | ☐ Angelegt | Tag 1 |\n"
-            md += "| GitHub | ☐ Angelegt | Tag 1 |\n"
-            md += "| AWS Console | ☐ Angelegt | Tag 3 |\n"
-            md += "| Kubernetes Cluster | ☐ Angelegt | Tag 5 |\n"
-            md += "| Jira | ☐ Angelegt | Tag 1 |\n"
-            md += "| Confluence | ☐ Angelegt | Tag 1 |\n"
-            md += "| VPN-Zugang | ☐ Angelegt | Tag 1 |\n\n"
+            md += _("| E-Mail (Google Workspace) | ☐ Angelegt | Tag 1 |") + "\n"
+            md += _("| Slack | ☐ Angelegt | Tag 1 |") + "\n"
+            md += _("| GitHub | ☐ Angelegt | Tag 1 |") + "\n"
+            md += _("| AWS Console | ☐ Angelegt | Tag 3 |") + "\n"
+            md += _("| Kubernetes Cluster | ☐ Angelegt | Tag 5 |") + "\n"
+            md += _("| Jira | ☐ Angelegt | Tag 1 |") + "\n"
+            md += _("| Confluence | ☐ Angelegt | Tag 1 |") + "\n"
+            md += _("| VPN-Zugang | ☐ Angelegt | Tag 1 |") + "\n\n"
 
             # 4. Erstgespräche
-            md += "## 4. Erstgespräche\n\n"
-            md += "| Termin | Person | Thema | Datum |\n"
+            md += _("## 4. Erstgespräche") + "\n\n"
+            md += _("| Termin | Person | Thema | Datum |") + "\n"
             md += "|---|---|---|---|\n"
-            md += "| 1 | Teamleitung | Willkommen + Rahmenbedingungen | Tag 1 |\n"
-            md += "| 2 | HR | Vertragsunterlagen + Benefits | Tag 1 |\n"
-            md += "| 3 | IT-Onboarding | Systemzugänge + Geräte | Tag 1 |\n"
-            md += "| 4 | Scrum Master | Agile Prozesse | Tag 2 |\n"
-            md += "| 5 | DevOps-Team | Technische Architektur | Tag 3 |\n"
-            md += "| 6 | Product Owner | Produktübersicht | Tag 5 |\n"
-            md += "| 7 | CTO | Technische Vision | Woche 2 |\n"
-            md += "| 8 | Kollegen | Team-Lunch | Woche 1 |\n\n"
+            md += _("| 1 | Teamleitung | Willkommen + Rahmenbedingungen | Tag 1 |") + "\n"
+            md += _("| 2 | HR | Vertragsunterlagen + Benefits | Tag 1 |") + "\n"
+            md += _("| 3 | IT-Onboarding | Systemzugänge + Geräte | Tag 1 |") + "\n"
+            md += _("| 4 | Scrum Master | Agile Prozesse | Tag 2 |") + "\n"
+            md += _("| 5 | DevOps-Team | Technische Architektur | Tag 3 |") + "\n"
+            md += _("| 6 | Product Owner | Produktübersicht | Tag 5 |") + "\n"
+            md += _("| 7 | CTO | Technische Vision | Woche 2 |") + "\n"
+            md += _("| 8 | Kollegen | Team-Lunch | Woche 1 |") + "\n\n"
 
             # 5. Einarbeitungsplan
-            md += "## 5. Einarbeitungsplan\n\n"
-            md += "| Woche | Thema | Ziel |\n"
+            md += _("## 5. Einarbeitungsplan") + "\n\n"
+            md += _("| Woche | Thema | Ziel |") + "\n"
             md += "|---|---|---|\n"
-            md += "| 1 | Orientierung | Umgebung kennenlernen, Zugänge testen |\n"
-            md += "| 2 | Code-Basis | Repository durchlesen, erstes Ticket |\n"
-            md += "| 3 | Infrastruktur | AWS Cluster, Monitoring, Deployments |\n"
-            md += "| 4 | erstes Feature | Kleine Änderung, PR, Review |\n"
-            md += "| 5 | Independence | Eigenständiges Ticket, Daily Standup |\n"
+            md += _("| 1 | Orientierung | Umgebung kennenlernen, Zugänge testen |") + "\n"
+            md += _("| 2 | Code-Basis | Repository durchlesen, erstes Ticket |") + "\n"
+            md += _("| 3 | Infrastruktur | AWS Cluster, Monitoring, Deployments |") + "\n"
+            md += _("| 4 | erstes Feature | Kleine Änderung, PR, Review |") + "\n"
+            md += _("| 5 | Independence | Eigenständiges Ticket, Daily Standup |") + "\n"
             if "kubernetes" in profil_lower:
-                md += "| 6 | K8s-Audit | Cluster-Review, Optimierungsvorschläge |\n"
+                md += _("| 6 | K8s-Audit | Cluster-Review, Optimierungsvorschläge |") + "\n"
             md += "\n"
 
             # 6. Arbeitsvertrag
-            md += "## 6. Arbeitsvertrag\n\n"
-            md += "| Dokument | Status | Frist |\n"
+            md += _("## 6. Arbeitsvertrag") + "\n\n"
+            md += _("| Dokument | Status | Frist |") + "\n"
             md += "|---|---|---|\n"
-            md += "| Arbeitsvertrag | ☐ Zugestellt | Vor Start |\n"
-            md += "| IT-Sicherheitsrichtlinie | ☐ Gelesen + unterschrieben | Tag 1 |\n"
-            md += "| NDA | ☐ Unterschrieben | Tag 1 |\n"
-            md += "| DSGVO-Einwilligung | ☐ Unterschrieben | Tag 1 |\n"
-            md += "| Datenschutzrichtlinie | ☐ Gelesen | Tag 1 |\n"
-            md += "| Betriebsvereinbarung | ☐ Gelesen | Woche 1 |\n"
-            md += "| Allowlist (Versicherung) | ☐ Ausgefüllt | Woche 1 |\n\n"
+            md += _("| Arbeitsvertrag | ☐ Zugestellt | Vor Start |") + "\n"
+            md += _("| IT-Sicherheitsrichtlinie | ☐ Gelesen + unterschrieben | Tag 1 |") + "\n"
+            md += _("| NDA | ☐ Unterschrieben | Tag 1 |") + "\n"
+            md += _("| DSGVO-Einwilligung | ☐ Unterschrieben | Tag 1 |") + "\n"
+            md += _("| Datenschutzrichtlinie | ☐ Gelesen | Tag 1 |") + "\n"
+            md += _("| Betriebsvereinbarung | ☐ Gelesen | Woche 1 |") + "\n"
+            md += _("| Allowlist (Versicherung) | ☐ Ausgefüllt | Woche 1 |") + "\n\n"
 
             md += "---\n\n"
-            md += f"*Erstellt am {datetime.now().strftime('%d.%m.%Y %H:%M')} vom KM-HR-Agenten.*\n"
+            md += _("*Erstellt am {0} vom KM-HR-Agenten.*").format(datetime.now().strftime('%d.%m.%Y %H:%M')) + "\n"
 
             kandidat_name = profil_path.stem.replace("profil-", "")
             filename = f"onboarding-{kandidat_name}-{sd.strftime('%Y-%m-%d')}.md"
             logic.save_result(filename, md)
-            _md_result_card(result_box, "Onboarding-Checkliste gespeichert", filename, md)
+            _md_result_card(result_box, _("Onboarding-Checkliste gespeichert"), filename, md)
 
         ui.button(_('Onboarding generieren'), icon="assignment", on_click=create_onboarding).classes(C.BTN_PRIMARY + " mt-4")
 
 
 def skill8_feedback_section() -> None:
     """Skill 8 Store Feedback (Admin-Seite + Employer nach Tab4).
-    Paritaet: app.py:2522-2692. Cat-Map = Skill-8-Map
-    (Weak→'Nicht passend', app.py:2598-2603). D28: Status-Gate entfaellt.
+    Paritaet: app.py:2522-2692. Cat-Map seit i18n P9.3 (06.10.2026)
+    vereinheitlicht mit der Employer-/app.py-Paritaet
+    (Weak→'Schwach' statt 'Nicht passend'; Design-Entscheidung im Log).
+    D28: Status-Gate entfaellt.
     """
     from webui import db, logic
 
@@ -966,7 +974,7 @@ def skill8_feedback_section() -> None:
             ).classes("flex-1")
             score = ui.number(label=_('Match-Score (0-100)'), value=85, min=0, max=100).classes("w-44")
         stellenprofil = ui.input(label=_('Stellenprofil:'), value="").classes("w-full")
-        eingeladen = ui.select(options=["Ja", "Nein"], value="Ja", label=_('Eingeladen?')).classes("w-full")
+        eingeladen = ui.select(options={v: _(v) for v in ["Ja", "Nein"]}, value="Ja", label=_('Eingeladen?')).classes("w-full")
 
         # NiceGUI: ui.slider hat kein label → ui.label + ui.slider (Tab4-Muster)
         ui.label(_('Bewertung (0–5):')).classes(C.SMALL + " font-medium mt-2")
@@ -997,13 +1005,13 @@ def skill8_feedback_section() -> None:
             emp = int(empfehlung.value or 4)
             anm = anmerkungen.value or ""
 
-            # Kategorie: Skill-8-Map app.py:2598-2609 (NICHT Tab4-'Schwach')
-            # M-16-Reststelle (01.10.2026): lokale ZYTHR-Schwelle statt
-            # hr-benchmark-Subprozess - eine Quelle: logic.get_score_category_lokal
-            # (identische Ausgabe wie der Connector, Spec: matching-criteria.md §4a).
+            # Kategorie: P9.3 (06.10.2026) vereinheitlicht mit der Employer-/
+            # app.py-Paritaet (Strong→Hervorragend, Consider→Bedingt,
+            # Weak→Schwach, ≥75→Gut) — vorher Weak→'Nicht passend' (widerspruechlich).
+            # Design-Entscheidung, im Entscheidungslog 06.10.2026 belegt.
             _cat_map = {"Strong": "Hervorragend", "Consider": "Bedingt",
-                        "Weak": "Nicht passend"}
-            kategorie = _cat_map.get(logic.get_score_category_lokal(score_val), "Nicht passend")
+                        "Weak": "Schwach"}
+            kategorie = _cat_map.get(logic.get_score_category_lokal(score_val), "Schwach")
             if kategorie == "Bedingt" and score_val >= 75:
                 kategorie = "Gut"
 
@@ -1037,7 +1045,7 @@ def skill8_feedback_section() -> None:
 
             # Phase 4: nur bei NEUEM Feedback (INSERT) (app.py:2640-2647)
             if existing:
-                gewichtung_msg = "ℹ️ Korrektur (heute bereits vorhanden) – keine neue Gewichtungsanpassung."
+                gewichtung_msg = _("ℹ️ Korrektur (heute bereits vorhanden) – keine neue Gewichtungsanpassung.")
             else:
                 gewichtung_msg = logic.adjust_weights_from_feedback(
                     eing, score_val,
@@ -1045,37 +1053,37 @@ def skill8_feedback_section() -> None:
                     conn,
                 )
 
-            # MD-Bau 1:1 app.py:2650-2678
-            md = f"# Feedback: {name}\n\n"
-            md += f"**Match-ID:** `{match_id}`\n"
-            md += f"**Score:** {score_val}/100 ({kategorie})\n"
-            md += f"**Eingeladen:** {eing}\n"
-            md += f"**Datum:** {datetime.now().strftime('%d.%m.%Y %H:%M')}\n\n"
+            # MD-Bau 1:1 app.py:2650-2678 (i18n P9.4: MD in Erzeugungs-Sprache)
+            md = _("# Feedback: {0}").format(name) + "\n\n"
+            md += _("**Match-ID:** `{0}`").format(match_id) + "\n"
+            md += _("**Score:** {0}/100 ({1})").format(score_val, _(kategorie)) + "\n"
+            md += _("**Eingeladen:** {0}").format(_(eing)) + "\n"
+            md += _("**Datum:** {0}").format(datetime.now().strftime('%d.%m.%Y %H:%M')) + "\n\n"
             md += "---\n\n"
-            md += "## Bewertung\n\n"
-            md += "| Kriterium | Punkte |\n"
+            md += _("## Bewertung") + "\n\n"
+            md += _("| Kriterium | Punkte |") + "\n"
             md += "|---|---|\n"
-            md += f"| Fachlich korrekt | {fach}/5 |\n"
-            md += f"| Skills richtig | {sk}/5 |\n"
-            md += f"| Standort zutreffend | {st}/5 |\n"
-            md += f"| Empfehlung hilfreich | {emp}/5 |\n"
-            md += f"| **Durchschnitt** | **{(fach + sk + st + emp) / 4:.1f}/5** |\n\n"
+            md += _("| Fachlich korrekt | {0}/5 |").format(fach) + "\n"
+            md += _("| Skills richtig | {0}/5 |").format(sk) + "\n"
+            md += _("| Standort zutreffend | {0}/5 |").format(st) + "\n"
+            md += _("| Empfehlung hilfreich | {0}/5 |").format(emp) + "\n"
+            md += _("| **Durchschnitt** | **{0}/5** |").format(f"{(fach + sk + st + emp) / 4:.1f}") + "\n\n"
             if anm:
-                md += f"**Anmerkungen:** {anm}\n\n"
-            md += f"## Gewichtungsanpassung\n\n{gewichtung_msg}\n\n"
+                md += _("**Anmerkungen:** {0}").format(anm) + "\n\n"
+            md += _("## Gewichtungsanpassung") + "\n\n" + gewichtung_msg + "\n\n"
 
             hist = conn.execute(
                 "SELECT kategorie, alte_gewichtung, neue_gewichtung, grund "
                 "FROM gewichtung_historie ORDER BY id DESC LIMIT 5"
             ).fetchall()
             if hist:
-                md += "### Letzte Änderungen\n\n"
-                md += "| Kategorie | Alt | Neu | Grund |\n"
+                md += _("### Letzte Änderungen") + "\n\n"
+                md += _("| Kategorie | Alt | Neu | Grund |") + "\n"
                 md += "|---|---|---|---|\n"
                 for h in hist:
-                    md += f"| {h[0]} | {h[1]}% | {h[2]}% | {h[3]} |\n"
+                    md += _("| {0} | {1}% | {2}% | {3} |").format(_(h[0]), h[1], h[2], h[3]) + "\n"
             md += "\n---\n\n"
-            md += f"*Erstellt am {datetime.now().strftime('%d.%m.%Y %H:%M')} vom KM-HR-Agenten.*\n"
+            md += _("*Erstellt am {0} vom KM-HR-Agenten.*").format(datetime.now().strftime('%d.%m.%Y %H:%M')) + "\n"
 
             kandidat_name = profil_path.stem.replace("profil-", "")
             filename = f"feedback-{kandidat_name}-{datetime.now().strftime('%Y-%m-%d')}.md"
@@ -1092,7 +1100,7 @@ def skill8_feedback_section() -> None:
                 })
 
             conn.close()
-            _md_result_card(result_box, "Feedback gespeichert", filename, md)
+            _md_result_card(result_box, _("Feedback gespeichert"), filename, md)
 
         ui.button(_('Feedback speichern'), icon="save", on_click=save_feedback).classes(C.BTN_PRIMARY + " mt-4")
 
@@ -1129,18 +1137,18 @@ def export_candidates_pdf(employer_id: Optional[int] = None) -> None:
 
     # Header
     c.setFont("Helvetica-Bold", 16)
-    c.drawString(50, height - 50, "Kandidaten-Liste")
+    c.drawString(50, height - 50, _("Kandidaten-Liste"))
     c.setFont("Helvetica", 10)
-    c.drawString(50, height - 70, f"Anzahl: {len(candidates)} Kandidaten")
+    c.drawString(50, height - 70, _("Anzahl: {0} Kandidaten").format(len(candidates)))
 
     # Table header
     y = height - 100
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(50, y, "ID")
-    c.drawString(80, y, "Name")
-    c.drawString(200, y, "Skills")
-    c.drawString(350, y, "Erfahrung")
-    c.drawString(430, y, "Status")
+    c.drawString(50, y, _("ID"))
+    c.drawString(80, y, _("Name"))
+    c.drawString(200, y, _("Skills"))
+    c.drawString(350, y, _("Erfahrung"))
+    c.drawString(430, y, _("Status"))
     y -= 5
     c.line(50, y, width - 50, y)
     y -= 15
@@ -1152,11 +1160,11 @@ def export_candidates_pdf(employer_id: Optional[int] = None) -> None:
             c.showPage()
             y = height - 50
             c.setFont("Helvetica-Bold", 10)
-            c.drawString(50, y, "ID")
-            c.drawString(80, y, "Name")
-            c.drawString(200, y, "Skills")
-            c.drawString(350, y, "Erfahrung")
-            c.drawString(430, y, "Status")
+            c.drawString(50, y, _("ID"))
+            c.drawString(80, y, _("Name"))
+            c.drawString(200, y, _("Skills"))
+            c.drawString(350, y, _("Erfahrung"))
+            c.drawString(430, y, _("Status"))
             y -= 5
             c.line(50, y, width - 50, y)
             y -= 15
@@ -1323,7 +1331,7 @@ def shell(role: str, user_id: int, user_name: str, menu_items: list[dict],
         with ui.row().classes("items-center gap-2 mb-4"):
             icon_map = {"candidate": "person", "employer": "business", "admin": "shield"}
             ui.icon(icon_map.get(role, "circle"), size="sm").classes("text-blue-600 dark:text-blue-400")
-            ui.label(title_map.get(role, "Portal")).classes("text-lg font-bold text-gray-900 dark:text-white")
+            ui.label(_(title_map.get(role, "Portal"))).classes("text-lg font-bold text-gray-900 dark:text-white")
             ui.space()
             ui.button(icon="close", on_click=nav_drawer.hide).props("flat dense").classes(C.BTN_ICON)
 

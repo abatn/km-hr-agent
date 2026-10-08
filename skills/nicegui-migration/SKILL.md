@@ -396,12 +396,15 @@ python3 -m webui.main  # → http://localhost:8080
 
 #1 ICS ✅ · #2–6 Admin-Tools ✅C6 · #7 ps_self_dl ✅P2.2 · **#8 Einsicht ✅C7 · #9 Pre-Screen ✅C7 · #10 Candidate-Onboarding ✅C7 · #11 Onboarding-Gen ✅C7 · #12 Skill-8 ✅C7**.
 
+> **⚠️ Ist-Korrektur #8 (06.10.2026, MD an Code angeglichen — Lab-Prinzip S3):** „Ansehen" löst **keinen Download** mehr aus, sondern öffnet einen **Dialog mit MD-Vorschau** (`_show_file`, `webui/components.py`, Helfer `prescreen_recruiting_section`; Änderung dokumentiert 30.09.2026 in `ergebnisse/runde4-abschluss.md` S3g). Der Dialog hat **kein Download-Angebot** → Download-Event #8 entfällt (**Design-Entscheidung**, Abdeckungsverlust #8; Code nicht defekt: richtiger Dateiname + Vorschau). Streamlit-Parität `app.py:2250` (`st.download_button "📥 Ansehen"`) bleibt Archiv-Vergleich. E2E `tests/e2e_c7_downloads.py` prüft daher Dialog-Öffnung + Datei + Vorschau.
+
 ### E2E-Beweise (22.09.2026)
 
 | Test | Skript | Ergebnis |
 |---|---|---|
-| #8 Ansehen + #9 Generator + #11 Generator + #12 Skill-8 Downloads | `tests/e2e_c7_downloads.py` | **PASS** (exakte Filenames) |
-| Cat-Map Skill-8: score 30 → `Nicht passend` (Admin), kein Weight-Adjust | dasselbe | **PASS** |
+| #9 Generator + #11 Generator + #12 Skill-8 Downloads (exakte Filenames) | `tests/e2e_c7_downloads.py` | **PASS** (exakte Filenames) |
+| #8 Ansehen → Dialog-Öffnung + richtige Datei + Vorschau (kein Download, s. o.) | dasselbe | **PASS** (06.10.2026, ersetzt Download-Assertion) |
+| Cat-Map Skill-8: score 30 → `Schwach` (Admin; P9.3 vereinheitlicht, vorher `Nicht passend`), kein Weight-Adjust | dasselbe | **PASS** |
 | export_report bei INSERT | dasselbe (Task #126) | **PASS** |
 | Employer-Smoke 3 Seiten + Candidate empty_state/Flip/Expansion | dasselbe | **PASS** |
 | Restore (app8/hist/gew/fb/tasks + alle neuen Dateien) | dasselbe | **PASS** (identisch Pre) |

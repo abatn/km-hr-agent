@@ -74,7 +74,7 @@ def anzeige_name(name, k_id, status) -> str:
     """
     if status in DOC_RELEASE_STATUS and name:
         return name
-    return f"Kandidat #{k_id}"
+    return _('Kandidat #{0}').format(k_id)
 # Kandidaten-Status mit Lebenslauf (knowledge/portal/applicants-first.md, Streamlit-Pool
 # app.py:3895; webui/db.py:105)
 CAND_CV_STATUS = ("lebenslauf_hochgeladen", "profil_geprueft", "match_berechnet", "eingeladen")
@@ -135,7 +135,7 @@ def _visible_documents(conn, employer_id, typ: str = "alle") -> list[dict]:
     return [
         {
             "id": r[0], "candidate_id": r[1],
-            "kandidat": r[2] or f"Kandidat #{r[1]}",
+            "kandidat": r[2] or _('Kandidat #{0}').format(r[1]),
             "datei_pfad": r[3] or "", "typ": r[4] or "", "datum": r[5] or "",
             "app_status": "eingestellt" if r[6] == 2 else "eingeladen",
         }
@@ -169,7 +169,7 @@ def _blocked_candidates(conn, employer_id, typ: str = "alle") -> list[dict]:
         "ORDER BY c.id DESC"
     )
     return [
-        {"candidate_id": r[0], "kandidat": r[1] or f"Kandidat #{r[0]}", "app_status": r[2] or ""}
+        {"candidate_id": r[0], "kandidat": r[1] or _('Kandidat #{0}').format(r[0]), "app_status": r[2] or ""}
         for r in conn.execute(sql, args).fetchall()
     ]
 
@@ -442,7 +442,10 @@ def _page_dashboard(s: dict) -> None:
 
             output = io.StringIO()
             writer = csv.writer(output)
-            writer.writerow(["ID", "Name", "Skills", "Erfahrung (Jahre)", "Abschluss", "Status"])
+            # i18n P9.4 (06.10.2026): Header in Session-Sprache (Export-Artefakt
+            # = Nutzer-sichtbar); Spaltenreihenfolge/Werte unverändert.
+            writer.writerow([_("ID"), _("Name"), _("Skills"), _("Erfahrung (Jahre)"),
+                             _("Abschluss"), _("Status")])
             for c in candidates:
                 writer.writerow([
                     c[0], c[1] or "", c[2] or "", c[3] or "", c[4] or "", c[5] or ""
@@ -480,13 +483,13 @@ def _page_portal(s: dict) -> None:
             grossen = ["1-10", "11-50", "51-200", "201-1000", "1000+"]
 
             branche_select = ui.select(
-                options=branchen,
+                options={v: _(v) for v in branchen},
                 value=emp[2] if emp and emp[2] in branchen else branchen[0],
                 label=_('Branche'),
             ).classes("w-full")
 
             groesse_select = ui.select(
-                options=grossen,
+                options={v: _(v) for v in grossen},
                 value=emp[3] if emp and emp[3] in grossen else grossen[0],
                 label=_('Mitarbeiterzahl'),
             ).classes("w-full")
@@ -559,7 +562,7 @@ def _page_portal(s: dict) -> None:
                     label=_('Land'),
                 ).classes("w-full")
                 typ_select = ui.select(
-                    options=["Vollzeit", "Teilzeit", "Freelance", "Hybrid", "Remote"],
+                    options={v: _(v) for v in ["Vollzeit", "Teilzeit", "Freelance", "Hybrid", "Remote"]},
                     value="Vollzeit",
                     label=_('Stellentyp'),
                 ).classes("w-full")
@@ -569,17 +572,17 @@ def _page_portal(s: dict) -> None:
             with ui.grid(columns=2).classes("w-full gap-4"):
                 erfahrung_input = ui.number(label=_('Min. Berufserfahrung (Jahre)'), value=3, min=0, max=30).classes("w-full")
                 de_select = ui.select(
-                    options=["Keine Anforderung", "A1", "A2", "B1", "B2", "C1", "C2", "Muttersprache"],
+                    options={v: _(v) for v in ["Keine Anforderung", "A1", "A2", "B1", "B2", "C1", "C2", "Muttersprache"]},
                     value="Keine Anforderung",
                     label=_('Deutsch-Level'),
                 ).classes("w-full")
                 en_select = ui.select(
-                    options=["Keine Anforderung", "A1", "A2", "B1", "B2", "C1", "C2", "Muttersprache"],
+                    options={v: _(v) for v in ["Keine Anforderung", "A1", "A2", "B1", "B2", "C1", "C2", "Muttersprache"]},
                     value="Keine Anforderung",
                     label=_('Englisch-Level'),
                 ).classes("w-full")
                 abschluss_select = ui.select(
-                    options=["Egal", "Bachelor", "Master", "PhD"],
+                    options={v: _(v) for v in ["Egal", "Bachelor", "Master", "PhD"]},
                     value="Egal",
                     label=_('Abschluss'),
                 ).classes("w-full")
@@ -637,11 +640,11 @@ def _page_portal(s: dict) -> None:
                         return
 
                     for j in jobs:
-                        with ui.expansion(_('#{0} {1} – {2} ({3}) – {4}').format(j[0], j[1], j[2], j[3], j[4])).classes("w-full mb-2"):
+                        with ui.expansion(_('#{0} {1} – {2} ({3}) – {4}').format(j[0], j[1], j[2], _(j[3]), status_label(j[4]))).classes("w-full mb-2"):
                             with ui.grid(columns=2).classes("w-full gap-4"):
-                                ui.label(_('Status: {0}').format(j[4])).classes(C.BODY)
+                                ui.label(_('Status: {0}').format(status_label(j[4]))).classes(C.BODY)
                                 status_select = ui.select(
-                                    options=["aktiv", "pausiert", "besetzt", "abgelaufen"],
+                                    options={v: status_label(v) for v in ["aktiv", "pausiert", "besetzt", "abgelaufen"]},
                                     value=j[4],
                                     label=_('Status ändern'),
                                 ).classes("w-full")
@@ -703,7 +706,7 @@ def _page_stellen(s: dict) -> None:
             _ms = agent_status.get("match_candidate", "-")
             _cs = agent_status.get("check_compliance", "-")
             _fs = agent_status.get("assess_culture_fit", "-")
-            badge_txt = f"Match {_ms} · Compliance {_cs} · Culture-Fit {_fs}" if agent_status else "(noch nicht gestartet)"
+            badge_txt = _('Match {0} · Compliance {1} · Culture-Fit {2}').format(_ms, _cs, _fs) if agent_status else _('(noch nicht gestartet)')
 
             with ui.card().classes(C.CARD_HOVER + " w-full mb-2 py-2"):
                 with ui.row().classes("items-center justify-between w-full px-4"):
@@ -780,7 +783,9 @@ def _page_stellen(s: dict) -> None:
                                                 "termin_dauer_min": int(_inv_min.value),
                                             })
                                         db.queue_agent_task(task, _pl)
-                                    ui.notify(f"Status geaendert: {_ns}" + (f", Agent-Task '{task}' gequeued" if task else ""), type="positive")
+                                    ui.notify(_('Status geaendert: {0}').format(_ns)
+                                      + (_(", Agent-Task '{0}' gequeued").format(task) if task else ""),
+                                      type="positive")
                                     # P1-13: auf der Seite bleiben. `navigate_to("employer",
                                     # "kandidaten")` schickte den HR nach jedem Klick weg;
                                     # reload rendert dieselbe Seite mit dem neuen Status neu.
@@ -899,10 +904,10 @@ def _page_kandidaten(s: dict) -> None:
                     {
                         "id": c["id"],
                         "name": c["name"],
-                        "bewerber": f"📩 Bewerber ({status_label(c['bewerber'])})" if c["bewerber"] else "—",
+                        "bewerber": _('📩 Bewerber ({0})').format(status_label(c['bewerber'])) if c["bewerber"] else "—",
                         "skills": c["skills"],
                         "exp": c["exp"],
-                        "status": c["status"],
+                        "status": status_label(c["status"]) if c["status"] else "—",
                     }
                     for c in candidates
                 ]
@@ -1035,8 +1040,8 @@ def _notify_statuswechsel(conn, app_id: int, status: str) -> None:
             return
         cand_id, firma, titel = row
         db.insert_notification(
-            cand_id, "candidate", "Bewerbungsstatus",
-            f"Deine Bewerbung bei {firma} für {titel}: {status}",
+            cand_id, "candidate", _("Bewerbungsstatus"),
+            _('Deine Bewerbung bei {0} für {1}: {2}').format(firma, titel, status),
         )
     except Exception as ex:  # noqa: BLE001 — Helfer darf den Handler nie brechen
         print(f"[notify_statuswechsel] Fehler application={app_id} status={status}: {ex}")
@@ -1061,17 +1066,17 @@ def _invite_termin_error(datum, uhrzeit, jetzt=None):
     (Runner scripts/agent-runner.py:539-549 verwirft nur ein Datum < heute)."""
     jetzt = jetzt or _dt.now()
     if not datum:
-        return "Bitte ein Einladungsdatum waehlen."
+        return _("Bitte ein Einladungsdatum waehlen.")
     try:
         d = _dt.strptime(str(datum)[:10], "%Y-%m-%d").date()
     except ValueError:
-        return "Einladungsdatum ist ungueltig (erwartet JJJJ-MM-TT)."
+        return _("Einladungsdatum ist ungueltig (erwartet JJJJ-MM-TT).")
     try:
         t = _dt.strptime(str(uhrzeit or "").strip(), "%H:%M").time()
     except ValueError:
-        return "Uhrzeit ist ungueltig (erwartet HH:MM)."
+        return _("Uhrzeit ist ungueltig (erwartet HH:MM).")
     if _dt.combine(d, t) < jetzt.replace(second=0, microsecond=0):
-        return "Der Einladungstermin liegt in der Vergangenheit."
+        return _("Der Einladungstermin liegt in der Vergangenheit.")
     return None
 
 
@@ -1231,7 +1236,7 @@ def _page_match(s: dict) -> None:
 
     def _open_invite(app_id: int, name: str, titel: str) -> None:
         _invite_ctx["app_id"] = app_id
-        invite_name_label.set_text(f"Moechtest du {name} zur Stelle \u201e{titel}\u201c einladen?")
+        invite_name_label.set_text(_('Moechtest du {0} zur Stelle \u201e{1}\u201c einladen?').format(name, titel))
         invite_datum.set_value(str((_dt.now() + _timedelta(days=1)).date()))
         invite_zeit.set_value("10:00")
         invite_error.set_visibility(False)
@@ -1280,7 +1285,7 @@ def _page_match(s: dict) -> None:
 
     def _open_reject(app_id: int, name: str, titel: str) -> None:
         _reject_ctx["app_id"] = app_id
-        reject_name_label.set_text(f"{name} fuer die Stelle \u201e{titel}\u201c ablehnen? (Andere Bewerbungen dieses Kandidaten bleiben unveraendert.)")
+        reject_name_label.set_text(_('{0} fuer die Stelle \u201e{1}\u201c ablehnen? (Andere Bewerbungen dieses Kandidaten bleiben unveraendert.)').format(name, titel))
         reject_reason.set_value("")
         reject_dialog.open()
 
@@ -1320,7 +1325,7 @@ def _page_match(s: dict) -> None:
 
     def _open_hire(app_id: int, name: str, titel: str) -> None:
         _hire_ctx["app_id"] = app_id
-        hire_name_label.set_text(f"{name} fuer die Stelle \u201e{titel}\u201c einstellen?")
+        hire_name_label.set_text(_('{0} fuer die Stelle \u201e{1}\u201c einstellen?').format(name, titel))
         hire_dialog.open()
 
     def do_seen(app_id: int) -> None:
@@ -1447,7 +1452,7 @@ def _page_match(s: dict) -> None:
                     # unten) und zeigen nur die laut ALLOWED_TRANSITIONS legalen Uebergaenge.
                     # Auch bei genau einer aktiven Bewerbung keine zweite Platzierung: ein
                     # einheitlicher Ort, keine doppelten Buttons/Labels.
-                    cand_name = name or "Unbekannt"
+                    cand_name = name or _('Unbekannt')
                     if len(jobs) > 3:
                         ui.label(_('+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote.').format(len(jobs) - 3)).classes("text-xs text-gray-500")
 
@@ -1506,7 +1511,7 @@ def _page_match(s: dict) -> None:
                                     ui.label(_('Match-Score')).classes("font-medium text-sm")
                                     with ui.row().classes("items-center gap-2"):
                                         score_bar(total, show_label=False)
-                                        ui.label(_('{0}/100 ({1})').format(total, kategorie)).classes("font-bold text-sm")
+                                        ui.label(_('{0}/100 ({1})').format(total, _(kategorie))).classes("font-bold text-sm")
 
                             # C3 (22.09.2026): Gehalts-Kompatibilität — bisher dead code
                             # (logic.py:248 ohne Aufruf). Quelle: app.py:3848/3867
@@ -1528,7 +1533,7 @@ def _page_match(s: dict) -> None:
                                 with ui.column().classes("w-full"):
                                     for kat_name, kat_score, kat_key in kategorien:
                                         with ui.row().classes("items-center gap-2 w-full"):
-                                            ui.label(kat_name).classes("w-20 text-xs text-gray-500")
+                                            ui.label(_(kat_name)).classes("w-20 text-xs text-gray-500")
                                             # P0-3 (e): Prozent = Punkte / KATEGORIE_MAX[key] (logic.py), Beschriftung x/max
                                             pct = _bar_pct(kat_key, kat_score)
                                             with ui.element("div").classes("flex-1 bg-gray-100 rounded-full h-2"):
@@ -1576,7 +1581,7 @@ def _page_match(s: dict) -> None:
                                     _ics = _art.get("ics_path_hr") or _art.get("ics_path")  # HR-ICS = Director-Link (seit 28.09.2026)
                                     _termin = _art.get("termin", "")
                                     with ui.card().classes("bg-blue-50 border border-blue-200 p-3 mt-2 w-full"):
-                                        ui.label("📹 Einladung (Kandidat wurde benachrichtigt)" + (f" – {_termin}" if _termin else "")).classes("text-sm font-medium text-blue-800")
+                                        ui.label(_('📹 Einladung (Kandidat wurde benachrichtigt){0}').format(f" – {_termin}" if _termin else "")).classes("text-sm font-medium text-blue-800")
                                         if _jitsi:
                                             ui.link(_('🔗 {0}').format(_jitsi), _jitsi, new_tab=True).classes("text-xs text-blue-700 underline hover:text-blue-900")
                                             ui.label(_('⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)')).classes("text-xs text-amber-700")
@@ -1594,7 +1599,7 @@ def _page_match(s: dict) -> None:
                 with ui.expansion(_('Sprachtests'), icon="translate").classes("w-full mt-1"):
                     for _lt_id, _sprache, _niveau, _punkte, _cefr, _datum in _lang_tests:
                         ui.label(
-                            _('{0} {1} {2} — {3:.0f}% ({4}){5}').format('•' if _lt_id or _sprache else '', _sprache, _niveau, _punkte * 100, _cefr, f' · {_datum}' if _datum else '')
+                            _('{0} {1} {2} — {3:.0f}% ({4}){5}').format('•' if _lt_id or _sprache else '', _(_sprache), _niveau, _punkte * 100, _cefr, f' · {_datum}' if _datum else '')
                         ).classes("text-sm")
 
             # ── P3 ((c)3 option (i), GO §H-16, 26.09.2026): Passiv-Block NACH den Bewerbern ──
@@ -1660,8 +1665,8 @@ def _page_match(s: dict) -> None:
                 for _total, _pname, _ptitel, _pkat, _pmatches, _pid in _passive:
                     with ui.card().classes("w-full mb-3 border-dashed"):
                         with ui.row().classes("items-center justify-between w-full"):
-                            ui.label(_('{0} → {1}').format(_pname or 'Unbekannt', _ptitel)).classes("text-sm font-medium")
-                            ui.label(_('{0}/100 ({1})').format(_total, _pkat)).classes("text-sm font-bold")
+                            ui.label(_('{0} → {1}').format(_pname or _('Unbekannt'), _ptitel)).classes("text-sm font-medium")
+                            ui.label(_('{0}/100 ({1})').format(_total, _(_pkat))).classes("text-sm font-bold")
                         ui.label(_('Must-Have-Treffer: {0}').format(', '.join(_pmatches) if _pmatches else '–')).classes(
                             "text-xs text-gray-600")
 
@@ -1670,7 +1675,7 @@ def _page_match(s: dict) -> None:
                 _fname = next((c[1] for c in candidates if c[0] == _focus["cid"]), None) \
                     or next((_t[1] for _t in _passive), None)
                 with _hint_row:
-                    ui.label(_('🔎 Gefiltert auf {0}').format(_fname or 'Kandidat #' + str(_focus['cid']))).classes(
+                    ui.label(_('🔎 Gefiltert auf {0}').format(_fname or _('Kandidat #{0}').format(_focus['cid']))).classes(
                         C.BODY + " font-medium")
                     ui.button(_('Alle anzeigen'), icon="filter_alt_off", on_click=_clear_focus).props(
                         "flat no-caps color=primary")
@@ -1792,10 +1797,10 @@ def _compliance_berichte(employer_id, ordner=None) -> list:
             berichte.append({
                 "datei": pfad.name,
                 "kandidat_id": cand_id,
-                "kandidat_name": ((cand[0] if cand else None) or f"Kandidat #{cand_id}"),
+                "kandidat_name": ((cand[0] if cand else None) or _('Kandidat #{0}').format(cand_id)),
                 "job_id": job_id,
                 "job_titel": ((job[0] if job else None)
-                              or (f"Stelle #{job_id}" if job_id is not None
+                              or (_('Stelle #{0}').format(job_id) if job_id is not None
                                   else _("Stelle unbekannt"))),
                 "datum": datum,
                 "status": status,
@@ -1899,7 +1904,7 @@ def _page_compliance(s: dict) -> None:
                 ui.label(_('(Stelle #{0} · Kandidat #{1})').format(b['job_id'], b['kandidat_id'])).classes(
                     C.MUTED)
             with ui.expansion(_('Begründung'), value=False).classes("w-full"):
-                ui.label(b["begruendung"] or "(keine Begründung im Bericht)").classes(C.BODY)
+                ui.label(b["begruendung"] or _("(keine Begründung im Bericht)")).classes(C.BODY)
 
     conn = db.get_conn()
     try:
@@ -1946,16 +1951,19 @@ def _page_agent_details(s: dict) -> None:
     ).classes(C.MUTED)
 
     # 9 Ergebnis-Tasks (Spec: ergebnisse/agent-details-doku.md; Muster: app.py:1976-1982)
+    # i18n P9.4 (06.10.2026): Anzeige-Dict — Werte sind deutsche msgids, übersetzt
+    # erst beim Konsum (Renderzeit); Keys/Reihenfolge/Datenfluss unverändert, die
+    # Erkennung läuft über `_glob`/`_badge_icon` (Keyword-Matching bleibt roh).
     _agent_tasks = [
-        ("📋 Extract Profile",    "extract_profile-*"),
-        ("🎯 Match Candidate",    "match_candidate-*"),
-        ("⚖️ Check Compliance",   "check_compliance-*"),
-        ("🏢 Assess Culture-Fit", "assess_culture_fit-*"),
-        ("📄 Verify Documents",   "verify_documents-*"),
-        ("🛂 Check Visa",         "check_visa-*"),
-        ("🔒 Check GDPR",         "check_gdpr-*"),
-        ("💡 Explain Match",      "explain_match-*"),
-        ("📧 Notify User",        "notify_user-*"),
+        ("📋 Profil extrahieren",       "extract_profile-*"),
+        ("🎯 Kandidat matchen",         "match_candidate-*"),
+        ("⚖️ Compliance pruefen",       "check_compliance-*"),
+        ("🏢 Culture Fit pruefen",      "assess_culture_fit-*"),
+        ("📄 Dokumente verifizieren",   "verify_documents-*"),
+        ("🛂 Visum pruefen",            "check_visa-*"),
+        ("🔒 DSGVO pruefen",            "check_gdpr-*"),
+        ("💡 Match erklaeren",          "explain_match-*"),
+        ("📧 Kandidat benachrichtigen", "notify_user-*"),
     ]
 
     def _badge_icon(content_upper: str) -> str:
@@ -1981,7 +1989,7 @@ def _page_agent_details(s: dict) -> None:
         return
 
     cand_select = ui.select(
-        options={c[0]: (c[1] or f"Kandidat #{c[0]}") for c in cands},
+        options={c[0]: (c[1] or _('Kandidat #{0}').format(c[0])) for c in cands},
         value=cands[0][0],
         label=_('Kandidat'),
     ).classes("w-64 mb-3")
@@ -2017,7 +2025,7 @@ def _page_agent_details(s: dict) -> None:
                 for _label, _icon in badges:
                     with ui.card().classes("py-2 text-center"):
                         ui.label(_icon).classes("text-2xl")
-                        ui.label(_label.split(" ", 1)[1]).classes(C.SMALL)
+                        ui.label(_(_label.split(" ", 1)[1])).classes(C.SMALL)
 
             # Detaillierte Berichte (Expander, Muster: app.py:2010-2026)
             ui.label(_('Detaillierte Berichte')).classes(C.CARD_TITLE + " mb-2")
@@ -2025,10 +2033,10 @@ def _page_agent_details(s: dict) -> None:
                 hit = found.get((_label, _glob))
                 if hit:
                     _latest, _content, _icon = hit
-                    with ui.expansion(text=_('{0} {1} ({2})').format(_icon, _label, _latest.name)).classes("w-full mb-1"):
+                    with ui.expansion(text=_('{0} {1} ({2})').format(_icon, _(_label), _latest.name)).classes("w-full mb-1"):
                         ui.markdown(_content)
                 else:
-                    ui.label(_('⚪ {0}: Kein Bericht vorhanden').format(_label)).classes(C.MUTED)
+                    ui.label(_('⚪ {0}: Kein Bericht vorhanden').format(_(_label))).classes(C.MUTED)
 
     cand_select.on_value_change(lambda e: render_results(e.value))
     render_results(cand_select.value)
@@ -2057,7 +2065,7 @@ def _page_agent_details(s: dict) -> None:
         # `components.status_label` (STATUS_LABELS fuehrt done/failed/running/
         # queued/pending bereits). {Wert: Label}; der Wert bleibt der Slug.
         status_filter = ui.select(
-            options={"alle": "Alle",
+            options={"alle": _("Alle"),
                      "pending": status_label("pending"),
                      "running": status_label("running"),
                      "done": status_label("done"),
@@ -2094,7 +2102,7 @@ def _page_agent_details(s: dict) -> None:
                             with ui.card().classes(C.CARD + " py-3"):
                                 with ui.row().classes("items-center gap-2 mb-2"):
                                     agent_badge(task_type, status)
-                                ui.label(TASK_LABELS.get(task_type, task_type)).classes(C.SMALL)
+                                ui.label(_(TASK_LABELS.get(task_type, task_type))).classes(C.SMALL)
                                 if created_at:
                                     ui.label(created_at).classes(C.MUTED)
             except Exception as ex:
@@ -2118,7 +2126,7 @@ def _page_dokumente(s: dict) -> None:
 
     with ui.column().classes("w-full gap-3"):
         typ_filter = ui.select(
-            options=DOC_TYP_OPTIONS,  # echte Upload-Typen (candidate.py _doc_typen)
+            options={v: (_("Alle") if v == "alle" else _(v)) for v in DOC_TYP_OPTIONS},  # echte Upload-Typen (candidate.py _doc_typen); Wert bleibt deutsch
             value="alle",
             label=_('Dokumenttyp'),
             on_change=lambda e: refresh_docs(e.value),
@@ -2180,7 +2188,7 @@ def _page_dokumente(s: dict) -> None:
                     {"name": "aktion", "label": _("Aktion"), "field": "id", "align": "left"},
                 ]
                 rows = [{"id": d["id"], "kandidat": d["kandidat"],
-                         "datei": _doc_basename(d["datei_pfad"]), "typ": d["typ"] or "--",
+                         "datei": _doc_basename(d["datei_pfad"]), "typ": _(d["typ"]) if d["typ"] else "--",
                          "datum": d["datum"] or "--", "status": status_label(d["app_status"])}
                         for d in docs]
                 doc_search = ui.input(placeholder=_('Suchen...')).props('prepend_icon="search"').classes("w-full")
@@ -2496,7 +2504,7 @@ def _page_feedback(s: dict) -> None:
                     return
 
                 return ui.select(
-                    options={c[0]: f"{'📩 ' if c[2] else ''}{c[1] or f'Kandidat #{c[0]}'}" for c in all_cands},
+                    options={c[0]: ("📩 " if c[2] else "") + (c[1] or _('Kandidat #{0}').format(c[0])) for c in all_cands},
                     label=_('Kandidat'),
                     value=all_cands[0][0],
                 ).classes("w-full")
@@ -2517,7 +2525,7 @@ def _page_feedback(s: dict) -> None:
 
         # Formular (Muster: app.py:3923-3936, Employer-Tab-4)
         score_input = ui.number(label=_('Match-Score (0-100)'), value=85, min=0, max=100).classes("w-full")
-        eingeladen_select = ui.select(options=["Ja", "Nein", "Vorgemerkt"], value="Ja", label=_('Eingeladen?')).classes("w-full")
+        eingeladen_select = ui.select(options={v: _(v) for v in ["Ja", "Nein", "Vorgemerkt"]}, value="Ja", label=_('Eingeladen?')).classes("w-full")
         anmerkungen_input = ui.textarea(label=_('Anmerkungen')).classes("w-full")
 
         ui.label(_('Bewertung (1-5):')).classes(C.SMALL + " font-medium mt-2")
@@ -2692,26 +2700,26 @@ def _page_feedback(s: dict) -> None:
                     # gegen die Kandidatenliste aufloesen.
                     "name": _feedback_klarname(f[2], _name_by_id),
                     "score": f[4] or 0,
-                    "kategorie": f[5] or "--",
+                    "kategorie": _(f[5]) if f[5] else "--",
                     "eingeladen": f[6] or "--",
                     "datum": (f[8] or "--")[:10],
                     # M-07 (01.10.2026): Klickziel je Zeile — cid = aufloesbarer
                     # Kandidat (Sprung zur Match-Seite), sonst Detail-Dialog.
                     "cid": _feedback_row_cid(f[1], f[2], _name_by_id, _name_to_id, _token_ids),
                     "details": {
-                        "Kandidat (gespeichert)": _feedback_klarname(f[2], _name_by_id),
-                        "Stelle": f[3] or "--",
-                        "Vorgangs-Nr.": f[1] or "--",
-                        "Datum": f[8] or "--",
-                        "Score / Kategorie": f"{f[4] if f[4] is not None else '--'} / {f[5] or '--'}",
-                        "Eingeladen": f[6] or "--",
-                        "Bewertung fachlich": f[9] if f[9] is not None else "--",
-                        "Bewertung Skills": f[10] if f[10] is not None else "--",
-                        "Bewertung Standort": f[11] if f[11] is not None else "--",
-                        "Bewertung Empfehlung": f[12] if f[12] is not None else "--",
-                        "Anmerkungen": f[7] or "--",
-                        "Hinweis": "Kein Kandidat in der DB zuordenbar (Altbestand) — "
-                                   "statt einer falschen Match-Seite wird der Datensatz gezeigt.",
+                        _("Kandidat (gespeichert)"): _feedback_klarname(f[2], _name_by_id),
+                        _("Stelle"): f[3] or "--",
+                        _("Vorgangs-Nr."): f[1] or "--",
+                        _("Datum"): f[8] or "--",
+                        _("Score / Kategorie"): f"{f[4] if f[4] is not None else '--'} / {_(f[5]) if f[5] else '--'}",
+                        _("Eingeladen"): f[6] or "--",
+                        _("Bewertung fachlich"): f[9] if f[9] is not None else "--",
+                        _("Bewertung Skills"): f[10] if f[10] is not None else "--",
+                        _("Bewertung Standort"): f[11] if f[11] is not None else "--",
+                        _("Bewertung Empfehlung"): f[12] if f[12] is not None else "--",
+                        _("Anmerkungen"): f[7] or "--",
+                        _("Hinweis"): _("Kein Kandidat in der DB zuordenbar (Altbestand) — "
+                                   "statt einer falschen Match-Seite wird der Datensatz gezeigt."),
                     },
                 })
             _fb_table = data_table(columns=columns, rows=rows, pagination=10,
@@ -2790,7 +2798,7 @@ def create() -> None:
         shell(
             role="employer",
             user_id=s.get("employer_id", 0),
-            user_name=s.get("employer_firma", "Profil"),
+            user_name=s.get("employer_firma", _("Profil")),
             menu_items=_menu_items_emp(),
             logout_fn=lambda: logic.logout_employer(s),
             content_fn=render_page,

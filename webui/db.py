@@ -33,6 +33,20 @@ def get_conn(db_path: Path | None = None) -> sqlite3.Connection:
 
 # ─── Agent-Queue (Phase 5) ────────────────────────────────────────────
 
+# Sprach-Transport-Hook (Variante B, P1 07.10.2026, Spec i18n-runner-chain.md §7.1):
+# Die Portal-Schicht registriert hier einen Callable, der die Session-Sprache des
+# Ausloesers liefert (webui/i18n.py: db.set_language_resolver(get_language)).
+# Default None => kein `language` im Payload (Altbestand/Runner/Tests, Fallback de).
+# Dieses Modul bleibt framework-frei (kein nicegui-Import).
+_language_resolver = None
+
+
+def set_language_resolver(fn) -> None:
+    """Registriert den Session-Sprach-Resolver fuer `queue_agent_task`."""
+    global _language_resolver
+    _language_resolver = fn
+
+
 def init_agent_tasks_table() -> None:
     """Legt die agent_tasks-Tabelle an (idempotent). Kopie aus app.py:421-444."""
     conn = sqlite3.connect(str(AGENT_TASKS_DB))
@@ -61,6 +75,18 @@ def queue_agent_task(task_type: str, payload: dict) -> int | None:
     try:
         conn = sqlite3.connect(str(AGENT_TASKS_DB))
         c = conn.cursor()
+        # Sprach-Transport (Variante B, P1 07.10.2026, Spec i18n-runner-chain.md
+        # §7.1): die Session-Sprache des Ausloesers zentral an JEDES Payload
+        # haengen. Payload-Kopie — nie das uebergebene dict mutieren. Fehler oder
+        # session-lose Kontexte (Runner/Tests) -> kein `language` (Fallback 'de').
+        if _language_resolver is not None and "language" not in payload:
+            try:
+                _lang = _language_resolver()
+            except Exception as ex:  # session-lose Kontexte -> Fallback 'de'
+                print(f"[Agent-Queue] language-Resolver fehlgeschlagen: {ex!r}")
+                _lang = None
+            if isinstance(_lang, str) and _lang:
+                payload = {**payload, "language": _lang}
         app_id = payload.get("application_id")
         # R3-2 (30.09.2026): Generation ist Teil der Dedupe-Grenze — dieselbe
         # Bewerbung kann nach Rückzug→„Erneut bewerben" am selben Tag eine
@@ -80,11 +106,32 @@ def queue_agent_task(task_type: str, payload: dict) -> int | None:
                   AND COALESCE(json_extract(payload, '$.gen'), 0) = ?
                   AND created_at >= ?""",
                 (task_type, app_id, gen, f"{heute} 00:00:00"))
+            _dup = c.fetchone() is not None
         else:
-            c.execute("""SELECT id FROM agent_tasks
-                WHERE task_type = ? AND payload = ? AND created_at >= ?""",
-                (task_type, json.dumps(payload, ensure_ascii=False, sort_keys=True), f"{heute} 00:00:00"))
-        if c.fetchone():
+            # Dedupe-Schutz (Variante B, P1 07.10.2026): `language` darf den
+            # Payload-Vergleich NICHT beeinflussen — ein Alt-Task ohne `language`
+            # muss den neuen mit `language` weiterhin als Duplikat erkennen (sonst
+            # Doppel-Insert). Deshalb beide Seiten (Ziel-Payload + gespeicherte
+            # Rows) ohne den Key via json.loads vergleichen. Semantik sonst
+            # unveraendert (nur heutige Rows, Rückgabe None bei Duplikat).
+            _ziel = json.dumps({k: v for k, v in payload.items() if k != "language"},
+                               ensure_ascii=False, sort_keys=True)
+            c.execute("""SELECT payload FROM agent_tasks
+                WHERE task_type = ? AND created_at >= ?""",
+                (task_type, f"{heute} 00:00:00"))
+            _dup = False
+            for (_gespeichert,) in c.fetchall():
+                try:
+                    _payload = json.loads(_gespeichert) if _gespeichert else {}
+                except (TypeError, ValueError):
+                    _payload = {}
+                if not isinstance(_payload, dict):
+                    continue
+                _payload.pop("language", None)
+                if json.dumps(_payload, ensure_ascii=False, sort_keys=True) == _ziel:
+                    _dup = True
+                    break
+        if _dup:
             conn.close()
             return None  # bereits gequeued (heute)
         c.execute("INSERT INTO agent_tasks (task_type, payload) VALUES (?, ?)",

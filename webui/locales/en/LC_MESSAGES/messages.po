@@ -1642,3 +1642,1341 @@ msgstr "{0}:"
 
 msgid "Dokumente (PDF/TXT/Video, mehrere moeglich):"
 msgstr "Documents (PDF/TXT/video, multiple allowed):"
+
+msgid "Alle mit Lebenslauf"
+msgstr "All with CV"
+
+msgid "Als angesehen markieren"
+msgstr "Mark as viewed"
+
+msgid "Kandidat #{0}"
+msgstr "Candidate #{0}"
+
+msgid "Match {0} · Compliance {1} · Culture-Fit {2}"
+msgstr "Match {0} · Compliance {1} · Culture Fit {2}"
+
+msgid "(noch nicht gestartet)"
+msgstr "(not started yet)"
+
+msgid "Status geaendert: {0}"
+msgstr "Status changed: {0}"
+
+msgid ", Agent-Task '{0}' gequeued"
+msgstr ", agent task '{0}' queued"
+
+msgid "📩 Bewerber ({0})"
+msgstr "📩 Applicant ({0})"
+
+msgid "Bewerbungsstatus"
+msgstr "Application status"
+
+msgid "Deine Bewerbung bei {0} für {1}: {2}"
+msgstr "Your application at {0} for {1}: {2}"
+
+msgid "Bitte ein Einladungsdatum waehlen."
+msgstr "Please select an invitation date."
+
+msgid "Einladungsdatum ist ungueltig (erwartet JJJJ-MM-TT)."
+msgstr "Invitation date is invalid (expected YYYY-MM-DD)."
+
+msgid "Uhrzeit ist ungueltig (erwartet HH:MM)."
+msgstr "Time is invalid (expected HH:MM)."
+
+msgid "Der Einladungstermin liegt in der Vergangenheit."
+msgstr "The invitation date is in the past."
+
+msgid "Moechtest du {0} zur Stelle „{1}“ einladen?"
+msgstr "Would you like to invite {0} to the position “{1}”?"
+
+msgid "{0} fuer die Stelle „{1}“ ablehnen? (Andere Bewerbungen dieses Kandidaten bleiben unveraendert.)"
+msgstr "Reject {0} for the position “{1}”? (Other applications by this candidate remain unchanged.)"
+
+msgid "{0} fuer die Stelle „{1}“ einstellen?"
+msgstr "Hire {0} for the position “{1}”?"
+
+msgid "📹 Einladung (Kandidat wurde benachrichtigt){0}"
+msgstr "📹 Invitation (candidate has been notified){0}"
+
+msgid "Stelle #{0}"
+msgstr "Position #{0}"
+
+msgid "(keine Begründung im Bericht)"
+msgstr "(no justification in the report)"
+
+msgid "Kandidat (gespeichert)"
+msgstr "Candidate (saved)"
+
+msgid "Vorgangs-Nr."
+msgstr "Case no."
+
+msgid "Score / Kategorie"
+msgstr "Score / category"
+
+msgid "Bewertung fachlich"
+msgstr "Rating: technical"
+
+msgid "Bewertung Skills"
+msgstr "Rating: skills"
+
+msgid "Bewertung Standort"
+msgstr "Rating: location"
+
+msgid "Bewertung Empfehlung"
+msgstr "Rating: recommendation"
+
+msgid "Hinweis"
+msgstr "Note"
+
+msgid "Kein Kandidat in der DB zuordenbar (Altbestand) — statt einer falschen Match-Seite wird der Datensatz gezeigt."
+msgstr "No candidate can be matched in the database (legacy record) — the record is shown instead of a wrong match page."
+
+msgid "Profil extrahieren"
+msgstr "Extract profile"
+
+msgid "Kandidat matchen"
+msgstr "Match candidate"
+
+msgid "Compliance pruefen"
+msgstr "Check compliance"
+
+msgid "Culture Fit pruefen"
+msgstr "Check culture fit"
+
+msgid "DSGVO pruefen"
+msgstr "Check GDPR"
+
+msgid "Visum pruefen"
+msgstr "Check visa"
+
+msgid "Dokumente verifizieren"
+msgstr "Verify documents"
+
+msgid "Kandidat benachrichtigen"
+msgstr "Notify candidate"
+
+msgid "HR benachrichtigen"
+msgstr "Notify HR"
+
+msgid "Einladung erstellen"
+msgstr "Create invitation"
+
+msgid "Report exportieren"
+msgstr "Export report"
+
+msgid "Anzahl: {0} Kandidaten"
+msgstr "Count: {0} candidates"
+
+msgid "Feedback gespeichert"
+msgstr "Feedback saved"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Kandidaten-Liste"
+msgstr "Candidate list"
+
+msgid "Onboarding-Checkliste gespeichert"
+msgstr "Onboarding checklist saved"
+
+msgid "Pre-Screen gespeichert"
+msgstr "Pre-screen saved"
+
+msgid "ℹ️ Korrektur (heute bereits vorhanden) – keine neue Gewichtungsanpassung."
+msgstr "ℹ️ Correction (already exists today) – no new weighting adjustment."
+
+msgid "Technisch"
+msgstr "Technical"
+
+msgid "Lücke"
+msgstr "Gap"
+
+msgid "Motivation"
+msgstr "Motivation"
+
+msgid "Praktisch"
+msgstr "Practical"
+
+msgid "Kultur"
+msgstr "Culture"
+
+msgid "Kandidaten-Portal"
+msgstr "Candidate portal"
+
+msgid "Arbeitgeber-Portal"
+msgstr "Employer portal"
+
+msgid "Admin-Portal"
+msgstr "Admin portal"
+
+msgid "Bewerbung zurückziehen?"
+msgstr "Withdraw application?"
+
+msgid "Der Status wird auf „Zurückgezogen\" gesetzt. Diese Aktion kann nicht rückgängig gemacht werden."
+msgstr "The status will be set to \"Withdrawn\". This action cannot be undone."
+
+msgid "Diese Datei wird vom Server entfernt. Dies kann nicht rückgängig gemacht werden."
+msgstr "This file will be removed from the server. This cannot be undone."
+
+msgid "Dokument löschen?"
+msgstr "Delete document?"
+
+msgid "Ein Bewerber"
+msgstr "An applicant"
+
+msgid "Neue Bewerbung"
+msgstr "New application"
+
+msgid "{0} (nur .pdf/.txt/.webm/.mp4)"
+msgstr "{0} (only .pdf/.txt/.webm/.mp4)"
+
+msgid "{0} hat sich beworben: {1}"
+msgstr "{0} has applied: {1}"
+
+msgid "❌ {0} Dokument(e) konnten NICHT gespeichert werden: {1}{2} — bitte erneut versuchen oder Administrator kontaktieren."
+msgstr "❌ {0} document(s) could NOT be saved: {1}{2} — please try again or contact the administrator."
+
+msgid "Kern"
+msgstr "Core"
+
+msgid "Bildung"
+msgstr "Education"
+
+msgid "Soft"
+msgstr "Soft"
+
+msgid "Profil"
+msgstr "Profile"
+
+msgid "Alle"
+msgstr "All"
+
+msgid "{0} Jahre"
+msgstr "{0} years"
+
+msgid "Eingegangen"
+msgstr "Received"
+
+msgid "Angesehen"
+msgstr "Viewed"
+
+msgid "Eingestellt"
+msgstr "Hired"
+
+msgid "Abgelehnt"
+msgstr "Rejected"
+
+msgid "Zurückgezogen"
+msgstr "Withdrawn"
+
+msgid "Lebenslauf hochgeladen"
+msgstr "CV uploaded"
+
+msgid "Zugeordnet"
+msgstr "Assigned"
+
+msgid "Aktiv"
+msgstr "Active"
+
+msgid "Erledigt"
+msgstr "Done"
+
+msgid "Fehlgeschlagen"
+msgstr "Failed"
+
+msgid "Läuft"
+msgstr "Running"
+
+msgid "In Warteschlange"
+msgstr "Queued"
+
+msgid "Offen"
+msgstr "Open"
+
+msgid "Pausiert"
+msgstr "Paused"
+
+msgid "Besetzt"
+msgstr "Filled"
+
+msgid "Abgelaufen"
+msgstr "Expired"
+
+msgid "Profil vollständig"
+msgstr "Profile complete"
+
+msgid "Profil geprüft"
+msgstr "Profile verified"
+
+msgid "Match berechnet"
+msgstr "Match calculated"
+
+msgid "Hervorragend"
+msgstr "Excellent"
+
+msgid "Bedingt"
+msgstr "Conditional"
+
+msgid "Schwach"
+msgstr "Weak"
+
+msgid "Gut"
+msgstr "Good"
+
+msgid "❓ unbekannt"
+msgstr "❓ unknown"
+
+msgid "✅ offen"
+msgstr "✅ open"
+
+msgid "✅ passt (offen)"
+msgstr "✅ matches (open)"
+
+msgid "✅ passt"
+msgstr "✅ matches"
+
+msgid "⚠️ außerhalb Rahmen"
+msgstr "⚠️ outside range"
+
+msgid "IT"
+msgstr "IT"
+
+msgid "Consulting"
+msgstr "Consulting"
+
+msgid "Industrie"
+msgstr "Industry"
+
+msgid "Handel"
+msgstr "Retail"
+
+msgid "Gesundheit"
+msgstr "Healthcare"
+
+msgid "Finanzen"
+msgstr "Finance"
+
+msgid "Sonstiges"
+msgstr "Other"
+
+msgid "1-10"
+msgstr "1-10"
+
+msgid "11-50"
+msgstr "11-50"
+
+msgid "51-200"
+msgstr "51-200"
+
+msgid "201-1000"
+msgstr "201-1000"
+
+msgid "1000+"
+msgstr "1000+"
+
+msgid "Vollzeit"
+msgstr "Full-time"
+
+msgid "Teilzeit"
+msgstr "Part-time"
+
+msgid "Freelance"
+msgstr "Freelance"
+
+msgid "Hybrid"
+msgstr "Hybrid"
+
+msgid "Remote"
+msgstr "Remote"
+
+msgid "Keine Anforderung"
+msgstr "No requirement"
+
+msgid "A1"
+msgstr "A1"
+
+msgid "A2"
+msgstr "A2"
+
+msgid "B1"
+msgstr "B1"
+
+msgid "B2"
+msgstr "B2"
+
+msgid "C1"
+msgstr "C1"
+
+msgid "C2"
+msgstr "C2"
+
+msgid "Muttersprache"
+msgstr "Native"
+
+msgid "Egal"
+msgstr "Any"
+
+msgid "Bachelor"
+msgstr "Bachelor"
+
+msgid "Master"
+msgstr "Master"
+
+msgid "PhD"
+msgstr "PhD"
+
+msgid "Zeugnis"
+msgstr "Reference"
+
+msgid "Zertifikat"
+msgstr "Certificate"
+
+msgid "Sprachzeugnis"
+msgstr "Language certificate"
+
+msgid "Pass"
+msgstr "Passport"
+
+msgid "Visum/Aufenthaltstitel"
+msgstr "Visa/Residence permit"
+
+msgid "Ja"
+msgstr "Yes"
+
+msgid "Nein"
+msgstr "No"
+
+msgid "Vorgemerkt"
+msgstr "Shortlisted"
+
+msgid "EU-Bürger"
+msgstr "EU citizen"
+
+msgid "Arbeitsvisum"
+msgstr "Work visa"
+
+msgid "Kein Visum"
+msgstr "No visa"
+
+msgid "Sofort"
+msgstr "Immediate"
+
+msgid "1 Monat"
+msgstr "1 month"
+
+msgid "3 Monate"
+msgstr "3 months"
+
+msgid "Kündigungslaufzeit"
+msgstr "Notice period"
+
+msgid "Diplom"
+msgstr "Diploma"
+
+msgid "# Feedback: {0}"
+msgstr "# Feedback: {0}"
+
+msgid "# Onboarding-Checkliste: {0}"
+msgstr "# Onboarding checklist: {0}"
+
+msgid "# Pre-Screening: {0}"
+msgstr "# Pre-Screening: {0}"
+
+msgid "# Selbstpräsentation: Kandidat #{0}"
+msgstr "# Self-presentation: Candidate #{0}"
+
+msgid "## 1. Willkommens-E-Mail"
+msgstr "## 1. Welcome email"
+
+msgid "## 2. IT-Ausstattung"
+msgstr "## 2. IT equipment"
+
+msgid "## 3. Systemzugänge"
+msgstr "## 3. System access"
+
+msgid "## 4. Erstgespräche"
+msgstr "## 4. Initial meetings"
+
+msgid "## 5. Einarbeitungsplan"
+msgstr "## 5. Onboarding plan"
+
+msgid "## 6. Arbeitsvertrag"
+msgstr "## 6. Employment contract"
+
+msgid "## Bewertung"
+msgstr "## Evaluation"
+
+msgid "## Gewichtungsanpassung"
+msgstr "## Weight adjustment"
+
+msgid "## Ihr Meeting-Raum"
+msgstr "## Your meeting room"
+
+msgid "## Ihre Leitfragen"
+msgstr "## Your guiding questions"
+
+msgid "## 📊 Zusammenfassung"
+msgstr "## 📊 Summary"
+
+msgid "## 📋 Screening-Fragen"
+msgstr "## 📋 Screening questions"
+
+msgid "## 📹 Meeting-Details"
+msgstr "## 📹 Meeting details"
+
+msgid "### Letzte Änderungen"
+msgstr "### Recent changes"
+
+msgid "**Anmerkungen:** {0}"
+msgstr "**Notes:** {0}"
+
+msgid "**Betreff:** Willkommen bei TechVision GmbH!"
+msgstr "**Subject:** Welcome to TechVision GmbH!"
+
+msgid "**Datum:** {0}"
+msgstr "**Date:** {0}"
+
+msgid "**Eingeladen:** {0}"
+msgstr "**Invited:** {0}"
+
+msgid "**Empfänger:** {0}"
+msgstr "**Recipient:** {0}"
+
+msgid "**Erstellt:** {0}"
+msgstr "**Created:** {0}"
+
+msgid "**Match-ID:** `{0}`"
+msgstr "**Match ID:** `{0}`"
+
+msgid "**Match-Score:** {0}/100"
+msgstr "**Match score:** {0}/100"
+
+msgid "**Modus:** Selbstpräsentation (CANDIDATE-Session)"
+msgstr "**Mode:** Self-presentation (CANDIDATE session)"
+
+msgid "**Score:** {0}/100 ({1})"
+msgstr "**Score:** {0}/100 ({1})"
+
+msgid "**Startdatum:** {0}"
+msgstr "**Start date:** {0}"
+
+msgid "**Stelle:** {0}"
+msgstr "**Position:** {0}"
+
+msgid "*Erstellt am {0} vom KM-HR-Agenten.*"
+msgstr "*Created on {0} by the KM-HR agent.*"
+
+msgid "- **Datum:** {0}"
+msgstr "- **Date:** {0}"
+
+msgid "- **Dauer:** 45 Minuten"
+msgstr "- **Duration:** 45 minutes"
+
+msgid "- **Empfehlung:** 3–5 Minuten, Start mit Kurzvorstellung, dann die Fragen unten beantworten."
+msgstr "- **Recommendation:** 3–5 minutes, start with a short introduction, then answer the questions below."
+
+msgid "- **Fragen gesamt:** {0}"
+msgstr "- **Total questions:** {0}"
+
+msgid "- **Link:** [{0}]({1})"
+msgstr "- **Link:** [{0}]({1})"
+
+msgid "- **Lücken-Fragen:** {0}"
+msgstr "- **Gap questions:** {0}"
+
+msgid "- **Motivations-Fragen:** {0}"
+msgstr "- **Motivation questions:** {0}"
+
+msgid "- **Sichtbarkeit:** HR sieht den Link im Recruiting-Modus ohne Status-Gate (zur Bewertung vor der Übernahme)."
+msgstr "- **Visibility:** HR sees the link in recruiting mode without a status gate (for evaluation before hiring)."
+
+msgid "- **Sprach-Check:** {0}"
+msgstr "- **Language check:** {0}"
+
+msgid "- **Technische Fragen:** {0}"
+msgstr "- **Technical questions:** {0}"
+
+msgid "- **Uhrzeit:** 10:00–10:45 Uhr"
+msgstr "- **Time:** 10:00–10:45"
+
+msgid "- Noch kein Raum generiert (Tab 📹 Pre-Screen)."
+msgstr "- No room generated yet (📹 Pre-Screen tab)."
+
+msgid "Beschreiben Sie Ihren Führungsstil."
+msgstr "Describe your leadership style."
+
+msgid "Beschreiben Sie ein konkretes Projekt mit {0}. Welche Ergebnisse wurden erzielt?"
+msgstr "Describe a concrete project using {0}. What results were achieved?"
+
+msgid "Beschreiben Sie eine AWS-Migration, die Sie geleitet haben."
+msgstr "Describe an AWS migration you led."
+
+msgid "Dein Ansprechpartner: {0}"
+msgstr "Your contact person: {0}"
+
+msgid "Erfahrung (Jahre)"
+msgstr "Experience (years)"
+
+msgid "Geben Sie ein Beispiel, das Ihre Stärke in '{0}' zeigt."
+msgstr "Give an example that demonstrates your strength in '{0}'."
+
+msgid "Haben Sie Erfahrung mit Infrastructure-as-Code (z.B. Terraform)?"
+msgstr "Do you have experience with Infrastructure-as-Code (e.g. Terraform)?"
+
+msgid "Ihre Gehaltsvorstellung?"
+msgstr "Your salary expectation?"
+
+msgid "Mit freundlichen Grüßen,\nHR Team"
+msgstr "Kind regards,\nHR Team"
+
+msgid "Sehr geehrte(r) {0},"
+msgstr "Dear {0},"
+
+msgid "Wann könnten Sie starten?"
+msgstr "When could you start?"
+
+msgid "Wann könnten Sie starten? Wie ist Ihre Gehaltsvorstellung?"
+msgstr "When could you start? What is your salary expectation?"
+
+msgid "Was ist Ihr bevorzugter Arbeitsstil (Remote/Hybrid/Onsite)?"
+msgstr "What is your preferred working style (remote/hybrid/on-site)?"
+
+msgid "Was reizt Sie an dieser Position?"
+msgstr "What appeals to you about this position?"
+
+msgid "Welche Cloud-Plattformen haben Sie eingesetzt?"
+msgstr "Which cloud platforms have you used?"
+
+msgid "Welche Rolle suchen Sie und warum?"
+msgstr "Which role are you looking for and why?"
+
+msgid "Wie gehen Sie vor bei einem Kubernetes-Cluster-Ausfall?"
+msgstr "How do you proceed during a Kubernetes cluster outage?"
+
+msgid "Wie implementieren Sie CI/CD-Pipelines?"
+msgstr "How do you implement CI/CD pipelines?"
+
+msgid "Wie ist Ihr Deutsch-Level (B1/B2/C1)?"
+msgstr "What is your German level (B1/B2/C1)?"
+
+msgid "Wo sehen Sie sich in 3–5 Jahren?"
+msgstr "Where do you see yourself in 3–5 years?"
+
+msgid "als **{0}** in unserem Team begrüßen zu dürfen."
+msgstr "to welcome you as **{0}** to our team."
+
+msgid "wir freuen uns sehr, Sie ab dem **{0}** "
+msgstr "we are very pleased to welcome you from **{0}** "
+
+msgid "| **Durchschnitt** | **{0}/5** |"
+msgstr "| **Average** | **{0}/5** |"
+
+msgid "| 1 | Orientierung | Umgebung kennenlernen, Zugänge testen |"
+msgstr "| 1 | Orientation | Get to know the environment, test access |"
+
+msgid "| 1 | Teamleitung | Willkommen + Rahmenbedingungen | Tag 1 |"
+msgstr "| 1 | Team lead | Welcome + framework conditions | Day 1 |"
+
+msgid "| 2 | Code-Basis | Repository durchlesen, erstes Ticket |"
+msgstr "| 2 | Code base | Read the repository, first ticket |"
+
+msgid "| 2 | HR | Vertragsunterlagen + Benefits | Tag 1 |"
+msgstr "| 2 | HR | Contract documents + benefits | Day 1 |"
+
+msgid "| 3 | IT-Onboarding | Systemzugänge + Geräte | Tag 1 |"
+msgstr "| 3 | IT onboarding | System access + devices | Day 1 |"
+
+msgid "| 3 | Infrastruktur | AWS Cluster, Monitoring, Deployments |"
+msgstr "| 3 | Infrastructure | AWS cluster, monitoring, deployments |"
+
+msgid "| 4 | Scrum Master | Agile Prozesse | Tag 2 |"
+msgstr "| 4 | Scrum Master | Agile processes | Day 2 |"
+
+msgid "| 4 | erstes Feature | Kleine Änderung, PR, Review |"
+msgstr "| 4 | First feature | Small change, PR, review |"
+
+msgid "| 5 | DevOps-Team | Technische Architektur | Tag 3 |"
+msgstr "| 5 | DevOps team | Technical architecture | Day 3 |"
+
+msgid "| 5 | Independence | Eigenständiges Ticket, Daily Standup |"
+msgstr "| 5 | Independence | Independent ticket, daily standup |"
+
+msgid "| 6 | K8s-Audit | Cluster-Review, Optimierungsvorschläge |"
+msgstr "| 6 | K8s audit | Cluster review, optimization suggestions |"
+
+msgid "| 6 | Product Owner | Produktübersicht | Tag 5 |"
+msgstr "| 6 | Product Owner | Product overview | Day 5 |"
+
+msgid "| 7 | CTO | Technische Vision | Woche 2 |"
+msgstr "| 7 | CTO | Technical vision | Week 2 |"
+
+msgid "| 8 | Kollegen | Team-Lunch | Woche 1 |"
+msgstr "| 8 | Colleagues | Team lunch | Week 1 |"
+
+msgid "| AWS Console | ☐ Angelegt | Tag 3 |"
+msgstr "| AWS Console | ☐ Created | Day 3 |"
+
+msgid "| Allowlist (Versicherung) | ☐ Ausgefüllt | Woche 1 |"
+msgstr "| Allowlist (insurance) | ☐ Completed | Week 1 |"
+
+msgid "| Arbeitsvertrag | ☐ Zugestellt | Vor Start |"
+msgstr "| Employment contract | ☐ Sent | Before start |"
+
+msgid "| Betriebsvereinbarung | ☐ Gelesen | Woche 1 |"
+msgstr "| Works agreement | ☐ Read | Week 1 |"
+
+msgid "| Confluence | ☐ Angelegt | Tag 1 |"
+msgstr "| Confluence | ☐ Created | Day 1 |"
+
+msgid "| DSGVO-Einwilligung | ☐ Unterschrieben | Tag 1 |"
+msgstr "| GDPR consent | ☐ Signed | Day 1 |"
+
+msgid "| Datenschutzrichtlinie | ☐ Gelesen | Tag 1 |"
+msgstr "| Privacy policy | ☐ Read | Day 1 |"
+
+msgid "| Dokument | Status | Frist |"
+msgstr "| Document | Status | Deadline |"
+
+msgid "| E-Mail (Google Workspace) | ☐ Angelegt | Tag 1 |"
+msgstr "| Email (Google Workspace) | ☐ Created | Day 1 |"
+
+msgid "| Empfehlung hilfreich | {0}/5 |"
+msgstr "| Recommendation helpful | {0}/5 |"
+
+msgid "| Fachlich korrekt | {0}/5 |"
+msgstr "| Technically correct | {0}/5 |"
+
+msgid "| Gerät | Status | Zuständig |"
+msgstr "| Device | Status | Responsible |"
+
+msgid "| GitHub | ☐ Angelegt | Tag 1 |"
+msgstr "| GitHub | ☐ Created | Day 1 |"
+
+msgid "| Headset | ☐ Bestellt | IT-Abteilung |"
+msgstr "| Headset | ☐ Ordered | IT department |"
+
+msgid "| IT-Sicherheitsrichtlinie | ☐ Gelesen + unterschrieben | Tag 1 |"
+msgstr "| IT security policy | ☐ Read + signed | Day 1 |"
+
+msgid "| Jira | ☐ Angelegt | Tag 1 |"
+msgstr "| Jira | ☐ Created | Day 1 |"
+
+msgid "| Kategorie | Alt | Neu | Grund |"
+msgstr "| Category | Old | New | Reason |"
+
+msgid "| Kriterium | Punkte |"
+msgstr "| Criterion | Points |"
+
+msgid "| Kubernetes Cluster | ☐ Angelegt | Tag 5 |"
+msgstr "| Kubernetes cluster | ☐ Created | Day 5 |"
+
+msgid "| Laptop-Tasche | ☐ Bestellt | IT-Abteilung |"
+msgstr "| Laptop bag | ☐ Ordered | IT department |"
+
+msgid "| Linux-Workstation | ☐ Bestellt | IT-Abteilung |"
+msgstr "| Linux workstation | ☐ Ordered | IT department |"
+
+msgid "| MacBook Pro / ThinkPad | ☐ Bestellt | IT-Abteilung |"
+msgstr "| MacBook Pro / ThinkPad | ☐ Ordered | IT department |"
+
+msgid "| Monitor (27 Zoll) | ☐ Bestellt | IT-Abteilung |"
+msgstr "| Monitor (27 inch) | ☐ Ordered | IT department |"
+
+msgid "| NDA | ☐ Unterschrieben | Tag 1 |"
+msgstr "| NDA | ☐ Signed | Day 1 |"
+
+msgid "| Skills richtig | {0}/5 |"
+msgstr "| Skills correct | {0}/5 |"
+
+msgid "| Slack | ☐ Angelegt | Tag 1 |"
+msgstr "| Slack | ☐ Created | Day 1 |"
+
+msgid "| Standort zutreffend | {0}/5 |"
+msgstr "| Location accurate | {0}/5 |"
+
+msgid "| System | Zugang | Frist |"
+msgstr "| System | Access | Deadline |"
+
+msgid "| Tastatur + Maus | ☐ Bestellt | IT-Abteilung |"
+msgstr "| Keyboard + mouse | ☐ Ordered | IT department |"
+
+msgid "| Termin | Person | Thema | Datum |"
+msgstr "| Appointment | Person | Topic | Date |"
+
+msgid "| VPN-Zugang | ☐ Angelegt | Tag 1 |"
+msgstr "| VPN access | ☐ Created | Day 1 |"
+
+msgid "| Woche | Thema | Ziel |"
+msgstr "| Week | Topic | Goal |"
+
+msgid "| {0} | {1}% | {2}% | {3} |"
+msgstr "| {0} | {1}% | {2}% | {3} |"
+
+msgid "ℹ️ Cap erreicht ({0} = {1}) – keine Anpassung."
+msgstr "ℹ️ Cap reached ({0} = {1}) – no adjustment."
+
+msgid "✅ {0}: {1} → {2} (Rohgewicht, normalisiert auf 100)"
+msgstr "✅ {0}: {1} → {2} (raw weight, normalized to 100)"
+
+msgid "Diese Nachricht wurde im Rahmen des Bewerbungsverfahrens mit Unterstützung eines KI-Systems (EU AI Act Art. 50) erstellt."
+msgstr "This message was created as part of the application process with the support of an AI system (EU AI Act Art. 50)."
+
+msgid "Ihre neue Position"
+msgstr "Your new position"
+
+msgid "⚠️ sekundär belegt"
+msgstr "⚠️ secondary source"
+
+msgid "siehe Katalog"
+msgstr "see catalogue"
+
+msgid "## 1. Gehalts-Check (MiLoG)"
+msgstr "## 1. Salary check (MiLoG)"
+
+msgid "## 2. Formfall-Hinweise (HR wählt vor Versand)"
+msgstr "## 2. Form notes (HR chooses before sending)"
+
+msgid "## 3. NachwG-Pflichtangaben (§ 2 Abs. 1 Nr. 1–15) – HR prüft"
+msgstr "## 3. Mandatory information under NachwG (§ 2 para. 1 nos. 1–15) – HR checks"
+
+msgid "- [ ] 1 Name/Anschrift · 2 Beginn/Dauer · 3 Arbeitsort · 4 Tätigkeit"
+msgstr "- [ ] 1 Name/address · 2 start/duration · 3 place of work · 4 activity"
+
+msgid "- [ ] 5 Einstufung (tarifgebunden) · 6 Vergütung · 7 Arbeitszeit"
+msgstr "- [ ] 5 classification (collective agreement) · 6 remuneration · 7 working hours"
+
+msgid "- [ ] 8 Urlaub · 9 Kündigungsfristen · 10 Tarifvertrag/BV"
+msgstr "- [ ] 8 leave · 9 notice periods · 10 collective agreement/works agreement"
+
+msgid "- [ ] 11 Vorrang-Regeln · 12 E-Kommunikation · 13 Genehmigung"
+msgstr "- [ ] 11 priority rules · 12 electronic communication · 13 approval"
+
+msgid "- [ ] 14 Entsendung/Auslandsrecht · 15 besondere Vertragsbestandteile"
+msgstr "- [ ] 14 posting/foreign law · 15 special contract components"
+
+msgid "## 4. Vertragsskelett"
+msgstr "## 4. Contract skeleton"
+
+msgid "## 5. Quellen (aus knowledge/legal/contract-sources.md, keine Hartkodierung)"
+msgstr "## 5. Sources (from knowledge/legal/contract-sources.md, no hardcoding)"
+
+msgid "*Erstellt von Skill contract-management (Preflight). Der Agent prüft und berichtet – er erstellt keinen Vertrag und signiert nicht (Variante A). Signatur-Optionen A–F: knowledge/legal/contract-management.md §4.*"
+msgstr "*Created by the contract-management skill (preflight). The agent checks and reports – it does not create or sign a contract (variant A). Signature options A–F: knowledge/legal/contract-management.md §4.*"
+
+msgid "Ihre Bewerbung ist eingegangen"
+msgstr "Your application has been received"
+
+msgid "Ihre Visum-Schritte zur Arbeitsaufnahme"
+msgstr "Your visa steps for starting work"
+
+msgid "Willkommen im Team – Ihre Einstellung"
+msgstr "Welcome to the team – your hiring"
+
+msgid "Rückmeldung zu Ihrer Bewerbung"
+msgstr "Feedback on your application"
+
+msgid "Online-Interview im Rahmen des Bewerbungsverfahrens."
+msgstr "Online interview as part of the application process."
+
+msgid "Online-Interview (HR/Director-Ansicht)."
+msgstr "Online interview (HR/director view)."
+
+msgid "Kein Gehaltsrahmen in der Stelle hinterlegt – HR ergänzt Gehalt vor Vertragsübergabe (HINWEIS, kein FEHLER, Parität app.py MiLoG-Logik)"
+msgstr "No salary range stored for the position – HR adds the salary before handing over the contract (NOTE, not an ERROR, parity with app.py MiLoG logic)"
+
+msgid "Unbefristet, unstrittig"
+msgstr "Permanent, uncontested"
+
+msgid "formfrei; Nachweis Textform (§ 2 NachwG, E-Mail genügt)"
+msgstr "no particular form; proof in text form (§ 2 NachwG, email suffices)"
+
+msgid "Befristet"
+msgstr "Fixed-term"
+
+msgid "Schriftform; elektronisch nur mit QES"
+msgstr "written form; electronically only with QES"
+
+msgid "Kündigung / Aufhebungsvertrag"
+msgstr "Termination / cancellation agreement"
+
+msgid "Schriftform, elektronische Form ausgeschlossen"
+msgstr "written form, electronic form excluded"
+
+msgid "QES allgemein"
+msgstr "QES in general"
+
+msgid "qualifizierte elektronische Signatur = handschriftliche Wirkung"
+msgstr "qualified electronic signature = effect of a handwritten signature"
+
+msgid "**DSGVO (Spec §6):** Meldebestätigung/Meldeschein enthält die vollständige Wohnanschrift = Stammdaten (Löschfrist 6 Monate, `gdpr-policy.md:48`); in Agent-Berichten nur Status speichern („Meldebestätigung: ja/nein/Offen“, „Wohnungsgeberbestätigung: vorliegend/ja“), **keine** Adresse, **keine** Meldeschein-/Pass-/eAT-Nummern (Art. 5 Abs. 1 c DSGVO); Meldeadresse nie in E-Mails an Dritte."
+msgstr "**GDPR (spec §6):** registration confirmation/registration certificate contains the full residential address = master data (deletion period 6 months, `gdpr-policy.md:48`); in agent reports store only the status (\"registration confirmation: yes/no/open\", \"landlord confirmation: present/yes\"), **no** address, **no** registration certificate/passport/eAT numbers (Art. 5(1)(c) GDPR); never put the registered address in emails to third parties."
+
+msgid "Guten Tag {name},"
+msgstr "Dear {name},"
+
+msgid "vielen Dank für Ihre Bewerbung. Sie ist bei uns eingegangen und wird in Kürze geprüft (Lebenslauf-Analyse, Match- und Compliance-Prüfung)."
+msgstr "Thank you for your application. It has been received and will be reviewed shortly (CV analysis, match and compliance check)."
+
+msgid "Wir melden uns, sobald ein Ergebnis vorliegt."
+msgstr "We will get back to you as soon as there is a result."
+
+msgid "Ihr KM-HR-Agent-Team"
+msgstr "Your KM-HR-Agent team"
+
+msgid "Der Agent stellt keinen Antrag – die Antragstellung obliegt dem Kandidaten."
+msgstr "The agent does not submit an application – doing so is the candidate's responsibility."
+
+msgid "Guten Tag,"
+msgstr "Dear Sir or Madam,"
+
+msgid "Die ausführlichen Berichte (Match / Compliance / Culture-Fit / Dokumente) finden Sie im Portal: 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis."
+msgstr "You can find the detailed reports (match / compliance / culture fit / documents) in the portal: 2️⃣ Match result · 3️⃣ Compliance result."
+
+msgid "Entscheiden Sie im Portal (💼 Stellenangebote), ob Sie den Kandidaten einladen möchten – der Agent versendet keine Einladung von sich aus."
+msgstr "Decide in the portal (💼 Job listings) whether you want to invite the candidate – the agent does not send invitations on its own."
+
+msgid "Ihr KM-HR-Agent (automatische Benachrichtigung)"
+msgstr "Your KM-HR-Agent (automatic notification)"
+
+msgid "Ihre Bewerbung war erfolgreich – für Ihren Arbeitsantritt benötigt Ihre Aufenthaltsgenehmigung Ihre Aufmerksamkeit. Hier die Schritte (agent-generiert, bitte verifizieren Sie die Angaben bei der zuständigen Stelle):"
+msgstr "Your application was successful – your residence permit requires your attention for you to start work. Here are the steps (agent-generated, please verify the details with the competent authority):"
+
+msgid "Der Agent stellt keinen Antrag – die Antragstellung obliegt Ihnen."
+msgstr "The agent does not submit an application – doing so is your responsibility."
+
+msgid "Ihr KM-HR-Agent"
+msgstr "Your KM-HR-Agent"
+
+msgid "Dein Ansprechpartner (Mentor): {0}"
+msgstr "Your contact person (mentor): {0}"
+
+msgid "wir freuen uns, Sie offiziell bei uns begrüßen zu dürfen – herzlichen Glückwunsch zu Ihrer Einstellung!"
+msgstr "we are delighted to officially welcome you – congratulations on your hiring!"
+
+msgid "Ihr Onboarding im Überblick:"
+msgstr "Your onboarding at a glance:"
+
+msgid "- Vertragliche Dokumente: Arbeitsvertrag (vor Eintritt), Datenschutzeinwilligung und Arbeitszeitkonto (Tag 1)"
+msgstr "- Contractual documents: employment contract (before start), data protection consent and working time account (day 1)"
+
+msgid "- IT-Ausstattung: Laptop, E-Mail-Account, VPN und Chat-Zugang (bereitgestellt von der IT-Abteilung)"
+msgstr "- IT equipment: laptop, email account, VPN and chat access (provided by the IT department)"
+
+msgid "- Einarbeitung Woche 1: Tag 1 Begrüßung & IT-Übergabe → Tag 2 Tools und Team-Vorstellung → Tag 3 Prozess-Überblick → Tag 5 Rückfragen und erstes Feedback"
+msgstr "- Onboarding week 1: day 1 welcome & IT handover → day 2 tools and team introduction → day 3 process overview → day 5 questions and first feedback"
+
+msgid "Die vollständige Onboarding-Checkliste erhalten Sie über das Candidate-Portal (Tab Onboarding)."
+msgstr "You will receive the full onboarding checklist via the candidate portal (Onboarding tab)."
+
+msgid "Wir freuen uns auf die Zusammenarbeit!"
+msgstr "We look forward to working with you!"
+
+msgid "vielen Dank für Ihre Bewerbung und Ihr Interesse."
+msgstr "thank you for your application and your interest."
+
+msgid "Nach sorgfältiger Prüfung aller Unterlagen haben wir uns entschlossen, in diesem Verfahren anderenorts fortzufahren. Dies ist keine Bewertung Ihrer Fähigkeiten und Persönlichkeit."
+msgstr "After careful review of all documents, we have decided to proceed with other candidates in this process. This is not an assessment of your skills and personality."
+
+msgid "Wir wünschen Ihnen für Ihre berufliche und persönliche Zukunft alles Gute."
+msgstr "We wish you all the best for your professional and personal future."
+
+msgid "{0} Uhr ({1} Min.)"
+msgstr "{0} ({1} min)"
+
+msgid "Stellenland {0} – Mindestlohn-Check DE (MiLoG) nicht anwendbar; Landesrecht prüfen"
+msgstr "Job country {0} – German minimum wage check (MiLoG) not applicable; check local law"
+
+msgid "(Volltext prüfen)"
+msgstr "(check full text)"
+
+msgid "# Contract Preflight – Bewerbung #{0}"
+msgstr "# Contract preflight – application #{0}"
+
+msgid "Datum:"
+msgstr "Date:"
+
+msgid "Trigger:"
+msgstr "Trigger:"
+
+msgid "Befund"
+msgstr "Finding"
+
+msgid "Mindestlohn-Wert (Stand 2026):"
+msgstr "Minimum wage value (as of 2026):"
+
+msgid "Quelle (aus Link-Katalog):"
+msgstr "Source (from link catalogue):"
+
+msgid "Rechtsgrundlage"
+msgstr "Legal basis"
+
+msgid "Volltext: {0} (Key `nachwg_2` im Link-Katalog)"
+msgstr "Full text: {0} (key `nachwg_2` in the link catalogue)"
+
+msgid "- Vorlage: `{0}` (Skelett, HR füllt aus – Agent erstellt NICHT den Vertrag)"
+msgstr "- Template: `{0}` (skeleton, HR fills it in – the agent does NOT create the contract)"
+
+msgid "Key"
+msgstr "Key"
+
+msgid "Neues Agent-Ergebnis: Kandidat #{0} – Score {1}/100"
+msgstr "New agent result: candidate #{0} – score {1}/100"
+
+msgid "Vorstellungsgespräch: {0}"
+msgstr "Job interview: {0}"
+
+msgid "Vorstellungsgespräch: {0} (HR)"
+msgstr "Job interview: {0} (HR)"
+
+msgid "Variante A: HR-Klick"
+msgstr "Variant A: HR click"
+
+msgid "Quellenstatus:"
+msgstr "Source status:"
+
+msgid "Vergleichsbasis (Design-Entscheidung, 24.09.2026):"
+msgstr "Comparison basis (design decision, 24.09.2026):"
+
+msgid "Jahresgehalt ÷ {0} h (40 h/Woche × 52) → Stundenlohn"
+msgstr "Annual salary ÷ {0} h (40 h/week × 52) → hourly wage"
+
+msgid "Stellenrahmen: min={0} max={1} €/Jahr"
+msgstr "Position range: min={0} max={1} €/year"
+
+msgid "der Agent hat die Bewerbung von Kandidat #{0} geprüft (Bewerbung #{1})."
+msgstr "the agent has reviewed the application from candidate #{0} (application #{1})."
+
+msgid "Match-Score: {0}/100 ({1})"
+msgstr "Match score: {0}/100 ({1})"
+
+msgid "Dokumente: siehe Bericht verify_documents-kandidat-{0}.md"
+msgstr "Documents: see report verify_documents-kandidat-{0}.md"
+
+msgid "Stelle: {0}"
+msgstr "Position: {0}"
+
+msgid "Mindestgehalt {0} €/Jahr ≈ {1:.2f} €/h ≥ {2:.2f} €/h Mindestlohn (Stand 2026)"
+msgstr "Minimum salary {0} €/year ≈ {1:.2f} €/h ≥ {2:.2f} €/h minimum wage (as of 2026)"
+
+msgid "Mindestgehalt {0} €/Jahr ≈ {1:.2f} €/h < {2:.2f} €/h Mindestlohn (Stand 2026) – VOR Vertragsübergabe korrigieren"
+msgstr "Minimum salary {0} €/year ≈ {1:.2f} €/h < {2:.2f} €/h minimum wage (as of 2026) – correct BEFORE handing over the contract"
+
+msgid "Form"
+msgstr "Form"
+
+msgid "- §5.6 Trigger/Task-Zeitpunkt des relocation-Checks (Design-Entscheidung) – **offen**."
+msgstr "- §5.6 Trigger/timing of the relocation check (design decision) – **open**."
+
+msgid "WO: {0}"
+msgstr "WHERE: {0}"
+
+msgid "Checkliste via 7️⃣ Generate Onboarding freigeben (HR)"
+msgstr "Release checklist via 7️⃣ Generate Onboarding (HR)"
+
+msgid "Fall"
+msgstr "Case"
+
+msgid "- §5.5 MD-Korrektur `knowledge/legal/visa-rules.md:144` – **offen**."
+msgstr "- §5.5 MD correction `knowledge/legal/visa-rules.md:144` – **open**."
+
+msgid "- Der Agent sucht keine Angebote und stellt keine Mietanfragen (Variante A)."
+msgstr "- The agent does not search for listings or submit rental enquiries (variant A)."
+
+msgid "WIE: {0}"
+msgstr "HOW: {0}"
+
+msgid "*Task automatisch erzeugt beim Statuswechsel 'eingestellt'.*"
+msgstr "*Task automatically created on the status change to 'hired'.*"
+
+msgid "WAS: {0}"
+msgstr "WHAT: {0}"
+
+msgid "- §5.4 ansvar-Query-Test `search(\"Bundesmeldegesetz Anmeldung 17\")` – **offen**."
+msgstr "- §5.4 ansvar query test `search(\"Bundesmeldegesetz Anmeldung 17\")` – **open**."
+
+msgid "*Ausgelöst durch HR-Klick ({0}) – Variante A.*"
+msgstr "*Triggered by HR click ({0}) – variant A.*"
+
+msgid "- **Portale (nur Link, manuell):** ImmoScout24 · Kleinanzeigen · wg-gesucht · immowelt (AGB untersagt automatisiertes Scraping)"
+msgstr "- **Portals (link only, manual):** ImmoScout24 · Kleinanzeigen · wg-gesucht · immowelt (T&Cs prohibit automated scraping)"
+
+msgid "Visum-Hinweis (aus der Dokumenten-Prüfung, agent-generiert):"
+msgstr "Visa note (from the document check, agent-generated):"
+
+msgid "📋 Visum-Schritte (aus der Dokumenten-Prüfung, agent-generiert):"
+msgstr "📋 Visa steps (from the document check, agent-generated):"
+
+msgid "- §5.3 Skill `relocation` (Agent-Ebene, analog `check-visa`) – **offen**."
+msgstr "- §5.3 Skill `relocation` (agent level, analogous to `check-visa`) – **open**."
+
+msgid "- Mail: {0}"
+msgstr "- Email: {0}"
+
+msgid "- **Freie Quellen:** BMWSB-Ratgeber »Auf Wohnungssuche in Deutschland« · Handbook Germany (9 Sprachen) · Statistikportal/Destatis Open Data · kommunale Wohnungsämter"
+msgstr "- **Free sources:** BMWSB guide »Auf Wohnungssuche in Deutschland« · Handbook Germany (9 languages) · statistics portal/Destatis Open Data · municipal housing offices"
+
+msgid "- **WO:** {0}"
+msgstr "- **WHERE:** {0}"
+
+msgid "## 🤝 Patenschaft (Mentoring)"
+msgstr "## 🤝 Mentorship"
+
+msgid "- **Mentor/Ansprechpartner:** {0}"
+msgstr "- **Mentor/contact person:** {0}"
+
+msgid "- §5.2 Relocation-Abschnitt in `knowledge/onboarding-default.md` + den 3 Land-Templates – **offen**."
+msgstr "- §5.2 Relocation section in `knowledge/onboarding-default.md` + the 3 country templates – **open**."
+
+msgid "- ICS (HR/Director): {0}"
+msgstr "- ICS (HR/director): {0}"
+
+msgid "- **Checkliste:** Zielstadt + Einzugstermin festlegen → Bewerbungsmappe (Selbstauskunft, SCHUFA, Einkommensnachweise) → Mietpreis-Range via Open-Data-Mietspiegel prüfen → freie Quellen nutzen → Angebote manuell auf Portalen (Browser) ansehen"
+msgstr "- **Checklist:** determine target city + move-in date → application file (self-disclosure, SCHUFA, proof of income) → check rent range via open-data rent index → use free sources → view listings manually on portals (browser)"
+
+msgid "- **WIE:** {0}"
+msgstr "- **HOW:** {0}"
+
+msgid "- §5.1 Behörden-Infos live & kostenlos (Fristen/Öffnungen/Formulare) via `fetch` + `anysearch` → knowledge-MD – **offen**."
+msgstr "- §5.1 Live & free authority info (deadlines/opening hours/forms) via `fetch` + `anysearch` → knowledge MD – **open**."
+
+msgid "- ICS (Kandidat/Gast): {0}"
+msgstr "- ICS (candidate/guest): {0}"
+
+msgid "## 🏠 Wohnungssuche (Checkliste + freie Quellen)"
+msgstr "## 🏠 Apartment search (checklist + free sources)"
+
+msgid "## 📋 Visum-Schritt (agent-generiert)"
+msgstr "## 📋 Visa step (agent-generated)"
+
+msgid "- **WAS:** {0}"
+msgstr "- **WHAT:** {0}"
+
+msgid "Kandidat #{0} eingestellt – HR erstellt die Checkliste mit 7️⃣ Generate Onboarding und gibt sie frei."
+msgstr "Candidate #{0} hired – HR creates the checklist with 7️⃣ Generate Onboarding and releases it."
+
+msgid "**Offen (Spec §5 – was NEU kommen müsste, noch nicht umgesetzt):**"
+msgstr "**Open (spec §5 – what would need to be NEW, not yet implemented):**"
+
+msgid "- Termin: {0}"
+msgstr "- Appointment: {0}"
+
+msgid "# Onboarding-Freigabe – Bewerbung #{0}"
+msgstr "# Onboarding release – application #{0}"
+
+msgid "- Meeting (Kandidat/Gast, Gate 8): {0}"
+msgstr "- Meeting (candidate/guest, gate 8): {0}"
+
+msgid "- **Variante A (Spec §3):** Der Agent lädt, meldet und beantragt nie bei einer Behörde – nur Information, Checkliste, E-Mail-Hinweis nach HR-Freigabe."
+msgstr "- **Variant A (spec §3):** The agent never invites, registers or applies at an authority – only information, checklist, email notification after HR release."
+
+msgid "- Meeting (HR/Director): {0}"
+msgstr "- Meeting (HR/director): {0}"
+
+msgid "- **FR/CH (Design-Entscheidung, Spec §2):** FR Mairie → numéro fiscal → sécurité sociale; CH Einwohnerkontrolle/Gemeinde → AHV-Nummer → Krankenkasse – Details nicht recherchiert."
+msgstr "- **FR/CH (design decision, spec §2):** FR mairie → numéro fiscal → sécurité sociale; CH residents' registration office/municipality → AHV number → health insurance – details not researched."
+
+msgid "# Einladung – Bewerbung #{0}"
+msgstr "# Invitation – application #{0}"
+
+msgid "- **Schritte 4–6 (Spec §2):** Steuer-ID erst **nach** Schritt 3 (IdNr bei Zuzug aus dem Ausland zwingend) · Krankenkasse: Kandidat wählt GKV, Arbeitgeber meldet Beschäftigung spätestens 6 Wochen nach Beginn · ELStAM: IdNr + Geburtsdatum, ohne IdNr Steuerklasse VI (max. 3 Monate)."
+msgstr "- **Steps 4–6 (spec §2):** tax ID only **after** step 3 (IdNr mandatory when moving from abroad) · health insurance: candidate chooses statutory insurance, employer registers employment no later than 6 weeks after start · ELStAM: IdNr + date of birth, without IdNr tax class VI (max. 3 months)."
+
+msgid "- **Schritt 3 Bürgeramt (Spec §2):** Anmeldung **innerhalb von 2 Wochen nach Einzug**; Unterlagen: Meldeschein + Personalausweis/Pass/Passersatz + Wohnungsgeberbestätigung (Mietvertrag ersetzt sie NICHT); Nicht-EU: Anmeldung **vor** dem Aufenthaltstitel, eAT mit Nationalpass (BMG § 17/§ 23)."
+msgstr "- **Step 3 residents' registration office (spec §2):** registration **within 2 weeks of moving in**; documents: registration form + ID card/passport/passport substitute + landlord confirmation (a rental contract does NOT replace it); non-EU: register **before** the residence permit, eAT with national passport (BMG § 17/§ 23)."
+
+msgid "- **Reihenfolge (bindend, Spec §2):** 1 Visum/Aufenthalt (`check_visa`) → 2 Wohnung suchen/beziehen → 3 Bürgeramt-Anmeldung (Meldebehörde) → 4 Steuer-ID → 5 Krankenkasse → 6 ELStAM."
+msgstr "- **Order (binding, spec §2):** 1 visa/residence (`check_visa`) → 2 find/move into an apartment → 3 residents' registration (registration authority) → 4 tax ID → 5 health insurance → 6 ELStAM."
+
+msgid "## 🏛️ Relocation / Umzug, Behörden, Anmeldung"
+msgstr "## 🏛️ Relocation / moving, authorities, registration"
+
+msgid "Pre-Screening: {position}"
+msgstr "Pre-screening: {position}"
+
+msgid "wir möchten Sie herzlich zu einem kurzen Pre-Screening für die Position als **{position}** einladen."
+msgstr "we would like to warmly invite you to a short pre-screening for the position of **{position}**."
+
+msgid "**Meeting-Details:**"
+msgstr "**Meeting details:**"
+
+msgid "- **Link:** {meet_url}"
+msgstr "- **Link:** {meet_url}"
+
+msgid "- **Uhrzeit:** {uhrzeit}"
+msgstr "- **Time:** {uhrzeit}"
+
+msgid "- **Dauer:** ca. 30 Minuten"
+msgstr "- **Duration:** approx. 30 minutes"
+
+msgid "**Themen:**"
+msgstr "**Topics:**"
+
+msgid "Bitte bestätigen Sie Ihre Teilnahme kurz per Rück-Mail."
+msgstr "Please briefly confirm your participation by reply e-mail."
+
+msgid "Hervorragend – Fokus auf Leadership & Vision"
+msgstr "Excellent – focus on leadership & vision"
+
+msgid "Gut – Fokus auf Skills & Kultur"
+msgstr "Good – focus on skills & culture"
+
+msgid "Bedingt – Fokus auf Lücken klären"
+msgstr "Conditional – focus on clarifying gaps"
+
+msgid "Schwach – Grundlegende Eignung prüfen"
+msgstr "Weak – verify basic suitability"
+
+msgid "{i}. **{s}:** Beschreiben Sie ein konkretes Projekt, in dem Sie {s} eingesetzt haben. Welche Ergebnisse wurden erzielt?"
+msgstr "{i}. **{s}:** Describe a concrete project in which you applied {s}. What results were achieved?"
+
+msgid "{i}. **{g}:** Inwieweit haben Sie Erfahrung mit {g}? Wie würden Sie sich hier einarbeiten?"
+msgstr "{i}. **{g}:** To what extent do you have experience with {g}? How would you get up to speed here?"
+
+msgid "1. Warum interessiert Sie die Position als {position}?"
+msgstr "1. Why are you interested in the position of {position}?"
+
+msgid "2. Was sind Ihre beruflichen Ziele für die nächsten 3 Jahre?"
+msgstr "2. What are your professional goals for the next 3 years?"
+
+msgid "3. Wie beschreiben Sie Ihren idealen Arbeitsstil?"
+msgstr "3. How would you describe your ideal working style?"
+
+msgid "4. Welche Erwartungen haben Sie an das Gehalt?"
+msgstr "4. What are your salary expectations?"
+
+msgid "1. Wann könnten Sie starten?"
+msgstr "1. When could you start?"
+
+msgid "2. Sind Sie bereit, nach München zu ziehen / remote zu arbeiten?"
+msgstr "2. Are you willing to relocate to Munich / work remotely?"
+
+msgid "3. Haben Sie Fragen an uns?"
+msgstr "3. Do you have any questions for us?"
+
+msgid "=== SCREENING-FRAGEN: {candidate_name} ==="
+msgstr "=== SCREENING QUESTIONS: {candidate_name} ==="
+
+msgid "**Kultur-Fit:** {cultural_fit_score}/100"
+msgstr "**Culture fit:** {cultural_fit_score}/100"
+
+msgid "**Kategorie:** {kategorie}"
+msgstr "**Category:** {kategorie}"
+
+msgid "## A. Technische Kompetenz (15 Min.)"
+msgstr "## A. Technical competence (15 min)"
+
+msgid "## B. Lücken klären (10 Min.)"
+msgstr "## B. Clarify gaps (10 min)"
+
+msgid "## C. Motivation & Kultur (10 Min.)"
+msgstr "## C. Motivation & culture (10 min)"
+
+msgid "## D. Praktische Details (5 Min.)"
+msgstr "## D. Practical details (5 min)"
+
+msgid "## Interviewer-Checkliste"
+msgstr "## Interviewer checklist"
+
+msgid "- [ ] Profil-Check vor dem Gespräch"
+msgstr "- [ ] Profile check before the interview"
+
+msgid "- [ ] Technische Fragen vorbereitet"
+msgstr "- [ ] Technical questions prepared"
+
+msgid "- [ ] Kultur-Fit-Fragen notiert"
+msgstr "- [ ] Culture-fit questions noted"
+
+msgid "- [ ] Nächste Schritte besprochen"
+msgstr "- [ ] Next steps discussed"
+
+msgid "- [ ] Feedback-Formular ausgefüllt"
+msgstr "- [ ] Feedback form completed"
+
+msgid "## Bewertungsbogen"
+msgstr "## Assessment sheet"
+
+msgid "| Bereich | Score (1–5) | Notizen |"
+msgstr "| Area | Score (1–5) | Notes |"
+
+msgid "| Technische Kompetenz | | |"
+msgstr "| Technical competence | | |"
+
+msgid "| Erfahrungs-Relevanz | | |"
+msgstr "| Experience relevance | | |"
+
+msgid "| Motivation & Kultur | | |"
+msgstr "| Motivation & culture | | |"
+
+msgid "| Kommunikation | | |"
+msgstr "| Communication | | |"
+
+msgid "| **Gesamt** | /20 | |"
+msgstr "| **Total** | /20 | |"
+
+msgid "**Empfehlung:** ✅ Weiter / ⚠️ Klärungsbedarf / ❌ Absage"
+msgstr "**Recommendation:** ✅ Proceed / ⚠️ Clarification needed / ❌ Reject"
+
+msgid "siehe Match-Bericht"
+msgstr "see match report"
+
+msgid "Compliance: {0}"
+msgstr "Compliance: {0}"
+
+msgid "(Katalog-Key {0} ohne URL)"
+msgstr "(catalogue key {0} without URL)"
+
+msgid "# Match-Export – Kandidat #{0} / Stelle #{1}"
+msgstr "# Match export – candidate #{0} / job #{1}"
+
+msgid "**Compliance:** {0}"
+msgstr "**Compliance:** {0}"
+
+msgid "## Kategorien"
+msgstr "## Categories"
+
+msgid "| Kategorie | Status |"
+msgstr "| Category | Status |"
+
+msgid "| {0} | {1} |"
+msgstr "| {0} | {1} |"
+
+msgid "Kernkompetenzen"
+msgstr "Core competencies"
+
+msgid "Branchenkenntnis"
+msgstr "Industry knowledge"
+
+msgid "*Exportiert am {0} von Skill export-report.*"
+msgstr "*Exported on {0} by skill export-report.*"
+
+msgid "📋 Profil extrahieren"
+msgstr "📋 Extract profile"
+
+msgid "🎯 Kandidat matchen"
+msgstr "🎯 Match candidate"
+
+msgid "⚖️ Compliance pruefen"
+msgstr "⚖️ Check compliance"
+
+msgid "🏢 Culture Fit pruefen"
+msgstr "🏢 Check culture fit"
+
+msgid "📄 Dokumente verifizieren"
+msgstr "📄 Verify documents"
+
+msgid "🛂 Visum pruefen"
+msgstr "🛂 Check visa"
+
+msgid "🔒 DSGVO pruefen"
+msgstr "🔒 Check GDPR"
+
+msgid "💡 Match erklaeren"
+msgstr "💡 Explain match"
+
+msgid "📧 Kandidat benachrichtigen"
+msgstr "📧 Notify candidate"
+
+msgid "Match erklaeren"
+msgstr "Explain match"
+
+msgid "Agent-Task (Phase 5, live {0}), Modell: {1}"
+msgstr "Agent task (Phase 5, live {0}), model: {1}"

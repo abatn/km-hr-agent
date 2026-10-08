@@ -16,7 +16,16 @@ import uuid
 import json
 import random
 import string
+import sys
+from pathlib import Path
 from datetime import datetime, timedelta
+
+# i18n (Variante B, P2b 07.10.2026): framework-freie Kernschicht (gettext,
+# kein NiceGUI). Spec: knowledge/system/i18n-runner-chain.md §7.1.
+_PROJECT_ROOT = Path(__file__).resolve().parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+from webui.i18n_core import tr
 
 mcp = FastMCP("meeting-tools")
 
@@ -91,10 +100,10 @@ END:VCALENDAR"""
 
 
 @mcp.tool()
-def generate_screening_questions(candidate_name: str, position: str, match_score: int, cultural_fit_score: int, strengths: str, gaps: str) -> str:
+def generate_screening_questions(candidate_name: str, position: str, match_score: int, cultural_fit_score: int, strengths: str, gaps: str, language: str = "de") -> str:
     """
     Generiert personalisierte Screening-Fragen basierend auf Kandidatenprofil.
-    
+
     Args:
         candidate_name: Name des Kandidaten
         position: Stellenbezeichnung
@@ -102,94 +111,100 @@ def generate_screening_questions(candidate_name: str, position: str, match_score
         cultural_fit_score: Kultur-Fit-Score (0-100)
         strengths: Stärken des Kandidaten (kommasepariert)
         gaps: Lücken/Offene Fragen (kommasepariert)
-    
+        language: Zielsprache (de/en/fr/ar; Default de – Altverhalten)
+
     Returns:
         Strukturierte Fragenliste
     """
     # Kategorie basierend auf Score
     if match_score >= 90:
-        kategorie = "Hervorragend – Fokus auf Leadership & Vision"
+        kategorie = tr("Hervorragend – Fokus auf Leadership & Vision", language)
     elif match_score >= 75:
-        kategorie = "Gut – Fokus auf Skills & Kultur"
+        kategorie = tr("Gut – Fokus auf Skills & Kultur", language)
     elif match_score >= 60:
-        kategorie = "Bedingt – Fokus auf Lücken klären"
+        kategorie = tr("Bedingt – Fokus auf Lücken klären", language)
     else:
-        kategorie = "Schwach – Grundlegende Eignung prüfen"
-    
+        kategorie = tr("Schwach – Grundlegende Eignung prüfen", language)
+
     # Stärken als Liste
     staerken_liste = [s.strip() for s in strengths.split(",")]
     luecken_liste = [g.strip() for g in gaps.split(",")]
-    
+
     # Fragen generieren
     fragen_a = []
     for i, s in enumerate(staerken_liste[:5], 1):
-        fragen_a.append(f"{i}. **{s}:** Beschreiben Sie ein konkretes Projekt, in dem Sie {s} eingesetzt haben. Welche Ergebnisse wurden erzielt?")
-    
+        fragen_a.append(tr("{i}. **{s}:** Beschreiben Sie ein konkretes Projekt, "
+                           "in dem Sie {s} eingesetzt haben. Welche Ergebnisse "
+                           "wurden erzielt?", language, i=i, s=s))
+
     fragen_b = []
     for i, g in enumerate(luecken_liste[:3], 1):
-        fragen_b.append(f"{i}. **{g}:** Inwieweit haben Sie Erfahrung mit {g}? Wie würden Sie sich hier einarbeiten?")
-    
+        fragen_b.append(tr("{i}. **{g}:** Inwieweit haben Sie Erfahrung mit {g}? "
+                           "Wie würden Sie sich hier einarbeiten?", language, i=i, g=g))
+
     fragen_c = [
-        f"1. Warum interessiert Sie die Position als {position}?",
-        "2. Was sind Ihre beruflichen Ziele für die nächsten 3 Jahre?",
-        "3. Wie beschreiben Sie Ihren idealen Arbeitsstil?",
-        "4. Welche Erwartungen haben Sie an das Gehalt?"
+        tr("1. Warum interessiert Sie die Position als {position}?", language, position=position),
+        tr("2. Was sind Ihre beruflichen Ziele für die nächsten 3 Jahre?", language),
+        tr("3. Wie beschreiben Sie Ihren idealen Arbeitsstil?", language),
+        tr("4. Welche Erwartungen haben Sie an das Gehalt?", language),
     ]
-    
+
     fragen_d = [
-        "1. Wann könnten Sie starten?",
-        "2. Sind Sie bereit, nach München zu ziehen / remote zu arbeiten?",
-        "3. Haben Sie Fragen an uns?"
+        tr("1. Wann könnten Sie starten?", language),
+        tr("2. Sind Sie bereit, nach München zu ziehen / remote zu arbeiten?", language),
+        tr("3. Haben Sie Fragen an uns?", language),
     ]
-    
-    result = f"""OK
-=== SCREENING-FRAGEN: {candidate_name} ===
 
-**Stelle:** {position}
-**Match-Score:** {match_score}/100
-**Kultur-Fit:** {cultural_fit_score}/100
-**Kategorie:** {kategorie}
+    result = "\n".join([
+        "OK",
+        tr("=== SCREENING-FRAGEN: {candidate_name} ===", language, candidate_name=candidate_name),
+        "",
+        tr("**Stelle:** {0}", language).format(position),
+        tr("**Match-Score:** {0}/100", language).format(match_score),
+        tr("**Kultur-Fit:** {cultural_fit_score}/100", language, cultural_fit_score=cultural_fit_score),
+        tr("**Kategorie:** {kategorie}", language, kategorie=kategorie),
+        "",
+        "---",
+        "",
+        tr("## A. Technische Kompetenz (15 Min.)", language),
+        "",
+        "\n".join(fragen_a),
+        "",
+        tr("## B. Lücken klären (10 Min.)", language),
+        "",
+        "\n".join(fragen_b),
+        "",
+        tr("## C. Motivation & Kultur (10 Min.)", language),
+        "",
+        "\n".join(fragen_c),
+        "",
+        tr("## D. Praktische Details (5 Min.)", language),
+        "",
+        "\n".join(fragen_d),
+        "",
+        "---",
+        "",
+        tr("## Interviewer-Checkliste", language),
+        "",
+        tr("- [ ] Profil-Check vor dem Gespräch", language),
+        tr("- [ ] Technische Fragen vorbereitet", language),
+        tr("- [ ] Kultur-Fit-Fragen notiert", language),
+        tr("- [ ] Nächste Schritte besprochen", language),
+        tr("- [ ] Feedback-Formular ausgefüllt", language),
+        "",
+        tr("## Bewertungsbogen", language),
+        "",
+        tr("| Bereich | Score (1–5) | Notizen |", language),
+        "|---|---|---|",
+        tr("| Technische Kompetenz | | |", language),
+        tr("| Erfahrungs-Relevanz | | |", language),
+        tr("| Motivation & Kultur | | |", language),
+        tr("| Kommunikation | | |", language),
+        tr("| **Gesamt** | /20 | |", language),
+        "",
+        tr("**Empfehlung:** ✅ Weiter / ⚠️ Klärungsbedarf / ❌ Absage", language),
+    ])
 
----
-
-## A. Technische Kompetenz (15 Min.)
-
-{chr(10).join(fragen_a)}
-
-## B. Lücken klären (10 Min.)
-
-{chr(10).join(fragen_b)}
-
-## C. Motivation & Kultur (10 Min.)
-
-{chr(10).join(fragen_c)}
-
-## D. Praktische Details (5 Min.)
-
-{chr(10).join(fragen_d)}
-
----
-
-## Interviewer-Checkliste
-
-- [ ] Profil-Check vor dem Gespräch
-- [ ] Technische Fragen vorbereitet
-- [ ] Kultur-Fit-Fragen notiert
-- [ ] Nächste Schritte besprochen
-- [ ] Feedback-Formular ausgefüllt
-
-## Bewertungsbogen
-
-| Bereich | Score (1–5) | Notizen |
-|---|---|---|
-| Technische Kompetenz | | |
-| Erfahrungs-Relevanz | | |
-| Motivation & Kultur | | |
-| Kommunikation | | |
-| **Gesamt** | /20 | |
-
-**Empfehlung:** ✅ Weiter / ⚠️ Klärungsbedarf / ❌ Absage"""
-    
     return result
 
 

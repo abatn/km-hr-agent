@@ -2,8 +2,9 @@
 """E2E P1-3 (29.09.2026): Onboarding-Leerzustand hat klickbaren Weg.
 
 Read-only-Nachweis gegen die Live-App:
-1. Login als Kandidat #1 (0 'eingestellt'-Bewerbungen → Empty-Zweig; Passwort
-   aus tests/e2e_housing.py, gleicher Test-Login).
+1. Login als Kandidat mit 0 'eingestellt'-Bewerbungen → Empty-Zweig.
+   DYNAMISCHE Auswahl (Cupplung06.10.2026): bekannter Test-Login ohne
+   'eingestellt'-Bewerbung, Kandidat #1 hat inzwischen 3 davon.
 2. Onboarding-Tab: Empty-State + NEU Button „→ Stellen ansehen".
 3. Klick → Stellen-Tab sichtbar (Sackgasse behoben).
 4. DB-Baseline vor == nach (read-only).
@@ -15,6 +16,7 @@ Spec: skills/pre-screen/SKILL.md (Sackgassen-Regel P1-3) · Plan: ui-mvp-plan-v2
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 import sys
 from pathlib import Path
@@ -25,14 +27,52 @@ sys.path.insert(0, str(ROOT / "tests"))
 from e2e_harness import BASE, DB, check_server  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
 
-CAND_EMAIL = "batniniabdelkader@yahoo.com"
-CAND_PASSWORD = "Abdel15121978!"  # Test-Login aus tests/e2e_housing.py
+# Bekannte Test-Logins des Projektbestands (Design-Entscheidung: Passwörter
+# bleiben hier im Test, kein DB-Schreibzugriff nötig).
+KNOWN_LOGINS = (
+    ("batniniabdelkader@yahoo.com", "Abdel15121978!"),
+    ("e2e-beweis-phase1@example.com", "E2EMentoring2026!"),
+    ("recruiting.e2e.2809b@kmailtest.de", "Test1234!"),
+)
+
+CAND_EMAIL = ""
+CAND_PASSWORD = ""
 
 failures: list[str] = []
 
 
+def pick_candidate() -> bool:
+    """Wählt dynamisch den Test-Kandidaten (Datenkupplung06.10.2026).
+
+    Kriterium: bekannter Login UND 0 Bewerbungen im Status 'eingestellt'
+    → der Onboarding-Empty-Zweig greift garantiert.
+    """
+    global CAND_EMAIL, CAND_PASSWORD
+    conn = sqlite3.connect(str(DB))
+    try:
+        rows = conn.execute(
+            "SELECT email FROM candidates c WHERE c.email IN (?,?,?)"
+            " AND NOT EXISTS (SELECT 1 FROM applications a"
+            "                 WHERE a.candidate_id = c.id"
+            "                   AND a.status = 'eingestellt')"
+            " ORDER BY c.id",
+            [e for e, _ in KNOWN_LOGINS],
+        ).fetchall()
+    finally:
+        conn.close()
+    if not rows:
+        print("FAIL: kein bekannter Test-Login ohne 'eingestellt'-Bewerbung")
+        return False
+    CAND_EMAIL = rows[0][0]
+    CAND_PASSWORD = dict(KNOWN_LOGINS)[CAND_EMAIL]
+    print(f"OK Kandidat dynamisch: {CAND_EMAIL} (0 eingestellt-Apps)")
+    return True
+
+
 def main() -> int:
     check_server()
+    if not pick_candidate():
+        return 1
 
     conn = sqlite3.connect(str(DB))
     before_apps = conn.execute("SELECT COUNT(*) FROM applications").fetchone()[0]
@@ -51,13 +91,14 @@ def main() -> int:
             panel.get_by_label("Passwort", exact=True).fill(CAND_PASSWORD)
             panel.get_by_role("button").first.click()
             page.wait_for_url("**/candidate**", timeout=15000)
-            print("OK login cand1 (0 eingestellt-Apps → Empty-Zweig)")
+            print("OK login (0 eingestellt-Apps → Empty-Zweig)")
 
             page.goto(f"{BASE}/candidate/onboarding", wait_until="load")
             page.wait_for_timeout(3000)
             body = page.inner_text("body")
             empty_ok = "Noch kein Onboarding aktiv" in body
-            btn = page.get_by_role("button", name="Stellen ansehen")
+            # Button-Text ist "→ Stellen ansehen" (Prefix) → Regex statt Substring
+            btn = page.get_by_role("button", name=re.compile("Stellen ansehen"))
             btn_ok = btn.count() >= 1
             print(f"OK empty_state={empty_ok} action_button={btn_ok}")
             if not empty_ok:

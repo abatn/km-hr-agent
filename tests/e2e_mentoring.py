@@ -40,8 +40,11 @@ EMP_PASSWORD = "sicher123"
 # cand16-Reset 24.09.2026 (User-GO): cand16-E2E-Passwort war nirgends notiert.
 CAND_EMAIL = "e2e-beweis-phase1@example.com"
 CAND_PASSWORD = "E2EMentoring2026!"
-# Expansion-Text auf Candidate-Onboarding: "🎉 {job} – {firma}" (candidate.py:967)
-CAND_EXPANSION = "E2E-Beweis: Teststelle Phase1"
+# Expansion-Text auf Candidate-Onboarding: "🎉 {job} – {firma}" (candidate.py:
+# _tab_onboarding) – JOB-TITEL wird dynamisch aus der eingestellten Bewerbung
+# gelesen (Datenkupplung06.10.2026, vorher hartkodiert).
+CAND_EXPANSION = ""
+CAND_NAME = ""
 
 
 def db_state() -> dict:
@@ -56,12 +59,29 @@ def db_state() -> dict:
             (CAND_ID,),
         ).fetchone()
         cand = conn.execute(
-            "SELECT email FROM candidates WHERE id=?", (CAND_ID,)
+            "SELECT email, name FROM candidates WHERE id=?", (CAND_ID,)
+        ).fetchone()
+        job = conn.execute(
+            "SELECT j.titel FROM applications a JOIN jobs j ON j.id = a.job_id"
+            " WHERE a.candidate_id=? AND a.status='eingestellt'"
+            " ORDER BY a.aktualisiert_am DESC LIMIT 1",
+            (CAND_ID,),
         ).fetchone()
         return {"mentor_rows": rows, "app_status": app[0] if app else None,
-                "cand_email": cand[0] if cand else None}
+                "cand_email": cand[0] if cand else None,
+                "cand_name": cand[1] if cand else None,
+                "job_titel": job[0] if job else None}
     finally:
         conn.close()
+
+
+def _cand_card(page, has):
+    """Kandidaten-Karte auf /employer/onboarding (Karten = eine je
+    (Kandidat,Status), `ORDER BY c.id DESC`). Ohne Namens-Scoping traf
+    `.first` eine FREMDE Karte (Datenkupplung06.10.2026)."""
+    return page.locator(".q-card").filter(
+        has_text=re.compile(re.escape(CAND_NAME), re.I)
+    ).filter(has=has).first
 
 
 def _panel(page, button_pattern: str):
@@ -101,7 +121,23 @@ def cleanup_mentoring():
     conn.close()
 
 
+def _open_expansion(page, items) -> bool:
+    """Job-Expansion oeffnen – NUR wenn noch zugeklappt (Quasar togglet sonst
+    beim zweiten Klick wieder zu → nachfolgende Sichtbarkeits-Assertions
+    flackern, Datenkupplung06.10.2026)."""
+    if items.count() == 0:
+        print(f"note: keine Expansion fuer {CAND_EXPANSION!r}")
+        return False
+    exp = items.first
+    content = exp.locator(".q-expansion-item__content")
+    if content.count() == 0 or not content.first.is_visible():
+        exp.locator(".q-item").first.click()
+        page.wait_for_timeout(1500)
+    return True
+
+
 def main() -> int:
+    global CAND_NAME, CAND_EXPANSION
     check_server()
     pre = pre_max_tasks()
     failures = []
@@ -114,6 +150,12 @@ def main() -> int:
     if before["cand_email"] != CAND_EMAIL:
         print(f"FAIL: cand{CAND_ID} E-Mail {before['cand_email']!r} != {CAND_EMAIL!r}")
         return 1
+    CAND_NAME = before["cand_name"] or ""
+    CAND_EXPANSION = before["job_titel"] or ""
+    if not CAND_NAME or not CAND_EXPANSION:
+        print(f"FAIL: Name/Job dynamisch nicht lesbar ({CAND_NAME!r}, {CAND_EXPANSION!r})")
+        return 1
+    print(f"OK dynamisch: Kandidat {CAND_NAME!r}, Expansion {CAND_EXPANSION!r}")
     cleanup_mentoring()
 
     with sync_playwright() as p:
@@ -129,9 +171,15 @@ def main() -> int:
             page_emp.goto(f"{BASE}/employer/onboarding", wait_until="load", timeout=90000)
             page_emp.wait_for_timeout(2500)
 
-            mentor_input = page_emp.get_by_label("Mentor (Name):").first
-            mentor_input.fill(MENTOR_NAME)
-            page_emp.get_by_role("button", name="Mentor zuweisen").first.click()
+            mentor_card = _cand_card(
+                page_emp, page_emp.get_by_label("Mentor (Name):")
+            )
+            if mentor_card.count() == 0:
+                raise AssertionError(
+                    f"keine Onboarding-Karte mit Mentor-Input fuer {CAND_NAME!r}"
+                )
+            mentor_card.get_by_label("Mentor (Name):").fill(MENTOR_NAME)
+            mentor_card.get_by_role("button", name="Mentor zuweisen").click()
             page_emp.wait_for_timeout(2500)
 
             after_assign = db_state()
@@ -157,14 +205,15 @@ def main() -> int:
             page_cand.wait_for_timeout(3500)
             print("cand URL:", page_cand.url)
 
-            # Expansion oeffnen (q-expansion-item Header)
-            exp_items = page_cand.locator(".q-expansion-item")
-            if exp_items.count() > 0:
-                try:
-                    exp_items.first.locator(".q-item").first.click()
-                    page_cand.wait_for_timeout(1500)
-                except Exception as e:
-                    print(f"expansion click note: {e}")
+            # Expansion oeffnen (q-expansion-item Header "🎉 {titel} – {firma}")
+            # → auf den JOB des Kandidaten scopen (`.first` traf sonst eine
+            # fremde Expansion, Datenkupplung06.10.2026).
+            _open_expansion(
+                page_cand,
+                page_cand.locator(".q-expansion-item").filter(
+                    has_text=re.compile(re.escape(CAND_EXPANSION), re.I)
+                ),
+            )
 
             mentor_line = page_cand.get_by_text(f"Ihr Ansprechpartner (Mentor): {MENTOR_NAME}")
             try:
@@ -177,7 +226,15 @@ def main() -> int:
             # ── 3) Employer: Patenschaft beenden (§4 HR-Klick) ──
             page_emp.goto(f"{BASE}/employer/onboarding", wait_until="load", timeout=90000)
             page_emp.wait_for_timeout(2500)
-            page_emp.get_by_role("button", name="Patenschaft beenden").first.click()
+            end_card = _cand_card(
+                page_emp,
+                page_emp.get_by_role("button", name="Patenschaft beenden"),
+            )
+            if end_card.count() == 0:
+                raise AssertionError(
+                    f"kein 'Patenschaft beenden' in Karte {CAND_NAME!r}"
+                )
+            end_card.get_by_role("button", name="Patenschaft beenden").click()
             page_emp.wait_for_timeout(2500)
 
             after_end = db_state()
@@ -197,13 +254,12 @@ def main() -> int:
             login_candidate(page_cand2)
             page_cand2.goto(f"{BASE}/candidate/onboarding", wait_until="load", timeout=90000)
             page_cand2.wait_for_timeout(3500)
-            exp_items = page_cand2.locator(".q-expansion-item")
-            if exp_items.count() > 0:
-                try:
-                    exp_items.first.locator(".q-item").first.click()
-                    page_cand2.wait_for_timeout(1500)
-                except Exception:
-                    pass
+            _open_expansion(
+                page_cand2,
+                page_cand2.locator(".q-expansion-item").filter(
+                    has_text=re.compile(re.escape(CAND_EXPANSION), re.I)
+                ),
+            )
             try:
                 page_cand2.get_by_text(
                     f"Ihr Ansprechpartner (Mentor): {MENTOR_NAME}"

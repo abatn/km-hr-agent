@@ -6,18 +6,22 @@ Spec: knowledge/portal/housing-search.md §§2/5, Plan entscheidungen.md
 keine Hand-Queue-Payloads.
 
 Ablauf:
-1. Harness-Precheck (Server) + DB-Baseline (cand1: keine eingestellte Bewerbung)
+1. Harness-Precheck (Server) + dynamische Kandidaten-Wahl: Kandidat mit
+   'eingeladen'-Bewerbung UND 0 'eingestellt' (Datenkupplung06.10.2026 —
+   cand1 hat inzwischen 3 davon), ggf. Passwort-Fixture (zurueckgesetzt)
 2. Statischer MD-Check: Checklistenpunkt in 4 Templates
-3. Employer-Login -> /employer/match -> Kandidat batnini -> 'Einstellen'
-   -> Dialog-Bestaetigung 'Einstellen' (employer.py:757/685).
+3. Employer-Login -> /employer/match -> Kandidaten-Card (per Klarnamen
+   gescoped) -> 'Einstellen' -> Dialog-Bestaetigung 'Einstellen'.
    Do-Hire wirkt seit P0-3 auf die Bewerbung der angeklickten Aktionszeile
    (application_id) -> hired_app_id dynamisch aus DB.
-4. Runner-Task onboarding_release abwarten -> report-{hired_app_id} enthaelt
+4. onboarding_release-Task des UI-Klicks abwarten UND im E2E-Lauf
+   deterministisch ausfuehren (e2e_isolation schaltet den Hintergrund-Runner
+   ab, KMHR_RUNNER_AUTOSTART=0) -> report-{hired_app_id} enthaelt
    '## 🏠 Wohnungssuche (Checkliste + freie Quellen)'
-5. Candidate-Login (#1) -> /candidate/onboarding -> Expansion oeffnen ->
+5. Candidate-Login -> /candidate/onboarding -> Expansion oeffnen ->
    Wohnungs-Abschnitt sichtbar
-6. Employer /employer/onboarding -> Karte cand1 sichtbar (HR-Lesicht Spec §2.5,
-   kein Report-Render dort)
+6. Employer /employer/onboarding -> Karte des Kandidaten sichtbar
+   (HR-Lesicht Spec §2.5, kein Report-Render dort)
 
 Ausfuehren: .venv-streamlit/bin/python3 tests/e2e_housing.py
 """
@@ -36,14 +40,25 @@ from e2e_harness import check_server, pre_max_tasks, db_residue_report  # noqa: 
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
-CAND_ID = 1
 HOUSING_HEADER = "## 🏠 Wohnungssuche (Checkliste + freie Quellen)"
 
 # Test-Logins (Projekt-Testbestand, gleiche Quelle wie e2e_mentoring.py)
 EMP_EMAIL = "hr@techvision.de"
 EMP_PASSWORD = "sicher123"
-CAND_EMAIL = "batniniabdelkader@yahoo.com"
-CAND_PASSWORD = "Abdel15121978!"
+KNOWN_LOGINS = (
+    ("batniniabdelkader@yahoo.com", "Abdel15121978!"),
+    ("e2e-beweis-phase1@example.com", "E2EMentoring2026!"),
+    ("recruiting.e2e.2809b@kmailtest.de", "Test1234!"),
+)
+# Design-Entscheidung: Test-Passwort fuer Kandidaten ohne notiertes Login
+HOUSING_PW = "E2EHousing2026!"
+
+# dynamisch in pick_candidate() gesetzt
+CAND_ID = 0
+CAND_EMAIL = ""
+CAND_PASSWORD = ""
+CAND_NAME = ""
+PW_FIXTURE: tuple[int, str | None] | None = None
 
 TEMPLATES = [
     ROOT / "knowledge" / "templates" / "onboarding-templates" / "onboarding-de.md",
@@ -72,6 +87,93 @@ def db_state() -> dict:
                 "cand_email": cand[0] if cand else None}
     finally:
         conn.close()
+
+
+def pick_candidate() -> bool:
+    """Waehlt dynamisch den Hire-Kandidaten (Datenkupplung06.10.2026).
+
+    Kriterien: >=1 Bewerbung 'eingeladen' (Klick 'Einstellen' ist legal, ALLOWED_TRANSITIONS)
+    UND 0 'eingestellt' (Vorbedingung hired==1). Bekanntes Test-Login wird
+    bevorzugt, sonst Passwort-Fixture (in restore() rueckgaengig).
+    """
+    global CAND_ID, CAND_EMAIL, CAND_PASSWORD, CAND_NAME, PW_FIXTURE
+    conn = sqlite3.connect(str(DB))
+    try:
+        rows = conn.execute(
+            "SELECT c.id, c.email, COALESCE(c.name,'') FROM candidates c "
+            "WHERE EXISTS (SELECT 1 FROM applications a WHERE a.candidate_id=c.id "
+            "              AND a.status='eingeladen') "
+            "  AND NOT EXISTS (SELECT 1 FROM applications a2 WHERE a2.candidate_id=c.id "
+            "                  AND a2.status='eingestellt') ORDER BY c.id"
+        ).fetchall()
+    finally:
+        conn.close()
+    if not rows:
+        print("FAIL: kein Kandidat mit 'eingeladen' ohne 'eingestellt'-Bewerbung")
+        return False
+    known = dict(KNOWN_LOGINS)
+    rows.sort(key=lambda r: (r[1] not in known, r[0]))
+    CAND_ID, CAND_EMAIL, CAND_NAME = rows[0]
+    CAND_PASSWORD = known.get(CAND_EMAIL)
+    if CAND_PASSWORD is None:
+        CAND_PASSWORD = HOUSING_PW
+        conn = sqlite3.connect(str(DB))
+        try:
+            old = conn.execute(
+                "SELECT password_hash FROM candidates WHERE id=?", (CAND_ID,)
+            ).fetchone()[0]
+            from webui.logic import hash_password_argon2id
+            conn.execute("UPDATE candidates SET password_hash=? WHERE id=?",
+                         (hash_password_argon2id(HOUSING_PW), CAND_ID))
+            conn.commit()
+        finally:
+            conn.close()
+        PW_FIXTURE = (CAND_ID, old)
+        print(f"OK Passwort-Fixture: cand{CAND_ID} ({CAND_EMAIL})")
+    print(f"OK Kandidat dynamisch: #{CAND_ID} {CAND_NAME!r} ({CAND_EMAIL})")
+    return True
+
+
+def run_onboarding_release(app_id: int, timeout_s: int = 60) -> str | None:
+    """Fuehrt den vom UI-Klick gequeueten onboarding_release-Task aus.
+
+    e2e_isolation.py startet die App mit KMHR_RUNNER_AUTOSTART=0 — ohne diese
+    Simulation laeuft kein Hintergrund-Runner und der Report entsteht nie
+    (Ursache des roten Laufs, 06.10.2026). Muster: tests/e2e_contract_preflight.py
+    (`_load_runner`), aber hier mit echtem process_task + DRY_RUN, damit kein
+    Mailversand stattfindet.
+    """
+    deadline = time.time() + timeout_s
+    row = None
+    while time.time() < deadline:
+        conn = sqlite3.connect(str(DB))
+        try:
+            row = conn.execute(
+                "SELECT id, payload FROM agent_tasks WHERE task_type='onboarding_release' "
+                "AND status='pending' AND json_extract(payload,'$.application_id')=? "
+                "ORDER BY id DESC LIMIT 1", (app_id,)).fetchone()
+        finally:
+            conn.close()
+        if row:
+            break
+        time.sleep(2)
+    if not row:
+        return f"kein pending onboarding_release-Task fuer app{app_id}"
+
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "agent_runner_e2e_housing", ROOT / "scripts" / "agent-runner.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.DB_PATH = Path(DB)
+    mod.DRY_RUN = True
+    conn = sqlite3.connect(str(DB))
+    try:
+        mod.process_task(conn, row[0], "onboarding_release", row[1], 0)
+    finally:
+        conn.close()
+    print(f"OK runner simulation: Task #{row[0]} (app{app_id}, DRY_RUN)")
+    return None
 
 
 def report_path(app_id: int) -> Path:
@@ -134,6 +236,8 @@ def wait_for_report(app_id: int, timeout_s: int = 90) -> bool:
 
 def main() -> int:
     check_server()
+    if not pick_candidate():
+        return 1
     pre = pre_max_tasks()
     failures = []
     before = db_state()
@@ -169,6 +273,9 @@ def main() -> int:
 
     failures.extend(check_templates())
 
+    hired_app_id = None
+    created_report: int | None = None  # Report-Vorhandensein VOR dem Lauf merken
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
@@ -180,13 +287,18 @@ def main() -> int:
             page_emp.goto(f"{BASE}/employer/match", wait_until="load", timeout=90000)
             page_emp.wait_for_timeout(3000)
 
-            # Kandidaten-Card 'batnini' (ui.card, kein q-expansion-item)
+            # Kandidaten-Card nach KLARNAMEN gescopen (`.q-card` mit
+            # has_text reichte vorher fuer 'batnini' — der Name ist jetzt
+            # dynamisch, Datenkupplung06.10.2026)
             # P0-3 (29.09.2026): Aktionen sind zustandsbewusst — 'Einstellen' erscheint nur
             # bei Bewerbungen im Status 'eingeladen' (frueher: immer 3 globale Buttons).
             cand_card = page_emp.locator(".q-card", has_text=re.compile(
-                "batnini", re.I)).filter(
+                re.escape(CAND_NAME), re.I)).filter(
                 has=page_emp.get_by_role("button", name="Einstellen")
             ).first
+            if cand_card.count() == 0:
+                raise AssertionError(
+                    f"keine Match-Card mit 'Einstellen' fuer {CAND_NAME!r}")
             cand_card.scroll_into_view_if_needed()
             page_emp.wait_for_timeout(500)
 
@@ -206,9 +318,16 @@ def main() -> int:
                 hired_app_id = None
             else:
                 hired_app_id = mid["hired"][0][0]
+                if not report_path(hired_app_id).exists():
+                    created_report = hired_app_id
                 print(f"OK hire click: app{hired_app_id} status=eingestellt")
 
-            # ── 2) Runner-Report mit Wohnungs-Abschnitt abwarten ──
+            # ── 2) Runner-Task ausfuehren (isolation: kein Hintergrund-Runner)
+            #        und Report mit Wohnungs-Abschnitt abwarten ──
+            if hired_app_id:
+                err = run_onboarding_release(hired_app_id)
+                if err:
+                    failures.append(f"Runner-Simulation: {err}")
             if hired_app_id and wait_for_report(hired_app_id):
                 print(f"OK report: onboarding-freigabe-bewerbung-{hired_app_id}.md "
                       "enthaelt Wohnungs-Abschnitt")
@@ -255,11 +374,12 @@ def main() -> int:
             page_emp.wait_for_timeout(2500)
             try:
                 card = page_emp.locator(".q-card", has_text=re.compile(
-                    "batnini", re.I)).first
-                if card.is_visible(timeout=5000):
-                    print("OK employer onboarding card for cand1 visible")
+                    re.escape(CAND_NAME), re.I)).first
+                if card.count() and card.is_visible(timeout=5000):
+                    print(f"OK employer onboarding card for cand{CAND_ID} visible")
                 else:
-                    failures.append("Employer-Onboarding: Karte cand1 nicht sichtbar")
+                    failures.append(
+                        f"Employer-Onboarding: Karte cand{CAND_ID} nicht sichtbar")
             except Exception as e:
                 failures.append(f"Employer-Onboarding Karte: {e}")
             ctx_emp.close()
@@ -277,8 +397,28 @@ def main() -> int:
                     (_st, _ts, _aid))
             _conn9.execute("DELETE FROM application_status_history WHERE id > ?",
                            (pre_hist_max,))
+            # Test-Residue aus der Runner-Simulation entfernen (Task-Zeile +
+            # von dieser Runde erzeugter Report), damit db_residue_report(pre)
+            # == 0 bleibt und der naechste Lauf den Report echt prueft.
+            if hired_app_id:
+                _conn9.execute(
+                    "DELETE FROM agent_tasks WHERE task_type='onboarding_release' "
+                    "AND json_extract(payload,'$.application_id')=?", (hired_app_id,))
             _conn9.commit()
             _conn9.close()
+            if created_report is not None:
+                _rep = report_path(created_report)
+                if _rep.exists():
+                    _rep.unlink()
+                    print(f"removed report-{created_report} (Test-Erzeugnis)")
+            if PW_FIXTURE is not None:
+                _cid, _old = PW_FIXTURE
+                _conn9 = sqlite3.connect(str(DB))
+                _conn9.execute("UPDATE candidates SET password_hash=? WHERE id=?",
+                               (_old, _cid))
+                _conn9.commit()
+                _conn9.close()
+                print(f"OK Passwort-Fixture zurueckgesetzt: cand{_cid}")
             _final = db_state()
             print(f"Final (nach Restore): {_final}")
             if _final["hired"]:

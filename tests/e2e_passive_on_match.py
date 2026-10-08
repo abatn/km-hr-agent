@@ -4,8 +4,10 @@ Spec: knowledge/portal/matching-filter.md Abschnitt (g) — STAGING 26.09.2026.
 Dieser Test ist der ROTE BEWEIS: Teil A FAILT, solange E47/E48 (employer.py)
 nicht angewandt sind.
 
-A QUELLTEXT  Label "passiver Match" + Gate (Must-Have + 50%) + Pool == app.py:3898
-             + Early-Return ohne conn.close()/return
+A QUELLTEXT  Label "passiver Match" + Gate (Must-Have + 50%) + Pool (IST-Stand
+             06.10.2026: Modulkonstante CAND_CV_STATUS in employer.py, N-K2
+             01.10.2026 — kein Literal mehr; Parität zur Pool-Literalstelle in
+             app.py) + Early-Return ohne conn.close()/return
              (A5-Parser normalisiert Zeilenumbrüche zwischen zwei Python-String-
               Literalen, A7 ignoriert Kommentarzeilen — beides Ergänzungen vom
               26.09.2026 nach GO des Nutzers, damit der Test mit dem Code des
@@ -48,6 +50,16 @@ def _triples_in(text: str) -> list:
     return out
 
 
+def _const_tuple(text: str, name: str) -> tuple | None:
+    """Wert einer Modulkonstante `NAME = ("a", "b", ...)` aus dem Quelltext."""
+    m = re.search(rf"^{name}\s*=\s*\(([^)]*)\)", text, re.M)
+    if not m:
+        return None
+    raw = " ".join(m.group(1).split())
+    return tuple("".join(ch for ch in p if ch not in "'\"").strip()
+                 for p in raw.split(","))
+
+
 def check_a(failures) -> None:
     emp = (ROOT / "webui" / "pages" / "employer.py").read_text(encoding="utf-8")
     app = (ROOT / "app.py").read_text(encoding="utf-8")
@@ -59,8 +71,25 @@ def check_a(failures) -> None:
         failures.append("A3 50%-Erfahrungs-Gate fehlt")
     if "if _treffer == 0 and not _passive:" not in emp:
         failures.append("A4 Leercase-Bedingung fehlt (soll 'and not _passive' sein)")
-    if POOL not in _triples_in(emp) or POOL not in _triples_in(app):
-        failures.append(f"A5 Pool-Tripel != app.py:3898 {POOL}")
+    # A5 (IST-Stand 06.10.2026, N-K2 01.10.2026): employer.py parametrisiert den
+    # Pool ueber die Modulkonstante CAND_CV_STATUS — das fruehere Literal
+    # `status IN ('lebenslauf_hochgeladen', …)` existiert dort nicht mehr.
+    if _const_tuple(emp, "CAND_CV_STATUS") != POOL:
+        failures.append(
+            f"A5 CAND_CV_STATUS != app.py-Pool {POOL} "
+            f"(gefunden: {_const_tuple(emp, 'CAND_CV_STATUS')})")
+    pi = emp.find("_passive_best = {}")
+    pj = emp.find("sorted(_passive_best.values()", pi)
+    if pi < 0 or pj < 0:
+        failures.append("A5 Passiv-Block (_passive_best) in employer.py nicht gefunden")
+    else:
+        block = emp[pi:pj]
+        if "status IN (" not in block or "list(CAND_CV_STATUS)" not in block:
+            failures.append(
+                "A5 Passiv-Pool kommt nicht aus CAND_CV_STATUS "
+                "(status IN ( + list(CAND_CV_STATUS) im _passive_best-Block erwartet)")
+    if POOL not in _triples_in(app):
+        failures.append(f"A5 Parität: app.py Pool-Literal (Feedback-Picker) != {POOL}")
     i = emp.find("# Kandidaten mit Bewerbungen fuer diesen Employer")
     if i < 0:
         failures.append("A6 Anker-Kommentar '# Kandidaten mit Bewerbungen...' fehlt")
@@ -186,7 +215,8 @@ def main() -> int:
         for f in failures:
             print(" -", f)
         return 1
-    print(f"PASS: P3 Passiv-Matches — Quelltext (Gate + Pool app.py:3898), "
+    print(f"PASS: P3 Passiv-Matches — Quelltext (Gate + Pool CAND_CV_STATUS "
+          f"== app.py-Pool-Literal ⓘ06.10.2026), "
           f"DB-Replik {ctx.get('passive_n', 0)} Passiv-Treffer, UI view-only")
     return 0
 

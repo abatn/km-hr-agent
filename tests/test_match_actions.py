@@ -184,10 +184,10 @@ def test_m13_score_bar_ohne_eigenes_label_und_eine_kategorie_zeile():
     Echter Nachweis: `tests/e2e_m13_score_once.py` (14 Klappen, je 1 Treffer).
     """
     block = _slice(SRC, 'with _job_exp.add_slot("header"):',
-                   "ui.label(_('{0}/100 ({1})').format(total, kategorie))")
+                   "ui.label(_('{0}/100 ({1})').format(total, _(kategorie)))")
     assert "score_bar(total, show_label=False)" in block
     assert block.count("/100") == 1, "Kopf darf genau EIN Score-Label enthalten"
-    assert "ui.label(_('{0}/100 ({1})').format(total, kategorie))" in block
+    assert "ui.label(_('{0}/100 ({1})').format(total, _(kategorie)))" in block
 
 
 # ─── M-18 (01.10.2026): Skills nicht mehr still auf 4 kürzen ──────────────

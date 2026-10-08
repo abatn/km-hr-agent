@@ -8,12 +8,22 @@ Quelle: https://github.com/bedro96/email-send-mcp (Inspiration)
 from fastmcp import FastMCP
 import smtplib
 import os
+import sys
 from pathlib import Path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime
+
+# i18n (Variante B, P2b 07.10.2026): framework-freie Kernschicht (gettext,
+# kein NiceGUI). Spec: knowledge/system/i18n-runner-chain.md §7.1.
+# Defensiv: das Skript liegt im Projekt-Root, sys.path[0] ist das bei
+# `python3 mcp-email-server.py` – der Insert schützt den Import trotzdem.
+_PROJECT_ROOT = Path(__file__).resolve().parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+from webui.i18n_core import tr
 
 # .env laden
 env_file = Path(__file__).parent / ".env-email"
@@ -170,7 +180,8 @@ def send_pre_screen_invitation(
     meet_url: str,
     date: str,
     time: str,
-    questions_summary: str
+    questions_summary: str,
+    language: str = "de"
 ) -> str:
     """
     Sendet eine Pre-Screening-Einladung mit Meeting-Link.
@@ -183,30 +194,31 @@ def send_pre_screen_invitation(
         date: Datum
         time: Uhrzeit
         questions_summary: Zusammenfassung der Fragen
+        language: Zielsprache der Mail (de/en/fr/ar; Default de – Altverhalten)
 
     Returns:
         Erfolgsmeldung
     """
-    subject = f"Pre-Screening: {position}"
+    subject = tr("Pre-Screening: {position}", language, position=position)
 
-    body = f"""Sehr geehrte(r) {candidate_name},
-
-wir möchten Sie herzlich zu einem kurzen Pre-Screening für die Position als **{position}** einladen.
-
-**Meeting-Details:**
-- **Link:** {meet_url}
-- **Datum:** {date}
-- **Uhrzeit:** {time}
-- **Dauer:** ca. 30 Minuten
-
-**Themen:**
-{questions_summary}
-
-Bitte bestätigen Sie Ihre Teilnahme kurz per Rück-Mail.
-
-Mit freundlichen Grüßen,
-HR Team
-"""
+    body = "\n\n".join([
+        tr("Sehr geehrte(r) {0},", language).format(candidate_name),
+        tr("wir möchten Sie herzlich zu einem kurzen Pre-Screening für die "
+           "Position als **{position}** einladen.", language, position=position),
+        "\n".join([
+            tr("**Meeting-Details:**", language),
+            tr("- **Link:** {meet_url}", language, meet_url=meet_url),
+            tr("- **Datum:** {0}", language).format(date),
+            tr("- **Uhrzeit:** {uhrzeit}", language, uhrzeit=time),
+            tr("- **Dauer:** ca. 30 Minuten", language),
+        ]),
+        "\n".join([
+            tr("**Themen:**", language),
+            questions_summary,
+        ]),
+        tr("Bitte bestätigen Sie Ihre Teilnahme kurz per Rück-Mail.", language),
+        tr("Mit freundlichen Grüßen,\nHR Team", language),
+    ])
 
     return send_email(to, subject, body)
 

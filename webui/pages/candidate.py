@@ -5,6 +5,7 @@ Bewerbungen, Dokumente, Sprachtest, Pre-Screen, Onboarding.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
@@ -67,8 +68,8 @@ def _notify_neue_bewerbung(job_id: int, kandidaten_name: str = "",
         if not row or not row[0]:
             return  # Stelle ohne Arbeitgeber: nichts zu benachrichtigen
         db.insert_notification(
-            int(row[0]), "employer", "Neue Bewerbung",
-            f"{name or 'Ein Bewerber'} hat sich beworben: {row[1]}",
+            int(row[0]), "employer", _("Neue Bewerbung"),
+            _('{0} hat sich beworben: {1}').format(name or _('Ein Bewerber'), row[1]),
         )
     except Exception as ex:
         print(f"[R3-5] Benachrichtigung fehlgeschlagen (job={job_id}): {ex}")
@@ -142,6 +143,11 @@ def _upload_section(s: dict) -> None:
                         "cv_path": str(save_path),
                     })
                     # SPA-Refresh: Upload-Box bleibt aktiv (kein Page-Reload)
+                    # Toast-vor-Navigation-Regel (06.10.2026,
+                    # knowledge/ui-design-system.md): navigate_to()
+                    # loest window.open(url,"_self") aus und wuerde
+                    # den Toast sofort zerstoeren.
+                    await asyncio.sleep(1.5)
                     navigate_to("candidate", "profil")
                 except Exception as ex:
                     ui.notify(_('Fehler: {0}').format(ex), type="negative")
@@ -297,8 +303,8 @@ def _tab_profil(s: dict) -> None:
         info_row(_('Status'), status_label(profile.get("status")) if profile.get("status") else "—", icon="info")
         info_row(_('Standort'), profile.get("standort") or "—", icon="location_on")
         info_row(_('Nationalitaet'), profile.get("nationalitaet") or "—", icon="flag")
-        info_row(_('Visum-Status'), profile.get("visum_status") or "—", icon="badge")
-        info_row(_('Verfuegbarkeit'), profile.get("verfuegbarkeit") or "—", icon="schedule")
+        info_row(_('Visum-Status'), _(profile.get("visum_status") or "—"), icon="badge")
+        info_row(_('Verfuegbarkeit'), _(profile.get("verfuegbarkeit") or "—"), icon="schedule")
         info_row(_('Aktuelle Position'), profile.get("aktuelle_position") or "—", icon="work")
 
     # Skills
@@ -317,11 +323,11 @@ def _tab_profil(s: dict) -> None:
     with ui.expansion(_('Berufserfahrung'), icon="work", value=True).classes("w-full mt-4"):
         years = profile.get("berufserfahrung_jahre")
         if years:
-            stat_card(label=_('Jahre Erfahrung'), value=f"{years} Jahre", icon="work", color=PRIMARY)
+            stat_card(label=_('Jahre Erfahrung'), value=_('{0} Jahre').format(years), icon="work", color=PRIMARY)
         else:
             ui.label(_('Noch nicht erfasst')).classes(C.MUTED)
         if profile.get("abschluss"):
-            info_row(_('Abschluss'), profile["abschluss"], icon="school")
+            info_row(_('Abschluss'), _(profile["abschluss"]), icon="school")
 
     # Languages
     with ui.expansion(_('Sprachen'), icon="translate", value=True).classes("w-full mt-4"):
@@ -331,10 +337,10 @@ def _tab_profil(s: dict) -> None:
         if profile.get("englisch"):
             lang_items.append(("Englisch", profile["englisch"]))
         if profile.get("franzoesisch"):
-            lang_items.append(("Franzoesisch", profile["franzoesisch"]))
+            lang_items.append(("Französisch", profile["franzoesisch"]))
         if lang_items:
             for lang, level in lang_items:
-                info_row(lang, level, icon="translate")
+                info_row(_(lang), level, icon="translate")
         else:
             ui.label(_('Noch nicht erfasst')).classes(C.MUTED)
 
@@ -367,10 +373,10 @@ def _tab_profil(s: dict) -> None:
             # A3a (30.09.2026): KEINE erfundenen Defaults ("Sofort", "B1", 0) — ungesetzte
             # Felder bleiben leer (=NULL beim Speichern), select ist löschbar (clearable).
             sel_visum = ui.select(label=_('Visum-Status'),
-                      options=visum_options,
+                      options={v: _(v) for v in visum_options},
                       value=profile.get("visum_status") or None).props("clearable").classes("w-full")
             sel_verfuegbarkeit = ui.select(label=_('Verfuegbarkeit'),
-                      options=verf_options,
+                      options={v: _(v) for v in verf_options},
                       value=profile.get("verfuegbarkeit") or None).props("clearable").classes("w-full")
             inp_position = ui.input(label=_('Aktuelle Position'), value=profile.get("aktuelle_position") or "").classes("w-full")
             num_erfahrung = ui.number(label=_('Jahre Erfahrung'), min=0, max=50,
@@ -382,23 +388,23 @@ def _tab_profil(s: dict) -> None:
 
         with ui.grid(columns=2).classes("w-full gap-4 mt-2"):
             sel_abschluss = ui.select(label=_('Abschluss'),
-                      options=abschluss_options,
+                      options={v: _(v) for v in abschluss_options},
                       value=profile.get("abschluss") or None).props("clearable").classes("w-full")
             sel_deutsch = ui.select(label=_('Deutsch'),
-                      options=de_options,
+                      options={v: _(v) for v in de_options},
                       value=profile.get("deutsch") or None).props("clearable").classes("w-full")
             sel_englisch = ui.select(label=_('Englisch'),
-                      options=en_options,
+                      options={v: _(v) for v in en_options},
                       value=profile.get("englisch") or None).props("clearable").classes("w-full")
             sel_franz = None
             if hat_franz:
                 sel_franz = ui.select(label=_('Französisch'),
-                          options=fr_options,
+                          options={v: _(v) for v in fr_options},
                           value=profile.get("franzoesisch") or None).props("clearable").classes("w-full")
             num_gehalt = ui.number(label=_('Gehaltsvorstellung (EUR)'), min=0, max=200000,
                       value=profile.get("gehaltsvorstellung")).classes("w-full")
 
-        def save_profile():
+        async def save_profile():
             werte = {
                 "standort": inp_standort.value, "nationalitaet": inp_nationalitaet.value,
                 "visum_status": sel_visum.value, "verfuegbarkeit": sel_verfuegbarkeit.value,
@@ -415,6 +421,11 @@ def _tab_profil(s: dict) -> None:
             conn.commit()
             conn.close()
             ui.notify(_('Profil gespeichert!'), type="positive")
+            # Toast-vor-Navigation-Regel (06.10.2026,
+            # knowledge/ui-design-system.md): navigate_to()
+            # loest window.open(url,"_self") aus und wuerde
+            # den Toast sofort zerstoeren.
+            await asyncio.sleep(1.5)
             navigate_to("candidate", "profil")
 
         ui.button(_('Profil speichern'), icon="save", on_click=save_profile).classes(C.BTN_PRIMARY + " mt-3")
@@ -441,7 +452,7 @@ def _tab_profil(s: dict) -> None:
             items = []
             for h_status, h_date, h_notiz in history:
                 items.append({
-                    "title": f"{h_status}",
+                    "title": status_label(h_status),
                     "status": "done" if h_status in ("eingestellt", "abgelehnt", "zurückgezogen") else "active",
                     "date": h_date[:16] if h_date else "",
                 })
@@ -582,7 +593,7 @@ def _tab_stellen(s: dict) -> None:
                     def _open_apply_dialog(jid=j_id, titel=j_titel, firma=e_firma):
                         with ui.dialog() as dialog, ui.card().classes("w-[520px]"):
                             ui.label(_('Bewerbung: {0}').format(titel)).classes(C.CARD_TITLE)
-                            ui.label(firma or "Unbekannt").classes(C.SMALL + " text-gray-500")
+                            ui.label(firma or _('Unbekannt')).classes(C.SMALL + " text-gray-500")
                             if zurueckgezogen:
                                 # P1-1: ehrliche Ansage, was beim erneuten Senden passiert
                                 ui.label(
@@ -592,7 +603,7 @@ def _tab_stellen(s: dict) -> None:
                                 .props("maxlength=2000").classes("w-full")
                             with ui.row().classes("justify-end gap-2 mt-2 w-full"):
                                 ui.button(_('Abbrechen'), on_click=dialog.close).props("flat")
-                                def _submit():
+                                async def _submit():
                                     try:
                                         # R3-5 (N-D1): Rueckgabe wird ausgewertet —
                                         # notifications-Zeile fuer den Arbeitgeber
@@ -605,6 +616,11 @@ def _tab_stellen(s: dict) -> None:
                                         )
                                         ui.notify(_('Bewerbung gesendet! Der Agent prueft Ihren Lebenslauf.'), type="positive")
                                         dialog.close()
+                                        # Toast-vor-Navigation-Regel (06.10.2026,
+                                        # knowledge/ui-design-system.md): navigate_to()
+                                        # loest window.open(url,"_self") aus und wuerde
+                                        # den Toast sofort zerstoeren.
+                                        await asyncio.sleep(1.5)
                                         navigate_to("candidate", "stellen")
                                     except sqlite3.IntegrityError:
                                         ui.notify(_('Sie haben sich bereits auf diese Stelle beworben.'), type="negative")
@@ -736,8 +752,8 @@ def _tab_bewerbungen(s: dict) -> None:
                         def _ask_withdraw(a_id=b_id):
                             from webui.components import confirm_dialog
                             confirm_dialog(
-                                "Bewerbung zurückziehen?",
-                                'Der Status wird auf „Zurückgezogen" gesetzt. Diese Aktion kann nicht rückgängig gemacht werden.',
+                                _("Bewerbung zurückziehen?"),
+                                _('Der Status wird auf „Zurückgezogen" gesetzt. Diese Aktion kann nicht rückgängig gemacht werden.'),
                                 on_confirm=lambda: _withdraw(a_id=a_id),
                             )
 
@@ -816,7 +832,7 @@ def _tab_bewerbungen(s: dict) -> None:
                             for h_status, h_date in historie:
                                 h_icon = STATUS_ICONS.get(h_status, "📄")
                                 items.append({
-                                    "title": f"{h_icon} {h_status}",
+                                    "title": f"{h_icon} {status_label(h_status)}",
                                     "status": "done" if h_status in ("eingestellt", "abgelehnt", "zurückgezogen") else "active",
                                     "date": h_date[:10] if h_date else "",
                                 })
@@ -838,7 +854,7 @@ def _tab_bewerbungen(s: dict) -> None:
 def _dokumente_section(s: dict) -> None:
     cand_id = s["user_cand_id"]
     _doc_typen = ["Zeugnis", "Zertifikat", "Sprachzeugnis", "Pass", "Visum/Aufenthaltstitel", "Sonstiges"]
-    doc_typ = ui.select(options=_doc_typen, value=_doc_typen[0], label=_('Dokumenttyp')).classes("w-full mb-4")
+    doc_typ = ui.select(options={v: _(v) for v in _doc_typen}, value=_doc_typen[0], label=_('Dokumenttyp')).classes("w-full mb-4")
 
     async def on_multi_upload(e):
         _typ_slug = re.sub(r"[^A-Za-z]+", "-", doc_typ.value).strip("-")
@@ -851,7 +867,7 @@ def _dokumente_section(s: dict) -> None:
                 _clean = logic.safe_upload_name(file.name)
                 # R5-2/S3c: serverseitige Endungsprüfung + accept-Filter
                 if not _clean.lower().endswith((".pdf", ".txt", ".webm", ".mp4")):
-                    fehler_liste.append(f"{file.name} (nur .pdf/.txt/.webm/.mp4)")
+                    fehler_liste.append(_('{0} (nur .pdf/.txt/.webm/.mp4)').format(file.name))
                     continue
                 _path = db.BASE_DIR / "testdaten" / f"kandidat-{cand_id}-{_typ_slug}-{_clean}"
                 _path.write_bytes(await file.read())
@@ -866,15 +882,14 @@ def _dokumente_section(s: dict) -> None:
 
         if ok_liste:
             ui.notify(
-                _("{0} Dokument(e) gespeichert als Typ '{1}'.").format(len(ok_liste), doc_typ.value),
+                _("{0} Dokument(e) gespeichert als Typ '{1}'.").format(len(ok_liste), _(doc_typ.value)),
                 type="positive",
             )
         if fehler_liste:
             ui.notify(
-                f"❌ {len(fehler_liste)} Dokument(e) konnten NICHT gespeichert werden: "
-                f"{', '.join(fehler_liste[:3])}"
-                + (" …" if len(fehler_liste) > 3 else "")
-                + " — bitte erneut versuchen oder Administrator kontaktieren.",
+                _('❌ {0} Dokument(e) konnten NICHT gespeichert werden: {1}{2} — bitte erneut versuchen oder Administrator kontaktieren.').format(
+                    len(fehler_liste), ', '.join(fehler_liste[:3]),
+                    " …" if len(fehler_liste) > 3 else ""),
                 type="negative",
             )
         refresh_docs()
@@ -897,7 +912,7 @@ def _dokumente_section(s: dict) -> None:
                         with ui.row().classes("items-center gap-3"):
                             ui.icon("description").classes("text-blue-500")
                             with ui.column():
-                                ui.label(d_typ).classes("font-medium")
+                                ui.label(_(d_typ)).classes("font-medium")
                                 ui.label(d_pfad.split("/")[-1] if "/" in d_pfad else d_pfad).classes(C.MUTED)
                         with ui.row().classes("items-center gap-2"):
                             if d_dat:
@@ -918,8 +933,8 @@ def _dokumente_section(s: dict) -> None:
                             def _ask_delete(_did=d_id, _dpfad=d_pfad):
                                 from webui.components import confirm_dialog
                                 confirm_dialog(
-                                    "Dokument löschen?",
-                                    "Diese Datei wird vom Server entfernt. Dies kann nicht rückgängig gemacht werden.",
+                                    _("Dokument löschen?"),
+                                    _("Diese Datei wird vom Server entfernt. Dies kann nicht rückgängig gemacht werden."),
                                     on_confirm=lambda: delete_doc(_did=_did, _dpfad=_dpfad),
                                 )
 
@@ -944,9 +959,8 @@ VIDEO_HEADING = "## Video-Vorstellung"
 def video_section_md(video_url: str) -> str:
     return (
         f"{VIDEO_HEADING}\n\n"
-        f"- **Link:** [{video_url}]({video_url})\n"
-        "- **Sichtbarkeit:** HR sieht den Link im Recruiting-Modus ohne Status-Gate "
-        "(zur Bewertung vor der Übernahme).\n\n"
+        + _("- **Link:** [{0}]({1})").format(video_url, video_url) + "\n"
+        + _("- **Sichtbarkeit:** HR sieht den Link im Recruiting-Modus ohne Status-Gate (zur Bewertung vor der Übernahme).") + "\n\n"
     )
 
 
@@ -1006,10 +1020,10 @@ def persist_video_link(ergebnisse: Path, cand_id, video_url: str, now=None) -> P
     else:
         p = Path(ergebnisse) / f"self-presentation-kandidat-{cand_id}-{now.strftime('%Y-%m-%d')}.md"
         head = (
-            f"# Selbstpräsentation: Kandidat #{cand_id}\n\n"
-            f"**Datum:** {now.strftime('%d.%m.%Y')}\n\n"
-            "## Ihr Meeting-Raum\n\n"
-            "- Noch kein Raum generiert (Tab 📹 Pre-Screen).\n\n"
+            _("# Selbstpräsentation: Kandidat #{0}").format(cand_id) + "\n\n"
+            + _("**Datum:** {0}").format(now.strftime('%d.%m.%Y')) + "\n\n"
+            + _("## Ihr Meeting-Raum") + "\n\n"
+            + _("- Noch kein Raum generiert (Tab 📹 Pre-Screen).") + "\n\n"
         )
     p.write_text(head + video_section_md(video_url), encoding="utf-8")
     return p
@@ -1087,24 +1101,24 @@ def _tab_prescreen(s: dict) -> None:
         eigene_fragen = []
         if skills:
             for sk in [x.strip() for x in skills.split(",") if x.strip()][:4]:
-                eigene_fragen.append(("Technisch", f"Beschreiben Sie ein konkretes Projekt mit {sk}. Welche Ergebnisse wurden erzielt?"))
+                eigene_fragen.append(("Technisch", _("Beschreiben Sie ein konkretes Projekt mit {0}. Welche Ergebnisse wurden erzielt?").format(sk)))
         if soft:
             for sk in [x.strip() for x in soft.split(",") if x.strip()][:2]:
-                eigene_fragen.append(("Soft Skills", f"Geben Sie ein Beispiel, das Ihre Stärke in '{sk}' zeigt."))
-        eigene_fragen.append(("Motivation", "Welche Rolle suchen Sie und warum?"))
-        eigene_fragen.append(("Praktisch", "Wann könnten Sie starten? Wie ist Ihre Gehaltsvorstellung?"))
+                eigene_fragen.append(("Soft Skills", _("Geben Sie ein Beispiel, das Ihre Stärke in '{0}' zeigt.").format(sk)))
+        eigene_fragen.append(("Motivation", _("Welche Rolle suchen Sie und warum?")))
+        eigene_fragen.append(("Praktisch", _("Wann könnten Sie starten? Wie ist Ihre Gehaltsvorstellung?")))
 
         from datetime import datetime
-        md = f"# Selbstpräsentation: Kandidat #{cand_id}\n\n"
-        md += f"**Modus:** Selbstpräsentation (CANDIDATE-Session)\n"
-        md += f"**Datum:** {datetime.now().strftime('%d.%m.%Y')}\n\n"
-        md += "## Ihr Meeting-Raum\n\n"
-        md += f"- **Link:** [{meet_url}]({meet_url})\n"
-        md += "- **Empfehlung:** 3–5 Minuten, Start mit Kurzvorstellung, dann die Fragen unten beantworten.\n\n"
-        md += "## Ihre Leitfragen\n\n"
+        md = _("# Selbstpräsentation: Kandidat #{0}").format(cand_id) + "\n\n"
+        md += _("**Modus:** Selbstpräsentation (CANDIDATE-Session)") + "\n"
+        md += _("**Datum:** {0}").format(datetime.now().strftime('%d.%m.%Y')) + "\n\n"
+        md += _("## Ihr Meeting-Raum") + "\n\n"
+        md += _("- **Link:** [{0}]({1})").format(meet_url, meet_url) + "\n"
+        md += _("- **Empfehlung:** 3–5 Minuten, Start mit Kurzvorstellung, dann die Fragen unten beantworten.") + "\n\n"
+        md += _("## Ihre Leitfragen") + "\n\n"
         for i, (kat, frage) in enumerate(eigene_fragen, 1):
-            md += f"{i}. **[{kat}]** {frage}\n"
-        md += f"\n*Erstellt am {datetime.now().strftime('%d.%m.%Y %H:%M')} vom KM-HR-Agenten.*\n"
+            md += f"{i}. **[{_(kat)}]** {frage}\n"
+        md += "\n" + _("*Erstellt am {0} vom KM-HR-Agenten.*").format(datetime.now().strftime('%d.%m.%Y %H:%M')) + "\n"
 
         filename = f"self-presentation-kandidat-{cand_id}-{datetime.now().strftime('%Y-%m-%d')}.md"
         # A4 (30.09.2026): vorhandenen "## Video-Vorstellung"-Abschnitt beim Schreiben
@@ -1218,7 +1232,7 @@ def _tab_sprachtest(s: dict) -> None:
         with ui.grid(columns=3).classes("w-full gap-3 mb-6"):
             for sprache, niveau, punkte, cefr_level, datum in tests:
                 with ui.card().classes(C.CARD + " py-3"):
-                    ui.label(_('{0} {1}').format(sprache, niveau)).classes("font-medium")
+                    ui.label(_('{0} {1}').format(_(sprache), niveau)).classes("font-medium")
                     # C4: Prozent wie Streamlit (app.py:2950 {t[2]*100:.0f}%)
                     ui.label(_('Score: {0:.0f}%').format((punkte or 0) * 100)).classes(C.BODY)
                     ui.label(_('CEFR: {0}').format(cefr_level)).classes(C.SMALL)
@@ -1418,7 +1432,7 @@ def _tab_sprachtest(s: dict) -> None:
     with ui.card().classes(C.CARD + " w-full"):
         with ui.grid(columns=3).classes("w-full gap-4"):
             ui.select(
-                options=["Deutsch", "Englisch", "Französisch"],
+                options={v: _(v) for v in ["Deutsch", "Englisch", "Französisch"]},
                 value="Deutsch",
                 label=_('Sprache'),
                 on_change=lambda e: test_state.update(sprache=e.value),
@@ -1533,7 +1547,7 @@ def _tab_onboarding(s: dict) -> None:
                     for _h_status, _h_date, _h_by in _history:
                         _h_icon = STATUS_ICONS.get(_h_status, "📄")
                         _items.append({
-                            "title": f"{_h_icon} {_h_status}",
+                            "title": f"{_h_icon} {status_label(_h_status)}",
                             "status": "done" if _h_status in ("eingestellt", "abgelehnt", "zurückgezogen") else "active",
                             "date": _h_date[:10] if _h_date else "",
                         })
@@ -1652,7 +1666,7 @@ def _tab_dashboard(s: dict) -> None:
             with ui.card().classes(C.CARD + " w-full mt-4"):
                 ui.label(_('Bewerbungen nach Status')).classes(C.CARD_TITLE + " mb-2")
                 ui.echart({
-                    "title": {"text": "Status-Verteilung", "left": "center"},
+                    "title": {"text": _("Status-Verteilung"), "left": "center"},
                     "tooltip": {"trigger": "item"},
                     "legend": {"orient": "vertical", "left": "left"},
                     "series": [{
@@ -1711,7 +1725,7 @@ def create() -> None:
         shell(
             role="candidate",
             user_id=s.get("user_cand_id", 0),
-            user_name=s.get("user_name", "Profil"),
+            user_name=s.get("user_name", _("Profil")),
             menu_items=_menu_items(),
             logout_fn=lambda: logic.logout_user(s),
             content_fn=render_page,

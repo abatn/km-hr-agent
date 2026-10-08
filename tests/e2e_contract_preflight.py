@@ -9,11 +9,19 @@ Ablauf:
 1. Harness-Precheck (Server) + statische Checks (Template, Skill, Katalog,
    KEIN https-Literal im contract_preflight-Block des Runners)
 2. Employer-Login -> /employer/onboarding -> Button 'Vertrags-Check starten'
-3. Runner-Task contract_preflight abwarten ->
-   ergebnisse/contract-preflight-bewerbung-{app_id}.md enthaelt
+3. Task-Anlage in agent_tasks abwarten (HR-Klick -> Queue) + RUNNER-SIMULATION:
+   die Isolation startet mit KMHR_RUNNER_AUTOSTART=0 (tests/e2e_isolation.py),
+   der Hintergrund-Runner laeuft also NICHT. Praezedenz AGENTS.md: 'E2E T1-T8
+   passed (AppTest + runner simulation)' -> der Test fuehrt die EINE
+   Task-Ausfuehrung deterministisch selbst aus (process_task des Runner-Moduls
+   gegen die SPIEGEL-DB, kein Subprocess, kein Netz-LLM, keine Mail:
+   contract_preflight ist deterministisch, Dispatch-Elif im Runner).
+4. ergebnisse/contract-preflight-bewerbung-{app_id}.md enthaelt
    '13,90' + 'Contract Preflight' + Quellen-URL aus Katalog (kein Literalfund
-   im Report-Generator ausser Katalog-URL)
-4. Agent-Details zeigt result_path (oder Report-Datei reicht als Beweis)
+   im Report-Generator ausser Katalog-URL) -- VOLLE Assertion, nichts entfallen
+5. Agent-Details zeigt result_path (oder Report-Datei reicht als Beweis)
+6. F3-Hygiene (07.10.2026): der Lauf entfernt seinen eigenen Queue-Task
+   (id > pre_max) und den von ihm erzeugten Report wieder -> Test-Reste=0.
 
 Ausfuehren: .venv-streamlit/bin/python3 tests/e2e_contract_preflight.py
 """
@@ -78,6 +86,112 @@ def report_path(app_id: int) -> Path:
     return ROOT / "ergebnisse" / f"contract-preflight-bewerbung-{app_id}.md"
 
 
+def cleanup(pre: int, app_id: int, rep: Path, rep_existed_before: bool) -> None:
+    """F3-Hygiene: nur vom DIESEN Lauf erzeugte Artefakte entfernen.
+
+    Loescht ausschliesslich agent_tasks-Zeilen mit id > pre (Queue-Zeile aus
+    dem HR-Klick) und den Report nur, wenn er vor dem Lauf NICHT existierte
+    (dann hat dieser Lauf ihn erzeugt/regeneriert). Bestehende done-Tasks/
+    Reports aus frueheren oder produktiven Laeufen bleiben unberuehrt.
+    """
+    conn = sqlite3.connect(str(DB))
+    try:
+        conn.execute(
+            "DELETE FROM agent_tasks WHERE id > ? "
+            "AND task_type='contract_preflight' "
+            "AND json_extract(payload, '$.application_id') = ?",
+            (pre, app_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+    if not rep_existed_before and rep.exists():
+        rep.unlink()
+        print(f"OK cleanup: Report {rep.name} (dieser Lauf) entfernt")
+
+
+def _load_runner():
+    """Runner-Modul laden (Praezedenz AGENTS.md: E2E simulieren den Runner).
+
+    KEIN Subprocess `scripts/agent-runner.py --once`: dessen DB_PATH ist hart
+    PROJECT_ROOT/data/feedback.db (LIVE) -> der Subprocess wuerde die
+    Warteschlange der Live-DB abarbeiten (R6-0). Hier wird DB_PATH aktiv auf
+    die SPIEGEL-DB der Isolation (KMHR_DB_PATH) umgestellt; Reports landen wie
+    im Produktionsbetrieb in ergebnisse/ (ERGEBNISSE bleibt unveraendert).
+    """
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location("agent_runner_for_e2e", RUNNER)
+    _mod = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)
+    _mod.DB_PATH = Path(DB)
+    return _mod
+
+
+def _task_row(app_id: int):
+    conn = sqlite3.connect(str(DB))
+    try:
+        return conn.execute(
+            "SELECT id, status, attempts FROM agent_tasks "
+            "WHERE task_type='contract_preflight' "
+            "AND json_extract(payload, '$.application_id') = ? "
+            "ORDER BY id DESC LIMIT 1",
+            (app_id,),
+        ).fetchone()
+    finally:
+        conn.close()
+
+
+def wait_for_task_any(app_id: int, timeout_s: int = 60):
+    """Wartet, bis ueberhaupt EIN contract_preflight-Task fuer die Bewerbung
+    existiert (pending/running/done/failed) -> Nachweis des HR-Klicks."""
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        row = _task_row(app_id)
+        if row and row[1] in ("pending", "running", "done", "failed"):
+            return row
+        time.sleep(2)
+    return None
+
+
+def simulate_runner_task(task_id: int) -> str | None:
+    """Fuehrt EINE pending-Task deterministisch aus (Runner-Simulation).
+
+    Isolation: kein laufender Runner (KMHR_RUNNER_AUTOSTART=0). Rueckgabe
+    None = ok, sonst Fehlergrund. Es wird NUR dieser eine Task abgearbeitet --
+    keine anderen wartenden Tasks, keine E-Mails, keine LLM-Calls
+    (contract_preflight: deterministisch, Katalog-Read + Report-Write).
+    """
+    conn = sqlite3.connect(str(DB))
+    try:
+        row = conn.execute(
+            "SELECT task_type, payload, attempts, status FROM agent_tasks WHERE id=?",
+            (task_id,),
+        ).fetchone()
+        if not row:
+            return f"Task #{task_id} fehlt in {DB.name}"
+        if row[3] != "pending":
+            return f"Task #{task_id} status={row[3]!r} (Simulation nur bei 'pending')"
+        if row[0] != "contract_preflight":
+            return f"Task #{task_id} task_type={row[0]!r} != contract_preflight"
+        mod = _load_runner()
+        mod.process_task(conn, task_id, row[0], row[1], row[2] or 0)
+        return None
+    finally:
+        conn.close()
+
+
+def wait_for_task(app_id: int, timeout_s: int = 90) -> tuple[bool, int | None]:
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        row = _task_row(app_id)
+        if row and row[1] == "done":
+            return True, row[0]
+        if row and row[1] == "failed":
+            return False, row[0]
+        time.sleep(2)
+    return False, None
+
+
 def check_static() -> list:
     failures = []
     if not SKILL.exists():
@@ -111,28 +225,6 @@ def check_static() -> list:
     return failures
 
 
-def wait_for_task(app_id: int, timeout_s: int = 90) -> tuple[bool, int | None]:
-    deadline = time.time() + timeout_s
-    while time.time() < deadline:
-        conn = sqlite3.connect(str(DB))
-        try:
-            row = conn.execute(
-                "SELECT id, status, result_path FROM agent_tasks "
-                "WHERE task_type='contract_preflight' "
-                "AND json_extract(payload, '$.application_id') = ? "
-                "ORDER BY id DESC LIMIT 1",
-                (app_id,),
-            ).fetchone()
-        finally:
-            conn.close()
-        if row and row[1] == "done":
-            return True, row[0]
-        if row and row[1] == "failed":
-            return False, row[0]
-        time.sleep(2)
-    return False, None
-
-
 def main() -> int:
     check_server()
     pre = pre_max_tasks()
@@ -143,6 +235,8 @@ def main() -> int:
         print(f"FAIL: cand{CAND_ID} hat keine aktive/eingestellte Bewerbung")
         return 1
     print(f"Baseline: app_id={app_id} pre_max={pre}")
+    rep = report_path(app_id)
+    rep_existed_before = rep.exists()
 
     # Vorlauf-Logik (Fix 24.09.2026): queue_agent_task ist idempotent
     # (1×/Tag+Typ+App+Generation, Generation seit R3-2 30.09.2026 Teil der
@@ -166,12 +260,7 @@ def main() -> int:
         # Task-Payload über die Runner-Funktion neu schreiben (Datei-Repair,
         # kein DB-Write, kein neuer Task).
         print(f"report missing, task #{done_row[0]} already done → regenerate")
-        import importlib.util
-        _spec = importlib.util.spec_from_file_location(
-            "agent_runner_for_e2e", RUNNER)
-        _mod = importlib.util.module_from_spec(_spec)
-        _spec.loader.exec_module(_mod)
-        _mod.contract_preflight({
+        _load_runner().contract_preflight({
             "application_id": app_id, "candidate_id": CAND_ID,
             "trigger": "hr_onboarding_klick",
         })
@@ -211,13 +300,35 @@ def main() -> int:
             btn.click()
             page.wait_for_timeout(2500)
 
+            # HR-Klick -> Queue-Nachweis (pending erwartet: Isolation startet
+            # mit KMHR_RUNNER_AUTOSTART=0, es laeuft KEIN Hintergrund-Runner)
+            row = wait_for_task_any(app_id)
+            if not row:
+                failures.append(
+                    "kein contract_preflight-Task nach HR-Klick in agent_tasks "
+                    "(Queue-Nachweis fehlt)")
+            else:
+                task_id, status = row[0], row[1]
+                print(f"OK queued: contract_preflight #{task_id} status={status} "
+                      "(Runner offline: KMHR_RUNNER_AUTOSTART=0)")
+                if status == "pending":
+                    sim_err = simulate_runner_task(task_id)
+                    if sim_err:
+                        failures.append(f"Runner-Simulation fehlgeschlagen: {sim_err}")
+                    else:
+                        print(f"OK simulate: Task #{task_id} einmalig selbst "
+                              "ausgefuehrt (kein Netz-LLM, keine Mail)")
+                elif status == "running":
+                    failures.append(
+                        f"Task #{task_id} status='running' ohne laufenden Runner "
+                        "(Simulation nur bei 'pending')")
+
             ok, task_id = wait_for_task(app_id)
             if ok:
                 print(f"OK task: contract_preflight #{task_id} done")
             else:
                 failures.append(f"contract_preflight task nicht done (task={task_id}) after 90s")
 
-            rep = report_path(app_id)
             if rep.exists():
                 txt = rep.read_text(encoding="utf-8")
                 if "Contract Preflight" not in txt:
@@ -253,6 +364,7 @@ def main() -> int:
         finally:
             browser.close()
 
+    cleanup(pre, app_id, rep, rep_existed_before)
     db_residue_report(pre)
     if failures:
         print("E2E CONTRACT PREFLIGHT FAIL:")

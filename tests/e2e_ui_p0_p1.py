@@ -14,7 +14,9 @@ Deckt ab:
 Aufruf:  python3 tests/e2e_ui_p0_p1.py
 READ-ONLY: keine Statusaenderung, kein Speichern, kein Loeschen.
 """
+import atexit
 import re
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -22,12 +24,129 @@ from playwright.sync_api import sync_playwright
 
 # R6-0 (30.09.2026): harter Live-Default entfernt — BASE kommt aus dem
 # Harness und bricht ohne KMHR_E2E_BASE bewusst ab (siehe e2e_harness.py).
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from e2e_harness import BASE  # noqa: E402
+from e2e_harness import BASE, DB  # noqa: E402
+from webui.logic import hash_password_argon2id  # noqa: E402
+
 EMP = ("hr@techvision.de", "sicher123")
 CAND = ("recruiting.e2e.2809b@kmailtest.de", "Test1234!")
-
+# P0-2 braucht einen Kandidaten mit 'eingeladen'-Bewerbung UND erzeugter
+# Einladung (candidate.py `_tab_bewerbungen`: Karte nur bei Status
+# 'eingeladen' + get_invitation_artifacts). Picking dynamisch, danach ggf.
+# Passwort-Fixture (Design-Entscheidung, zurückgesetzt via atexit).
+INVITE_PW = "E2EInvite2026!"
+KNOWN_LOGINS = dict([EMP, CAND])
+PW_FIXTURES: list[tuple[int, str | None]] = []
 results = []
+
+
+def _q(sql: str, *args):
+    conn = sqlite3.connect(str(DB))
+    try:
+        return conn.execute(sql, args).fetchall()
+    finally:
+        conn.close()
+
+
+def employer_id() -> int:
+    return _q("SELECT id FROM employers WHERE email=?", EMP[0])[0][0]
+
+
+def docs_of(email: str) -> list[str]:
+    """Basisnamen aller Dokumente eines Kandidaten (P0-1 Kandidat)."""
+    return [Path(p).name for (p,) in _q(
+        "SELECT d.datei_pfad FROM candidate_documents d "
+        "JOIN candidates c ON c.id=d.candidate_id WHERE c.email=? ORDER BY d.id",
+        email,
+    )]
+
+
+def released_docs() -> list[tuple[str, str, str]]:
+    """(datei_basename, kandidatenname, status_label_roh) — dieselbe Whitespace-
+    Freigabe wie employer.py::_visible_documents (eingeladen/eingestellt)."""
+    rows = _q(
+        "SELECT cd.datei_pfad, c.name, "
+        "  (SELECT MAX(CASE a.status WHEN 'eingestellt' THEN 2 ELSE 1 END) "
+        "   FROM applications a JOIN jobs j ON j.id=a.job_id "
+        "   WHERE a.candidate_id=c.id AND j.employer_id=? "
+        "   AND a.status IN ('eingeladen','eingestellt')) AS rk "
+        "FROM candidate_documents cd JOIN candidates c ON c.id=cd.candidate_id "
+        "WHERE EXISTS (SELECT 1 FROM applications a JOIN jobs j ON j.id=a.job_id "
+        "              WHERE a.candidate_id=c.id AND j.employer_id=? "
+        "              AND a.status IN ('eingeladen','eingestellt')) "
+        "ORDER BY cd.id DESC",
+        employer_id(), employer_id(),
+    )
+    return [(Path(p).name or "", n or "", "eingestellt" if rk == 2 else "eingeladen")
+            for p, n, rk in rows]
+
+
+def active_apps() -> list[tuple[int, int, str, str]]:
+    """(app_id, kandidat_id, status, kandidatenname) — Quelle:
+    employer.py::_page_stellen `apps_aktiv` (Status IN eingegangen/angesehen/
+    eingeladen)."""
+    return _q(
+        "SELECT a.id, a.candidate_id, a.status, COALESCE(c.name,'') "
+        "FROM applications a JOIN jobs j ON j.id=a.job_id "
+        "LEFT JOIN candidates c ON c.id=a.candidate_id "
+        "WHERE j.employer_id=? AND a.status IN ('eingegangen','angesehen','eingeladen')",
+        employer_id(),
+    )
+
+
+def expected_name(k_id: int, status: str, name: str) -> str:
+    """Spec P2-8 (knowledge/portal/employer-portal-fields.md): Klarname nur ab
+    Status 'eingeladen', sonst Pseudonym 'Kandidat #N' (Art. 6(1)(b))."""
+    return name if status in ("eingeladen", "eingestellt") and name else f"Kandidat #{k_id}"
+
+
+def pick_invite() -> tuple[str, str] | None:
+    rows = _q(
+        "SELECT c.id, c.email FROM applications a "
+        "JOIN candidates c ON c.id=a.candidate_id "
+        "JOIN agent_tasks t ON json_extract(t.payload,'$.application_id')=a.id "
+        "WHERE a.status='eingeladen' AND t.task_type='create_invitation' "
+        "AND t.status='done' AND t.result_json IS NOT NULL ORDER BY c.id"
+    )
+    if not rows:
+        return None
+    cid, email = rows[0]
+    pw = KNOWN_LOGINS.get(email)
+    if pw is None:
+        pw = INVITE_PW
+        conn = sqlite3.connect(str(DB))
+        try:
+            old = conn.execute(
+                "SELECT password_hash FROM candidates WHERE id=?", (cid,)
+            ).fetchone()[0]
+            conn.execute(
+                "UPDATE candidates SET password_hash=? WHERE id=?",
+                (hash_password_argon2id(pw), cid),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        PW_FIXTURES.append((cid, old))
+        print(f"OK Passwort-Fixture: cand{cid} ({email}) — wird zurueckgesetzt")
+    return email, pw
+
+
+def restore_fixtures() -> None:
+    for cid, old in PW_FIXTURES:
+        conn = sqlite3.connect(str(DB))
+        try:
+            conn.execute(
+                "UPDATE candidates SET password_hash=? WHERE id=?", (old, cid)
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        print(f"OK Passwort-Fixture zurueckgesetzt: cand{cid}")
+
+
+atexit.register(restore_fixtures)
 
 
 def check(tid, rolle, desc, ok, detail=""):
@@ -105,6 +224,14 @@ def login(page, email, pw, employer):
     page.wait_for_timeout(1500)
 
 
+# P0-2: Einladungskarte nur bei Status 'eingeladen' + vorhandenen Artefakten
+# (candidate.py::_tab_bewerbungen) → Kandidat dynamisch, ggf. Passwort-Fixture.
+INVITE = pick_invite()
+if INVITE is None:
+    print("FAIL: kein Kandidat mit 'eingeladen'-Bewerbung + erzeugter Einladung")
+    sys.exit(1)
+print(f"OK P0-2 Kandidat dynamisch: {INVITE[0]}")
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
 
@@ -122,10 +249,12 @@ with sync_playwright() as p:
     except Exception:
         pass
     body = page.inner_text("body")
+    doc_names = docs_of(CAND[0])
     check("P0-1", "Kandidat", "Dokumentliste sichtbar nach bestaetigtem Upload",
           "Meine Dokumente" in body, f"'Meine Dokumente' vorhanden={'Meine Dokumente' in body}")
     check("P0-1", "Kandidat", "Dateiname des Dokuments sichtbar",
-          "kandidat-22-Zeugnis" in body)
+          bool(doc_names) and all(n in body for n in doc_names),
+          f"erwartet={doc_names}")
     check("P0-1", "Kandidat", "kein Empty-State obwohl Datei existiert",
           "Noch keine Dokumente hochgeladen" not in body)
     check("P0-4", "Kandidat", "kein DB-Slug 'lebenslauf_hochgeladen' im Text",
@@ -137,7 +266,10 @@ with sync_playwright() as p:
           not aud["small"], str(aud["small"][:3]))
     page.close()
 
-    page = ctx.new_page()
+    # P0-2 braucht den EINLADUNGS-Kandidaten (eigener Context, eigener Login)
+    ctx2 = browser.new_context(viewport={"width": 1440, "height": 900})
+    login(ctx2.new_page(), INVITE[0], INVITE[1], False)
+    page = ctx2.new_page()
     page.goto(f"{BASE}/candidate/bewerbungen", wait_until="domcontentloaded", timeout=90000)
     page.wait_for_timeout(2500)
     body = page.inner_text("body")
@@ -160,6 +292,7 @@ with sync_playwright() as p:
     check("UI", "Kandidat", "Klickziele >= 44 px auf /candidate/bewerbungen",
           not aud["small"], str(aud["small"][:3]))
     page.close()
+    ctx2.close()
 
     for slug in ("profil", "stellen"):
         page = ctx.new_page()
@@ -183,9 +316,21 @@ with sync_playwright() as p:
     page.goto(f"{BASE}/employer/dokumente", wait_until="domcontentloaded", timeout=90000)
     page.wait_for_timeout(2500)
     body = page.inner_text("body")
-    check("P0-1", "Recruiter", "Gate-Hinweis mit Klartext-Status (kein Slug)",
-          "lebenslauf_hochgeladen" not in body and ("Lebenslauf hochgeladen" in body or "Keine" in body),
-          f"Klartext-Status vorhanden={'Lebenslauf hochgeladen' in body}")
+    # Dynamische Erwartung aus _visible_documents (DSGVO-Gate): Dateien+Klarnamen
+    # der freigegebenen Bewerbungen muessen sichtbar sein, der DB-Slug nie.
+    rel = released_docs()
+    no_slug = "lebenslauf_hochgeladen" not in body
+    if rel:
+        missing = [b for b, _, _ in rel if b not in body]
+        missing += [n for _, n, _ in rel if n and n not in body]
+        klartext = ("Eingestellt" in body) or ("Eingeladen" in body)
+        check("P0-1", "Recruiter", "Gate zeigt freigegebene Dokumente + Klartext-Status (kein Slug)",
+              no_slug and not missing and klartext,
+              f"freigegeben={len(rel)}, fehlt={missing[:2]}, klartext={klartext}")
+    else:
+        check("P0-1", "Recruiter", "Leer-/Sperrtext statt DB-Slug (keine freigegebenen Dokumente)",
+              no_slug and ("Keine Dokumente" in body or "Noch gesperrt" in body),
+              f"no_slug={no_slug}")
     page.close()
 
     for slug in ("prescreen", "onboarding", "feedback"):
@@ -230,15 +375,21 @@ with sync_playwright() as p:
         # (gemessen: tests/measure_timing.sh, P0-5) → 180 s Fenster.
         btn.first.click(no_wait_after=True)
         try:
-            page.wait_for_url("**/employer/match", timeout=180000)
+            # Glob mit `*`, weil die Route Query-Parameter tragen kann
+            # (`/employer/match?kandidat=N`) — `.../match` allein matcht nicht.
+            page.wait_for_url("**/employer/match*", timeout=180000)
         except Exception as ex:
             check("P1-1", "Recruiter", "URL wechselt auf /employer/match", False, str(ex)[:80])
         page.wait_for_timeout(3000)
         body2 = page.inner_text("body")
+        # Positiv-Assertion: der Subtitel "Live-Score aus DB" steht NUR auf der
+        # Match-Seite. Das fruehere Negativ-Kriterium "Kandidaten-Suche" not in
+        # body traf die Sidebar (PAGE_TITLES["kandidaten"]) und war damit
+        # auf JEDE Employer-Seite falsch.
         check("P1-1", "Recruiter", "Klick fuehrt zum Match-Ergebnis",
-              "Match-Ergebnis" in body2 and "Kandidaten-Suche" not in body2)
+              "Live-Score aus DB" in body2, f"Subtitel={'Live-Score aus DB' in body2}")
         check("P1-1", "Recruiter", "URL wechselt auf /employer/match",
-              page.url.endswith("/employer/match"), f"URL={page.url}")
+              page.url.startswith(f"{BASE}/employer/match"), f"URL={page.url}")
     page.close()
 
     page = ctx.new_page()
@@ -255,7 +406,14 @@ with sync_playwright() as p:
         document.querySelectorAll('.q-btn').forEach(e => {
             const t = e.innerText.trim();
             if (/EINLADEN|ABLEHNEN|EINSTELLEN/i.test(t)) {
-                o[t.split('\\n').pop()] = getComputedStyle(e).backgroundColor;
+                // Quasar-Flat-Buttons (Einstellen/Ablehnen: color=positive/negative
+                // flat) druecken ihre Hierarchie ueber die TEXTfarbe aus, der
+                // Hintergrund ist transparent. Deshalb beide Werte erfassen —
+                // sonst misst die Sonde bei reiner Flat-Lage 1 Farbe und der
+                // Datenstand (kein gefuelltes 'Einladen' mehr aktiv) faerbt den
+                // Check rot (Datenkupplung06.10.2026).
+                const s = getComputedStyle(e);
+                o[t.split('\\n').pop()] = s.backgroundColor + '|' + s.color;
             }
         });
         return o; }""")
@@ -267,15 +425,28 @@ with sync_playwright() as p:
     page = ctx.new_page()
     page.goto(f"{BASE}/employer/stellen", wait_until="domcontentloaded", timeout=90000)
     page.wait_for_timeout(2500)
+    apps = active_apps()
     exp = page.locator(".q-expansion-item").filter(has_text="Aktive Bewerber").first
+    # P1-13 (30.09.2026): `value=True` — die Liste ist standardmaessig
+    # aufgeklappt. Ein bedingungsloser Klick KLASST SIE ZU und die Bewerber
+    # verschwanden aus `body` (Ursache der roten P1-4-Assertions, 06.10.2026).
     if exp.count():
-        exp.click()
-        page.wait_for_timeout(2000)
-    body = page.inner_text("body")
-    check("P1-4", "Recruiter", "Bewerberkarte zeigt Klarnamen statt 'Kandidat #22'",
-          "Kandidat #" not in body, f"'Kandidat #' noch vorhanden={'Kandidat #' in body}")
-    check("P1-4", "Recruiter", "Klarname 'Kandidatin Test B' in der Bewerberliste",
-          "Kandidatin Test B" in body)
+        content = exp.locator(".q-expansion-item__content")
+        if content.count() == 0 or not content.first.is_visible():
+            exp.click()
+            page.wait_for_timeout(2000)
+    exp_txt = exp.inner_text() if exp.count() else ""
+    # Spec P2-8 (knowledge/portal/employer-portal-fields.md): Klarname nur ab
+    # Status 'eingeladen' — vorher 'Kandidat #22' in body == FAIL, obwohl die
+    # Karte korrekt pseudonymisiert war. Erwartung JE aktiven Bewerbung.
+    expected = [expected_name(k, st, nm) for _a, k, st, nm in apps]
+    missing = [e for e in expected if e not in exp_txt]
+    leaked = [f"Kandidat #{k}" for _a, k, st, nm in apps
+              if st in ("eingeladen", "eingestellt") and nm
+              and f"Kandidat #{k}" in exp_txt]
+    check("P1-4", "Recruiter", "Bewerberkarte zeigt je Status den korrekten Namen (Spec P2-8)",
+          bool(apps) and not missing and not leaked,
+          f"aktiv={len(apps)}, fehlt={missing}, Pseudonym={leaked}")
     page.close()
 
     page = ctx.new_page()

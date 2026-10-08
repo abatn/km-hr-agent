@@ -26,7 +26,7 @@ def test_na1_keine_slug_optionen_im_queue_filter():
 def test_na1_queue_filter_nutzt_status_label():
     for slug in ("pending", "running", "done", "failed", "queued"):
         assert f'status_label("{slug}")' in SRC, slug
-    assert '"alle": "Alle"' in SRC
+    assert '"alle": _("Alle")' in SRC
 
 
 def test_na1_labels_sind_klartext():

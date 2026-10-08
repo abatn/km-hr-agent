@@ -716,6 +716,15 @@ webui/
 **M-17-Korrektur (01.10.2026, gemessen):** `navigate_to()` nutzt **nicht mehr** `run_javascript(pushState)` — der Best-Effort-Sprung griff aus Klick-Handlern nicht (E2E: Inhalt wechselte auf den Sprachtest-Tab, **URL blieb** `/candidate/prescreen`, Back → `/candidate`; Protokoll `ergebnisse/pushstate-protokoll-2026-10-01.md`). Jetzt: `ui.navigate.to(f"/{role}/{page_key}")` in `try/except` → **URL und Inhalt konsistent** (dasselbe Muster wie Employer-Kandidaten-Tabelle/Dashboard-Kacheln).
 > **Regel:** Für Seitensprünge `ui.navigate.to()` verwenden, nicht `history.pushState` per `run_javascript`.
 
+**Toast-vor-Navigation-Regel (06.10.2026, E2E-belegt):**
+
+> Ein Bestätigungs-`ui.notify` darf NICHT zusammen mit `navigate_to()` im selben Event-Zyklus ausgelöst werden — sonst sieht der Nutzer die Bestätigung nie.
+> **Mechanismus (Quelle: NiceGUI-Paketquelltext, gemessen 06.10.2026):** `navigate_to()` → `ui.navigate.to()` → `Client.open()` (`.venv-streamlit/…/nicegui/functions/navigate.py`) → Outbox-Message `open` → clientseitig `window.open(url, "_self")` (`.venv-streamlit/…/nicegui/static/nicegui.js`, Handler `open:`) = vollständiger Seitenwechsel; parallel läuft `notify` als `Quasar.Notify.create(msg)` (derselbe JS-Handlerblock) → der Toast wird durch den Seitenwechsel zerstört, bevor er sichtbar wird.
+> **Beweis (Messung 06.10.2026):** Isolierter E2E-Lauf `e2e-iso-20261006-211219` — `e2e_apply_dialog_multi` (`get_by_text("Bewerbung gesendet!")`, Timeout 8000 ms) und `e2e_notifications_flow` (Timeout 15000 ms) **rot**; beide noch am 30.09.2026 grün, rot seit der M-17-Korrektur vom 01.10.2026.
+> **Umsetzung (Code):** Handler-Reihenfolge `ui.notify(...)` → [`dialog.close()`, nur falls ein Dialog offen ist] → `await asyncio.sleep(1.5)` → `navigate_to(...)`. Danach greift die M-17-Regel unverändert (echter Route-Wechsel, URL + Inhalt konsistent).
+> **Design-Entscheidung (kein externer Standard):** Verzögerung **1,5 s** — NiceGUI-Default-Toast-Laufzeit ist 5 s; die Bestätigung soll sichtbar sein, der Sprung danach aber zügig erfolgen.
+> **Betroffen (E2E-belegt):** `webui/pages/candidate.py` Bewerbungs-Submit `_submit` (in `_open_apply_dialog`), **`save_profile` („Profil gespeichert!") und CV-Upload `on_upload` („Lebenslauf hochgeladen …") — beide nachgezogen 06.10.2026** (`async def save_profile` + je `await asyncio.sleep(1.5)` vor `navigate_to`); Isolierter E2E-Lauf 06.10.2026 `e2e_profile_save` rc=0, `e2e_cv_upload` rc=0, `e2e_notifications_flow` rc=0 (Port 8090).
+
 ### 14.5 Session & Storage
 
 | Feature | Doku | Verwendung |

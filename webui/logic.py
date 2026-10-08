@@ -434,17 +434,23 @@ _GEHALT_TOL_CACHE: dict = {}
 
 
 def gehalt_check(k_gehalt, gmin, gmax) -> str:
-    """app.py:260-311 (Connector salary-data → calculate_salary_tolerance)."""
+    """app.py:260-311 (Connector salary-data → calculate_salary_tolerance).
+
+    i18n P9.3 (06.10.2026): Rueckgabe-Klartexte laufen durch `_()` (Anzeige-
+    Layer). Der Import erfolgt bewusst funktionslokal, damit logic.py weiter
+    ohne NiceGUI-Import auf Modulebene auskommt (frameworkfreie Layer).
+    """
+    from webui.i18n import _
     gmin = gmin or 0
     gmax = gmax or 0
     if k_gehalt is None or (k_gehalt or 0) <= 0:
-        return "❓ unbekannt" if (gmin or gmax) else "✅ offen"
+        return _("❓ unbekannt") if (gmin or gmax) else _("✅ offen")
     if not gmin and not gmax:
-        return "✅ passt (offen)"
+        return _("✅ passt (offen)")
     if gmax == 0 or gmax is None:
-        return "✅ passt" if k_gehalt >= gmin * 0.8 else "⚠️ außerhalb Rahmen"
+        return _("✅ passt") if k_gehalt >= gmin * 0.8 else _("⚠️ außerhalb Rahmen")
     if gmin == 0:
-        return "✅ passt" if k_gehalt <= gmax * 1.1 else "⚠️ außerhalb Rahmen"
+        return _("✅ passt") if k_gehalt <= gmax * 1.1 else _("⚠️ außerhalb Rahmen")
     toleranz_min = 0.8  # Fallback (Design-Entscheidung)
     toleranz_max = 1.1  # Fallback (Design-Entscheidung)
     midpoint = (gmin + gmax) / 2
@@ -460,7 +466,7 @@ def gehalt_check(k_gehalt, gmin, gmax) -> str:
         except Exception:
             pass
         _GEHALT_TOL_CACHE[midpoint] = (toleranz_min, toleranz_max)
-    return "✅ passt" if (k_gehalt <= gmax * toleranz_max and k_gehalt >= gmin * toleranz_min) else "⚠️ außerhalb Rahmen"
+    return _("✅ passt") if (k_gehalt <= gmax * toleranz_max and k_gehalt >= gmin * toleranz_min) else _("⚠️ außerhalb Rahmen")
 
 
 def kategorie_label(key: str) -> str:
@@ -521,7 +527,13 @@ def get_current_weights(conn: sqlite3.Connection | None = None) -> dict:
 
 
 def adjust_weights_from_feedback(eingeladen: str, score: int, grund: str, conn) -> str:
-    """Phase 4 (4.2/4.3): Geschlossener Feedback-Loop. app.py:347-408."""
+    """Phase 4 (4.2/4.3): Geschlossener Feedback-Loop. app.py:347-408.
+
+    i18n P9.4 (06.10.2026): Die *Rückgabe* (Anzeige im Feedback-MD) wird in der
+    Erzeugungs-Sprache übersetzt; der übergebene `grund` wird unübersetzt in
+    `gewichtung_historie` persistiert (Record, Absicht).
+    """
+    from webui.i18n import _
     roh = dict(BASELINE_GEWINCHTE)
     try:
         cur = conn.execute("""SELECT kategorie, neue_gewichtung FROM gewichtung_historie gh
@@ -562,7 +574,7 @@ def adjust_weights_from_feedback(eingeladen: str, score: int, grund: str, conn) 
     neu = roh[ziel] + delta
     if neu > cap:
         if roh[ziel] >= cap:
-            return f"ℹ️ Cap erreicht ({kategorie_label(ziel)} = {cap}) – keine Anpassung."
+            return _("ℹ️ Cap erreicht ({0} = {1}) – keine Anpassung.").format(_(kategorie_label(ziel)), cap)
         neu = cap
     if neu == roh[ziel]:
         return ""
@@ -572,7 +584,7 @@ def adjust_weights_from_feedback(eingeladen: str, score: int, grund: str, conn) 
         (kategorie, alte_gewichtung, neue_gewichtung, grund, feedback_anzahl)
         VALUES (?, ?, ?, ?, 1)""", (label, roh[ziel], neu, grund))
     conn.commit()
-    return f"✅ {label}: {roh[ziel]} → {neu} (Rohgewicht, normalisiert auf 100)"
+    return _("✅ {0}: {1} → {2} (Rohgewicht, normalisiert auf 100)").format(_(label), roh[ziel], neu)
 
 
 def score_branche(branche: str, k_text: str) -> int:

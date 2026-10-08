@@ -7,14 +7,10 @@ Konvention: KEINE f-Strings in _() (Ruff INT001) -> _("{x} …").format(x=…).
 """
 from __future__ import annotations
 
-import gettext
-from pathlib import Path
-
 from nicegui import app, ui
 
-LOCALES_DIR = Path(__file__).resolve().parent / "locales"
-SUPPORTED = ("de", "en", "fr", "ar")
-DEFAULT = "de"
+from webui.i18n_core import DEFAULT, LOCALES_DIR, SUPPORTED, tr
+
 LABELS = {"de": "DE", "en": "EN", "fr": "FR", "ar": "AR"}
 
 
@@ -37,16 +33,12 @@ def is_rtl(lang: str | None = None) -> bool:
 
 
 def _(message: str) -> str:
-    """Übersetzt `message` in die aktuelle Session-Sprache (Fallback: Original)."""
-    lang = get_language()
-    if lang == DEFAULT:
-        return message
-    try:
-        trans = gettext.translation("messages", str(LOCALES_DIR),
-                                    languages=[lang], fallback=True)
-    except Exception:
-        return message
-    return trans.gettext(message)
+    """Übersetzt `message` in die aktuelle Session-Sprache (Fallback: Original).
+
+    Delegiert an die framework-freie Kernschicht `webui.i18n_core.tr`
+    (Variante B, P1 07.10.2026) — Verhalten unverändert (`de` = Identität).
+    """
+    return tr(message, get_language())
 
 
 def apply_direction() -> None:
@@ -95,3 +87,14 @@ def language_switcher(compact: bool = True) -> None:
             btn.props("flat dense" + (" color=primary" if code == current else ""))
             if compact:
                 btn.classes("min-h-0 px-2")
+
+
+# ─── Sprach-Transport (Variante B, P1 07.10.2026) ────────────────────────────
+# Registriert die Session-Sprache als Resolver im framework-freien DB-Layer:
+# `webui/db.py::queue_agent_task` haengt so bei jedem Portal-Trigger die
+# `language` der ausloesenden Session an das Task-Payload (die eine zentrale
+# Stelle deckt alle Aufrufer ab). Ohne NiceGUI-Session (Runner, Tests) faellt
+# `get_language()` auf DEFAULT 'de' zurueck.
+from webui import db as _db  # noqa: E402
+
+_db.set_language_resolver(get_language)

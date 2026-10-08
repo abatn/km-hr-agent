@@ -53,20 +53,25 @@ def _cand_session(cand_id: int) -> dict:
 # ── 1. Onboarding-Timeline aus echter History ───────────────────────────
 
 async def test_onboarding_timeline_aus_history(user):
-    """Kandidat 1, Bewerbung 8 (eingestellt): Timeline zeigt echte Status."""
+    """Kandidat 1, Bewerbung 8 (eingestellt): Timeline zeigt echte Status.
+
+    Seit P9.5 (i18n.md, 07.10.2026): Titel = Icon + KLARTEXT via
+    `status_label()` (STATUS_LABELS-Regel „Klartext statt IDs/Slugs"),
+    nicht mehr Icon + Roh-Slug."""
     await user.open("/p2-onboarding")
     # Aus der echten History von Bewerbung 8:
     # eingegangen → angesehen → eingeladen → eingestellt (+ changed_at-Datum)
-    await user.should_see("📨 eingegangen")
-    await user.should_see("👁️ angesehen")
-    await user.should_see("📅 eingeladen")
-    await user.should_see("✅ eingestellt")
+    await user.should_see("📨 Eingegangen")
+    await user.should_see("👁️ Angesehen")
+    await user.should_see("📅 Eingeladen")
+    await user.should_see("✅ Eingestellt")
     # Die entfernten Dummy-Items hatten Titel OHNE Icon-Präfix ('Bewerbung
-    # eingegangen' statt '📨 eingegangen'); deren Vorhandensein wäre der
-    # Beweis toter Code. Die Timeline-Elemente sind jetzt Icon+Slug:
+    # eingegangen' statt '📨 …'); deren Vorhandensein wäre der Beweis toter
+    # Code. Roh-Slugs dürfen NICHT mehr erscheinen (P9.5):
     await user.should_not_see("Bewerbung eingegangen")
     await user.should_not_see("Pre-Screening abgeschlossen")
     await user.should_not_see("Interview geplant")
+    await user.should_not_see("📨 eingegangen")
 
 
 # ── 2. Sprachtests-Expander (Match-Seite) ────────────────────────────────
