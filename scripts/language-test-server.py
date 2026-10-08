@@ -7,6 +7,7 @@ Quelle: knowledge/language-tests.md (732 Fragen: DE 120, EN 522, FR 90) + LLM-ge
 
 from fastmcp import FastMCP
 import json
+import sys
 import random
 import os
 import re
@@ -104,7 +105,7 @@ def _call_nvidia(prompt: str, model: str = None) -> str:
             if content.strip():
                 return content
     except Exception as ex:  # kein stilles pass (Regel): Fehler wird sichtbar gemacht
-        print(f"[language-test] NVIDIA-Aufruf fehlgeschlagen: {type(ex).__name__}: {ex}")
+        print(f"[language-test] NVIDIA-Aufruf fehlgeschlagen: {type(ex).__name__}: {ex}", file=sys.stderr)
     return '{"punkte": 0, "korrekt": false, "feedback": "API-Fehler"}'
 
 

@@ -34,13 +34,16 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LIVE_DB = ROOT / "data" / "feedback.db"
+# Lokale Verifikation des CI-Modus (Option A): mit KMHR_E2E_LIVE_DB auf
+# tests/fixtures/seed.db zeigen und KMHR_E2E_SEED=1 setzen. Default = Live-DB.
+LIVE_DB = Path(os.environ.get("KMHR_E2E_LIVE_DB") or (ROOT / "data" / "feedback.db"))
 DEFAULT_PORT = 8081
 # Prozesse, die NICHT angefasst werden duerfen (laufende Live-App/-Runner).
 FORBIDDEN_PIDS = {82162, 81303}
@@ -159,8 +162,11 @@ def main() -> int:
             server.terminate()
             return 3
     else:
+        skip_env = {s.strip() for s in os.environ.get("KMHR_E2E_SKIP", "").split(",") if s.strip()}
         scripts = sorted(p for p in (ROOT / "tests").glob("e2e_*.py")
-                         if p.name not in SKIP)
+                         if p.name not in SKIP and p.stem not in skip_env)
+        if skip_env:
+            print(f"[iso] CI-Skip (KMHR_E2E_SKIP): {', '.join(sorted(skip_env))}")
 
     results: list[tuple[str, int, float]] = []
     t_suite = time.time()

@@ -36,6 +36,16 @@ jobs:
           printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
       - name: E2E isoliert ausführen
         # Freier Port wird im Harness gesetzt; Ergebnis-Logs landen unter /tmp/opencode/e2e-iso-*
+        # KMHR_E2E_SEED=1: Skripte übersetzen die lokalen Login-E-Mails in die
+        # anonymisierten Seed-Konten (Option A, s. knowledge/system/e2e-ci-seed.md).
+        env:
+          KMHR_E2E_SEED: "1"
+          # CI-Skip: Skript mit Seed-/Umgebungs-Abhängigkeit, die im CI nicht
+          # erfüllbar ist (Details: knowledge/system/e2e-ci-seed.md §Bekannte Grenzen):
+          #  - e2e_m07_row_click: braucht unterscheidbare Feedback-Namen (Seed anonymisiert)
+          # (e2e_agent_details seit P8.2 selbst-säend, e2e_feedback_jobswitch mit dem
+          #  committeten Seed grün → beide nicht mehr geskippt)
+          KMHR_E2E_SKIP: "e2e_m07_row_click"
         run: python3 tests/e2e_isolation.py --port 8097
       - name: Artefakte sichern (Logs/Screenshots bei Fehler)
         if: always()

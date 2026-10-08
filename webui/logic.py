@@ -1038,6 +1038,10 @@ def current_role(session) -> str:
 # Schwellen-Standort: scripts/language-test-server.py:get_cefr_level() — die
 # Inline-Tabellen in app.py:2987 und candidate.py:467 sind GESCHLOSSEN.
 
+# P2: Modul einmal laden, dann wiederverwenden; Änderungen am Server erst nach App-Neustart wirksam — Design-Entscheidung
+_CEFR_SERVER_MOD = None
+
+
 def cefr_from_avg(avg: float) -> dict:
     """CEFR-Level + Beschreibung + Empfehlung aus durchschnittlichem Score (0.0–1.0).
 
@@ -1046,13 +1050,16 @@ def cefr_from_avg(avg: float) -> dict:
     Fehler: identische Schwellen (Beweis: Boundary-Test 16/16 identisch, 20.09.2026,
     ergebnisse/nicegui-phase-1-portierung.md).
     """
+    global _CEFR_SERVER_MOD
     try:
         import importlib.util
-        p = BASE_DIR / "scripts" / "language-test-server.py"
-        spec = importlib.util.spec_from_file_location("language_test_server", p)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        res = mod.get_cefr_level(float(avg), "")
+        if _CEFR_SERVER_MOD is None:
+            p = BASE_DIR / "scripts" / "language-test-server.py"
+            spec = importlib.util.spec_from_file_location("language_test_server", p)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            _CEFR_SERVER_MOD = mod
+        res = _CEFR_SERVER_MOD.get_cefr_level(float(avg), "")
         d = json.loads(res)
         return {
             "level": d["level"],

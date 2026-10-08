@@ -159,6 +159,11 @@ MAX_TASKS_PER_LOOP = 5
 MCP_TIMEOUT = 60          # Sekunden pro MCP-Tool-Aufruf
 LLM_TIMEOUT = 600         # 10 min pro LLM-Task (Spec §4)
 MAX_ATTEMPTS = 3
+# P8.2 (08.10.2026): Obergrenze für den in `result_json["text"]` gespeicherten
+# Berichtstext. Design-Entscheidung (keine externe Quelle) — hält die
+# result_json-Spalte klein; Agent-Berichte liegen typisch < 5 KB.
+# Spec: knowledge/system/p8-cloud-datenquellen.md
+RESULT_TEXT_MAX = 20000
 
 DRY_RUN = "--dry-run" in sys.argv
 RUN_ONCE = "--once" in sys.argv
@@ -1218,7 +1223,8 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
         raise RuntimeError(f"Agent ohne Text-Antwort: {last_error}")
     # Runner persistiert (Permission-frei): Bericht selbst schreiben
     header = llm_report_header(task_type, cid, jid, datum, _langval)
-    Path(result_path).write_text(header + agent_text + "\n", encoding="utf-8")
+    report_text = header + agent_text + "\n"
+    Path(result_path).write_text(report_text, encoding="utf-8")
     size = Path(result_path).stat().st_size
     if size < 100:
         raise RuntimeError(f"Bericht zu klein ({size} Bytes) – gilt als fehlgeschlagen")
@@ -1254,7 +1260,13 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
             _conn_ar.close()
         except Exception as e:
             log(f"   Auto-Refresh Fehler: {e}")
-    return {"result_path": result_path, "agent_chars": len(agent_text)}
+    # P8.2 (08.10.2026): Berichtstext zusätzlich in `result_json` ablegen, damit
+    # die UI (Agent-Details) ihn aus der DB lesen kann — `ergebnisse/` ist
+    # gitignored und auf Cloud-Instanzen flüchtig. ADDITIV: `result_path`/
+    # `agent_chars` bleiben erhalten (keine Aufrufer brechen). Kappung =
+    # Design-Entscheidung. Spec: knowledge/system/p8-cloud-datenquellen.md
+    return {"result_path": result_path, "agent_chars": len(agent_text),
+            "text": report_text[:RESULT_TEXT_MAX]}
 
 # ─── Pförtner-Regel (Spec §3, User-Entscheidung 12.09.2026) ─────────────
 

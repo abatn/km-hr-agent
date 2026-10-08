@@ -28,11 +28,11 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from e2e_harness import check_server  # noqa: E402
+from e2e_harness import check_server, seed_email  # noqa: E402
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
-EMAIL = "batniniabdelkader@yahoo.com"
+EMAIL = seed_email("batniniabdelkader@yahoo.com")
 PASSWORD = "Abdel15121978!"
 CAND_ID = 1
 # Teil-2-Residue-Fix 25.09.2026: kein hartes Paar mehr — JOB_ID wird in main()

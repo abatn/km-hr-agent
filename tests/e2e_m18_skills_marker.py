@@ -23,14 +23,14 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from e2e_harness import BASE, DB, check_server  # noqa: E402
+from e2e_harness import BASE, DB, check_server, seed_email  # noqa: E402
 
 from playwright.sync_api import sync_playwright  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "ergebnisse" / "screenshots"
 SHOT = OUT / "m18-skills-marker.png"
-EMP_EMAIL, EMP_PW = "hr@techvision.de", "sicher123"
+EMP_EMAIL, EMP_PW = seed_email("hr@techvision.de"), "sicher123"
 URL = f"{BASE}/employer/match"
 
 # JS: alle Chip-Texte sammeln

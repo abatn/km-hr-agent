@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from nicegui import ui
+from nicegui import run, ui
 
 from webui import db, logic
 from webui.theme import C, PRIMARY, SECONDARY, ACCENT, DANGER
@@ -154,24 +154,36 @@ def _page_dashboard(s: dict) -> None:
         pw_neu = ui.input(label="Neues Passwort", password=True).classes("w-full")
         pw_wdh = ui.input(label="Neues Passwort wiederholen", password=True).classes("w-full")
 
-        def do_change_pw_admin():
+        async def do_change_pw_admin():
+            # P2 (05.10.2026): change_password enthält bis zu 3 argon2-Ops
+            # (0,4–1,2 s je Op) → Worker-Thread (NiceGUI-FAQ run.io_bound).
+            # SQLite-Verbindung darf die Thread-Grenze nicht überschreiten
+            # (check_same_thread) → im Worker erzeugt (Design-Entscheidung).
             if not pw_alt.value or not pw_neu.value or not pw_wdh.value:
                 ui.notify("Bitte alle Felder ausfuellen.", type="warning")
                 return
             if pw_neu.value != pw_wdh.value:
                 ui.notify("Passwoerter stimmen nicht ueberein.", type="negative")
                 return
-            conn_pw = db.get_conn()
-            admin_id = conn_pw.execute(
-                "SELECT id FROM admins WHERE email = ?", (s.get("admin_email", ""),)
-            ).fetchone()
-            if admin_id:
-                ok, msg = logic.change_password(conn_pw, "admins", admin_id[0], pw_alt.value, pw_neu.value)
-                conn_pw.close()
-                ui.notify(msg, type="positive" if ok else "negative")
-            else:
-                conn_pw.close()
+
+            def _work():
+                conn_pw = db.get_conn()
+                try:
+                    admin_id = conn_pw.execute(
+                        "SELECT id FROM admins WHERE email = ?", (s.get("admin_email", ""),)
+                    ).fetchone()
+                    if not admin_id:
+                        return (None, None)
+                    return logic.change_password(
+                        conn_pw, "admins", admin_id[0], pw_alt.value, pw_neu.value)
+                finally:
+                    conn_pw.close()
+
+            ok, msg = await run.io_bound(_work)
+            if ok is None:
                 ui.notify("Admin nicht gefunden.", type="negative")
+            else:
+                ui.notify(msg, type="positive" if ok else "negative")
 
         ui.button("Passwort aendern", on_click=do_change_pw_admin).classes(C.BTN_PRIMARY + " mt-2")
 

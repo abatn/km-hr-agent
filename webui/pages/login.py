@@ -10,7 +10,7 @@ import os
 import sqlite3
 import sys
 
-from nicegui import ui
+from nicegui import run, ui
 
 from webui import db, logic
 from webui.theme import C
@@ -147,8 +147,16 @@ def create() -> None:
                                     else:
                                         msg.text = _("Unbekannte E-Mail oder falsches Passwort.")
                                     return
-                                if logic.verify_password_argon2id(pw.value, row[2]) or logic.verify_password_sha256(pw.value, row[2]):
-                                    logic.migrate_password_if_needed(conn, row[0], pw.value)
+                                def _migrate_pw(user_id, password):
+                                    # P2: argon2-Hash im Worker-Thread; DB-Verbindung im Thread neu erzeugen (check_same_thread).
+                                    c = db.get_conn()
+                                    try:
+                                        logic.migrate_password_if_needed(c, user_id, password)
+                                    finally:
+                                        c.close()
+
+                                if await run.io_bound(logic.verify_password_argon2id, pw.value, row[2]) or logic.verify_password_sha256(pw.value, row[2]):
+                                    await run.io_bound(_migrate_pw, row[0], pw.value)
                                     conn.close()
                                     logic.login_user(_session(), email.value.strip().lower(), row[1], row[0])
                                     ui.notify(_("Willkommen, {name}!").format(name=row[1]), type="positive")
@@ -187,12 +195,13 @@ def create() -> None:
                                     return
                                 conn = db.get_conn()
                                 try:
+                                    _pw_hash = await run.io_bound(logic.hash_password_argon2id, r_pw.value)
                                     conn.execute(
                                         "INSERT INTO candidates (email, name, password_hash, status) VALUES (?, ?, ?, 'registriert')",
                                         (
                                             r_email.value.strip().lower(),
                                             r_name.value.strip(),
-                                            logic.hash_password_argon2id(r_pw.value),
+                                            _pw_hash,
                                         ),
                                     )
                                     conn.commit()
@@ -230,7 +239,7 @@ def create() -> None:
                                     (e_email.value.strip().lower(),),
                                 ).fetchone()
                                 conn.close()
-                                if row and logic.verify_password_argon2id(e_pw.value, row[2]):
+                                if row and await run.io_bound(logic.verify_password_argon2id, e_pw.value, row[2]):
                                     logic.login_employer(_session(), row[0], e_email.value.strip().lower(), row[1])
                                     ui.notify(_("Willkommen, {name}!").format(name=row[1]), type="positive")
                                     ui.navigate.to("/employer")
@@ -267,11 +276,12 @@ def create() -> None:
                                     return
                                 conn = db.get_conn()
                                 try:
+                                    _er_pw_hash = await run.io_bound(logic.hash_password_argon2id, er_pw.value)
                                     conn.execute(
                                         "INSERT INTO employers (email, password_hash, firma, kontaktperson) VALUES (?, ?, ?, ?)",
                                         (
                                             er_email.value.strip().lower(),
-                                            logic.hash_password_argon2id(er_pw.value),
+                                            _er_pw_hash,
                                             er_firma.value.strip(),
                                             er_kontakt.value.strip(),
                                         ),
@@ -332,9 +342,10 @@ def create() -> None:
                                             "Entwicklungs-Default angelegt.",
                                             file=sys.stderr,
                                         )
+                                    _seed_hash = await run.io_bound(hash_password_argon2id, _seed_pw)
                                     conn.execute(
                                         "INSERT INTO admins (email, password_hash, name) VALUES (?, ?, ?)",
-                                        (_seed_email, hash_password_argon2id(_seed_pw),
+                                        (_seed_email, _seed_hash,
                                          "Betreiber (Seed)"),
                                     )
                                     conn.commit()
@@ -343,7 +354,7 @@ def create() -> None:
                                     (a_email.value.strip().lower(),),
                                 ).fetchone()
                                 conn.close()
-                                if row and logic.verify_password_argon2id(a_pw.value, row[2]):
+                                if row and await run.io_bound(logic.verify_password_argon2id, a_pw.value, row[2]):
                                     logic.login_admin(_session(), row[0], row[1])
                                     ui.notify(_("Admin angemeldet"), type="positive")
                                     ui.navigate.to("/admin")

@@ -25,7 +25,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from e2e_harness import BASE, check_server  # noqa: E402
+from e2e_harness import BASE, check_server, seed_email  # noqa: E402
 
 from playwright.sync_api import sync_playwright  # noqa: E402
 
@@ -37,9 +37,9 @@ EMP_PAGES = ["dashboard", "portal", "stellen", "kandidaten", "match",
              "compliance", "agent_details", "dokumente", "prescreen",
              "onboarding", "feedback"]
 
-CAND_EMAIL, CAND_PW = "test@example.de", "test1234"          # Kandidat 2
-EMP_EMAIL, EMP_PW = "hr@techvision.de", "sicher123"           # Arbeitgeber 1
-ADMIN_EMAIL, ADMIN_PW = "admin@km-hr-agent.local", "admin-agent-2026"
+CAND_EMAIL, CAND_PW = seed_email("test@example.de"), "test1234"          # Kandidat 2
+EMP_EMAIL, EMP_PW = seed_email("hr@techvision.de"), "sicher123"           # Arbeitgeber 1
+ADMIN_EMAIL, ADMIN_PW = seed_email("admin@km-hr-agent.local"), "admin-agent-2026"
 
 TIMEOUT = 30_000
 

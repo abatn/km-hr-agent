@@ -30,13 +30,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tests"))
 
-from e2e_harness import BASE, DB, check_server  # noqa: E402
+from e2e_harness import BASE, DB, check_server, seed_email  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
 
 KNOWN_LOGINS = (
-    ("batniniabdelkader@yahoo.com", "Abdel15121978!"),
-    ("e2e-beweis-phase1@example.com", "E2EMentoring2026!"),
-    ("recruiting.e2e.2809b@kmailtest.de", "Test1234!"),
+    (seed_email("batniniabdelkader@yahoo.com"), "Abdel15121978!"),
+    (seed_email("e2e-beweis-phase1@example.com"), "E2EMentoring2026!"),
+    (seed_email("recruiting.e2e.2809b@kmailtest.de"), "Test1234!"),
 )
 # candidate.py::_tab_prescreen – gleiche Mengen wie im Code (Prüfung dort)
 CV_WHITELIST = ("lebenslauf_hochgeladen", "profil_geprueft", "match_berechnet")

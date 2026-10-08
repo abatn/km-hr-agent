@@ -41,14 +41,14 @@ import sqlite3
 import sys
 from pathlib import Path
 
-from e2e_harness import check_server, db_residue_report, pre_max_tasks
+from e2e_harness import check_server, db_residue_report, pre_max_tasks, seed_email
 
 ROOT = Path(__file__).resolve().parents[1]
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (Sektion D)
 SRC = ROOT / "webui" / "pages" / "employer.py"
 APP = ROOT / "app.py"
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 
 EXPECTED = {

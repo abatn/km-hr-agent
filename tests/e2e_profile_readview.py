@@ -8,11 +8,11 @@ from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
 
-from e2e_harness import check_server, db_residue_report, pre_max_tasks
+from e2e_harness import check_server, db_residue_report, pre_max_tasks, seed_email
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
-EMAIL = "batniniabdelkader@yahoo.com"
+EMAIL = seed_email("batniniabdelkader@yahoo.com")
 PASSWORD = "Abdel15121978!"
 CAND_ID = 1
 

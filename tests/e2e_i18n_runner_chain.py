@@ -42,7 +42,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tests"))
 
-from e2e_harness import BASE, DB, check_server, db_residue_report, pre_max_tasks
+from e2e_harness import BASE, DB, check_server, db_residue_report, pre_max_tasks, seed_email
 
 LIVE_DB = (ROOT / "data" / "feedback.db").resolve()
 RUNNER = ROOT / "scripts" / "agent-runner.py"
@@ -50,7 +50,7 @@ LOCALES = ROOT / "webui" / "locales"
 TESTDATEN = ROOT / "testdaten"
 
 CAND_ID = 16
-CAND_EMAIL = "e2e-beweis-phase1@example.com"
+CAND_EMAIL = seed_email("e2e-beweis-phase1@example.com")
 CAND_PASSWORD = "E2EMentoring2026!"
 MARKER = "E2E-I18N-RUNNER-BEWEIS"
 LANGS = ("de", "en", "fr", "ar")

@@ -21,13 +21,13 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from e2e_harness import BASE, DB, check_server
+from e2e_harness import BASE, DB, check_server, seed_email
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE_DB = (ROOT / "data" / "feedback.db").resolve()
 ERG = ROOT / "ergebnisse"
 CAND_ID = 1
-EMAIL = "batniniabdelkader@yahoo.com"
+EMAIL = seed_email("batniniabdelkader@yahoo.com")
 PASSWORD = "Abdel15121978!"
 
 

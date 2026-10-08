@@ -41,14 +41,14 @@ from playwright.sync_api import sync_playwright
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (Isolation 27.09.2026)
-from e2e_harness import check_server, db_residue_report, pre_max_tasks
+from e2e_harness import check_server, db_residue_report, pre_max_tasks, seed_email
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 TESTDATEN = ROOT / "testdaten"
 CAND_ID = 16
-CAND_EMAIL = "e2e-beweis-phase1@example.com"
+CAND_EMAIL = seed_email("e2e-beweis-phase1@example.com")
 CAND_PASSWORD = "E2EMentoring2026!"
 POS_STATUS = "lebenslauf_hochgeladen"
 MARKER = "E2E-UPLOAD-BEWEIS"

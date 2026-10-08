@@ -12,7 +12,7 @@ import json
 import logging
 from datetime import date as _date, datetime as _dt, time as _time, timedelta as _timedelta
 
-from nicegui import ui
+from nicegui import run, ui
 
 from webui import db, logic
 from webui.i18n import _  # i18n Phase 6 (03.10.2026); Spec: knowledge/system/i18n.md
@@ -534,16 +534,28 @@ def _page_portal(s: dict) -> None:
                 pw_neu = ui.input(label=_('Neues Passwort'), password=True).classes("w-full")
                 pw_wdh = ui.input(label=_('Neues Passwort wiederholen'), password=True).classes("w-full")
 
-                def do_change_pw_emp():
+                async def do_change_pw_emp():
+                    # P2 (05.10.2026): change_password enthält bis zu 3 argon2-Ops
+                    # (0,4–1,2 s je Op) → Worker-Thread (NiceGUI-FAQ run.io_bound).
+                    # SQLite-Verbindung darf die Thread-Grenze nicht überschreiten
+                    # (check_same_thread) → im Worker erzeugt (Design-Entscheidung).
                     if not pw_alt.value or not pw_neu.value or not pw_wdh.value:
                         ui.notify(_('Bitte alle Felder ausfuellen.'), type="warning")
                         return
                     if pw_neu.value != pw_wdh.value:
                         ui.notify(_('Passwoerter stimmen nicht ueberein.'), type="negative")
                         return
-                    conn_pw = db.get_conn()
-                    ok, msg = logic.change_password(conn_pw, "employers", employer_id, pw_alt.value, pw_neu.value)
-                    conn_pw.close()
+
+                    def _work():
+                        conn_pw = db.get_conn()
+                        try:
+                            return logic.change_password(
+                                conn_pw, "employers", employer_id,
+                                pw_alt.value, pw_neu.value)
+                        finally:
+                            conn_pw.close()
+
+                    ok, msg = await run.io_bound(_work)
                     ui.notify(msg, type="positive" if ok else "negative")
 
                 ui.button(_('Passwort aendern'), on_click=do_change_pw_emp).classes(C.BTN_PRIMARY + " mt-2")
@@ -1944,42 +1956,70 @@ def _page_compliance(s: dict) -> None:
 
 # ─── 5. Agent-Details ───────────────────────────────────────────────
 
+# P8.2 (08.10.2026): Label-/Task-Type-Quelle der 9 Agent-Ergebnis-Aufgaben.
+# Vorher Glob-Muster `*-kandidat-*` (lokale `ergebnisse/*.md`); Badges/Berichte
+# kommen jetzt aus der DB (`agent_tasks.result_json`).
+# Spec: knowledge/system/p8-cloud-datenquellen.md.
+_agent_tasks = [
+    ("📋 Profil extrahieren",       "extract_profile"),
+    ("🎯 Kandidat matchen",         "match_candidate"),
+    ("⚖️ Compliance pruefen",       "check_compliance"),
+    ("🏢 Culture Fit pruefen",      "assess_culture_fit"),
+    ("📄 Dokumente verifizieren",   "verify_documents"),
+    ("🛂 Visum pruefen",            "check_visa"),
+    ("🔒 DSGVO pruefen",            "check_gdpr"),
+    ("💡 Match erklaeren",          "explain_match"),
+    ("📧 Kandidat benachrichtigen", "notify_user"),
+]
+
+
+def _badge_icon(content_upper: str) -> str:
+    # C5 (22.09.2026): Keyword-Reihenfolge = Badge-Zeile app.py:1985-1989 +
+    # Tabelle agent-details-doku.md — NICHT die Expander-Variante
+    # app.py:2012-2019, wo "ERFORDERLICH" auch in "NICHT ERFORDERLICH"
+    # matched (dort fälschlich 🔴 trotz MD-Spezifikation 🟢).
+    if "AUFFAELLIG" in content_upper or "AUFFÄLLIG" in content_upper:
+        return "🔴"
+    if "NICHT ERFORDERLICH" in content_upper or "NICHT_ERFORDERLICH" in content_upper:
+        return "🟢"
+    if "ERFORDERLICH" in content_upper or "NICHT_COMPLIANT" in content_upper or "NICHT_KONFORM" in content_upper:
+        return "🔴"
+    if "PLAUSIBEL" in content_upper or "COMPLIANT" in content_upper or "KONFORM" in content_upper:
+        return "🟢"
+    return "🟡"
+
+
+def _legacy_badge_icon(status: str) -> str:
+    """P8.2 (08.10.2026): Badge für Legacy-Tasks OHNE gespeicherten Berichtstext,
+    ehrlich aus dem DB-Status abgeleitet (Design-Entscheidung, keine externe
+    Quelle): `done`→🟢, `failed`→🔴, sonst (pending/running/queued) 🟡."""
+    s = (status or "").lower()
+    if s == "done":
+        return "🟢"
+    if s == "failed":
+        return "🔴"
+    return "🟡"
+
+
+def _agent_task_icon(row: dict) -> str:
+    """P8.2: Icon aus dem gespeicherten Berichtstext (`result_json["text"]`),
+    sonst Legacy-Status-Mapping. Gleiche Semantik wie vorher (Text-Inhalt)."""
+    text = row.get("text")
+    if text:
+        return _badge_icon(str(text).upper())
+    return _legacy_badge_icon(row.get("status"))
+
+
 def _page_agent_details(s: dict) -> None:
     section_header(title=_('Agent-Details'), subtitle=_('Agent-Ergebnisse + Tasks'), icon="smart_toy")
     ui.label(
         _('🔒 Read-only: Alle Agent-generierten Ergebnisse für einen Kandidaten: Dokumenten-Verifizierung, Visum-Check, DSGVO, Match-Erklaerung.')
     ).classes(C.MUTED)
 
-    # 9 Ergebnis-Tasks (Spec: ergebnisse/agent-details-doku.md; Muster: app.py:1976-1982)
-    # i18n P9.4 (06.10.2026): Anzeige-Dict — Werte sind deutsche msgids, übersetzt
-    # erst beim Konsum (Renderzeit); Keys/Reihenfolge/Datenfluss unverändert, die
-    # Erkennung läuft über `_glob`/`_badge_icon` (Keyword-Matching bleibt roh).
-    _agent_tasks = [
-        ("📋 Profil extrahieren",       "extract_profile-*"),
-        ("🎯 Kandidat matchen",         "match_candidate-*"),
-        ("⚖️ Compliance pruefen",       "check_compliance-*"),
-        ("🏢 Culture Fit pruefen",      "assess_culture_fit-*"),
-        ("📄 Dokumente verifizieren",   "verify_documents-*"),
-        ("🛂 Visum pruefen",            "check_visa-*"),
-        ("🔒 DSGVO pruefen",            "check_gdpr-*"),
-        ("💡 Match erklaeren",          "explain_match-*"),
-        ("📧 Kandidat benachrichtigen", "notify_user-*"),
-    ]
-
-    def _badge_icon(content_upper: str) -> str:
-        # C5 (22.09.2026): Keyword-Reihenfolge = Badge-Zeile app.py:1985-1989 +
-        # Tabelle agent-details-doku.md — NICHT die Expander-Variante
-        # app.py:2012-2019, wo "ERFORDERLICH" auch in "NICHT ERFORDERLICH"
-        # matched (dort fälschlich 🔴 trotz MD-Spezifikation 🟢).
-        if "AUFFAELLIG" in content_upper or "AUFFÄLLIG" in content_upper:
-            return "🔴"
-        if "NICHT ERFORDERLICH" in content_upper or "NICHT_ERFORDERLICH" in content_upper:
-            return "🟢"
-        if "ERFORDERLICH" in content_upper or "NICHT_COMPLIANT" in content_upper or "NICHT_KONFORM" in content_upper:
-            return "🔴"
-        if "PLAUSIBEL" in content_upper or "COMPLIANT" in content_upper or "KONFORM" in content_upper:
-            return "🟢"
-        return "🟡"
+    # 9 Ergebnis-Tasks: Labels/Reihenfolge aus `_AGENT_RESULT_TASKS`
+    # (Spec: ergebnisse/agent-details-doku.md; Muster: app.py:1976-1982).
+    # i18n P9.4 (06.10.2026): Anzeige-Labels sind deutsche msgids, übersetzt erst
+    # beim Konsum (Renderzeit); Erkennung läuft über `task_type` + `_agent_task_icon`.
 
     conn = db.get_conn()
     cands = conn.execute("SELECT id, name FROM candidates ORDER BY name").fetchall()
@@ -1999,24 +2039,15 @@ def _page_agent_details(s: dict) -> None:
     def render_results(cand_id) -> None:
         results_container.clear()
         with results_container:
-            # C5-Fund: Streamlit matcht Name-Slug (app.py:1974: name.lower()
-            # mit "-" statt " ") gegen Runner-Dateien `*-kandidat-{id}-*.md`
-            # (agent-automation.md:91) → 0 Treffer, alle ⚪. NiceGUI matcht
-            # kandidat-{id} = Runner-Konvention (MD-Spec-Ziel: Treffer je Kandidat).
-            slug = f"kandidat-{cand_id}"
-            found = {}
+            # P8.2 (08.10.2026): Datenquelle = DB statt lokaler `ergebnisse/*.md`
+            # (gitignored, in CI/Cloud leer). `get_candidate_agent_tasks` liefert
+            # je `task_type` die letzte Task + `result_json["text"]`.
+            _rows = db.get_candidate_agent_tasks(int(cand_id))
+            by_type = {r["task_type"]: r for r in _rows}
             badges = []
-            for _label, _glob in _agent_tasks:
-                _files = sorted(logic.ERGEBNISSE.glob(_glob))
-                _match = [f for f in _files if slug in f.name.lower()]
-                if _match:
-                    _latest = _match[-1]
-                    _content = _latest.read_text(encoding="utf-8", errors="replace")
-                    _icon = _badge_icon(_content.upper())
-                    badges.append((_label, _icon))
-                    found[(_label, _glob)] = (_latest, _content, _icon)
-                else:
-                    badges.append((_label, "⚪"))
+            for _label, _ttype in _agent_tasks:
+                _row = by_type.get(_ttype)
+                badges.append((_label, _agent_task_icon(_row) if _row else "⚪"))
 
             # Badge-Zeile (Spec: agent-details-doku.md — 6 + 3 wie Streamlit
             # st.metric-Grid, app.py:2000-2006; hier 6er-Grid, bricht um)
@@ -2027,16 +2058,23 @@ def _page_agent_details(s: dict) -> None:
                         ui.label(_icon).classes("text-2xl")
                         ui.label(_(_label.split(" ", 1)[1])).classes(C.SMALL)
 
-            # Detaillierte Berichte (Expander, Muster: app.py:2010-2026)
+            # Detaillierte Berichte (Expander, Muster: app.py:2010-2026).
+            # Legacy-Tasks ohne `text` werden ehrlich als Altbestand markiert
+            # (kein Fake-Inhalt); Badge dann aus dem Status.
             ui.label(_('Detaillierte Berichte')).classes(C.CARD_TITLE + " mb-2")
-            for _label, _glob in _agent_tasks:
-                hit = found.get((_label, _glob))
-                if hit:
-                    _latest, _content, _icon = hit
-                    with ui.expansion(text=_('{0} {1} ({2})').format(_icon, _(_label), _latest.name)).classes("w-full mb-1"):
-                        ui.markdown(_content)
-                else:
+            for _label, _ttype in _agent_tasks:
+                _row = by_type.get(_ttype)
+                if not _row:
                     ui.label(_('⚪ {0}: Kein Bericht vorhanden').format(_(_label))).classes(C.MUTED)
+                    continue
+                _icon = _agent_task_icon(_row)
+                _status = _row.get("status") or "–"
+                with ui.expansion(text=_('{0} {1} ({2})').format(_icon, _(_label), _status)).classes("w-full mb-1"):
+                    _text = _row.get("text")
+                    if _text:
+                        ui.markdown(_text)
+                    else:
+                        ui.label(_('Kein Berichtstext gespeichert (Altbestand)')).classes(C.MUTED)
 
     cand_select.on_value_change(lambda e: render_results(e.value))
     render_results(cand_select.value)

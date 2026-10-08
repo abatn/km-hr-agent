@@ -2980,3 +2980,6 @@ msgstr "Match erklaeren"
 
 msgid "Agent-Task (Phase 5, live {0}), Modell: {1}"
 msgstr "Agent-Task (Phase 5, live {0}), Modell: {1}"
+
+msgid "Kein Berichtstext gespeichert (Altbestand)"
+msgstr "Kein Berichtstext gespeichert (Altbestand)"

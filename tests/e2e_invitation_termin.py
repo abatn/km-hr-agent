@@ -21,7 +21,7 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from e2e_harness import check_server, db_residue_report, pre_max_tasks
+from e2e_harness import check_server, db_residue_report, pre_max_tasks, seed_email
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
@@ -29,7 +29,7 @@ APP_ID = 16
 ORIG_STATUS = "eingegangen"
 ORIG_UPD = "2026-09-14 22:05:49"
 ORIG_HIST_MAX = 34  # Originalzustand vor heutigen E2E-Setups
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 
 

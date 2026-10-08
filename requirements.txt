@@ -2,7 +2,7 @@
 # Stand 04.10.2026 — ermittelt aus den tatsächlichen Importen (webui/, scripts/, connectors/).
 
 # UI (einzige App)
-nicegui>=3.0.0            # webui/ (24× importiert)
+nicegui==3.17.1            # webui/ (24× importiert)
 babel>=2.11               # i18n-Katalog-Kompilierung (webui/locales/*.po → .mo)
 
 # Sicherheit / HTTP
@@ -15,7 +15,8 @@ reportlab>=4.0            # PDF-Export (webui/components.py export_candidates_pd
 Pillow>=10.0              # Bildverarbeitung (PIL)
 
 # MCP-Server
-fastmcp>=4.0.0            # mcp-*-server.py + connectors/
+fastmcp==4.0.11           # mcp-*-server.py + connectors/
+mcp==2.3.0                # MCP-Client/Server-Kern (bisher nur transitiv über fastmcp)
 
 # Utilities
 python-dateutil>=2.8.0    # Datumsarithmetik

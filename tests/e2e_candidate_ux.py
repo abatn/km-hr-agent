@@ -3,9 +3,9 @@ Read-only: kein Upload, kein Zurückziehen.
 """
 import sys, re
 from playwright.sync_api import sync_playwright
-from e2e_harness import check_server, BASE
+from e2e_harness import check_server, BASE, seed_email
 
-EMAIL = "test@example.de"
+EMAIL = seed_email("test@example.de")
 PASSWORD = "test1234"
 TIMEOUT = 10000
 

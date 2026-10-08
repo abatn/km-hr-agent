@@ -12,7 +12,7 @@ import re
 import sqlite3
 from pathlib import Path
 
-from nicegui import background_tasks, ui
+from nicegui import background_tasks, run, ui
 
 from webui import db, logic
 from webui.i18n import _  # i18n Phase 5 (03.10.2026); Spec: knowledge/system/i18n.md
@@ -119,7 +119,10 @@ def _upload_section(s: dict) -> None:
 
                     # Text extrahieren (PDF vs TXT)
                     if file_name.lower().endswith(".pdf"):
-                        cv_text = logic.extract_pdf_text(str(save_path))
+                        # P2 (Spec: knowledge/system/event-loop-blockieren.md):
+                        # PDF-Extraktion (subprocess, 0,9–1,9 s) vom Event-Loop
+                        # entkoppeln (NiceGUI-FAQ run.io_bound).
+                        cv_text = await run.io_bound(logic.extract_pdf_text, str(save_path))
                     else:
                         cv_text = file_bytes.decode("utf-8", errors="replace")
 
@@ -470,16 +473,30 @@ def _tab_profil(s: dict) -> None:
         pw_neu = ui.input(label=_('Neues Passwort'), password=True).classes("w-full")
         pw_wdh = ui.input(label=_('Neues Passwort wiederholen'), password=True).classes("w-full")
 
-        def do_change_pw():
+        async def do_change_pw():
+            # P2 (Spec: knowledge/system/event-loop-blockieren.md): change_password
+            # enthält bis zu 3 argon2-Ops (0,4–1,2 s je Op) → via run.io_bound vom
+            # Event-Loop entkoppeln. Die DB-Verbindung wird IM Worker-Thread erzeugt:
+            # eine SQLite-Verbindung darf die Thread-Grenze nicht überschreiten
+            # (sqlite3 check_same_thread, Default True) — Design-Entscheidung,
+            # übernommen aus Vorbild cdabbed.
             if not pw_alt.value or not pw_neu.value or not pw_wdh.value:
                 ui.notify(_('Bitte alle Felder ausfuellen.'), type="warning")
                 return
             if pw_neu.value != pw_wdh.value:
                 ui.notify(_('Passwoerter stimmen nicht ueberein.'), type="negative")
                 return
-            conn_pw = db.get_conn()
-            ok, msg = logic.change_password(conn_pw, "candidates", s["user_cand_id"], pw_alt.value, pw_neu.value)
-            conn_pw.close()
+
+            def _work():
+                conn_pw = db.get_conn()
+                try:
+                    return logic.change_password(
+                        conn_pw, "candidates", s["user_cand_id"],
+                        pw_alt.value, pw_neu.value)
+                finally:
+                    conn_pw.close()
+
+            ok, msg = await run.io_bound(_work)
             ui.notify(msg, type="positive" if ok else "negative")
 
         ui.button(_('Passwort aendern'), on_click=do_change_pw).classes(C.BTN_PRIMARY + " mt-2")
@@ -1284,7 +1301,10 @@ def _tab_sprachtest(s: dict) -> None:
                             str(db.BASE_DIR / "scripts" / "language-test-server.py"),
                         )
                         _mod = _ilu.module_from_spec(_spec)
-                        _spec.loader.exec_module(_mod)
+                        # P2 (Spec: knowledge/system/event-loop-blockieren.md):
+                        # Modul-Laden (importlib, inkl. fastmcp-Import) vom
+                        # Event-Loop entkoppeln (NiceGUI-FAQ run.io_bound).
+                        await run.io_bound(_spec.loader.exec_module, _mod)
 
                         async with _MCPClient(_mod.mcp) as _cli:
                             _res = await _cli.call_tool(

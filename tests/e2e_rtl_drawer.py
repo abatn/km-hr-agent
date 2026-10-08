@@ -14,9 +14,9 @@ Isoliert starten:
 """
 import sys
 from playwright.sync_api import sync_playwright
-from e2e_harness import check_server, BASE
+from e2e_harness import check_server, BASE, seed_email
 
-EMAIL, PASSWORD = "test@example.de", "test1234"
+EMAIL, PASSWORD = seed_email("test@example.de"), "test1234"
 TIMEOUT = 15000
 
 JS = """() => {

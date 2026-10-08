@@ -310,6 +310,74 @@ def get_agent_task_status(application_id: int) -> dict | None:
         return None
 
 
+def get_candidate_agent_tasks(candidate_id: int, conn=None) -> list:
+    """P8.2 (08.10.2026): letzte Agent-Task je `task_type` für ALLE Bewerbungen
+    eines Kandidaten — Badge-/Berichts-Quelle für `_page_agent_details`
+    (ersetzt den lokalen `ergebnisse/*.md`-Glob, der in CI/Cloud leer ist).
+
+    Spec: knowledge/system/p8-cloud-datenquellen.md.
+
+    Rückgabe je Eintrag (Dict): task_type, status, text (aus
+    `result_json["text"]`, sonst None), created_at, application_id, gen.
+    `application_id`/`gen` stammen aus `agent_tasks.payload`; die Zuordnung zur
+    Bewerbung erfolgt über `applications.candidate_id` (app-IDs vorab laden,
+    `payload` in Python parsen). BEWUSST OHNE `json_extract` (kein Dialekt-Sonderfall).
+
+    Muster `own_conn`: nur eine selbst geöffnete Verbindung wird geschlossen; eine
+    übergebene wird nie geschlossen. Leere Bewerbungsliste ⇒ [] ohne Task-Query.
+    """
+    own_conn = conn is None
+    try:
+        if own_conn:
+            conn = sqlite3.connect(str(AGENT_TASKS_DB))
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM applications WHERE candidate_id = ?",
+                    (candidate_id,))
+        app_ids = {int(r[0]) for r in cur.fetchall() if r[0] is not None}
+        if not app_ids:
+            return []
+        cur.execute("""SELECT id, task_type, status, payload, result_json, created_at
+            FROM agent_tasks ORDER BY id DESC""")
+        latest = {}
+        for _id, task_type, status, payload, result_json, created_at in cur.fetchall():
+            try:
+                p = json.loads(payload) if payload else {}
+            except (ValueError, TypeError):
+                p = {}
+            app_id = p.get("application_id") if isinstance(p, dict) else None
+            try:
+                app_id = int(app_id)
+            except (TypeError, ValueError):
+                continue  # ohne Bewerbungsbezug nicht zuordenbar
+            if app_id not in app_ids:
+                continue
+            if task_type in latest:
+                continue  # ORDER BY id DESC ⇒ erste passende Zeile je Typ = höchste id
+            text = None
+            if result_json:
+                try:
+                    rj = json.loads(result_json)
+                    if isinstance(rj, dict):
+                        text = rj.get("text")
+                except (ValueError, TypeError):
+                    text = None
+            latest[task_type] = {
+                "task_type": task_type,
+                "status": status,
+                "text": text,
+                "created_at": created_at,
+                "application_id": app_id,
+                "gen": p.get("gen") if isinstance(p, dict) else None,
+            }
+        return list(latest.values())
+    except Exception as ex:
+        print(f"[db] get_candidate_agent_tasks({candidate_id}) fehlgeschlagen: {ex!r}")
+        return []
+    finally:
+        if own_conn and conn is not None:
+            conn.close()
+
+
 def get_language_tests(candidate_id: int) -> list:
     """Alle Sprachtest-Ergebnisse eines Kandidaten (neueste zuerst).
     Kern der Duplikat-Bereinigung: ersetzt die SQL-Blöcke app.py:~2790 und ~3560

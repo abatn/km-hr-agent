@@ -174,7 +174,7 @@ def test_admin_seed_password_nicht_als_nackter_codewert():
     src = LOGIN_PY.read_text(encoding="utf-8")
     assert 'hash_password_argon2id("admin-agent-2026")' not in src, \
         "Passwort darf nicht mehr woertlich an hash_password_argon2id uebergeben werden"
-    assert "hash_password_argon2id(_seed_pw)" in src
+    assert "run.io_bound(hash_password_argon2id, _seed_pw)" in src
 
 
 def test_admin_seed_warnt_ohne_env():

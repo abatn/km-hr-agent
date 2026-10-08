@@ -1,9 +1,9 @@
 """Detail-Check: S2, S5, S6, S7 Seiteninhalte."""
 import sys
 from playwright.sync_api import sync_playwright
-from e2e_harness import BASE
+from e2e_harness import BASE, seed_email
 
-EMAIL = "test@example.de"
+EMAIL = seed_email("test@example.de")
 PASSWORD = "test1234"
 
 with sync_playwright() as p:

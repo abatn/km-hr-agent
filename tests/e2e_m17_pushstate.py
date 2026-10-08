@@ -23,12 +23,12 @@ from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from e2e_harness import BASE, check_server  # noqa: E402
+from e2e_harness import BASE, check_server, seed_email  # noqa: E402
 
 from playwright.sync_api import sync_playwright  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-CAND_EMAIL, CAND_PW = "recruiting.e2e.2809b@kmailtest.de", "Test1234!"
+CAND_EMAIL, CAND_PW = seed_email("recruiting.e2e.2809b@kmailtest.de"), "Test1234!"
 PROTO = ROOT / "ergebnisse" / f"pushstate-protokoll-{datetime.now():%Y-%m-%d}.md"
 
 MARK_PRESCREEN = "Selbstpräsentation"  # _tab_prescreen (dort liegen die navigate_to-Knoepfe)

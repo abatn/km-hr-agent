@@ -30,11 +30,11 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from e2e_harness import check_server, db_residue_report, pre_max_tasks  # noqa: E402
+from e2e_harness import check_server, db_residue_report, pre_max_tasks, seed_email  # noqa: E402
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 POOL = ("lebenslauf_hochgeladen", "profil_geprueft", "match_berechnet", "eingeladen")
 

@@ -2980,3 +2980,6 @@ msgstr "Expliquer la correspondance"
 
 msgid "Agent-Task (Phase 5, live {0}), Modell: {1}"
 msgstr "Tâche d'agent (phase 5, du {0}), modèle : {1}"
+
+msgid "Kein Berichtstext gespeichert (Altbestand)"
+msgstr "Aucun texte de rapport enregistré (hérité)"

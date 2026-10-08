@@ -27,11 +27,11 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from e2e_harness import BASE, DB  # noqa: E402
+from e2e_harness import BASE, DB, seed_email  # noqa: E402
 from webui.logic import hash_password_argon2id  # noqa: E402
 
-EMP = ("hr@techvision.de", "sicher123")
-CAND = ("recruiting.e2e.2809b@kmailtest.de", "Test1234!")
+EMP = (seed_email("hr@techvision.de"), "sicher123")
+CAND = (seed_email("recruiting.e2e.2809b@kmailtest.de"), "Test1234!")
 # P0-2 braucht einen Kandidaten mit 'eingeladen'-Bewerbung UND erzeugter
 # Einladung (candidate.py `_tab_bewerbungen`: Karte nur bei Status
 # 'eingeladen' + get_invitation_artifacts). Picking dynamisch, danach ggf.

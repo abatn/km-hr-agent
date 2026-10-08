@@ -25,14 +25,14 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from e2e_harness import check_server, db_residue_report, pre_max_tasks
+from e2e_harness import check_server, db_residue_report, pre_max_tasks, seed_email
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
 TODAY = date.today().isoformat()
-CAND_EMAIL = "batniniabdelkader@yahoo.com"
+CAND_EMAIL = seed_email("batniniabdelkader@yahoo.com")
 CAND_PW = "Abdel15121978!"
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 
 

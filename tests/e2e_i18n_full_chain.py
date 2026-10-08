@@ -92,7 +92,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tests"))
 
-from e2e_harness import BASE, DB, check_server, db_residue_report, pre_max_tasks
+from e2e_harness import BASE, DB, check_server, db_residue_report, pre_max_tasks, seed_email
 
 LIVE_DB = (ROOT / "data" / "feedback.db").resolve()
 RUNNER = ROOT / "scripts" / "agent-runner.py"
@@ -102,9 +102,9 @@ TESTDATEN = ROOT / "testdaten"
 ERGEBNISSE = ROOT / "ergebnisse"
 
 CAND_ID = 13
-CAND_EMAIL = "batninitaoufik@gmail.com"
+CAND_EMAIL = seed_email("batninitaoufik@gmail.com")
 CAND_PASSWORD = "Abd15121978!"
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 EMPLOYER_ID = 1
 JOB_ID = 7

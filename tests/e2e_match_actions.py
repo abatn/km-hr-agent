@@ -20,9 +20,9 @@ from e2e_harness import check_server, db_residue_report, pre_max_tasks
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from e2e_harness import BASE, DB  # noqa: E402
+from e2e_harness import BASE, DB, seed_email  # noqa: E402
 
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 
 

@@ -36,6 +36,32 @@ if not BASE:
 ROOT = Path(__file__).resolve().parents[1]
 DB = Path(os.environ.get("KMHR_DB_PATH") or (ROOT / "data" / "feedback.db"))
 
+# ── CI-Seed-Konten (Option A, 08.10.2026) ────────────────────────────────
+# Die E2E-Skripte melden sich mit den LOKALEN Testkonten an (data/feedback.db).
+# Das CI-Seed (tests/fixtures/seed.db, erzeugt von scripts/seed_ci_db.py) hat
+# dieselben Zeilen/Passwort-Hashes, aber anonymisierte E-Mails (kandidatN@…).
+# Mit KMHR_E2E_SEED=1 (CI-Workflow) übersetzt seed_email() den lokalen Wert in
+# die Seed-E-Mail; lokal (ohne die Var) bleibt der Wert unverändert.
+# Spec: knowledge/system/e2e-ci-seed.md
+SEED_MODE = os.environ.get("KMHR_E2E_SEED") == "1"
+_SEED_MAP = {
+    # Kandidaten: local -> seed (IDs = scripts/seed_ci_db.py::_email)
+    "batniniabdelkader@yahoo.com": "kandidat1@example.invalid",
+    "test@example.de": "kandidat2@example.invalid",
+    "batninitaoufik@gmail.com": "kandidat13@example.invalid",
+    "e2e-beweis-phase1@example.com": "kandidat16@example.invalid",
+    "recruiting.e2e.2809b@kmailtest.de": "kandidat22@example.invalid",
+    # Arbeitgeber
+    "hr@techvision.de": "hr1@example.invalid",
+    # Admin
+    "admin@km-hr-agent.local": "admin@example.invalid",
+}
+
+
+def seed_email(value: str) -> str:
+    """Übersetzt eine lokale Login-E-Mail in die Seed-E-Mail (nur KMHR_E2E_SEED=1)."""
+    return _SEED_MAP.get(value, value) if SEED_MODE else value
+
 
 def check_server() -> None:
     """F2-Precheck: meldet 'SERVER DOWN (HTTP xxx)' und beendet mit exit 2."""

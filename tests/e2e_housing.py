@@ -36,19 +36,19 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from e2e_harness import check_server, pre_max_tasks, db_residue_report  # noqa: E402
+from e2e_harness import check_server, pre_max_tasks, db_residue_report, seed_email  # noqa: E402
 
 from e2e_harness import BASE  # Env KMHR_E2E_BASE (E2E-Isolation 27.09.2026)
 from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
 HOUSING_HEADER = "## 🏠 Wohnungssuche (Checkliste + freie Quellen)"
 
 # Test-Logins (Projekt-Testbestand, gleiche Quelle wie e2e_mentoring.py)
-EMP_EMAIL = "hr@techvision.de"
+EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PASSWORD = "sicher123"
 KNOWN_LOGINS = (
-    ("batniniabdelkader@yahoo.com", "Abdel15121978!"),
-    ("e2e-beweis-phase1@example.com", "E2EMentoring2026!"),
-    ("recruiting.e2e.2809b@kmailtest.de", "Test1234!"),
+    (seed_email("batniniabdelkader@yahoo.com"), "Abdel15121978!"),
+    (seed_email("e2e-beweis-phase1@example.com"), "E2EMentoring2026!"),
+    (seed_email("recruiting.e2e.2809b@kmailtest.de"), "Test1234!"),
 )
 # Design-Entscheidung: Test-Passwort fuer Kandidaten ohne notiertes Login
 HOUSING_PW = "E2EHousing2026!"
