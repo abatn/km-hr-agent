@@ -2,13 +2,13 @@
 
 > **Status:** Phase 0 abgeschlossen, **Phase 1 abgeschlossen (P1.1–P1.3 + P2.1, 20.09.2026)**
 > **Spec:** knowledge/ui-design-system.md (Quelle der Wahrheit für UI)
-> **Code:** webui/ (12 Dateien, 3.793 Zeilen inkl. 2 × `__init__.py`; gemessen 20.09.2026, `wc -l`)
+> **Code:** webui/ (16 Dateien, 11.583 Zeilen inkl. 2 × `__init__.py`; gemessen ⓘ09.10.2026, `find webui -name '*.py' | wc -l` / `wc -l`)
 
 ---
 
 ## Übersicht
 
-Migration des Streamlit-Monoliths (`app.py`, 4040 Zeilen) zu einer modularen NiceGUI-App (`webui/`, 12 Dateien).
+Migration des Streamlit-Monoliths (`app.py`, 4040 Zeilen) zu einer modularen NiceGUI-App (`webui/`, 16 Dateien).
 
 **Ziel:** Framework-unabhängige Business-Logik (db.py + logic.py) +NiceGUI-spezifisches UI.
 
@@ -38,7 +38,7 @@ webui/
 
 | Layer | Datei | Funktionen | Quelle app.py |
 |-------|-------|-----------|---------------|
-| DB | `db.py` | 12 Funktionen: `get_conn()`, `init_agent_tasks_table()`, `queue_agent_task()`, `get_invitation_artifacts()`, `get_agent_task_status()`, `get_language_tests()`, `get_documents()`, `init_notifications_table()`, `insert_notification()`, `get_notifications()`, `get_unread_count()`, `mark_notifications_read()` | Zeilen 38–150 |
+| DB | `db.py` | **28 Funktionen** (gemessen ⓘ09.10.2026, `grep -c '^def ' webui/db.py`): `get_conn()`, `set_language_resolver()`, `init_agent_tasks_table()`, `queue_agent_task()`, `apply_to_job()`, `get_invitation_artifacts()`, `get_application_status_history()`, `get_agent_task_status()`, `get_candidate_agent_tasks()`, `get_language_tests()`, `insert_language_test()`, `get_documents()`, `insert_document()`, `delete_document()`, `upsert_employer()`, `insert_job()`, `update_job_status()`, `init_notifications_table()`, `init_mentoring_table()`, `init_compliance_protokoll_table()`, `record_compliance_protokoll()`, `get_active_mentor()`, `assign_mentor()`, `end_mentoring()`, `insert_notification()`, `get_notifications()`, `get_unread_count()`, `mark_notifications_read()` | aus `app.py` extrahiert (Phase 0) |
 | Logik | `logic.py` | Scoring (7 Kategorien), DSGVO-Cleanup, Agent-Runner-Autostart, Passwort-Hashing, Rollen-Login, Gewichtungs-Feedback | Zeilen 150–621 |
 
 ### Regeln für Phase 0
@@ -55,12 +55,12 @@ webui/
 - Quelle: `app.py:891-1095`, `knowledge/system/access-control.md:62`
 - Korrigiert: Passwort-Mindestlänge 8Z, Employer-Hint, Admin-Seed, sqlite3-Import
 
-### Skill 1: Candidate-Portal ✅ (6 von 6 Pages)
+### Skill 1: Candidate-Portal ✅ (7 Tabs, `_TAB_MAP` `webui/pages/candidate.py`, Stand 02.10.2026)
 - Implementiert: Upload, Mein Profil, Stellenangebote, **Bewerbungen (NEU 20.09.2026)**, Sprachtest, Onboarding
 - Quelle: `app.py:3335-3382`, `knowledge/system/access-control.md:74`
 - Features: status_badge, timeline (Status-Historie), withdraw-Funktion, VDO.Ninja-Link bei "eingeladen"
 
-### Skill 2: Employer-Portal ✅ (9 Pages)
+### Skill 2: Employer-Portal ✅ (11 Pages, `PAGE_MAP` `webui/pages/employer.py`, gemessen 2791–2803 ⓘ09.10.2026)
 - Dashboard, Kandidaten-Suche, Match-Ergebnis, Compliance, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback
 - Quelle: `app.py:2000-3500`, `knowledge/system/access-control.md:73`
 
@@ -80,13 +80,13 @@ Quelle: `knowledge/ui-design-system.md` (425 Zeilen)
 | Feature | Doku | Status im Code |
 |---------|------|----------------|
 | `ui.add_head_html()` | §10.1 | ✅ Injiziert via `inject_css()` pro @ui.page |
-| `ui.tabs()` / `ui.tab_panels()` | §10.3 | ✅ Login (5 Tabs), Candidate (5 Tabs) |
+| `ui.tabs()` / `ui.tab_panels()` | §10.3 | ✅ Login (5 Tabs), Candidate (7 Tabs) |
 | `ui.card`, `ui.column`, `ui.row` | §10.3 | ✅ Überall genutzt |
 | `ui.grid()` | §10.3 | ✅ Dashboard-Layouts |
 | `ui.left_drawer()` | §10.3 | ✅ Employer-Sidebar (shell() `components.py:1084`, Drawer `components.py:1142`) |
 | `app.storage.user` | §10.5 | ✅ Session-Management |
-| `ui.timer()` | §7.1 | ✅ Dashboard 5s, Agent-Details 10s, Bewerbungen 15s |
-| `ui.animate()` | §7.2 | ✅ Score-Bar (components.py:220), Page Fade-In (theme.py) |
+| `ui.timer()` | §7.1 | ✅ Dashboard 10s (Candidate/Employer), Bewerbungen 15s, Match-View 15s; **kein** Agent-Details-Timer (Ist ⓘ09.10.2026) |
+| `ui.animate()` | §7.2 | ❌ existiert in NiceGUI 3.17.1 **nicht** (`'animate' not in dir(ui)`, s. Kommentar `webui/components.py`); Score-Bar animiert per CSS-Keyframe `score-fill` (theme.py) |
 | `ui.skeleton()` | §7.4 | ✅ `skeleton_loader()` (`components.py:428`, genutzt in employer.py:19) |
 | `ui.notify()` | §10.2 | ✅ Match-Fehler-Feedback (Skill 2) |
 | `ui.expansion()` | §10.2 | ✅ Match-Erklärung (Skill 2) |
@@ -139,7 +139,7 @@ python3 -m webui.main  # → http://localhost:8080
 2. ~~**Match-Ergebnis Live-Score**~~ ✅ (20.09.2026 implementiert)
 3. ~~**Admin Agent-Tools**~~ ✅ (20.09.2026 implementiert)
 4. ~~**Live-Updates (ui.timer)**~~ ✅ (20.09.2026 implementiert)
-5. ~~**Animationen (ui.animate)**~~ ✅ (20.09.2026 implementiert)
+5. ~~**Animationen (ui.animate)**~~ ❌ korrigiert (NiceGUI 3.17.1: `ui.animate` existiert nicht, s. `webui/components.py`; Score-Bar animiert per CSS-Keyframe `score-fill` in `theme.py`)
 6. ~~**Ladezustaende (ui.skeleton)**~~ ✅ (20.09.2026 implementiert)
 7. ~~**Echtzeit-Daten (ui.refreshable)**~~ ✅ (20.09.2026 implementiert)
 8. ~~**Dark Mode (ui.dark_mode)**~~ ✅ (20.09.2026 implementiert)

@@ -10,9 +10,9 @@ description: Job-Application – Aktive Stellen ansehen, sich bewerben, Bewerbun
 | `filesystem` | `write_file` | Bewerbungs-Bestätigungen / Berichte speichern |
 | `email-sender` | `send_email` | Bewerbungs-Bestätigung an Kandidaten (optional) |
 
-**Connector für Streamlit-UI:** SQLite (lokal, kostenlos) – neue Tabellen `applications`, `application_status_history` in `data/feedback.db`. Siehe `knowledge/portal/employer-portal-fields.md` (Schema) und `knowledge/lifecycle/application-status.md` (Status-Lebenszyklus).
+**Connector für NiceGUI-UI (`webui/pages/candidate.py`):** SQLite (lokal, kostenlos) – neue Tabellen `applications`, `application_status_history` in `data/feedback.db`. Siehe `knowledge/portal/employer-portal-fields.md` (Schema) und `knowledge/lifecycle/application-status.md` (Status-Lebenszyklus).
 
-**Hinweis:** Lab-Prinzip – kein eigener Code. Der Skill definiert NUR Workflow, Regeln und Felder. Die Umsetzung erfolgt als Streamlit-UI-Erweiterung analog zum Candidate Portal und Employer Portal (Login-Schutz, Tabs, SQLite).
+**Hinweis:** Lab-Prinzip – kein eigener Code. Der Skill definiert NUR Workflow, Regeln und Felder. Die Umsetzung erfolgt in der NiceGUI-UI (`webui/pages/candidate.py`) analog zum Candidate Portal und Employer Portal (Login-Schutz, Tabs, SQLite).
 
 ---
 
@@ -74,7 +74,7 @@ description: Job-Application – Aktive Stellen ansehen, sich bewerben, Bewerbun
 **Eingabe:** candidate_id (aus Session)
 
 **Aktion:**
-- SQLite: `SELECT a.id, a.job_id, j.titel, e.firma, a.status, a.erstellungsdatum, a.aktualisiert_am FROM applications a JOIN jobs j ON a.job_id = j.id JOIN employers e ON j.employer_id = e.id WHERE a.candidate_id = ? ORDER BY a.erstellt_am DESC`
+- SQLite: `SELECT a.id, a.job_id, j.titel, e.firma, a.status, a.erstellungsdatum, a.aktualisiert_am FROM applications a JOIN jobs j ON a.job_id = j.id JOIN employers e ON j.employer_id = e.id WHERE a.candidate_id = ? ORDER BY a.erstellungsdatum DESC`
 
 **Status-Anzeige:** Wie `knowledge/lifecycle/application-status.md` – Kandidat sieht jeden Statuswechsel inkl. Datum. Bei `abgelehnt`: optionale, sachliche Begründung des Arbeitgebers.
 
@@ -96,7 +96,7 @@ description: Job-Application – Aktive Stellen ansehen, sich bewerben, Bewerbun
 
 ---
 
-## Streamlit-UI-Erweiterung (Umsetzungshinweis)
+## NiceGUI-UI-Erweiterung (Umsetzungshinweis)
 
 1. **Sidebar-Eintrag:** Neuer Punkt "💼 Stellenangebote" (nur für eingeloggte Kandidaten sichtbar)
 2. **Tabs:** `🔎 Stellenangebote` | `📨 Meine Bewerbungen`

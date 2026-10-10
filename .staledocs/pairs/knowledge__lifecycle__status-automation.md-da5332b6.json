@@ -1,0 +1,51 @@
+{
+  "ack": {
+    "anchors": [
+      "ALLOWED_TRANSITIONS",
+      "_legal",
+      "_page_match",
+      "_page_stellen",
+      "agent_tasks",
+      "app.py",
+      "application_status_history",
+      "changed_by='arbeitgeber_hr_seite'",
+      "changed_by='system'",
+      "create_invitation",
+      "do_hire",
+      "do_hire()",
+      "do_invite()",
+      "do_reject()",
+      "employer-portal",
+      "ergebnisse/entscheidungen.md",
+      "ergebnisse/entscheidungen.md:1397",
+      "knowledge/legal/dsgvo-gate.md",
+      "knowledge/lifecycle/application-status.md",
+      "knowledge/system/agent-automation.md",
+      "onboarding_release",
+      "send_rejection",
+      "test_send_onboarding_guard.py",
+      "test_send_rejection_guard.py",
+      "tests/e2e_apply_dialog.py",
+      "tests/e2e_housing.py",
+      "tests/e2e_invitation_termin.py",
+      "tests/e2e_invitation_termin_admin.py",
+      "tests/e2e_transition_guard.py",
+      "tests/e2e_vorgemerkt.py",
+      "ui.notify",
+      "webui/",
+      "webui/pages/employer.py::_page_dokumente()",
+      "webui/pages/employer.py::_page_match",
+      "webui/pages/employer.py::_page_stellen"
+    ],
+    "at": "2026-10-10T11:05:04+00:00",
+    "code_blobs": {
+      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "5ac1e3fa167faf4cc11bb782022b55226ef5ec11",
+    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (39 von 39 Claims ok)"
+  },
+  "doc": "knowledge/lifecycle/status-automation.md",
+  "schema": 1
+}

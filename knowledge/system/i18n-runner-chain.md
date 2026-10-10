@@ -18,7 +18,7 @@ Mail-Versand, kein LLM-/Netz-Call).
 | Portal-erzeugte MD (Onboarding-Checkliste, Pre-Screen-MD, Feedback-MD) | **Erzeugungs-Sprache** | P9.4, `knowledge/system/i18n.md` Klasse E |
 | **Runner-erzeugte Artefakte** (Mails #1–#6, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (= Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver |
 | **LLM-Berichts-Body** (`extract_profile-*`, `match_candidate-*`, `check_compliance-*`, `assess_culture_fit-*`, `verify_documents-*`, `check_visa-*`, `explain_match-*`, `notify_user-*.md` in `ergebnisse/`) | **Payload-Sprache** (Prompt-Anweisung `Antworte in <Klarname>.`, §7.1 Punkt 5) — Altbestand **vor** 07.10.2026 bleibt deutsch (Punkt 4), z. B. `extract_profile-kandidat-13-2026-09-24.md` | `scripts/agent-runner.py`, Codemarke `Antworte in` (Prompt-Bau); Anzeige in 🏢 🔎 Agent-Details via `logic.ERGEBNISSE.glob(_glob)` (neueste Datei je Task) |
-| **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Payload-Sprache** (Zusätze über `tr()`; der **Task-Titel bleibt englisch** = Identifier, entspricht Dateiname-Prefix und Badge-Key, Design-Entscheidung) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen"**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Beweise `tests/test_runner_i18n.py::test_p9_5b_header_de_byteidentisch` (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) |
+| **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Prosa-Zeile in Payload-Sprache; Titel-Marker sprachstabil (deutsch)** — nur die `>`-Zeile `(> Agent-Task (Phase 5, live …), Modell: …)` läuft über `tr()`; der **Task-Titel bleibt englisch** (= Identifier, entspricht Dateiname-Prefix und Badge-Key) und die **Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` bleiben IMMER deutsch** (sprachstabile, maschinell geparste Identifier) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen", korrigiert 09.10.2026 (parse-kritische Marker)**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Parser: `webui/pages/employer.py` Codemarke `_BERICHT_STELLE` (`Stelle #(\d+)`) + `tests/test_r33_compliance_reports.py` (`Stelle #\d+`); Beweise `tests/test_runner_i18n.py::test_p9_5b_header_de_byteidentisch` (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) |
 
 **Design-Entscheidung (keine externe Quelle):** Runner-Artefakte liefen bis P1 fix Deutsch (kein
 Session-Kontext). Seit **P2/P3 (07.10.2026, Variante B)** tragen die Tasks `language` im Payload
@@ -150,9 +150,15 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
 5. **LLM-Tasks:** Prompt erhält die Anweisung, in der Payload-Sprache zu antworten (HR-Sichtbar);
    als Design-Entscheidung dokumentiert. **Berichts-Header seit P9.5b (07.10.2026, Nutzer-GO
    „Mitübersetzen"):** `llm_report_header(task_type, cid, jid, datum, lang)` baut den Header über
-   `tr()` in der Payload-Sprache (Zusätze „Kandidat #…", „Stelle #…", „Agent-Task (Phase 5, live …),
-   Modell: …"); der **Task-Titel bleibt englisch** (`task_type.title()` = Identifier, entspricht
-   Dateiname-Prefix und Badge-Key — Design-Entscheidung). Bei `de` byte-identisch mit dem Altbestand
+   `tr()` in der Payload-Sprache (Prosa-Zeile „Agent-Task (Phase 5, live …), Modell: …"); der
+   **Task-Titel bleibt englisch** (`task_type.title()` = Identifier, entspricht Dateiname-Prefix und
+   Badge-Key — Design-Entscheidung). **Korrektur P9.5b für parse-kritische Marker (Design-Entscheidung,
+   09.10.2026):** die Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` sind **sprachstabile
+   Identifier** und werden **immer deutsch** geschrieben (nicht mehr über `tr()`) — Grund: sie werden
+   maschinell geparst von `webui/pages/employer.py` (Codemarke `_BERICHT_STELLE = _re.compile(r"Stelle
+   #(\d+)")`, HR-Compliance-Seite) und von `tests/test_r33_compliance_reports.py` (`Stelle #\d+`);
+   die frühere FR-Titelzeile `Candidat #1 / Poste #9` brach das Schema (`job_id=None`). Nur die
+   `>`-Prosa-Zeile bleibt übersetzt. Bei `de` byte-identisch mit dem Altbestand
    (Beweis `tests/test_runner_i18n.py::test_p9_5b_header_de_byteidentisch`; E2E
    `e2e_admin_downloads` rc=0). **Badge-Härtung (Nutzer-GO „Prompt-Härtung"):** hinter dem
    Sprach-Suffix `Antworte in …` folgt eine feste deutschsprachige Prompt-Regel, dass die
@@ -199,4 +205,5 @@ die 7 Kategorie-Zeilen (Kategorienamen übersetzt, „siehe Match-Bericht" = vor
 Fußzeile. **Nicht geändert:** Dateiname `export-kandidat-…`, technische Marker, `handle_errors`
 (Logs = technisch). Katalog **972 → 980** (+8; 2 der Zielstrings `**Datum:** {0}` und
 `**Score:** {0}/100 ({1})` waren bereits vorhanden). Beweis: `tests/test_runner_i18n.py` (P4c).
+**Ist-Stand 09.10.2026 (Korrektur):** Katalog je Sprache = **993** msgids (`grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` = 993, de/en/fr/ar gleich); die 980/991 sind datierte Zwischenstände.
 Übersetzungen EN/FR/AR = **Design-Entscheidung** (eigene Erstfassung, Native-Review offen).

@@ -13,14 +13,16 @@
 |---|---|---|---|---|
 | Kernkompetenzen | 30 | 15 | 45 | Übereinstimmung der Hard Skills mit Stellenanforderungen |
 | Berufserfahrung | 25 | 10 | 40 | Relevanz und Dauer der Berufserfahrung |
-| Bildung | 15 | 5 | 30 | Abschluss-Level und fachliche Relevanz |
-| Standort | 10 | 5 | 25 | Physische Nähe oder Remote-Möglichkeit |
-| Branchenkenntnis | 10 | 5 | 25 | Erfahrung in gleicher oder ähnlicher Branche |
-| Soft Skills | 10 | 5 | 25 | Übereinstimmung der weichen Anforderungen |
+| Bildung | 15 | 0 | 30 | Abschluss-Level und fachliche Relevanz |
+| Standort | 10 | 0 | 25 | Physische Nähe oder Remote-Möglichkeit |
+| Branchenkenntnis | 10 | 0 | 25 | Erfahrung in gleicher oder ähnlicher Branche |
+| Soft Skills | 10 | 0 | 25 | Übereinstimmung der weichen Anforderungen |
 | Sprache | 0 | 0 | 15 | Deutsch-/Englisch-Level (aktiviert sich nur via Feedback-Loop) |
 | **Summe** | **100** | | | **Wird nach Loop-Anpassungen immer wieder auf 100 normalisiert** |
 
 **Baseline = 30/25/15/10/10/10/0 (Summe 100).**
+
+> 📌 **Min-Spalte an den Ist-Code angeglichen (ⓘ09.10.2026):** Die Untergrenze ist im Code **nicht** ein fixes Minimum je Kategorie, sondern `max(0, base − GEWICHT_CAP_ABWEICHUNG)` — Codemarken `webui/logic.py` `GEWICHT_CAP_ABWEICHUNG = 15` (gemessen :658) und Klemm-Zeile `roh[key] = max(max(0, base - GEWICHT_CAP_ABWEICHUNG), min(roh[key], base + GEWICHT_CAP_ABWEICHUNG))` (gemessen :860). Für Bildung (15), Standort (10), Branche (10) und Soft (10) ergibt `base − 15` einen **negativen** Wert → geklemmt auf **0** (vorher fälschlich 5 dokumentiert). Nur Kern (30→15) und Erfahrung (25→10) liegen bei base−15 > 0; Sprache wird separat via `GEWICHT_CAP_SPRACHE_MAX = 15` (Obergrenze) und `max(0, …)` (Untergrenze 0) behandelt.
 
 > ⚠️ **Design-Entscheidung (15.09.2026):** Diese Gewichte wurden beim Projektstart festgelegt und haben **keine externe Quelle** (keine HR-Studie, kein Gesetz, kein Bipperz-Dokument). Sie dienen als Startpunkt für den Feedback-Loop, der sie an echte Einstellungsentscheidungen anpasst. **Alternative:** Gewichte aus SHRM/LinkedIn-Studien oder eigener empirischer Validierung. **Validierung:** Feedback-Loop passt Werte nach 20+ Einstellungsentscheidungen an.
 

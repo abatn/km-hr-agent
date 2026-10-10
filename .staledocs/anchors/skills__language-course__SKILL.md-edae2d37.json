@@ -1,0 +1,15 @@
+{
+  "anchors": [
+    "ergebnisse/language-course-kandidat-{N}-{datum}.md",
+    "knowledge/language-courses.md",
+    "knowledge/language-tests.md",
+    "testdaten/fortschritt-{kandidat}-test-{sprache}-{datum}.md",
+    "testdaten/fortschritt-{kandidat}-{sprache}.md",
+    "testdaten/profil-{kandidat}.md",
+    "testdaten/stellenprofil-{id}.txt"
+  ],
+  "at": "2026-10-10T10:13:24+00:00",
+  "doc": "skills/language-course/SKILL.md",
+  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "schema": 1
+}

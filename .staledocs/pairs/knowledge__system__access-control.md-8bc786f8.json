@@ -1,0 +1,42 @@
+{
+  "ack": {
+    "anchors": [
+      "AGENTS.md",
+      "README.md",
+      "_TAB_MAP",
+      "_page_match",
+      "app.py",
+      "candidates.lebenslauf_*",
+      "current_role()",
+      "employer_id",
+      "ergebnisse/",
+      "ergebnisse/*.md",
+      "ergebnisse/email-*.md",
+      "instructions.md",
+      "knowledge.md",
+      "lebenslauf_hochgeladen",
+      "page_role=\"candidate\"",
+      "skills/README.md",
+      "skills/employer-portal/SKILL.md",
+      "user_cand_id",
+      "webui/pages/candidate.py"
+    ],
+    "at": "2026-10-10T11:05:07+00:00",
+    "code_blobs": {
+      "webui/main.py": "83e65652a904f8d7d5c34095a812002fd9a85428",
+      "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
+      "webui/pages/admin.py": "0f16dc331f91552b2b88cb811962ac11aa298627",
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002",
+      "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
+      "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
+      "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
+      "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "74bee3089f7f78c2ee256af92bedc5eb0d276ce0",
+    "note": "C2-Verifikation 10.10.2026: Claim AGENTS.md gegen den Pair-Code geprueft und nachgewiesen (23 von 23 Claims ok)"
+  },
+  "doc": "knowledge/system/access-control.md",
+  "schema": 1
+}

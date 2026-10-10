@@ -1,0 +1,27 @@
+{
+  "anchors": [
+    "ergebnisse/v6-1-typed-live-run.md",
+    "scripts/agent-runner.py",
+    "skills/assess-culture-fit/SKILL.md",
+    "skills/candidate-portal/SKILL.md",
+    "skills/check-compliance/SKILL.md",
+    "skills/check-gdpr/SKILL.md",
+    "skills/contact-candidate/SKILL.md",
+    "skills/employer-portal/SKILL.md",
+    "skills/explain-match/SKILL.md",
+    "skills/export-report/SKILL.md",
+    "skills/extract-profile/SKILL.md",
+    "skills/generate-onboarding/SKILL.md",
+    "skills/handle-errors/SKILL.md",
+    "skills/job-application/SKILL.md",
+    "skills/match-candidate/SKILL.md",
+    "skills/notify-user/SKILL.md",
+    "skills/pre-screen/SKILL.md",
+    "skills/store-feedback/SKILL.md",
+    "skills/verify-documents/SKILL.md"
+  ],
+  "at": "2026-10-10T10:13:24+00:00",
+  "doc": "PRUEFBERICHT-FINAL.md",
+  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "schema": 1
+}

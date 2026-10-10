@@ -12,7 +12,7 @@ description: Kandidaten-Portal – Registrierung, Profil anlegen, Status verfolg
 
 **Hinweis:** Alles lokal, kein Code nötig. SQLite für Datenbank.
 
-**Zugriff (v4.2, `knowledge/system/access-control.md`):** Das Candidate Portal ist NUR in CANDIDATE-Sessions sichtbar (HR-Sessions: kein Zugriff). Alle Tabs (Profil/Lebenslauf/Status) sind SESSION-GEBUNDEN: Sie wirken ausschließlich auf `st.session_state.user_cand_id` – kein Kandidat-Dropdown, keine fremden Profile editierbar (DSGVO-Datenselbstverwaltung).
+**Zugriff (v4.2, `knowledge/system/access-control.md`):** Das Candidate Portal ist NUR in CANDIDATE-Sessions sichtbar (HR-Sessions: kein Zugriff). Alle Tabs (Profil/Lebenslauf/Status) sind SESSION-GEBUNDEN: Sie wirken ausschließlich auf `app.storage.user['user_cand_id']` (NiceGUI-Session, Helfer `_session()` in `webui/pages/candidate.py`) – kein Kandidat-Dropdown, keine fremden Profile editierbar (DSGVO-Datenselbstverwaltung).
 
 ---
 
@@ -29,7 +29,7 @@ description: Kandidaten-Portal – Registrierung, Profil anlegen, Status verfolg
 
 **Aktion:**
 - SQLite: `INSERT INTO candidates (email, password_hash, name, status) VALUES (?, ?, ?, 'registriert')`
-- Passwort: SHA256-Hash (nicht im Klartext)
+- Passwort: **argon2id**-Hash (nicht im Klartext; SHA256 nur als Migrationspfad – transparente Re-Hashung bei Login, Phase 3.2, `webui/logic.py`)
 
 **Rückgabe:** "Registrierung erfolgreich. Bitte Profil vervollständigen."
 
@@ -37,7 +37,7 @@ description: Kandidaten-Portal – Registrierung, Profil anlegen, Status verfolg
 
 ### 2. Profil anlegen/bearbeiten
 
-**Eingabe:** candidate_id (= `st.session_state.user_cand_id`, NICHT frei wählbar), feld-wert-paare
+**Eingabe:** candidate_id (= `app.storage.user['user_cand_id']`, NICHT frei wählbar), feld-wert-paare
 
 **Erlaubte Felder:**
 - Persönliche Daten: telefon, standort, geburtsdatum, nationalitaet, visum_status, verfuegbarkeit
@@ -74,7 +74,7 @@ description: Kandidaten-Portal – Registrierung, Profil anlegen, Status verfolg
 **Regeln:**
 - Mehrere Dateien pro Typ erlaubt (jede Datei = eigener Eintrag)
 - **KEIN** Überschreiben von `candidates.lebenslauf_*` und **KEIN** Statuswechsel — nur der Lebenslauf (Schritt 3) ändert das Profil
-- Session-gebunden: Upload wirkt ausschließlich auf `st.session_state.user_cand_id` (DSGVO-Datenselbstverwaltung)
+- Session-gebunden: Upload wirkt ausschließlich auf `app.storage.user['user_cand_id']` (DSGVO-Datenselbstverwaltung)
 - Kandidat kann eigene Einträge im selben Tab löschen (Art. 17 Selbstservice)
 
 **Schritte:**

@@ -47,6 +47,9 @@ from pathlib import Path
 # ─── Pfade ────────────────────────────────────────────────────────────────
 _ROOT = Path(__file__).resolve().parent.parent
 _LIVE = (_ROOT / "data" / "feedback.db").resolve()
+# F2 (09.10.2026): Seed-Fixture als Primaerquelle (Paritaet zu CI, s. Docstring).
+_SEED = (_ROOT / "tests" / "fixtures" / "seed.db").resolve()
+_SOURCE = _SEED if _SEED.is_file() else _LIVE
 _PTR = Path("/tmp/opencode/kmhr-mirror-last.txt")
 
 # ─── Hygiene (Schritt 3, 27.09.2026) ─────────────────────────────────────
@@ -108,8 +111,8 @@ def _snapshot(path: Path) -> str:
         conn.close()
 
 
-# ─── Spiegel anlegen: Live NUR lesend kopieren (mode=ro + .backup) ────────
-_src = _orig_connect(f"file:{_LIVE}?mode=ro", uri=True)
+# ─── Spiegel anlegen: Quelle NUR lesend kopieren (mode=ro + .backup) ──────
+_src = _orig_connect(f"file:{_SOURCE}?mode=ro", uri=True)
 _dst = _orig_connect(str(_MIRROR))
 try:
     _src.backup(_dst)
@@ -122,8 +125,8 @@ finally:
 # status=beendet => Endwerte vollstaendig geschrieben
 _RUN_ID = f"run={datetime.now().isoformat(timespec='seconds')} pid={os.getpid()}"
 _START = (
-    f"{_RUN_ID}\nstatus=start\nmirror={_MIRROR}\n"
-    f"start_live={_snapshot(_LIVE)}\nstart_mirror={_snapshot(_MIRROR)}\n"
+    f"{_RUN_ID}\nstatus=start\nsource={_SOURCE}\nmirror={_MIRROR}\n"
+    f"start_source={_snapshot(_SOURCE)}\nstart_mirror={_snapshot(_MIRROR)}\n"
     + (f"pruned={','.join(_PRUNE_LOG)}\n" if _PRUNE_LOG else "pruned=-\n")
 )
 _PTR.write_text(_START, encoding="utf-8")
@@ -161,7 +164,7 @@ def pytest_sessionfinish(session, exitstatus):
     verzeichnis entfernen. Reihenfolge ist die Sicherheitsregel: nie vor den
     Snapshots, nie die Live-DB, nie deren .bak-Dateien."""
     try:
-        lines = _START + (f"end_live={_snapshot(_LIVE)}\nend_mirror={_snapshot(_MIRROR)}\n"
+        lines = _START + (f"end_source={_snapshot(_SOURCE)}\nend_mirror={_snapshot(_MIRROR)}\n"
                           f"exitstatus={exitstatus}\nstatus=beendet\n")
         _PTR.write_text(lines, encoding="utf-8")
         print(f"\n[ISOLATION] {_PTR}")

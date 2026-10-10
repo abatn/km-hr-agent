@@ -1,7 +1,8 @@
 """
 Candidate pages for KM-HR-Agent NiceGUI App.
-9 tabs (Quelle: _TAB_MAP candidate.py): Dashboard, Upload, Mein Profil, Stellen,
-Bewerbungen, Dokumente, Sprachtest, Pre-Screen, Onboarding.
+7 tabs (Quelle: _TAB_MAP candidate.py): Dashboard, Mein Profil, Stellen,
+Bewerbungen, Sprachtest, Pre-Screen, Onboarding.
+Upload und Dokumente wurden am 02.10.2026 in „Mein Profil" fusioniert.
 """
 from __future__ import annotations
 

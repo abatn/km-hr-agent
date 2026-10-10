@@ -1,0 +1,19 @@
+{
+  "ack": {
+    "anchors": [
+      "ergebnisse/entscheidungen.md",
+      "knowledge/system/dependency-pinning.md",
+      "requirements.txt",
+      "tests/test_requirements_pinned.py"
+    ],
+    "at": "2026-10-10T11:05:08+00:00",
+    "code_blobs": {
+      "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "2c5e276d7b22734b3740e73a4a1d998c99481697",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/system/dependency-pinning.md gegen den Pair-Code geprueft und nachgewiesen (9 von 9 Claims ok)"
+  },
+  "doc": "knowledge/system/dependency-pinning.md",
+  "schema": 1
+}

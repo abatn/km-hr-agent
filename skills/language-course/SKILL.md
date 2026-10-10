@@ -9,7 +9,7 @@ description: Sprachkurs-Integration – Deutsch/Französisch/Englisch finden, Ni
 | `filesystem` | `read_text_file` | Knowledge-Dateien (language-courses.md, Kandidatenprofil) + Fortschritts-Dateien lesen |
 | `filesystem` | `write_file` | Fortschritts-Dateien, Kurs-Empfehlungen, Berichte speichern |
 | `filesystem` | `list_directory` | Verzeichnisse durchsuchen (testdaten/, ergebnisse/) |
-| `filesystem` | `glob` | Fortschritts-Dateien finden (`fortschritt-*.md`) |
+| `filesystem` | `search_files` | Fortschritts-Dateien finden (`fortschritt-*.md`) |
 | `pdf-reader` | `read_pdf_text` | Sprachzertifikate (Goethe, TELC, IELTS) extrahieren und prüfen |
 | `ansvar-german-law` | `search` | 🇩🇪 Integrationskurs-Pflicht (IntV), BAMF-Förderung,AufenthG-Sprachanforderungen |
 | `ansvar-french-law` | `search` | 🇫🇷 CIR/CFI Kurse, obligation d'intégration |
@@ -118,7 +118,7 @@ Empfehlung: "Goethe Tunis ( Präsenz, 800 TND) oder italki (Online, 15 EUR/h)"
 4. Agent ruft `language-test.get_cefr_level(durchschnitt, sprache)` auf → CEFR-Level
 5. Ergebnis: `testdaten/fortschritt-{kandidat}-test-{sprache}-{datum}.md`
 
-**Verfügbare Tests:** DE A1 (10 Seed), EN A2 (10 Seed), FR B2 (10 Seed) + LLM-generiert (unbegrenzt)
+**Verfügbare Tests:** **732** Seed-Fragen (DE 120 / EN 522 / FR 90, `knowledge/language-tests.md` ⓘ09.10.2026, `grep -c '^| DE-'` etc.) + LLM-generiert (unbegrenzt)
 **Quellen:** Sprachschule Aktiv München (DE), OpenExamPrep (EN), communfrancais.com DELF B2 (FR)
 **Modell:** Hybrid — Seed-Fragen (offiziell) als Basis, LLM generiert zusätzliche Fragen bei Bedarf
 
@@ -136,7 +136,7 @@ Empfehlung: "Goethe Tunis ( Präsenz, 800 TND) oder italki (Online, 15 EUR/h)"
 | 2026-10-18 | Kurs abgeschlossen | B1 | ✅ | Zeugnis erwartet |
 ```
 
-**Connector:** `filesystem.write_file` (speichern), `filesystem.read_file` (lesen)
+**Connector:** `filesystem.write_file` (speichern), `filesystem.read_text_file` (lesen)
 
 ### 5. Empfehlung generieren
 
@@ -154,14 +154,14 @@ Empfehlung: "Goethe Tunis ( Präsenz, 800 TND) oder italki (Online, 15 EUR/h)"
 
 ---
 
-## Connector: contract-check-filesystem
+## Connector: filesystem
 
 **Zweck:** Fortschritts-Dateien lesen/schreiben (属于 `testdaten/`)
 
 **Nutzung:**
 - `read_text_file` → Fortschritt lesen
 - `write_file` → Fortschritt aktualisieren
-- `glob` → Alle Fortschritts-Dateien finden
+- `search_files` → Alle Fortschritts-Dateien finden
 
 **Kein extra Connector nötig** – der bestehende `filesystem`-Connector (in `opencode.json`) deckt das ab.
 

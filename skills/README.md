@@ -8,9 +8,9 @@ Der KM-HR-Agent besteht aus folgenden Skills, die auf MCP-Connectoren basieren:
 
 | Skill | Beschreibung | MCP-Connector | Tool |
 |---|---|---|---|
-| `extract-profile` | Lebenslauf → Strukturiertes Profil + **DB-Update (NEU 18.09.2026)** | filesystem + pdf-reader | read_text_file + read_pdf_text |
+| `extract-profile` | Lebenslauf → Strukturiertes Profil + **DB-Update (NEU 17.09.2026)** | filesystem + pdf-reader | read_text_file + read_pdf_text |
 | `match-candidate` | Profil vs. Stelle → Match-Score | filesystem + LLM (Agent) | read_text_file + write_file |
-| `explain-match` | Score → Detaillierte Begründung | filesystem | write_file |
+| `explain-match` | Score → Detaillierte Begründung | filesystem | read_text_file |
 | `check-compliance` | Länderspezifische Prüfung | filesystem + ansvar-*-law | read_text_file + validate_citation |
 | `check-gdpr` | DSGVO-Compliance | filesystem | read_text_file |
 | `assess-culture-fit` | Kultur-Fit-Bewertung | filesystem | read_text_file |
@@ -21,7 +21,7 @@ Der KM-HR-Agent besteht aus folgenden Skills, die auf MCP-Connectoren basieren:
 | `job-application` | Kandidat: Stellenangebote ansehen, bewerben, Bewerbungsstatus verfolgen | filesystem + SQLite | read_text_file + write_file |
 | `verify-documents` | Dokumente prüfen: Zeugnisse/Zertifikate (Kandidat) + Visa/Arbeitserlaubnis (HR) – Länder-Routing DE/FR/CH | pdf-reader + ansvar-german/french/swiss-law + filesystem | read_pdf_text + validate_citation + write_file |
 | `check-visa` | Visum-, Arbeitserlaubnis- und Anerkennungs-Check für internationale Kandidaten (DE/FR/CH) | filesystem + ansvar-german/french/swiss-law | read_text_file + validate_citation + write_file |
-| `language-course` | Sprachkurs-Integration: DE/EN/FR-Kurse finden + Heimatland-Suche (anysearch), Niveaus-Tests, Fortschritt | filesystem + pdf-reader + ansvar-*-law + anysearch | read_text_file + write_file + search |
+| `language-course` | Sprachkurs-Integration: DE/EN/FR-Kurse finden + Heimatland-Suche (anysearch), Niveaus-Tests, Fortschritt | filesystem + pdf-reader + language-test + anysearch + ansvar-*-law | read_text_file + write_file + read_pdf_text + search + generate_test + score_answer + get_cefr_level |
 | `mentoring` | Mentoring/Patenschaft (Phase D P10, User-GO 24.09.2026, implementiert): HR-Klick-Vergabe §2A, separate Tabelle `mentoring` §3C, `{MENTOR}`-Befüllung in Generator + Mail #6 + Report, Lebenszyklus vorgeschlagen→aktiv→beendet | filesystem + email-sender | read_text_file + write_file + send_email |
 | `housing-search` | Wohnungssuche-Checkliste + freie Quellen im Onboarding-Report (Phase D P6, **implementiert 24.09.2026**): Info-Orchestrierung, kein Scraping, kein neuer Tab | filesystem + fetch + anysearch | read_text_file + write_file + fetch + search |
 | `contract-management` | Contract Preflight (Phase D P8, **implementiert 24.09.2026**): Gehalt ≥ Mindestlohn (Link-Katalog), Formfall-Hinweise (§14/§126a/§623), NachwG-15-Punkte-Checkliste, Vertragsskelett; **Signatur A–F bleibt User-Wahl** | filesystem + ansvar-german-law + fetch | read_text_file + write_file + fetch |
@@ -104,7 +104,7 @@ Feedback speichern (store-feedback)
 - **Fallbacks:** Automatische Fallback-Strategien je nach Fehlertyp
 
 ### 7. employer-portal
-- **Registrierung:** `employers`-Tabelle in SQLite (SHA256-Hash wie Candidate Portal)
+- **Registrierung:** `employers`-Tabelle in SQLite (argon2id-Hash, transparente SHA256-Migration bei Login — Phase 3.2, wie Candidate Portal)
 - **Stellen ausschreiben:** `jobs`-Tabelle (Status: aktiv/pausiert/besetzt/abgelaufen)
 - **Kandidaten sehen:** anonymisiert (Pseudonym, keine Kontaktdaten – DSGVO)
 - **Bewerber verwalten (NEU Phase 1):** Schritt 7 im SKILL.md – Bewerber zuerst im Kandidaten-Tab, Status angesehen/eingeladen/abgelehnt/eingestellt
@@ -123,7 +123,7 @@ Feedback speichern (store-feedback)
 - **Dokument lesen:** `pdf-reader` → `read_pdf_text` (PDF) bzw. `filesystem` → `read_text_file` (TXT)
 - **Typ-Erkennung + Indizienprüfung:** Pflichtfelder, Datumslogik, Profil-Konsistenz – Skala `PLAUSIBEL`/`AUFFAELLIG`/`UNBEKANNT` (kein echtes/falsch-Urteil!)
 - **Länder-Rechtsrahmen (Country-Routing):** 🇩🇪 `ansvar-german-law` (AufenthG) · 🇫🇷 `ansvar-french-law` (Code de l'entrée et du séjour) · 🇨🇭 `ansvar-swiss-law` (AuG) – Visa-Dokumente kommen von HR, Zeugnisse/Zertifikate vom Kandidaten
-- **Ergebnis speichern:** `filesystem` → `write_file` → `ergebnisse/verify-documents-kandidat-{N}-{datum}.md`
+- **Ergebnis speichern:** `filesystem` → `write_file` → `ergebnisse/verify_documents-kandidat-{N}-{datum}.md`
 - **Dokumenttypen + Felder:** `knowledge/legal/document-types.md`
 - **Rolle (Zwei-Ebenen-Modell):** Agent-Ebene (unsichtbar im Portal), Ergebnis-Sicht nur HR/EMPLOYER
 
@@ -131,7 +131,7 @@ Feedback speichern (store-feedback)
 
 ## Zugriffskontrolle
 
-Zwei-Ebenen-Modell (v4.5), spezifiziert in `knowledge/system/access-control.md` (v3.1): **Agent-Ebene** (Skills 0–5: Upload-Ingestion, Extract, Match-Tool, Compliance-Tool, Contact, Culture Fit – regulär opencode + MCP, unsichtbar für Portal-Rollen) vs. **Portal-Ebene**. Portal-Menüs (NiceGUI, Stand 20.09.2026 Phase 2 + GAP-Fixes, `webui/pages/`): EMPLOYER 11 Seiten (Dashboard, Portal mit Firmenprofil+Stellen, **Stellenangebote HR-write**, Kandidaten-Suche mit einladen/ablehnen/eingestellt, Match-Ergebnis read-only + Visum-Klick, Compliance-Ergebnis read-only, Agent-Details, Dokumente, Pre-Screen Recruiting, Onboarding HR, Feedback mit Phase-4-Loop — PAGE_MAP `employer.py:1649-1660`); CANDIDATE 7 Tabs (📊 Dashboard [NEU 01.10.2026, 1. Tab], 👤 Mein Profil [inkl. Lebenslauf-Upload + Dokumente, seit 02.10.2026 — frühere Sidebar-Tabs „Upload"/„Dokumente" entfallen], Stellen, Bewerbungen, Sprachtest, Pre-Screen, Onboarding — _TAB_MAP `webui/pages/candidate.py`, Stand 02.10.2026); GAST nur Login; **ADMIN** (v3.1): geschützter Login, 12 Seiten inkl. ausführbarer Agent-Tools 0–5, kein Candidate Portal. Streamlit-Ära (12.09.2026): EMPLOYER 7 Seiten, CANDIDATE 5, ADMIN 11. Hintergrund: „Ein Arbeitgeber lädt keine Lebensläufe hoch und führt keine Agent-Skills aus – er sieht Ergebnisse; der Admin betreibt die Agent-Ebene." Umsetzung in app.py: ✅ **implementiert 12.09.2026** (18/18 AppTest-Checks; Admin-Login via `admins`-Tabelle, Seed: admin@km-hr-agent.local).
+Zwei-Ebenen-Modell (v4.5), spezifiziert in `knowledge/system/access-control.md` (v3.1): **Agent-Ebene** (Skills 0–5: Upload-Ingestion, Extract, Match-Tool, Compliance-Tool, Contact, Culture Fit – regulär opencode + MCP, unsichtbar für Portal-Rollen) vs. **Portal-Ebene**. Portal-Menüs (NiceGUI, Stand 20.09.2026 Phase 2 + GAP-Fixes, `webui/pages/`): EMPLOYER 11 Seiten (Dashboard, Portal mit Firmenprofil+Stellen, **Stellenangebote HR-write**, Kandidaten-Suche mit einladen/ablehnen/eingestellt, Match-Ergebnis read-only + Visum-Klick, Compliance-Ergebnis read-only, Agent-Details, Dokumente, Pre-Screen Recruiting, Onboarding HR, Feedback mit Phase-4-Loop — PAGE_MAP `webui/pages/employer.py`, 2791–2803 ⓘ09.10.2026); CANDIDATE 7 Tabs (📊 Dashboard [NEU 01.10.2026, 1. Tab], 👤 Mein Profil [inkl. Lebenslauf-Upload + Dokumente, seit 02.10.2026 — frühere Sidebar-Tabs „Upload"/„Dokumente" entfallen], Stellen, Bewerbungen, Sprachtest, Pre-Screen, Onboarding — _TAB_MAP `webui/pages/candidate.py`, Stand 02.10.2026); GAST nur Login; **ADMIN** (v3.1): geschützter Login, 12 Seiten inkl. ausführbarer Agent-Tools 0–5, kein Candidate Portal. Streamlit-Ära (12.09.2026): EMPLOYER 7 Seiten, CANDIDATE 5, ADMIN 11. Hintergrund: „Ein Arbeitgeber lädt keine Lebensläufe hoch und führt keine Agent-Skills aus – er sieht Ergebnisse; der Admin betreibt die Agent-Ebene." Umsetzung (Streamlit-Ära 12.09.2026 in `app.py`, abgelöst durch NiceGUI `webui/` — `PAGE_MAP`/`_TAB_MAP`): ✅ **implementiert 12.09.2026** (18/18 AppTest-Checks; Admin-Login via `admins`-Tabelle, Seed: admin@km-hr-agent.local).
 
 ---
 
@@ -153,4 +153,4 @@ Zwei-Ebenen-Modell (v4.5), spezifiziert in `knowledge/system/access-control.md` 
 
 ---
 
-**Stand:** September 2026 (v4.5: Zwei-Ebenen-Zugriffskontrolle + ADMIN ✅ implementiert; Matching/Feedback Phase 2–4.6 ✅: Synonyme, Gehaltscheck, geschlossener Feedback-Loop, DSGVO-Löschung, Branchen-Score; **23 Skills seit 24.09.2026** incl. `mentoring` + `housing-search` (beide implementiert) + `contract-management` (Preflight implementiert, Signatur offen))
+**Stand:** 09.10.2026 (Inventar ⓘ09.10.2026: **23 Skills** · **72 Knowledge-MD** (`find knowledge -name '*.md' -not -name '*.bak*' | wc -l`) · **434 Tests** (`.venv-streamlit/bin/python3 -m pytest -q`) · 16 DB-Tabellen · 14 MCP-Server; v4.5: Zwei-Ebenen-Zugriffskontrolle + ADMIN ✅ implementiert; Matching/Feedback Phase 2–4.6 ✅: Synonyme, Gehaltscheck, geschlossener Feedback-Loop, DSGVO-Löschung, Branchen-Score; **23 Skills seit 24.09.2026** incl. `mentoring` + `housing-search` (beide implementiert) + `contract-management` (Preflight implementiert, Signatur offen))

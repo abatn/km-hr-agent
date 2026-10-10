@@ -1,0 +1,39 @@
+{
+  "ack": {
+    "anchors": [
+      "_page_feedback",
+      "_page_kandidaten",
+      "_page_kandidaten.filter_candidates()",
+      "_page_match",
+      "_page_match.match_content()",
+      "_page_stellen",
+      "app.py",
+      "app.py:3630",
+      "app.py:3635",
+      "app.py:3895",
+      "app.py:3898",
+      "employer-portal",
+      "ergebnisse/entscheidungen.md",
+      "knowledge/lifecycle/application-status.md",
+      "scripts/**",
+      "section_header",
+      "tests/e2e_agent_details.py",
+      "tests/e2e_applicants_first.py",
+      "tests/e2e_gehalt_match.py",
+      "tests/e2e_housing.py",
+      "tests/e2e_vorgemerkt.py",
+      "webui/db.py",
+      "webui/pages/employer.py",
+      "webui/pages/employer.py::refresh_cands"
+    ],
+    "at": "2026-10-10T11:05:05+00:00",
+    "code_blobs": {
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "0439fafbcce258537db845625fd0fda610712d75",
+    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (42 von 42 Claims ok)"
+  },
+  "doc": "knowledge/portal/applicants-first.md",
+  "schema": 1
+}

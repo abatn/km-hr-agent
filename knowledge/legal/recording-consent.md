@@ -1,19 +1,27 @@
 # Aufnahme-Einwilligung für Vorstellungsgespräche (Spec)
 
 > **Stand:** 27.09.2026 · **Update 28.09.2026 (Nutzer-GO, Schritt 2):** Gates 8/9/10 umgesetzt (Gast-Link `&record=off`, HR-Prozessregel als UI-Hinweis, Feld `recording: false`); 9/12 offen (Einwilligungsdialog + Löschfrist u. a.)
-> **TODO 03.10.2026 (Nutzerauftrag):** Aufnahme-Einwilligung **bei der Registrierung** einholen —
-> bis dahin Kandidaten-Selbstpräsentation nur `?push=<id>` **ohne** `&record` (siehe (i) Punkt 8).
+> **TODO 03.10.2026 (Nutzerauftrag):** Aufnahme-Einwilligung **bei der Registrierung** einholen.
+> **IST 09.10.2026 (Code-Angleichung):** Die Kandidaten-**Selbstpräsentation** trägt jetzt
+> `https://vdo.ninja/?push=<id>&record=6000` (`webui/pages/candidate.py:1117`/`:1512`) — die frühere
+> Vorgabe „ohne `&record`" ist durch den 04.10.2026-Fix (`vdo-ninja-migration.md` §2.4) überholt.
+> Das 12-Punkte-Gate (d) + (i) Punkt 8 gelten **weiterhin für den HR-Aufnahme-Fall** (Meeting-Raum,
+> Director-/Gast-Link).
 > **Zweck:** Verbindliche Bedingungen, **unter welchen** ein Aufnahme-Parameter in die Meeting-URL
 > geschrieben werden darf. Ohne Erfüllung aller Bedingungen aus (d) bleibt die URL unverändert.
 > **Gehört zu:** `knowledge/system/vdo-ninja-migration.md` (Abschnitt 3 verweist hierher) ·
-> Skill `pre-screen` · Code-Stellen `scripts/agent-runner.py:522` (Director) / `:525` (Gast, `&record=off`), `webui/components.py:608`,
-> `webui/pages/candidate.py:707`
+> Skill `pre-screen` · Codemarken `vdo_ninja_url` (Director) / `vdo_ninja_gast_url` (Gast, `&record=off`)
+> in `scripts/agent-runner.py`, `prescreen_recruiting_section` in `webui/components.py`,
+> `meet_url` / `video_url` in `webui/pages/candidate.py` (alle gemessen 10.10.2026)
 > **Geltungsbereich:** Alle Vorstellungsgespräche, die über eine VDO.Ninja-Raum-URL laufen.
 > **Status:** **SPEC GESCHRIEBEN, FREIGABE OFFEN.** Diese Datei ist die *Voraussetzung* für
-> Aufnahme-*aktivierende* Parameter — sie **schaltet** nichts frei. Ist-Zustand seit 28.09.2026:
+> Aufnahme-*aktivierende* Parameter im **HR-Raumfall** (Meeting-Raum, Director-/Gast-Link) — sie
+> **schaltet** nichts frei. **Ist-Zustand (10.10.2026, Code-Angleichung, Nutzer-GO):** im HR-Raumfall
 > **kein aktivierender Parameter** in der URL; der Kandidaten-Gast-Link trägt zusätzlich die
-> Härtung `&record=off` (Gate 8), der Director-Link bleibt parameterfrei (belegt:
-> `scripts/agent-runner.py:522` bzw. `:525`).
+> Härtung `&record=off` (Gate 8), der Director-Link bleibt parameterfrei (Codemarken `vdo_ninja_url` /
+> `vdo_ninja_gast_url` in `scripts/agent-runner.py`). **Ausgenommen und bewusst anders:** die
+> Kandidaten-**Selbstpräsentation** trägt seit 04.10.2026 `&record=6000` (Codemarken `meet_url` /
+> `video_url` in `webui/pages/candidate.py`, siehe (i) Punkt 8).
 > **Eskalation:** Die ungeklärten Punkte aus (i) sind vor einer Freigabe durch die
 > Datenschutzbeauftragte des Arbeitgebers zu bestätigen. Diese Datei ist keine Rechtsberatung.
 
@@ -125,7 +133,7 @@ zusätzlich den Anbieter-Hinweis „experimental" (T4).
 | 5 | **Ablehnung ist folgenlos** — Gespräch findet auch ohne Aufnahme statt, Bewerbung wird normal bearbeitet (Erwägungsgrund 42) | (h) | ⬜ offen |
 | 6 | **Widerruf** ist jederzeit möglich und so einfach wie die Erteilung (Art. 7 Abs. 3) | (f) Widerrufsweg | ⬜ offen |
 | 7 | **Löschfrist** für die Aufnahme ist festgelegt und technisch umgesetzt (Art. 5 Abs. 1 lit. e) | (f) | ⬜ offen |
-| 8 | **Härtung:** Gast-Link enthält `&record=off`, solange keine Einwilligung vorliegt | `scripts/agent-runner.py` → Variable `vdo_ninja_gast_url` (`?room=…&record=off`, :525); Mail/ICS/Kandidaten-Karte nutzen ihn | ✅ umgesetzt 28.09.2026 (Nachweis: entscheidungen.md Schritt 2) |
+| 8 | **Härtung:** Gast-Link enthält `&record=off`, solange keine Einwilligung vorliegt | `scripts/agent-runner.py` → Variable `vdo_ninja_gast_url` (`?room=…&record=off`); Mail/ICS/Kandidaten-Karte nutzen ihn | ✅ umgesetzt 28.09.2026 (Nachweis: entscheidungen.md Schritt 2) |
 | 9 | **Prozessregel:** Alle am Raum beteiligten Personen (auch die interviewende HR-Seite) sind angewiesen, **nicht** über die Aufnahmefunktion zu starten. Ohne diese Regel hebt B1 das Gate auf. | HR-Anweisung, (i) Punkt 3 — UI-Hinweis unter dem HR-Director-Link (`webui/pages/employer.py`, Einladungskarte, seit 28.09.2026) | ✅ umgesetzt 28.09.2026 (Nachweis: entscheidungen.md Schritt 2) |
 | 10 | `result_json` führt `recording: false` als **explizites** Feld — kein Raten über das Fehlen eines Parameters | `agent-runner.py` Return-Keys `"recording": False` (seit 28.09.2026) | ✅ umgesetzt 28.09.2026 (Nachweis: entscheidungen.md Schritt 2) |
 | 11 | Aufnahmedatei, falls sie beim Arbeitgeber eingeht, wird als **Dokument mit Typ** abgelegt — nicht unregistriert in `ergebnisse/` | `webui/db.py` `candidate_documents` | ⬜ offen |
@@ -135,7 +143,7 @@ zusätzlich den Anbieter-Hinweis „experimental" (T4).
 Ein Aufnahme-Parameter darf **nur** gesetzt werden, wenn ein Datensatz „Aufnahme erlaubt" für
 `(application_id, sitzung_id)` existiert **und** nicht widerrufen wurde. Fehlt der Datensatz, wird der
 Parameter **nicht** gesetzt — auch nicht „vorsorglich". Der Ist-Zustand des Codes entspricht genau dem
-(`scripts/agent-runner.py:522` baut die Director-URL ohne Parameter; `:525` ist der Gast-Link mit der Härtung `&record=off`, nicht mit einer Aktivierung).
+(`scripts/agent-runner.py` baut über `vdo_ninja_url` die Director-URL ohne Parameter; `vdo_ninja_gast_url` ist der Gast-Link mit der Härtung `&record=off`, nicht mit einer Aktivierung — Codemarken, Messung 10.10.2026).
 
 ---
 
@@ -262,16 +270,19 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 7. **Mitwirkende:** Gesprächspartner und Dritte (z. B. Angehörige im Raum) sind mit erfasst. Für die
    eigenen Beschäftigten gelten die allgemeinen Regeln; die Aufklärung gegenüber Mitwirkenden ist zu
    klären.
-8. **TODO (03.10.2026, Nutzerauftrag) — Aufnahme-Einwilligung bei der REGISTRIERUNG einholen.**
+8. **TODO (03.10.2026, Nutzerauftrag; Ist-Stand 09.10.2026) — Aufnahme-Einwilligung bei der
+   REGISTRIERUNG einholen.**
    Die Einwilligung zur Aufnahme muss **im Registrierungs-Flow** des Kandidaten eingeholt und
-   nachgewiesen werden (nicht erst im Gespräch). **Bis dahin gilt:**
-   - Der Kandidaten-Link zur **Selbstpräsentation** ist **`?push=<id>`** (Sender, Solo) —
-     **ohne** aufnahme-aktivierenden Parameter (`&record`/`&autorecord…`).
+   nachgewiesen werden (nicht erst im Gespräch). **Ist-Code (09.10.2026):**
+   - Der Kandidaten-Link zur **Selbstpräsentation** ist **`https://vdo.ninja/?push=<id>&record=6000`**
+     (Solo-Sender + Aufnahme-Knopf) — Code-Stellen `webui/pages/candidate.py:1117`/`:1512`; der
+     04.10.2026-Fix hat `&record=6000` ergänzt (`vdo-ninja-migration.md` §2.4). Die Aufnahme landet
+     lokal im Download-Ordner des Kandidaten.
    - Offizielle VDO-Doku (Abruf 03.10.2026): Solo-Selbstpräsentation = **`&push`**, **nicht**
-     `&director`; Aufnahme optional via `&record=6000` (Datei im Download-Ordner des Kandidaten).
-   - **Erst nach** vorliegender, dokumentierter Einwilligung darf `&record=…` ergänzt werden.
-   - Betroffene Code-Stellen: `webui/pages/candidate.py` („Selbstpräsentation starten" +
-     „Video-Link generieren") — aktuell fälschlich `?director=`.
+     `&director`; Aufnahme via `&record=6000`.
+   - **Dieses Gate (i) Punkt 8 gilt weiterhin für den HR-Aufnahme-Fall** (Meeting-Raum,
+     Director-Link `?director=` bzw. Gast-Link `?room=…&record=off`) — dort bleibt ein
+     Aufnahme-*aktivierender* Parameter bis zur dokumentierten Einwilligung aus (Gates (d) 8–10).
 
 ---
 
@@ -301,7 +312,7 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 | `&autorecord` nimmt lokale **und** entfernte Videos automatisch beim Laden auf | docs.vdo.ninja/…/and-autorecord | Anbieter-Doku |
 | `&autorecordremote` nimmt entfernte Videos automatisch beim Laden auf | docs.vdo.ninja/…/and-autorecordremote | Anbieter-Doku |
 | Aufnahmefunktion „experimental" / „maturing" | `knowledge/system/vdo-ninja-migration.md` §3 (T4) + `&record`-Doku | Anbieter-Doku |
-| Ist-Zustand: kein aktivierender Parameter; Gast-Link mit `&record=off` (Härtung, seit 28.09.2026) | `scripts/agent-runner.py:522`/`:525` (Code, 28.09.2026) | Code-Messung |
+| **HR-Raumfall: kein aktivierender Parameter; Gast-Link mit `&record=off` (Härtung, seit 28.09.2026)** · **Kandidaten-Selbstpräsentation: `?push=…&record=6000` (seit 04.10.2026, Nutzerauftrag)** | Codemarken `vdo_ninja_url`/`vdo_ninja_gast_url` in `scripts/agent-runner.py` bzw. `meet_url`/`video_url` in `webui/pages/candidate.py` (Code-Messung 10.10.2026) | Code-Messung |
 | Tabelle `recording_consents` | **Design-Entscheidung** (Vorschlag, nicht implementiert) | Projekt |
 | Härtung `&record=off` als Bedingung 8 | **Design-Entscheidung** (aus Anbieter-Doku abgeleitet, dort nicht als Empfehlung ausgewiesen) | Projekt |
 
@@ -309,8 +320,8 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 
 ## (k) Was diese Spec **nicht** freigibt
 
-- **Code-Änderung 28.09.2026 (Nutzer-GO, Schritt 2):** Härtung + Rollentrennung — Gast-Link `scripts/agent-runner.py:525` = `?room=…&record=off`, Director-Link `:522` ohne Parameter; eine Aufnahme-*Aktivierung* gibt es weiterhin nicht im Code.
-- **Kein Aufnahme-Parameter wurde aktiviert.** Das Gate (d) ist zu 12/12 offen.
+- **Code-Änderung 28.09.2026 (Nutzer-GO, Schritt 2):** Härtung + Rollentrennung — Gast-Link `vdo_ninja_gast_url` = `?room=…&record=off`, Director-Link `vdo_ninja_url` ohne Parameter; **im HR-Raumfall** gibt es weiterhin keine Aufnahme-*Aktivierung*. **Ausnahme (Nutzerauftrag 04.10.2026, Codemarken `meet_url`/`video_url` in `webui/pages/candidate.py`):** die Kandidaten-Selbstpräsentation trägt `?push=…&record=6000` — Aufnahme landet lokal im Download-Ordner des Kandidaten.
+- **Kein Aufnahme-Parameter wurde im HR-Raum aktiviert.** Das Gate (d) ist zu 12/12 offen; es betrifft Director-/Gast-Links des Arbeitgebers, **nicht** die Kandidaten-Selbstpräsentation.
 - **Keine Löschfrist wurde technisch umgesetzt.** § 12 (d) Punkt 7 bleibt offen.
 - **Keine Einwilligungs-Tabelle wurde angelegt.** § (e2) ist Vorschlag.
 - Es wurde **kein** Vertragstext erstellt; der Einwilligungstext ist als **Pflichtinhalt**

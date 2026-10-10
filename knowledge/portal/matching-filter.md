@@ -101,9 +101,10 @@ Gleicher Filter zweitens im Feedback-Picker (Parität für die NiceGUI-Seite `fe
 
 ---
 
-## (g) Passiv-Block auf Match-Seite (P3, §H-16, 26.09.2026 — STAGING, noch nicht gebaut)
+## (g) Passiv-Block auf Match-Seite (P3, §H-16, 26.09.2026 — ✅ gebaut, Nachweis 09.10.2026)
 
 - **GO:** Option (c)3-i aus Abschnitt 2, eigener GO (entscheidungen:2288). MD-first: diese Zeile vor dem Code.
+- **Status:** ✅ **gebaut (Nachweis 09.10.2026).** Der Passiv-Block existiert in `webui/pages/employer.py` (Codemarke `_passive_best`, gemessen 09.10.2026 → `grep -n "_passive_best" webui/pages/employer.py` → `1628`; Rendering/Fokus ebenda), Test `tests/e2e_passive_on_match.py` vorhanden.
 - **Reihenfolge:** Bewerber-Karten **zuerst** (Parität Streamlit-Abschnitt 1, app.py:3635-3640), dann `👥 N passiver Match (keine aktive Bewerbung; Score absteigend)`.
 - **Gate NUR für Passive:** ≥1 Must-Have-Treffer **und** `berufserfahrung_jahre ≥ 50 % der Anforderung` (Parität app.py:3844-3848). Bewerber bleiben ungefiltert (Korrektur (c)1, 25.09.2026).
 - **Pool (Parität Feedback-Picker app.py:3898):** `candidates.status IN ('lebenslauf_hochgeladen', 'profil_geprueft', 'match_berechnet', 'eingeladen')`; Ausschluss: `applications` des Employers mit `a.status != 'zurückgezogen'`; Jobs: `j.status = 'aktiv'`.

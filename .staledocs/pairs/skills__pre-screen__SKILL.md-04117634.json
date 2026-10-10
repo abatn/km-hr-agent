@@ -1,0 +1,41 @@
+{
+  "ack": {
+    "anchors": [
+      "&record=6000",
+      "&record=off",
+      "_tab_onboarding",
+      "candidate_name",
+      "create_invitation",
+      "cultural_fit_score",
+      "ergebnisse/self-presentation-kandidat-{id}-{datum}.md",
+      "ergebnisse/ui-mvp-plan-v2.md",
+      "generate_ics_file",
+      "generate_screening_questions",
+      "knowledge/system/access-control.md",
+      "knowledge/system/vdo-ninja-migration.md",
+      "match_score",
+      "meet_url",
+      "meeting-tools",
+      "opencode.json",
+      "prescreen_recruiting_section",
+      "scripts/agent-runner.py",
+      "self-presentation-[code]",
+      "vdo_ninja_gast_url",
+      "vdo_ninja_url",
+      "video_url",
+      "webui/components.py",
+      "webui/pages/candidate.py"
+    ],
+    "at": "2026-10-10T11:05:18+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "cb64ca6cab2e0631d6c780c352f673e7085e3c29",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/system/access-control.md gegen den Pair-Code geprueft und nachgewiesen (25 von 25 Claims ok)"
+  },
+  "doc": "skills/pre-screen/SKILL.md",
+  "schema": 1
+}

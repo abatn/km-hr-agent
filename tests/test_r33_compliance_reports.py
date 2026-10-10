@@ -1,14 +1,21 @@
-"""R3-3 (Runde 3, Nutzer-GO „A"): Compliance-Seite liest die echten
-check_compliance-Berichte aus ergebnisse/.
+"""R3-3 (Runde 3, Nutzer-GO „A"): Compliance-Seite liest check_compliance-Berichte.
 
-Zu pruefen (pytest = Schreib-Nachweis ueber den Spiegel aus tests/conftest.py;
-diese Datei selbst schreibt NUR nach tmp_path, nie in die Live-DB):
-  1. read-only Vorab-Zaehlung: 18 Dateien, Schema (Dateiname/Titel/Status)
-  2. Werteverteilung: 16x COMPLIANT, 2x NICHT_COMPLIANT
+F2 (09.10.2026): Diese Datei ist von der LIVE-Dateiliste in `ergebnisse/`
+entkoppelt. Sie baut die benoetigten Berichte deterministisch in `tmp_path`
+(schema-konform, anonymisiert) und prueft die Produktionsfunktionen
+`_compliance_berichte` / `_compliance_status` dagegen. Die `employer_id`-
+Zuordnung laeuft gegen die Seed-DB (Spiegel aus tests/conftest.py,
+tests/fixtures/seed.db — dieselbe Datei wie in der CI); die Live-DB wird
+nicht beruehrt. Rohtext-Anlass: 6 rote Tests wg. gedrifteter ergebnisse/-Liste.
+
+Zu pruefen:
+  1. Anzahl + Schema (Dateiname/Titel mit Stelle #<id>/Status/Begruendung)
+  2. Werteverteilung: 16x COMPLIANT, 2x NICHT_COMPLIANT (Fixture-Aufbau)
   3. Attribution: employer 1 -> alle zugeordenbar, employer 999 -> 0
   4. jobs -> employer_id gegen die (Spiegel-)DB
   5. Nicht-zuordenbar-Fall: Stelle #999 existiert nicht (tmp_path-Ordner)
   6. Sortierung: juengste zuerst
+  7. Parser-Defensivfall: ohne Statuszeile -> ("", "")
 
 Ausfuehren: .venv-streamlit/bin/python3 -m pytest -q tests/test_r33_compliance_reports.py
 """
@@ -17,37 +24,63 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import pytest
+
 from webui import db
 from webui.pages.employer import _compliance_berichte, _compliance_status
 
-ROOT = Path(__file__).resolve().parents[1]
-ERG = ROOT / "ergebnisse"
 GLOB = "check_compliance-kandidat-*.md"
 FILE_RE = re.compile(r"^check_compliance-kandidat-(\d+)-(\d{4}-\d{2}-\d{2})\.md$")
 
-# read-only Vorab-Befund (01.10.2026, R6-5 Datenstand-Refresh): 18 Dateien,
-# 16 COMPLIANT / 2 NICHT_COMPLIANT — Zuwachs geg. 30.09.: neu
-# check_compliance-kandidat-20-2026-09-30.md (Phase-5-Agent-Task live am
-# 30.09.2026 14:20, COMPLIANT, Stelle #6 = Arbeitgeber 1, Kandidat 20 mit
-# Klarnamen — Quelle: read-only ls+grep ergebnisse/check_compliance-*.md)
+# Fixture-Aufbau (deterministisch; Werte = Design-Entscheidung des Tests):
+# 18 Dateien, 16 COMPLIANT / 2 NICHT_COMPLIANT (Paritaet zur urspruenglich
+# dokumentierten Live-Verteilung, R6-5 01.10.2026).
 ERWARTET_DATEIEN = 18
 ERWARTET_COMPLIANT = 16
 ERWARTET_NICHT = 2
+# Kandidaten-IDs mit echtem Seed-Datensatz + Stellen-IDs mit employer_id=1
+# (Quelle: read-only SELECT gegen tests/fixtures/seed.db, Messung 09.10.2026).
+CAND_IDS = [1, 2, 10, 11, 12, 13, 14, 16, 17, 20, 21, 22]
+VALIDE_JOBS = [1, 5, 6, 7, 8]
 
 
-def _files() -> list:
-    return sorted(ERG.glob(GLOB))
+def _schreibe_berichte(ordner: Path) -> Path:
+    """Legt ERWARTET_DATEIEN schema-konforme, anonymisierte Berichte an."""
+    for i in range(ERWARTET_DATEIEN):
+        cand = CAND_IDS[i % len(CAND_IDS)]
+        job = VALIDE_JOBS[i % len(VALIDE_JOBS)]
+        datum = f"2026-01-{i + 1:02d}"
+        if i < ERWARTET_NICHT:
+            status = "NICHT_COMPLIANT"
+            begr = "Synthetischer Negativfall (Test-Fixture)."
+        else:
+            status = "COMPLIANT"
+            begr = "Synthetischer Positivfall (Test-Fixture)."
+        (ordner / f"check_compliance-kandidat-{cand}-{datum}.md").write_text(
+            f"# Check Compliance – Kandidat #{cand} / Stelle #{job}\n\n"
+            f"Compliance-Status: {status}\nBegründung: {begr}\n",
+            encoding="utf-8")
+    return ordner
 
 
-def test_dateien_18_vorhanden():
-    files = _files()
+@pytest.fixture
+def bericht_ordner(tmp_path) -> Path:
+    return _schreibe_berichte(tmp_path)
+
+
+def _files(ordner: Path) -> list:
+    return sorted(ordner.glob(GLOB))
+
+
+def test_dateien_18_vorhanden(bericht_ordner):
+    files = _files(bericht_ordner)
     assert len(files) == ERWARTET_DATEIEN, f"{len(files)} Dateien statt 18"
 
 
-def test_schema_der_18_dateien():
+def test_schema_der_18_dateien(bericht_ordner):
     """Jede Datei: Dateiname-Schema, Titelzeile mit Stelle #, Status + Begruendung."""
     compliant = nicht = 0
-    for f in _files():
+    for f in _files(bericht_ordner):
         m = FILE_RE.match(f.name)
         assert m, f"Dateiname bricht Schema: {f.name}"
         text = f.read_text(encoding="utf-8", errors="replace")
@@ -70,8 +103,8 @@ def test_parser_sonstige_status_leer():
     assert _compliance_status("# Titel\n\nirgendwas\n") == ("", "")
 
 
-def test_attribution_employer_1_alle_18():
-    berichte = _compliance_berichte(1)
+def test_attribution_employer_1_alle_18(bericht_ordner):
+    berichte = _compliance_berichte(1, ordner=bericht_ordner)
     assert len(berichte) == ERWARTET_DATEIEN, len(berichte)
     assert all(b["zugeordenbar"] for b in berichte), \
         [b["datei"] for b in berichte if not b["zugeordenbar"]]
@@ -81,16 +114,16 @@ def test_attribution_employer_1_alle_18():
         assert b["datum"] and b["status"]
 
 
-def test_attribution_employer_999_null():
-    berichte = _compliance_berichte(999)
+def test_attribution_employer_999_null(bericht_ordner):
+    berichte = _compliance_berichte(999, ordner=bericht_ordner)
     assert len(berichte) == ERWARTET_DATEIEN, len(berichte)
     assert not any(b["zugeordenbar"] for b in berichte), \
         "fremder Arbeitgeber darf keine Berichte zugeordnet bekommen"
 
 
-def test_jobs_zuordnung_gegen_db():
+def test_jobs_zuordnung_gegen_db(bericht_ordner):
     """job_id aus den Berichten -> jobs.employer_id (Spiegel-DB, read-only)."""
-    berichte = _compliance_berichte(1)
+    berichte = _compliance_berichte(1, ordner=bericht_ordner)
     conn = db.get_conn()
     try:
         jobs = dict(conn.execute("SELECT id, employer_id FROM jobs").fetchall())
@@ -124,8 +157,8 @@ def test_nicht_zuordenbar_fall(tmp_path):
     assert berichte[0]["status"] == "NICHT_COMPLIANT"
 
 
-def test_sortierung_juengste_zuerst():
-    berichte = _compliance_berichte(1)
+def test_sortierung_juengste_zuerst(bericht_ordner):
+    berichte = _compliance_berichte(1, ordner=bericht_ordner)
     datume = [b["datum"] for b in berichte]
     assert datume == sorted(datume, reverse=True), datume
-    assert datume[0] == "2026-09-30", datume[0]
+    assert datume[0] == "2026-01-18", datume[0]

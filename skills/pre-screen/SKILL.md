@@ -56,10 +56,9 @@ Jeder Leerzustand in Pre-Screen/Onboarding enthält **mindestens einen klickbare
 
 ### 2. Meeting-Link erstellen (VDO.Ninja — **ohne Connector**)
 - **Weg:** String-Bildung im Code, **kein** MCP-Aufruf
-- **Ort:** `scripts/agent-runner.py` (`create_invitation`), `webui/components.py:608`, `webui/pages/candidate.py:707`
-- **Muster:** `https://vdo.ninja/?director=prescreening{code}` mit `code` = 8 Zeichen (Kleinbuchstaben + Ziffern) — Raumname **alphanumerisch, ohne Bindestrich** seit 04.10.2026 (Quelle: docs.vdo.ninja/advanced-settings/setup-parameters/room: *„1 to 49-characters long: aLphaNumEric-characters; case sensitive."*)
-- **Keine Aufnahmeparameter** (`&record`, `&autorecord`): Aufzeichnung nur manuell nach bestätigter
-  Einwilligung, § 26 Abs. 2 BDSG. Spec: `knowledge/system/vdo-ninja-migration.md`
+- **Ort:** `scripts/agent-runner.py` (`create_invitation`), `webui/components.py` (`prescreen_recruiting_section`), `webui/pages/candidate.py` (Selbstpräsentation) — Codemarken `vdo_ninja_url`/`vdo_ninja_gast_url` (gemessen 591/594 ⓘ09.10.2026), `meet_url` (components.py, gemessen 704), `meet_url`/`video_url` (candidate.py, gemessen 1117/1512)
+- **Muster:** HR/Director `https://vdo.ninja/?director=prescreening{code}` · Kandidat/Gast `?room=…&record=off` · **Selbstpräsentation = Solo-Sender `?push={code}&record=6000`** — Raumname **alphanumerisch, ohne Bindestrich** seit 04.10.2026 (Quelle: docs.vdo.ninja/advanced-settings/setup-parameters/room: *„1 to 49-characters long: aLphaNumEric-characters; case sensitive."*)
+- **Aufnahmeparameter:** Einladungsraum **ohne** aufnahme-aktivierenden Parameter (Director parameterfrei, Gast `&record=off`); die **Selbstpräsentation** trägt seit 04.10.2026 `&record=6000` (`webui/pages/candidate.py`, gemessen 1117/1512 ⓘ09.10.2026). Aufzeichnung nur nach bestätigter Einwilligung, § 26 Abs. 2 BDSG. Spec: `knowledge/system/vdo-ninja-migration.md`
 - **Rückgabe:** Meeting-URL (VDO.Ninja)
 
 ### 3. Screening-Fragen generieren
@@ -90,10 +89,10 @@ Jeder Leerzustand in Pre-Screen/Onboarding enthält **mindestens einen klickbare
 ## Beispiel-Aufrufe
 
 ### Meeting-Raum-URL (seit 27.09.2026 VDO.Ninja, KEIN MCP-Tool)
-> ⚠️ **Kein Tool-Aufruf.** `jitsi-meeting` wurde am 27.09.2026 aus `opencode.json` entfernt (0 Aufrufe im Code). Die Raum-URL wird als **String** im Runner gebildet — `scripts/agent-runner.py:522` (Director) + `:525` (Kandidaten-Gast-Link mit `&record=off`, seit 28.09.2026), Variante A (Nutzer-Entscheidung 27.09.2026, Härtung 28.09.2026): **kein aufnahme-aktivierender** Parameter in der URL.
+> ⚠️ **Kein Tool-Aufruf.** `jitsi-meeting` wurde am 27.09.2026 aus `opencode.json` entfernt (0 Aufrufe im Code). Die Raum-URL wird als **String** im Runner gebildet — Codemarken `vdo_ninja_url` (Director) + `vdo_ninja_gast_url` (Kandidaten-Gast-Link mit `&record=off`, seit 28.09.2026), gemessen `scripts/agent-runner.py:591/594` ⓘ09.10.2026; Variante A (Nutzer-Entscheidung 27.09.2026, Härtung 28.09.2026): **kein aufnahme-aktivierender** Parameter in der Einladungs-URL.
 
 ```python
-code = _secrets.token_hex(4)          # 8 Zeichen, pro Einladung neu
+code = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))   # 8 Zeichen, pro Einladung neu
 vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"
 ```
 
@@ -101,7 +100,7 @@ vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"
 |---|---|
 | Muster (HR/Director) | `https://vdo.ninja/?director=prescreening{code}` |
 | Muster (Kandidat/Gast) | `https://vdo.ninja/?room=prescreening{code}&record=off` |
-| `code` | 8 Hex-Zeichen (`secrets.token_hex(4)`) — **Design-Entscheidung**, keine externe Quelle |
+| `code` | 8 Zeichen (Kleinbuchstaben + Ziffern) — `random.choices(string.ascii_lowercase + string.digits, k=8)`, gemessen `scripts/agent-runner.py:585` ⓘ09.10.2026 — **Design-Entscheidung**, keine externe Quelle |
 | Aufnahme | `&record` speichert beim **Gast** (WebM, mit Einwilligung). `&autorecord`/`&autorecordremote` zeichnen **automatisch beim Laden** → § 26 Abs. 2 BDSG. **Nicht verwenden.** |
 | Anbieter-Status | Aufnahme = „experimental" (vdo.ninja) |
 

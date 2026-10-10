@@ -1,0 +1,20 @@
+{
+  "ack": {
+    "anchors": [
+      "knowledge/notification-log.md",
+      "knowledge/system/mcp-connector-config.md",
+      "opencode.json",
+      "scripts/agent-runner.py",
+      "webui/db.py"
+    ],
+    "at": "2026-10-10T11:05:18+00:00",
+    "code_blobs": {
+      "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "dd5c901e5aff04c0648028751b908adbef3a5824",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/notification-log.md gegen den Pair-Code geprueft und nachgewiesen (11 von 11 Claims ok)"
+  },
+  "doc": "skills/notify-user/SKILL.md",
+  "schema": 1
+}

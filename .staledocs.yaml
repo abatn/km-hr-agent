@@ -1,0 +1,230 @@
+# staledocs — deterministic code<->docs drift detection.
+# Docs: https://github.com/Synforger/staledocs
+version: 1
+
+# warn  = report only (onboarding mode)
+# strict = non-zero exit on red findings (turn on once the pairing is complete)
+# C2 (10.10.2026): Paare komplett (55 + 49 standalone + README global) -> scharf.
+gate: strict
+
+source:
+  include:
+    - "connectors/**"
+    - "docs/**"
+    - "scripts/**"
+    - "tests/**"
+    - "webui/**"
+  exclude: []
+
+docs:
+  include:
+    - "**/*.md"
+  exclude: []
+
+# Explicit pairs (CODEOWNERS-style): a doc owns the code matched by its globs.
+# Paar-Regel (Lab, 10.10.2026, C1): MD-first — die Doku beschreibt den Code,
+# ein Paar = ein Wissensdokument + die Codeflächen, die es behauptet.
+# Quelldateien dürfen in mehreren Paaren liegen; jedes Paar braucht >=1 Treffer.
+pairs:
+  # --- Projekt-Wissensbasis (Catch-All: kein Source-File ohne verantwortliche Doku)
+  - doc: AGENTS.md
+    code: ["connectors/**", "docs/**", "scripts/**", "tests/**", "webui/**"]
+  - doc: instructions.md
+    code: ["webui/**", "scripts/**"]
+  - doc: knowledge.md
+    code: ["knowledge/**"]
+  - doc: skills/README.md
+    code: ["skills/**"]
+  - doc: CONTRIBUTING.md
+    code: ["scripts/ci/checks.py"]
+
+  # --- Connectoren / MCP
+  - doc: connectors/README.md
+    code: ["connectors/**"]
+  - doc: connectors/hr-api-connectors.md
+    code: ["connectors/**"]
+  - doc: km-hr-agent-connector-fix.md
+    code: ["connectors/**"]
+  - doc: knowledge/system/mcp-connector-config.md
+    code: ["connectors/**"]
+
+  # --- System / Betrieb
+  - doc: knowledge/system/agent-automation.md
+    code: ["scripts/agent-runner.py", "scripts/agent-test.sh"]
+  - doc: knowledge/system/e2e-ci-seed.md
+    code: ["tests/**", "scripts/seed_ci_db.py", "scripts/ci/checks.py"]
+  - doc: knowledge/system/i18n.md
+    code: ["webui/i18n.py", "webui/i18n_core.py", "webui/locales/**", "tests/test_i18n.py", "tests/test_runner_i18n.py"]
+  - doc: knowledge/system/i18n-runner-chain.md
+    code: ["scripts/agent-runner.py", "scripts/ci/mcp_handshake.py"]
+  - doc: knowledge/system/access-control.md
+    code: ["webui/main.py", "webui/pages/**"]
+  - doc: knowledge/system/configuration-secrets.md
+    code: ["scripts/ci/checks.py", "tests/test_secrets_from_env.py"]
+  - doc: knowledge/system/dependency-pinning.md
+    code: ["tests/test_requirements_pinned.py"]
+  - doc: knowledge/system/vdo-ninja-migration.md
+    code: ["webui/components.py", "webui/pages/candidate.py", "scripts/agent-runner.py"]
+  - doc: knowledge/error-statistics.md
+    code: ["scripts/agent-runner.py"]
+
+  # --- Portal / Lifecycle (WebUI)
+  - doc: knowledge/portal/candidate-portal-fields.md
+    code: ["webui/pages/candidate.py", "webui/db.py"]
+  - doc: knowledge/portal/employer-portal-fields.md
+    code: ["webui/pages/employer.py"]
+  - doc: knowledge/portal/matching-filter.md
+    code: ["webui/pages/employer.py", "webui/logic.py"]
+  - doc: knowledge/portal/cv-pflicht.md
+    code: ["webui/pages/candidate.py"]
+  - doc: knowledge/portal/applicants-first.md
+    code: ["webui/pages/employer.py"]
+  - doc: knowledge/lifecycle/matching-criteria.md
+    code: ["webui/logic.py"]
+  - doc: knowledge/lifecycle/application-status.md
+    code: ["webui/logic.py", "webui/pages/employer.py"]
+  - doc: knowledge/lifecycle/status-automation.md
+    code: ["webui/logic.py", "webui/pages/employer.py"]
+  - doc: knowledge/lifecycle/feedback-schema.md
+    code: ["webui/logic.py"]
+  - doc: knowledge/ui-design-system.md
+    code: ["webui/theme.py", "webui/components.py"]
+  - doc: knowledge/notification-log.md
+    code: ["webui/db.py"]
+  - doc: knowledge/onboarding-default.md
+    code: ["scripts/agent-runner.py"]
+  - doc: knowledge/language-tests.md
+    code: ["scripts/language-test-server.py", "tests/test_language_scoring.py"]
+  - doc: knowledge/lifecycle/referenz-sphinxats.md
+    code: ["docs/**"]
+
+  # --- Recht (nur Specs mit Code-Bezug; übrige Rechtsdoku = standalone)
+  - doc: knowledge/legal/recording-consent.md
+    code: ["scripts/agent-runner.py", "webui/pages/candidate.py"]
+  - doc: knowledge/legal/dsgvo-gate.md
+    code: ["webui/pages/employer.py"]
+  - doc: knowledge/legal/document-types.md
+    code: ["scripts/agent-runner.py"]
+
+  # --- Skills (Skill-Specs auf ihre Umsetzung im Code)
+  - doc: skills/candidate-portal/SKILL.md
+    code: ["webui/pages/candidate.py"]
+  - doc: skills/employer-portal/SKILL.md
+    code: ["webui/pages/employer.py"]
+  - doc: skills/job-application/SKILL.md
+    code: ["webui/pages/candidate.py", "webui/pages/employer.py", "webui/logic.py"]
+  - doc: skills/pre-screen/SKILL.md
+    code: ["webui/pages/candidate.py", "scripts/agent-runner.py", "webui/components.py"]
+  - doc: skills/verify-documents/SKILL.md
+    code: ["scripts/agent-runner.py", "webui/pages/employer.py"]
+  - doc: skills/match-candidate/SKILL.md
+    code: ["webui/logic.py", "scripts/agent-runner.py"]
+  - doc: skills/check-compliance/SKILL.md
+    code: ["scripts/agent-runner.py", "webui/logic.py"]
+  - doc: skills/extract-profile/SKILL.md
+    code: ["scripts/agent-runner.py", "webui/pages/candidate.py"]
+  - doc: skills/nicegui-migration/SKILL.md
+    code: ["webui/main.py", "webui/pages/**"]
+  - doc: skills/notify-user/SKILL.md
+    code: ["webui/db.py"]
+  - doc: skills/store-feedback/SKILL.md
+    code: ["webui/logic.py"]
+  - doc: skills/export-report/SKILL.md
+    code: ["scripts/agent-runner.py"]
+  - doc: skills/generate-onboarding/SKILL.md
+    code: ["scripts/agent-runner.py"]
+  - doc: skills/contact-candidate/SKILL.md
+    code: ["scripts/agent-runner.py"]
+  - doc: skills/explain-match/SKILL.md
+    code: ["scripts/agent-runner.py", "webui/logic.py"]
+  - doc: skills/check-gdpr/SKILL.md
+    code: ["webui/logic.py"]
+  - doc: skills/check-visa/SKILL.md
+    code: ["scripts/agent-runner.py"]
+  - doc: skills/assess-culture-fit/SKILL.md
+    code: ["scripts/agent-runner.py", "webui/logic.py"]
+  - doc: skills/handle-errors/SKILL.md
+    code: ["scripts/agent-runner.py"]
+  - doc: skills/mentoring/SKILL.md
+    code: ["webui/db.py"]
+
+# Convention pairing: docs/<name>.md <-> <code_root>/<name>/** or <code_root>/<name>.*
+mirror:
+  enabled: false
+  docs_root: docs
+  code_roots: [src]
+
+# Docs that intentionally have no code counterpart (ops runbooks, philosophy).
+# Wird aus dem Rest der unklassifizierten Doku automatisch gefüllt (C1).
+standalone:
+  - PRUEFBERICHT-FINAL.md
+  - knowledge/export-templates/README.md
+  - knowledge/language-courses.md
+  - knowledge/legal/agb.ar.md
+  - knowledge/legal/agb.en.md
+  - knowledge/legal/agb.fr.md
+  - knowledge/legal/agb.md
+  - knowledge/legal/compliance-rules.md
+  - knowledge/legal/contract-management.md
+  - knowledge/legal/contract-sources.md
+  - knowledge/legal/datenschutz.ar.md
+  - knowledge/legal/datenschutz.en.md
+  - knowledge/legal/datenschutz.fr.md
+  - knowledge/legal/datenschutz.md
+  - knowledge/legal/gdpr-policy.md
+  - knowledge/legal/impressum.ar.md
+  - knowledge/legal/impressum.en.md
+  - knowledge/legal/impressum.fr.md
+  - knowledge/legal/impressum.md
+  - knowledge/legal/kontakt.ar.md
+  - knowledge/legal/kontakt.en.md
+  - knowledge/legal/kontakt.fr.md
+  - knowledge/legal/kontakt.md
+  - knowledge/legal/visa-rules.md
+  - knowledge/lifecycle/cultural-fit-criteria.md
+  - knowledge/lifecycle/explanation-templates.md
+  - knowledge/lifecycle/mentoring.md
+  - knowledge/lifecycle/relocation.md
+  - knowledge/portal/housing-search.md
+  - knowledge/profiles/README.md
+  - knowledge/system/c2-service.md
+  - knowledge/system/deploy-pipeline.md
+  - knowledge/system/event-loop-blockieren.md
+  - knowledge/system/mcp-agent-backlog.md
+  - knowledge/system/mcp-tool-lazy-gating.md
+  - knowledge/system/mvp.md
+  - knowledge/system/p8-cloud-datenquellen.md
+  - knowledge/team-profile.md
+  - knowledge/templates/contract-templates/arbeitsvertrag-de-skeleton.md
+  - knowledge/templates/email-templates/interview-invitation.md
+  - knowledge/templates/language-templates/templates-de.md
+  - knowledge/templates/language-templates/templates-en.md
+  - knowledge/templates/language-templates/templates-fr.md
+  - knowledge/templates/onboarding-templates/onboarding-ch.md
+  - knowledge/templates/onboarding-templates/onboarding-de.md
+  - knowledge/templates/onboarding-templates/onboarding-fr.md
+  - skills/contract-management/SKILL.md
+  - skills/housing-search/SKILL.md
+  - skills/language-course/SKILL.md
+
+# Whole-repo docs (README class): anchor verification only, no pair ledger.
+global:
+  - README.md
+
+anchors:
+  min_length: 3
+  ignore: []       # tokens to skip (exact; entries with * ? [ also act as globs)
+  include_fenced: false
+  path_roots: []   # extra prefixes for resolving doc-quoted paths (e.g. [src])
+  # quoted branch names (feature/dark-mode) are not paths; first segments
+  # listed here skip path verification when no such tracked path exists.
+  # branch_prefixes: [feature, fix, hotfix, release, chore, origin]
+
+# Executable-docs layer (opt-in): map each fence tag to the runner that
+# executes those blocks in your test suite, or to none (display-only).
+# staledocs never runs anything — it inventories the blocks and flags
+# unclassified tags so a forgotten wiring cannot stay silent.
+# examples:
+#   python: "pytest --doctest-glob='*.md'"
+#   console: "byexample"
+#   yaml: none

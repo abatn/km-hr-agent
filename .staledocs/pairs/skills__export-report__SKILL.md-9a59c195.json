@@ -1,0 +1,23 @@
+{
+  "ack": {
+    "anchors": [
+      "ergebnisse/",
+      "export_report",
+      "instructions.md",
+      "knowledge/export-templates/README.md",
+      "knowledge/system/mcp-connector-config.md",
+      "opencode.json",
+      "scripts/agent-runner.py",
+      "webui/components.py"
+    ],
+    "at": "2026-10-10T11:05:14+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "d4def615f1b1ff09f90114929204bdb6753695eb",
+    "note": "C2-Verifikation 10.10.2026: Claim instructions.md gegen den Pair-Code geprueft und nachgewiesen (14 von 14 Claims ok)"
+  },
+  "doc": "skills/export-report/SKILL.md",
+  "schema": 1
+}

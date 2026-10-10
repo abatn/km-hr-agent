@@ -1,7 +1,7 @@
 # 🤖 KM-HR-Agent
 
-> **Stand 04.10.2026** · Haupt-App = **NiceGUI** (`webui/`, Port 8080). Streamlit `app.py` ist seit 23.09.2026 **archiviert** (nur Paritäts-Referenz, `start.sh` verweigert den Start).
-> **Inventar:** 23 Skills · 47 Knowledge-MD · 16 DB-Tabellen · 14 MCP-Server · **354 Tests** (`pytest -q`).
+> **Stand 09.10.2026** · Haupt-App = **NiceGUI** (`webui/`, Port 8080). Streamlit `app.py` ist seit 23.09.2026 **archiviert** (nur Paritäts-Referenz, `start.sh` verweigert den Start).
+> **Inventar (ⓘ09.10.2026):** 23 Skills · 72 Knowledge-MD · 16 DB-Tabellen · 14 MCP-Server · **434 Tests** (`pytest -q`).
 > **Maßgebliche Doku:** `AGENTS.md` (Projektwissen), `instructions.md`, `knowledge.md`, `skills/README.md`, `knowledge/`.
 
 KI-gestützter HR-Agent für kleine und mittlere Unternehmen: Bewerbungen werden extrahiert, gematcht, auf Compliance geprüft, eingeladen und ins Onboarding überführt — mit **Mensch-in-der-Schleife** (der Agent lädt/lehnt nie selbst ein oder ab).
@@ -108,7 +108,7 @@ Spec (Source of Truth): `knowledge/system/agent-automation.md`.
 ## Mehrsprachigkeit (i18n)
 
 gettext + Babel, Sprachen **DE/EN/FR/AR**, Sprachumschalter im Header, **RTL** bei Arabisch.
-`webui/i18n.py` (`_()`/`get_language`/`set_language`/`is_rtl`/`apply_direction`/`language_switcher`), Kataloge `webui/locales/*/LC_MESSAGES/messages.{po,mo}` (**545 Keys**).
+`webui/i18n.py` (`_()`/`get_language`/`set_language`/`is_rtl`/`apply_direction`/`language_switcher`), Kataloge `webui/locales/*/LC_MESSAGES/messages.{po,mo}` (**993 Keys**, Messung `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` = 993 ⓘ09.10.2026).
 Spec: `knowledge/system/i18n.md`. Rechts-Seiten als MD je Sprache (`knowledge/legal/<name>.<lang>.md`).
 
 ## MCP-Connectoren
@@ -126,7 +126,7 @@ Doku: `knowledge/system/mcp-connector-config.md`.
 ## Tests
 
 ```bash
-pytest -q                       # 354 passed (Stand 04.10.2026)
+pytest -q                       # 434 passed (Stand 09.10.2026, .venv-streamlit/bin/python3 -m pytest -q)
 python3 tests/e2e_isolation.py  # E2E isoliert (Playwright) — NIE gegen die Live-App
 ```
 
@@ -155,4 +155,4 @@ Siehe [`CONTRIBUTING.md`](CONTRIBUTING.md) — die **Lab-Prinzipien** sind binde
 
 ---
 
-*Zahlen-/Faktenabgleich aus `AGENTS.md` + `knowledge/` am 04.10.2026.*
+*Zahlen-/Faktenabgleich aus `AGENTS.md` + `knowledge/` am 09.10.2026.*

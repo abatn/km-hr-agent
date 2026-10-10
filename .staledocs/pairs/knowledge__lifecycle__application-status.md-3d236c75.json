@@ -1,0 +1,39 @@
+{
+  "ack": {
+    "anchors": [
+      "agent_tasks",
+      "aktualisiert_am",
+      "application_id",
+      "application_status_history",
+      "candidate_documents",
+      "conn.close()",
+      "create_invitation",
+      "dsgvo_cleanup()",
+      "employer-portal",
+      "employer-portal-fields.md",
+      "gdpr-policy.md",
+      "instructions.md",
+      "knowledge/portal/employer-portal-fields.md",
+      "lebenslauf_hochgeladen",
+      "onboarding_release",
+      "queue_agent_task",
+      "send_rejection",
+      "st.session_state['dsgvo_cleanup']",
+      "tests/test_application_id_match.py",
+      "tests/test_r32_gatekeeper_gen.py",
+      "tests/test_reapply_after_withdraw.py",
+      "webui/db.py::apply_to_job",
+      "webui/pages/candidate.py::_tab_stellen"
+    ],
+    "at": "2026-10-10T11:05:03+00:00",
+    "code_blobs": {
+      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "b880e654ee4c29b6516e8365f8d1b51d34cf4bb3",
+    "note": "C2-Verifikation 10.10.2026: Claim instructions.md gegen den Pair-Code geprueft und nachgewiesen (27 von 27 Claims ok)"
+  },
+  "doc": "knowledge/lifecycle/application-status.md",
+  "schema": 1
+}

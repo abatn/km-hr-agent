@@ -82,7 +82,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | 8–10 | 6️⃣ Pre-Screen (Recruiting) · 7️⃣ Onboarding (HR) · 8️⃣ Feedback | wie EMPLOYER | Vollzugriff auf die Portal-Funktionen |
 | 11–12 | 💼 Stellenangebote (HR-write) · 🏢 Arbeitgeber-Portal | wie EMPLOYER | In NiceGUI als PAGE_MAP-Einträge „stellen“/„portal“ vorhanden. |
 
-**KEIN Zugang für ADMIN:** 👤 Candidate Portal (session-gebunden an eine echte Kandidaten-Identität – Datenselbstverwaltung bleibt beim Kandidaten).
+**ADMIN-Zugang zum 👤 Candidate Portal (Ist-Code, Design-Entscheidung ⓘ09.10.2026):** Der Code lässt die ADMIN-Rolle **durch** — `webui/pages/candidate.py:1737` (`if role != "candidate" and role != "admin":`) und `webui/main.py:84` (`role == page_role or (role == "admin" and page_role in ("candidate", "employer"))`). Die frühere Regel „kein Zugang für ADMIN" ist damit **durch den Ist-Code überholt** (Abweichung vom ursprünglichen Rollenmodell bewusst als Ist dokumentiert = Design-Entscheidung).
 
 ### 2.5 Gesamt-Matrix
 
@@ -99,7 +99,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | 6️⃣ Pre-Screen | ❌ | ✅ Selbstmodus | ✅ Recruiting-Modus | ✅ Recruiting-Modus | – |
 | 7️⃣ Generate Onboarding | ❌ | ✅ nach Freigabe | ✅ erstellen + freigeben | ✅ erstellen + freigeben | – |
 | 8️⃣ Store Feedback | ❌ | ❌ | ✅ | ✅ | – |
-| 👤 Candidate Portal | ❌ | ✅ | ❌ | ❌ | – |
+| 👤 Candidate Portal | ❌ | ✅ | ❌ | ✅ *(Ist-Code: `candidate.py:1737` + `main.py:84`, ⓘ09.10.2026, Design-Entscheidung)* | – |
 | 💼 Stellenangebote | ❌ | ✅ read + write | ✅ HR-write | ✅ HR-write | – |
 | 🏢 Arbeitgeber-Portal | ❌ | ❌ | ✅ | ✅ | – |
 
@@ -145,7 +145,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | Admin-Login | Separater, geschützter Zugang (Umsetzungsdetail im Plan, z. B. eigener Login-Tab „🛡️ Admin"). Eine ADMIN-Session ist exklusiv – keine parallele Kandidaten-/Arbeitgeber-Identität. |
 | Zweck | Betrieb und Kontrolle der Agent-Ebene im UI: Ingestion, Extract/Match/Compliance/Contact/Culture-Fit manuell ausführen, Ergebnisse prüfen. Der reguläre Ablauf bleibt agent-gesteuert. |
 | Sichtbarkeit | ADMIN sieht die Vollansicht (12 Seiten, `admin.py:753-766`) – die v4.3-Seiten + NiceGUI-Dashboard. |
-| Abgrenzung | 👤 Candidate Portal ausgeschlossen (identitätsgebunden). Der ADMIN ist kein Arbeitgeber-Account: keine `employers`-Zeile, kein `employer_id`-Kontext. |
+| Abgrenzung | 👤 Candidate Portal **im Ist-Code zugänglich** (nicht ausgeschlossen): Gate `webui/pages/candidate.py:1737` (`role != "candidate" and role != "admin"`) + `webui/main.py:84` erlauben `admin` für `page_role="candidate"` (ⓘ09.10.2026; Abweichung vom ursprünglichen „ausgeschlossen" = **Design-Entscheidung**). Der ADMIN ist kein Arbeitgeber-Account: keine `employers`-Zeile, kein `employer_id`-Kontext. |
 
 ### 3.5 Profil-Check bleibt
 
@@ -183,7 +183,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 | 8 | Direkter Navigationssversuch auf entfernte Seite (manipulierte Session) | Defense-in-Depth-Blockierung |
 | 9 | Agent-Workflow | Skills 0–5 laufen regulär über opencode/MCP; im UI nur durch ADMIN ausführbar |
 | 10 | ADMIN-Login | Sidebar: 12 Seiten inkl. Tools 0–5; Tools ausführbar |
-| 11 | ADMIN öffnet 👤 Candidate Portal (direkt) | Blockiert (nicht in Rollenliste) |
+| 11 | ADMIN öffnet 👤 Candidate Portal (direkt) | **Erlaubt** (Ist-Code: `candidate.py:1737` + `main.py:84`, ⓘ09.10.2026, Design-Entscheidung — frühere Erwartung „blockiert" überholt) |
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "ack": {
+    "anchors": [],
+    "at": "2026-10-10T11:05:02+00:00",
+    "code_blobs": {
+      "scripts/language-test-server.py": "55a455395c71df3288b6870446e8b0764e222937",
+      "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "8da400a0f2c053fbf0ab0d4d33e4b5b5f4098e0c",
+    "note": "C2-First-Ack 10.10.2026 knowledge/language-tests.md: Analyzer 0 Pfad-/Ident-Claims (Prosa-Doc); manuell geprueft: Parser-Regex ^##\\s+(Deutsch|Englisch|Franz\u00f6sisch) in scripts/language-test-server.py vorhanden"
+  },
+  "doc": "knowledge/language-tests.md",
+  "schema": 1
+}

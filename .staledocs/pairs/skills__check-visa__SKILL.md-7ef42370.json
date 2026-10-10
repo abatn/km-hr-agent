@@ -1,0 +1,27 @@
+{
+  "ack": {
+    "anchors": [
+      "agent_tasks",
+      "check_visa",
+      "ergebnisse/",
+      "ergebnisse/check-visa-kandidat-{N}-{YYYY-MM-DD}.md",
+      "ergebnisse/check-visa-kandidat-{N}-{datum}.md",
+      "ergebnisse/check_visa-kandidat-7-2026-09-13.md",
+      "knowledge/legal/visa-rules.md",
+      "knowledge/system/access-control.md",
+      "profil-{name}.md",
+      "search(\"AnerkNUNGSGESETZ\")",
+      "search(\"BeschV\")",
+      "stellenprofil-{name}.txt"
+    ],
+    "at": "2026-10-10T11:05:13+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "f6fee1c23868beea0897af4d4fdbce082a79cbcb",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/legal/visa-rules.md gegen den Pair-Code geprueft und nachgewiesen (16 von 16 Claims ok)"
+  },
+  "doc": "skills/check-visa/SKILL.md",
+  "schema": 1
+}

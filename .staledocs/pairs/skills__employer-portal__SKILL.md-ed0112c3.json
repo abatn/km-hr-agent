@@ -1,0 +1,35 @@
+{
+  "ack": {
+    "anchors": [
+      ".open()/.close()",
+      "PAGE_MAP",
+      "add_slot(\"header\")",
+      "app.py",
+      "app.storage.user",
+      "application_status_history",
+      "data/feedback.db",
+      "employer-job-[job_id]-cand-[candidate_id]-[datum]",
+      "employer_email",
+      "employer_firma",
+      "employer_id",
+      "knowledge/portal/employer-portal-fields.md",
+      "knowledge/system/access-control.md",
+      "lebenslauf_hochgeladen",
+      "match_id",
+      "st.expander",
+      "ui.expansion",
+      "ui.timer(15s)",
+      "webui/logic.py::hash_password_argon2id",
+      "webui/pages/employer.py"
+    ],
+    "at": "2026-10-10T11:05:14+00:00",
+    "code_blobs": {
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "c997c98b41855c70ae811ff28ddef8db60e381e7",
+    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (31 von 31 Claims ok)"
+  },
+  "doc": "skills/employer-portal/SKILL.md",
+  "schema": 1
+}

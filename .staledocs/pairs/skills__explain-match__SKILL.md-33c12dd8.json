@@ -1,0 +1,15 @@
+{
+  "ack": {
+    "anchors": [],
+    "at": "2026-10-10T11:05:14+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "7cb5aab4147181e8e528f829676bbef664ee1d56",
+    "note": "C2-Verifikation 10.10.2026: Claim match-candidate gegen den Pair-Code geprueft und nachgewiesen (3 von 3 Claims ok)"
+  },
+  "doc": "skills/explain-match/SKILL.md",
+  "schema": 1
+}

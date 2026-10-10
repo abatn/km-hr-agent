@@ -1,0 +1,47 @@
+{
+  "ack": {
+    "anchors": [
+      "_matched",
+      "_page_kandidaten",
+      "_page_match",
+      "_passive_best",
+      "app.py",
+      "app.py:3831",
+      "app.py:3844",
+      "berechne_match_score",
+      "employer-portal",
+      "employer-portal-fields.md",
+      "ergebnisse/entscheidungen.md",
+      "gehalt_check",
+      "j_exp",
+      "jobs[:3]",
+      "knowledge/lifecycle/matching-criteria.md",
+      "lebenslauf_hochgeladen",
+      "logic.berechne_match_score()",
+      "matches=[]",
+      "refresh_cands",
+      "refresh_cands()",
+      "result[\"matches\"]",
+      "scripts/**",
+      "tests/e2e_applicants_first.py",
+      "tests/e2e_candidate_score.py",
+      "tests/e2e_feedback_filter.py",
+      "tests/e2e_gehalt_match.py",
+      "tests/e2e_housing.py",
+      "tests/e2e_passive_on_match.py",
+      "tests/e2e_vorgemerkt.py",
+      "webui/pages/",
+      "webui/pages/employer.py"
+    ],
+    "at": "2026-10-10T11:05:07+00:00",
+    "code_blobs": {
+      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "1939b06ea741bf0e9c77f76767bea5acec3bc572",
+    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (51 von 51 Claims ok)"
+  },
+  "doc": "knowledge/portal/matching-filter.md",
+  "schema": 1
+}

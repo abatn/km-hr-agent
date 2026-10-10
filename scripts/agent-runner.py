@@ -894,14 +894,20 @@ def llm_report_header(task_type: str, cid, jid, datum: str, lang: str) -> str:
 
     Design-Entscheidung (Nutzer-GO 07.10.2026): der Task-Titel bleibt
     englisch (Identifier = task_type.title(), entspricht Dateiname-Prefix und
-    Badge-Key), die Zusatze laufen ueber tr(). Bei lang='de' byte-identisch
+    Badge-Key), die Prosa-Zeile laeuft ueber tr(). Bei lang='de' byte-identisch
     mit dem Altbestand (Regression: tests/e2e_admin_downloads.py erwartet
     "Extract Profile").
+
+    Korrektur P9.5b fuer parse-kritische Marker (Design-Entscheidung 09.10.2026):
+    die Titel-Struktur-Marker "Kandidat #<id>" / "Stelle #<id>" sind
+    sprachstabile Identifier (maschinell geparst von
+    webui/pages/employer.py::_BERICHT_STELLE + tests/test_r33_compliance_reports.py)
+    und werden IMMER deutsch geschrieben — nur die Prosa-Zeile uebersetzt.
     """
     titel = task_type.replace("_", " ").title()
-    zeile = "# " + titel + " – " + tr("Kandidat #{0}", lang).format(cid)
+    zeile = "# " + titel + " – " + "Kandidat #{0}".format(cid)
     if jid:
-        zeile += " / " + tr("Stelle #{0}", lang).format(jid)
+        zeile += " / " + "Stelle #{0}".format(jid)
     return (zeile + "\n\n> " +
             tr("Agent-Task (Phase 5, live {0}), Modell: {1}", lang).format(datum, LLM_MODEL) +
             "\n\n")

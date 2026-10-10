@@ -1,0 +1,26 @@
+{
+  "ack": {
+    "anchors": [
+      "adjust_weights_from_feedback",
+      "adjust_weights_from_feedback()",
+      "eingeladen='Ja'",
+      "eingeladen='Nein'",
+      "ergebnisse/phase-4-feedback-loop.md:61",
+      "feedback.eingeladen",
+      "get_current_weights()",
+      "get_score_category",
+      "gewichtung_historie",
+      "knowledge/lifecycle/matching-criteria.md",
+      "webui/pages/employer.py"
+    ],
+    "at": "2026-10-10T11:05:03+00:00",
+    "code_blobs": {
+      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "fcda20acbea5dcfe0ed9ec2d4f709616d60a9a65",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/matching-criteria.md gegen den Pair-Code geprueft und nachgewiesen (14 von 14 Claims ok)"
+  },
+  "doc": "knowledge/lifecycle/feedback-schema.md",
+  "schema": 1
+}

@@ -1,0 +1,42 @@
+{
+  "ack": {
+    "anchors": [
+      "_PROFIL_SPALTEN",
+      "_TAB_MAP",
+      "_tab_profil()",
+      "aktuelle_position",
+      "app.py:2781",
+      "berufserfahrung_jahre",
+      "candidate-portal",
+      "cv-pflicht.md",
+      "hard_skills",
+      "info_row",
+      "knowledge/lifecycle/application-status.md",
+      "knowledge/portal/employer-portal-fields.md",
+      "lebenslauf_datei",
+      "lebenslauf_hochgeladen",
+      "lebenslauf_text",
+      "match_berechnet",
+      "profil_geprueft",
+      "profil_vollstaendig",
+      "save_profile()",
+      "shell()",
+      "skill_chip",
+      "soft_skills",
+      "stat_card",
+      "table_info",
+      "visum_status",
+      "webui/pages/candidate.py"
+    ],
+    "at": "2026-10-10T11:05:06+00:00",
+    "code_blobs": {
+      "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "c76a0dc767f6a4cdd6b0ae51cfda027e3f1171d3",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/application-status.md gegen den Pair-Code geprueft und nachgewiesen (43 von 43 Claims ok)"
+  },
+  "doc": "knowledge/portal/candidate-portal-fields.md",
+  "schema": 1
+}

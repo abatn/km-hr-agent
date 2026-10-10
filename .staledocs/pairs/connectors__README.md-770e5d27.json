@@ -1,0 +1,32 @@
+{
+  "ack": {
+    "anchors": [
+      "calculate_salary_band",
+      "calculate_salary_position",
+      "calculate_salary_tolerance",
+      "calculate_weighted_score",
+      "get_optimal_duration",
+      "get_score_category",
+      "get_screening_questions",
+      "get_screening_structure",
+      "get_weight_ranges",
+      "hr-benchmark-server.py",
+      "knowledge/language-tests.md",
+      "prescreen-config-server.py",
+      "salary-data-server.py"
+    ],
+    "at": "2026-10-10T11:04:59+00:00",
+    "code_blobs": {
+      "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
+      "connectors/hr-benchmark-server.py": "512c72ccdca38def81157574054e68f7371cbf85",
+      "connectors/prescreen-config-server.py": "3d7f8d4b7961db34dbbb76392b021400c8638c80",
+      "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
+      "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
+    "note": "C2-Verifikation 10.10.2026: Claim connectors/hr-benchmark-server.py gegen den Pair-Code geprueft und nachgewiesen (20 von 20 Claims ok)"
+  },
+  "doc": "connectors/README.md",
+  "schema": 1
+}

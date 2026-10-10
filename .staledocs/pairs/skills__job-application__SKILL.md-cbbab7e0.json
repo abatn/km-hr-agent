@@ -1,0 +1,24 @@
+{
+  "ack": {
+    "anchors": [
+      "application_status_history",
+      "data/feedback.db",
+      "gdpr-policy.md",
+      "knowledge/lifecycle/application-status.md",
+      "knowledge/portal/employer-portal-fields.md",
+      "lebenslauf_hochgeladen",
+      "webui/pages/candidate.py"
+    ],
+    "at": "2026-10-10T11:05:16+00:00",
+    "code_blobs": {
+      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
+      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "8ebf516dcb76fe73f9c0f1335b16b25706b20e27",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/application-status.md gegen den Pair-Code geprueft und nachgewiesen (10 von 10 Claims ok)"
+  },
+  "doc": "skills/job-application/SKILL.md",
+  "schema": 1
+}

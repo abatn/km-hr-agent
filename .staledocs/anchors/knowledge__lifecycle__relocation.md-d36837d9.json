@@ -1,0 +1,21 @@
+{
+  "anchors": [
+    "**/*housing*",
+    "ergebnisse/bipperz-konkurrenz-analyse.md:156,:174",
+    "ergebnisse/bipperz-konkurrenz-analyse.md:185-189",
+    "ergebnisse/bipperz-konkurrenz-analyse.md:19-23",
+    "ergebnisse/bipperz-konkurrenz-analyse.md:205",
+    "ergebnisse/bipperz-konkurrenz-analyse.md:23,:68",
+    "ergebnisse/entscheidungen.md:1378-1387",
+    "ergebnisse/entscheidungen.md:1397",
+    "ergebnisse/onboarding-abdelkader-batnini-2026-10-27.md:99",
+    "ergebnisse/relocation-kandidat-{N}-{datum}.md",
+    "knowledge/legal/visa-rules.md",
+    "knowledge/onboarding-default.md",
+    "scripts/agent-runner.py"
+  ],
+  "at": "2026-10-10T10:13:24+00:00",
+  "doc": "knowledge/lifecycle/relocation.md",
+  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "schema": 1
+}

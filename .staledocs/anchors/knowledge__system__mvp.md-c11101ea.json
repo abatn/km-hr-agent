@@ -1,0 +1,24 @@
+{
+  "anchors": [
+    "data/agent-runner.pid",
+    "ergebnisse/agent-automatisierung-live-run.md",
+    "ergebnisse/entscheidungen.md",
+    "ergebnisse/entscheidungen.md:1382",
+    "ergebnisse/entscheidungen.md:1391",
+    "ergebnisse/entscheidungen.md:1395",
+    "ergebnisse/entscheidungen.md:1839",
+    "ergebnisse/phase-3-feedback-integritaet.md",
+    "ergebnisse/phase-4-5-dsgvo-loeschung.md",
+    "ergebnisse/phase-4-6-branchen-score.md",
+    "ergebnisse/pilot-plan.md",
+    "ergebnisse/supplier-abgleich-2026-09-24.md:173",
+    "knowledge/lifecycle/application-status.md",
+    "knowledge/system/access-control.md",
+    "knowledge/system/mvp.md",
+    "knowledge/system/vdo-ninja-migration.md"
+  ],
+  "at": "2026-10-10T10:13:24+00:00",
+  "doc": "knowledge/system/mvp.md",
+  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "schema": 1
+}

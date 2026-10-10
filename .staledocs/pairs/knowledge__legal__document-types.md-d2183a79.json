@@ -1,0 +1,21 @@
+{
+  "ack": {
+    "anchors": [
+      "candidate_documents",
+      "skills/verify-documents/SKILL.md",
+      "testdaten/",
+      "testdaten/kandidat-{id}-{typ}-{name}",
+      "testdaten/profil-{kandidat}.md",
+      "verify_documents"
+    ],
+    "at": "2026-10-10T11:05:02+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "33dcc19f23b496b2d8489405347f22cef04189ba",
+    "note": "C2-Verifikation 10.10.2026: Claim skills/verify-documents/SKILL.md gegen den Pair-Code geprueft und nachgewiesen (9 von 9 Claims ok)"
+  },
+  "doc": "knowledge/legal/document-types.md",
+  "schema": 1
+}

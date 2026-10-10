@@ -11,9 +11,11 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 | `meeting-tools` | `generate_ics_file` | Interview-Termine (optional) |
 | `email-sender` | `send_email` | Interview-Einladungen an Kandidaten |
 
-**Connector für Streamlit-UI:** SQLite (lokal, kostenlos) – neue Tabellen `employers`, `jobs`, `job_status_history` in `data/feedback.db`. Siehe `knowledge/portal/employer-portal-fields.md` für das vollständige Schema.
+**Connector für die UI:** SQLite (lokal, kostenlos) – Tabellen `employers`, `jobs`, `job_status_history` in `data/feedback.db`. Siehe `knowledge/portal/employer-portal-fields.md` für das vollständige Schema.
 
-**Hinweis:** Lab-Prinzip – kein eigener Code. Der Skill definiert NUR Workflow, Regeln und Felder. Die Umsetzung erfolgt als Streamlit-UI-Erweiterung analog zum Candidate Portal (Login-Schutz, Tabs, SQLite).
+**Ist-Umsetzung (NiceGUI, verifiziert 09.10.2026):** Der Skill ist als Skill #10 im **NiceGUI**-Employer-Portal umgesetzt (`webui/pages/employer.py`), nicht mehr in Streamlit. **11 Seiten** (`PAGE_MAP`, Codemarke; `grep -n "^PAGE_MAP = {" webui/pages/employer.py` → `2791`): 📊 Dashboard, 🏢 Portal (Firmenprofil + Stellen ausschreiben), 💼 Stellenangebote, 🔍 Kandidaten-Suche, 📄 Match-Ergebnis, ✅ Compliance, 🔎 Agent-Details, 🗂️ Dokumente, 📞 Pre-Screen, 📋 Onboarding, 💬 Feedback.
+
+**Hinweis:** Lab-Prinzip – kein eigener Code. Der Skill definiert NUR Workflow, Regeln und Felder. Die Umsetzung erfolgt als NiceGUI-Seitenerweiterung analog zum Candidate Portal (Login-Schutz, Tabs, SQLite).
 
 **Zugriff (v4.2, `knowledge/system/access-control.md`):** Das Arbeitgeber-Portal ist NUR in EMPLOYER/HR-Sessions sichtbar. Dasselbe gilt für die Recruiting-Skills 0–8 (Upload, Extract Profile, Match Candidate, …, Store Feedback) mit dem Kandidat-Selector: Diese Seiten gehören zur HR-Sicht und sind für CANDIDATE-Sessions nicht sichtbar/nutzbar (Rollen-Sichtbarkeit + Session-Bindung).
 
@@ -33,7 +35,7 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 
 **Aktion:**
 - SQLite: `INSERT INTO employers (email, password_hash, firma, kontaktperson) VALUES (?, ?, ?, ?)`
-- Passwort: SHA256-Hash (nicht im Klartext) – gleiche Methode wie Candidate Portal
+- Passwort: **argon2id**-Hash (nicht im Klartext) – `webui/logic.py::hash_password_argon2id`; SHA256 existiert nur noch als **Migrationspfad** für Alt-Hashes (`verify_password_sha256`/`is_sha256_hash`, transparente Umstellung bei Login, Phase 3.2)
 
 **Rückgabe:** "Registrierung erfolgreich. Bitte Firmenprofil vervollständigen."
 
@@ -154,14 +156,14 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 
 ---
 
-## Streamlit-UI-Erweiterung (Umsetzungshinweis)
+## UI-Umsetzung (Umsetzungshinweis)
 
-**Integration in app.py – analog zum Candidate Portal:**
+**Integration in `webui/pages/employer.py` (NiceGUI). Historischer Nachtrag – Streamlit-Ära (`app.py`, abgeschaltet 23.09.2026):** Die unten stehenden Punkte 1–5 beschreiben die ursprüngliche Streamlit-Integration und sind **nicht mehr gültig**; die aktuelle NiceGUI-Umsetzung ist oben (Ist-Umsetzung) und in `knowledge/system/access-control.md` dokumentiert.
 
 1. **Login:** Eigene Tabs "🔑 Arbeitgeber-Login" / "📝 Arbeitgeber-Registrieren" auf dem bestehenden Login-Bildschirm (Trennung von Kandidaten-Accounts durch `employers`-Tabelle)
-2. **Session State:** `employer_logged_in`, `employer_email`, `employer_firma`, `employer_id`
+2. **Session State:** `employer_logged_in`, `employer_email`, `employer_firma`, `employer_id` *(NiceGUI: `app.storage.user`)*
 3. **Sidebar-Eintrag:** Neuer Punkt "🏢 Arbeitgeber-Portal" in der Skills-Navigation
-4. **Tabs im Portal:** `📝 Firmenprofil` | `📢 Stellen` | `👥 Kandidaten` | `💬 Feedback`
+4. **Tabs im Portal:** `📝 Firmenprofil` | `📢 Stellen` | `👥 Kandidaten` | `💬 Feedback` *(NiceGUI-Ist: 11 Seiten, siehe oben)*
 5. **Zugriffsregel:** Kandidaten-Liste nur wenn mindestens 1 Stelle mit Status `aktiv`
 
 **Test-Szenario (E2E):**

@@ -1,0 +1,17 @@
+{
+  "anchors": [
+    "ergebnisse/bipperz-konkurrenz-analyse.md:19-23",
+    "ergebnisse/phase-d-p8-contract-recherche.md",
+    "knowledge/legal/compliance-rules.md",
+    "knowledge/legal/contract-sources.md",
+    "knowledge/legal/gdpr-policy.md",
+    "knowledge/legal/visa-rules.md",
+    "knowledge/templates/contract-templates/arbeitsvertrag-de-skeleton.md",
+    "knowledge/templates/onboarding-templates/",
+    "skills/contract-management/SKILL.md"
+  ],
+  "at": "2026-10-10T10:13:24+00:00",
+  "doc": "knowledge/legal/contract-management.md",
+  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "schema": 1
+}

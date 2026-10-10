@@ -60,8 +60,10 @@ CREATE TABLE IF NOT EXISTS agent_tasks (
                                         -- [LLM, 9] extract_profile | match_candidate | check_compliance |
                                         -- assess_culture_fit | verify_documents | check_visa | notify_user |
                                         -- check_gdpr | explain_match
-                                        -- Hinweis: handle_errors wird nie gequeued → 17 DISTINCT task_type
-                                        -- in agent_tasks (Beweis: sqlite3 COUNT(DISTINCT task_type) = 17)
+                                        -- [Runner-intern, 1] gatekeeper_eval (direktes INSERT, kein Dispatch)
+                                        -- Hinweis: handle_errors wird nie gequeued → 18 DISTINCT task_type
+                                        -- in agent_tasks (Beweis: sqlite3 COUNT(DISTINCT task_type) = 18,
+                                        -- ⓘ09.10.2026; enthält gatekeeper_eval, NICHT handle_errors)
     status TEXT DEFAULT 'pending',      -- pending | running | done | failed | skipped
     payload TEXT NOT NULL,              -- JSON: candidate_id, job_id, application_id, kontext
     result_path TEXT,                   -- ergebnisse/*.md (Agent-Ausgabe)
@@ -80,7 +82,7 @@ CREATE INDEX IF NOT EXISTS idx_agent_tasks_status ON agent_tasks(status);
 **Regeln:**
 - App schreibt NUR INSERTs (Events) – nie Agent-Logik im UI-Prozess.
 - Ein Task pro Event; abhängige Tasks (Match braucht Extract) plant der Runner: Er setzt `match_candidate` etc. auf `pending` erst, wenn `extract_profile` = `done` (Kette im Runner, nicht in der DB).
-- Idempotenz: Vor dem INSERT prüft die App, ob für (task_type, payload.application_id, heutiges Datum) bereits ein Task existiert – verhindert Doppel-Task bei Streamlit-Reruns.
+- Idempotenz: Vor dem INSERT prüft die App, ob für (task_type, payload.application_id, heutiges Datum) bereits ein Task existiert – verhindert Doppel-Task bei UI-Reruns (NiceGUI-Re-Render; historisch: Streamlit-Reruns).
 
 ## 3. Trigger-Matrix (App-Events → Tasks)
 
@@ -96,7 +98,7 @@ CREATE INDEX IF NOT EXISTS idx_agent_tasks_status ON agent_tasks(status);
 | Bewerbung erstellt (zusätzlich, **Spec v6.2**) | `check_visa` | Agent prüft Visum-Pflicht, Aufenthaltszweck (§18g Blaue Karte EU; §18a/§18b weitere Titel — Korrektur P4 26.09.2026), Blue Card, Anerkennung (BQRF) basierend auf Staatsangehörigkeit + Stellenland; LLM-Task mit compactem Prompt (visa-rules.md-Regeln inline); Ergebnis: ergebnisse/check_visa-kandidat-N-datum.md; HR-Badge im Portal: Streamlit `st.metric „Visum-Status"` + Report-Expander (app.py:2165-2172 Agent-Kompass, 3700-3708 Match-Sicht); NiceGUI: Badge-Parsing `_badge_icon` (employer.py:926-939, C5 22.09.2026) + Visa-Button (employer.py:450-467). **✅ LIVE GETESTET 13.09.2026** (Task #50, nemotron-120b via direkte API: tunesischer IT-Admin → Visum ERFORDERLICH, Blue Card möglich, Anerkennung freiwillig; Bericht `ergebnisse/check_visa-kandidat-7-2026-09-13.md`) |
 | HR-Klick „📩 Visum-Antrag bestätigen" (**Spec v6**; seit Phase 2 auch aus 🛡️ Admin-Bewerber-Verwaltung bei `eingeladen`) | `visa_confirmation` | **NUR nach diesem HR-Klick (Variante A):** Agent sendet dem Kandidaten eine E-Mail mit dem Visum-WAS/WIE/WO aus der verify_documents-Auswertung (agent-generiert via ansvar-law, ohne Behördenkontakt des Agents) |
 | Runner-intern: Kette done → JA/NEIN-Auswertung | JA → `notify_hr` · NEIN → **kein Task** | **Pförtner-Regel:** Score ≥ 60 UND Compliance = COMPLIANT → JA (Mail an HR); sonst NEIN (kein Mail, Ergebnisse bleiben für HR sichtbar). **Abfragen exakt + generation-bewusst (R3-1/R3-2, 30.09.2026):** `json_extract(payload,'$.application_id') = ?` statt LIKE-Präfix, Ketten-Zustand mit `ORDER BY id` (neuester Task-Stand gewinnt), `notify_hr` idempotent **je Generation** (`COALESCE(gen,0)`, Altbestand = 0) — Details §3.1 |
-| HR-Klick „📄 Vertrags-Check starten" (🏢 Onboarding, **Phase D P8**, 24.09.2026) | `contract_preflight` | **Deterministisch (kein LLM, kein Mailversand):** Gehalt vs. Mindestlohn-Wert **aus** `knowledge/legal/contract-sources.md` (Key `mindestlohn_2026`, 13,90 €/h Stand 2026, Quellenstatus sekundär), Formfall-Tabelle (§14/§126a/§623), NachwG-Checkliste, Quellen-Tabelle aus dem Link-Katalog (**0 hartkodierte Links in Python**, USER-GO). Variante-A-Guard: `trigger ∈ {hr_onboarding_klick, hr_klick_portal, hr_klick_hr_seite, admin_klick}`. Report: `ergebnisse/contract-preflight-bewerbung-{app_id}.md`, Sicht in Agent-Details. **Kein Signatur-Dienst** (Optionen A–F bleiben User-Wahl, Spec contract-management.md §4) |
+| HR-Klick „📄 Vertrags-Check starten" (🏢 Onboarding, **Phase D P8**, 24.09.2026) | `contract_preflight` | **Deterministisch (kein LLM, kein Mailversand):** Gehalt vs. Mindestlohn-Wert **aus** `knowledge/legal/contract-sources.md` (Key `mindestlohn_2026`, 13,90 €/h Stand 2026, **Quellenstatus primär**: MiLoV5 § 1, **BGBl. 2025 I Nr. 268 v. 07.11.2025**, in Kraft 01.01.2026, BMAS; Abruf 25.09.2026), Formfall-Tabelle (§14/§126a/§623), NachwG-Checkliste, Quellen-Tabelle aus dem Link-Katalog (**0 hartkodierte Links in Python**, USER-GO). Variante-A-Guard: `trigger ∈ {hr_onboarding_klick, hr_klick_portal, hr_klick_hr_seite, admin_klick}`. Report: `ergebnisse/contract-preflight-bewerbung-{app_id}.md`, Sicht in Agent-Details. **Kein Signatur-Dienst** (Optionen A–F bleiben User-Wahl, Spec contract-management.md §4) |
 
 > ⚠️ **Design-Entscheidung (15.09.2026):** Die Schwelle Score ≥ 60 als Pförtner hat **keine externe Quelle** (kein Industriestandard, kein Gesetz). **Alternative:** Schwelle aus eigener Datenanalyse ableiten (z.B. Median aller Scores die zu einer Einstellung führten). **Validierung:** Nach 20+ Einstellungsentscheidungen prüfen ob 60 sinnvoll trennt (False-Positive-Rate < 20%).
 

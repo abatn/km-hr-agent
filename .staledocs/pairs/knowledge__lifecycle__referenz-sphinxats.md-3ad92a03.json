@@ -1,0 +1,21 @@
+{
+  "ack": {
+    "anchors": [
+      "agent-runner.py",
+      "app.py",
+      "docs/sphinxats-github-app.py",
+      "knowledge/lifecycle/matching-criteria.md",
+      "skills/assess-culture-fit/SKILL.md",
+      "skills/explain-match/SKILL.md"
+    ],
+    "at": "2026-10-10T11:05:04+00:00",
+    "code_blobs": {
+      "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "0b37491b8760a9ff40d57095ba28183f42df1178",
+    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (12 von 12 Claims ok)"
+  },
+  "doc": "knowledge/lifecycle/referenz-sphinxats.md",
+  "schema": 1
+}

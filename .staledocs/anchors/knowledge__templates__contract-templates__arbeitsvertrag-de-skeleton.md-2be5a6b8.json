@@ -1,0 +1,9 @@
+{
+  "anchors": [
+    "knowledge/legal/contract-sources.md"
+  ],
+  "at": "2026-10-10T10:13:24+00:00",
+  "doc": "knowledge/templates/contract-templates/arbeitsvertrag-de-skeleton.md",
+  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "schema": 1
+}

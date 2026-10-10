@@ -1,0 +1,26 @@
+{
+  "ack": {
+    "anchors": [
+      "_session()",
+      "app.storage.user['user_cand_id']",
+      "candidates.lebenslauf_*",
+      "knowledge/portal/cv-pflicht.md",
+      "knowledge/system/access-control.md",
+      "lebenslauf_hochgeladen",
+      "profil_vollstaendig",
+      "testdaten/",
+      "testdaten/kandidat-{id}-{typ}-{originalname}",
+      "webui/logic.py",
+      "webui/pages/candidate.py"
+    ],
+    "at": "2026-10-10T11:05:12+00:00",
+    "code_blobs": {
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "19af5ce362a2951c21b7b7da1ee5b7d1bc0a25a6",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/portal/cv-pflicht.md gegen den Pair-Code geprueft und nachgewiesen (22 von 22 Claims ok)"
+  },
+  "doc": "skills/candidate-portal/SKILL.md",
+  "schema": 1
+}

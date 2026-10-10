@@ -1,0 +1,20 @@
+{
+  "ack": {
+    "anchors": [
+      "file_path",
+      "knowledge/system/access-control.md",
+      "pdf-reader",
+      "read_pdf_text"
+    ],
+    "at": "2026-10-10T11:05:15+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "50f95c7d4161ae020d90a5e18ea55257e7e3a5df",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/system/access-control.md gegen den Pair-Code geprueft und nachgewiesen (7 von 7 Claims ok)"
+  },
+  "doc": "skills/extract-profile/SKILL.md",
+  "schema": 1
+}

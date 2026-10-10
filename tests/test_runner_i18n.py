@@ -789,21 +789,27 @@ def test_p9_5b_header_de_byteidentisch():
 
 
 def test_p9_5b_header_payload_sprache():
-    """Header-Zusätze in der Payload-Sprache; Task-Titel bleibt englisch
-    (Design-Entscheidung 07.10.2026: Identifier wie Dateiname-Prefix und
-    Badge-Key)."""
+    """Task-Titel bleibt englisch; nur die Prosa-Zeile in der Payload-Sprache.
+
+    **Korrektur P9.5b für parse-kritische Marker (Design-Entscheidung 09.10.2026):**
+    die Titel-Struktur-Marker „Kandidat #<id>" / „Stelle #<id>" sind
+    sprachstabile Identifier (maschinell geparst von `_BERICHT_STELLE` in
+    `webui/pages/employer.py` + `tests/test_r33_compliance_reports.py`) und
+    werden daher IMMER deutsch geschrieben — nur die `>`-Prosa-Zeile läuft
+    über `tr()`. Spec: `knowledge/system/i18n-runner-chain.md` §2/§7.1.
+    """
     mod = _load_runner()
     fr = mod.llm_report_header("extract_profile", 13, 6, "2026-10-07", "fr")
-    assert fr.startswith("# Extract Profile – Candidat #13 / Poste #6\n")
+    assert fr.startswith("# Extract Profile – Kandidat #13 / Stelle #6\n")
     assert "Tâche d'agent (phase 5, du 2026-10-07)" in fr
-    assert "Kandidat #13" not in fr and "Agent-Task" not in fr
+    assert "Agent-Task" not in fr
 
     ar = mod.llm_report_header("match_candidate", 13, None, "2026-10-07", "ar")
-    assert "المرشح #13" in ar and "مهمة الوكيل" in ar
-    assert "Kandidat #13" not in ar
+    assert ar.startswith("# Match Candidate – Kandidat #13\n")
+    assert "مهمة الوكيل" in ar
 
     en = mod.llm_report_header("match_candidate", 13, None, "2026-10-07", "en")
-    assert en.startswith("# Match Candidate – Candidate #13\n")
+    assert en.startswith("# Match Candidate – Kandidat #13\n")
     assert "Agent task (Phase 5, live 2026-10-07), model:" in en
 
 

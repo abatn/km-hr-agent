@@ -50,7 +50,7 @@ zeigt VDO.Ninja.
 - **Kandidat (Gast):** `https://vdo.ninja/?room=prescreening{code}&record=off` — Variable `vdo_ninja_gast_url` in `scripts/agent-runner.py` (`create_invitation`). Quellen: docs.vdo.ninja/getting-started/rooms („Guests have their own link to join a room"; Passwort optional) + docs.vdo.ninja/advanced-settings/recording-parameters/and-record (`off` deaktiviert die Aufnahme, auch den Remote-Trigger). **Raumname ohne Bindestrich seit 04.10.2026 (§2.5).**
 - **HR (Director):** `https://vdo.ninja/?director=prescreening{code}` (`vdo_ninja_url`); Rollentrennung (`recording-consent.md`: „Der Arbeitgeber ist der Director"). **Raumname ohne Bindestrich seit 04.10.2026 (§2.5).**
 - **Leser:** Einladungs-Mail + Kandidaten-ICS (`ics_path`) + Kandidaten-Karte (`candidate.py`) = Gast-Link; HR-Karte (`employer.py`) + HR-ICS (`ics_path_hr`) = Director-Link; Einladungs-Bericht zeigt beide. Alt-Einladungen ohne die neuen Keys fallen per Fallback auf `vdo_ninja_url` zurück.
-- **Bewusst unverändert:** `candidate.py:707` (Selbstpräsentation — der Kandidat ist dort selbst Director und nimmt selbst auf) und `mcp-meeting-server.py:41` (LEGACY-Tool, 0 py-Aufrufer).
+- **Überholt durch §2.3/§2.4 (Ist 09.10.2026):** `candidate.py` (Selbstpräsentation) — der frühere `?director=`-Stand gilt **nicht mehr**; Ist-Code `webui/pages/candidate.py:1117`/`:1512` = `https://vdo.ninja/?push=<id>&record=6000` (Solo-Sender + Aufnahme-Knopf, §2.3/§2.4). **Bewusst unverändert:** nur `mcp-meeting-server.py:41` (LEGACY-Tool, 0 py-Aufrufer).
 
 ### 2.3 ⚠️ KORREKTUR (03.10.2026): Selbstpräsentation ist ein **Solo-Sender** (`&push`), nicht `&director`
 **Befund (Nutzerauftrag „VDO prüfen", Analyse + offizielle Doku):** Die Selbstpräsentation des

@@ -63,7 +63,7 @@ Direkter Start `python3 -m webui.main` braucht dieselben Secrets, sonst Abbruch 
 ## 3. Tests
 
 ```bash
-pytest -q                       # Unit/Integration (Stand 04.10.2026: 354 passed)
+pytest -q                       # Unit/Integration (Stand 10.10.2026: 434 passed; CI-Parität mit --ignore/--deselect: 425 passed)
 python3 tests/e2e_isolation.py  # E2E (Playwright) — ISOLIERT, nie gegen die Live-App
 ```
 
@@ -99,7 +99,7 @@ VDO: Raumname alphanumerisch (prescreening{code}) statt pre-screening-{code}
 
 - Quelle: docs.vdo.ninja &room (aLphaNumEric)
 - agent-runner.py + components.py + mcp-meeting-server.py
-- Test tests/test_vdo_raumname.py; pytest 354 passed
+- Test tests/test_vdo_raumname.py; pytest 434 passed (Stand 10.10.2026)
 - Doku: vdo-ninja-migration.md §2.5, entscheidungen.md
 ```
 

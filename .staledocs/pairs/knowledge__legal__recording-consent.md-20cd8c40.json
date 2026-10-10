@@ -1,0 +1,40 @@
+{
+  "ack": {
+    "anchors": [
+      "&record=1500",
+      "&record=6000",
+      "&record=false",
+      "&record=off",
+      "?director=",
+      "agent-runner.py",
+      "application_id",
+      "candidate_documents",
+      "ergebnisse/",
+      "ergebnisse/browser-recording-plan-2026-09-27.md",
+      "knowledge/language-tests.md",
+      "knowledge/system/vdo-ninja-migration.md",
+      "meet_url",
+      "pre-screen",
+      "result_json",
+      "scripts/agent-runner.py",
+      "vdo-ninja-migration.md",
+      "vdo_ninja_gast_url",
+      "vdo_ninja_url",
+      "video_url",
+      "webui/components.py",
+      "webui/db.py",
+      "webui/pages/candidate.py",
+      "webui/pages/employer.py"
+    ],
+    "at": "2026-10-10T11:05:03+00:00",
+    "code_blobs": {
+      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+    },
+    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "doc_blob": "89fca6ac944737738a2f205776da15ab8cc0128c",
+    "note": "C2-Verifikation 10.10.2026: Claim knowledge/language-tests.md gegen den Pair-Code geprueft und nachgewiesen (27 von 27 Claims ok)"
+  },
+  "doc": "knowledge/legal/recording-consent.md",
+  "schema": 1
+}

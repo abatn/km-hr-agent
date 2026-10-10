@@ -1,0 +1,24 @@
+name: Docs-Drift (docrot)
+
+# Quelle: getdocrot/docrot README (npm docrot-cli v0.2.5, github.com/getdocrot/docrot)
+#   „docrot verifies every code example, import, link and anchor in your markdown
+#    against the code that actually ships" + offizielle GitHub-Action `getdocrot/docrot@v0`
+#    mit `fail-on: error` (README-Abschnitt „GitHub Actions").
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docrot:
+    name: docrot (Markdown gegen Code)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: getdocrot/docrot@v0
+        with:
+          fail-on: error

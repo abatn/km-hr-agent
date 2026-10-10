@@ -1,6 +1,6 @@
 # E2E in CI: Seed-Konten statt Live-Konten (Option A)
 
-**Stand:** 08.10.2026
+**Stand:** 08.10.2026 (Nachtrag F2: 09.10.2026)
 **Zweck:** Den seit 05.10.2026 dauerhaft roten E2E-Workflow reparieren, ohne echte Daten ins Repo zu schreiben.
 **Status:** umgesetzt (Option A) — Helfer + Skripte + Workflow.
 
@@ -45,9 +45,47 @@ Alle Skripte wickeln ihre Login-E-Mail-Konstanten in `seed_email(...)`. **Nicht*
 ## Verifikation
 
 - `pytest -q` unverändert grün (Unit-Tests berühren die E2E-Skripte nicht).
-  - **Hinweis:** Lokal spiegelt `tests/conftest.py` die **Live-DB** (`data/feedback.db`); enthält sie E2E-Reste („E2E-Ketten-Beweis"), schlagen datenabhängige Baseline-Tests lokal fehl. Das ist **kein** CI-Problem (CI spiegelt den Seed) und **nicht** durch diese Änderung verursacht.
+- **Lokaler pytest-Lauf spiegelt die Seed-Fixture (F2, 09.10.2026):** `tests/conftest.py`
+  nimmt als Spiegel-**Quelle** `tests/fixtures/seed.db`, **wenn die Datei existiert**;
+  sonst unverändertes Fallback auf die Live-DB `data/feedback.db`. Grund:
+  **Reproduzierbarkeit / Parität zu CI** — dieselben datenabhängigen Baseline-Tests
+  (`test_dialog_identity`, `test_r33_compliance_reports`, `test_r35_status_notify`,
+  `test_tabs_render`) laufen lokal gegen denselben anonymisierten Datenstand wie der
+  `tests`-Job in `.github/workflows/ci.yml`, statt gegen die seit 07./08.10.2026
+  gedriftete Live-DB (Rohtext-Anlass: lokal **15 failed**, CI grün). Die Live-DB wird
+  in jedem Fall nur GELESEN (`mode=ro` + `.backup`), nie geschrieben. Der Pointer
+  `/tmp/opencode/kmhr-mirror-last.txt` nennt jetzt `source=` + `start_source=`/`end_source=`.
 - Lokaler Seed-Modus (`KMHR_E2E_SEED=1` + `KMHR_E2E_LIVE_DB=tests/fixtures/seed.db`): **45/48 grün** (vorher in CI 3/46).
 - Nach Push: E2E-Workflow auf GitHub grün.
+
+## CI-Parität: Setup- und Exklusionsschritte (Messung 10.10.2026)
+
+Wer lokal denselben Stand wie der CI haben will, braucht die vier Setup-/Exklusionsschritte des
+`tests`-Jobs (`.github/workflows/ci.yml`, Schritte `Seed-DB` → `/tmp/opencode` → `.env` → `pytest`):
+
+| # | Schritt | Befehl im Workflow | Zweck |
+|---|---|---|---|
+| 1 | Seed-DB statt Live-DB | `cp tests/fixtures/seed.db data/feedback.db` | DSGVO: die echte `data/feedback.db` ist (bzw. soll) nicht im Repo sein; anonymisierte Fixture statt dessen |
+| 2 | Spiegel-Verzeichnis | `mkdir -p /tmp/opencode` | `tests/conftest.py` schreibt den Spiegel-Pointer `/tmp/opencode/kmhr-mirror-last.txt` |
+| 3 | Dummy-`.env` | `printf 'KMHR_STORAGE_SECRET=…\nKMHR_ADMIN_SEED_PASSWORD=…\n' > .env` | R6-2.2: die App startet ohne diese beiden Variablen nicht (`start-webui.sh` + `python3 -m webui.main` verweigern) |
+| 4 | Daten-Exklusionen | `--ignore=tests/test_r33_compliance_reports.py` (8 Tests) + `--deselect tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname` (1 Test) | beide brauchen Dateien aus `ergebnisse/` bzw. `testdaten/`, die aus DSGVO-Gründen nicht im Repo liegen |
+
+**Zählkonsequenz (Messung 10.10.2026):** lokal `pytest -q` = **434 passed**; mit den vier CI-Schritten
+(`--ignore` + `--deselect`) = **425 passed, 1 deselected, 148,73 s**. Die Differenz von 9 = 8 (`test_r33`)
++ 1 (`deselect`) — **die CI-Testzahl ist daher systematisch niedriger als die lokal zitierte Zahl**;
+kein Regression-Signal.
+
+Weitere CI-Schritte (`quality`-Job, ohne Datenbank): `pyflakes` über `webui/ scripts/ connectors/ tests/`
++ drei Root-MCP-Server (**nur blockierende Fehler** blockieren — die Nachrichten `imported but unused`,
+`f-string is missing placeholders`, `assigned to but never used`, `redefinition of unused`,
+`unable to detect undefined names` werden als Hinweis geduldet; `app.py` und `docs/sphinxats-github-app.py`
+bewusst ausgenommen), `python -m compileall -q webui/ scripts/ connectors/`, Secret-Scan
+(`github_pat_`/`ghp_`/`AKIA…`/`PRIVATE KEY`, mit `.venv-streamlit`-Ausschluss) und der
+i18n-Katalog-Check (**Key-Menge je Sprache == DE**, sonst Abbruch).
+
+`e2e.yml` spiegelt Schritt 1–3 in einem Schritt (`Seed-DB + /tmp/opencode + .env`) und setzt zusätzlich
+`KMHR_E2E_SEED: "1"` (E-Mail-Übersetzung, Option A) + `KMHR_E2E_SKIP: "e2e_m07_row_click"`; Lauf
+`python3 tests/e2e_isolation.py --port 8097`, Logs als Artefakt `/tmp/opencode/e2e-iso-*`.
 
 ## Bekannte Grenzen (CI-Skip, 08.10.2026)
 
