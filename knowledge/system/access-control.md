@@ -36,7 +36,7 @@ Konsequenz: Die Agent-Ausgaben (`ergebnisse/*.md`, DB-Scores, E-Mail-Entwürfe) 
 
 ### 2.1 EMPLOYER (HR) – 11 Seiten (NiceGUI, Stand 20.09.2026 Phase 2; Phase 1: 10, vorher 9)
 
-> **NiceGUI-Umsetzung** = `employer.py:1649-1660` (PAGE_MAP, 11 Einträge; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Portal (**NEU 20.09.2026, P1.2**: Firmenprofil-Bearbeitung + Stellen ausschreiben/pausieren/besetzen) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber über alle eigenen Stellen + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung + einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger — **P1.3 portiert 20.09.2026**) · 📄 Match · ✅ Compliance · 🔎 Agent-Details (17.09.2026) · 🗂️ Dokumente (18.09.2026) · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll: Formular + Phase-4-Loop, GAP-2 20.09.2026).
+> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 11 Einträge; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Portal (**NEU 20.09.2026, P1.2**: Firmenprofil-Bearbeitung + Stellen ausschreiben/pausieren/besetzen) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber über alle eigenen Stellen + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung + einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger — **P1.3 portiert 20.09.2026**) · 📄 Match · ✅ Compliance · 🔎 Agent-Details (17.09.2026) · 🗂️ Dokumente (18.09.2026) · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll: Formular + Phase-4-Loop, GAP-2 20.09.2026).
 
 | # | Seite | Modus | Regel |
 |---|---|---|---|
@@ -72,7 +72,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 
 ### 2.4 ADMIN – 12 Seiten (v3.1 + NiceGUI-Dashboard, Stand 20.09.2026)
 
-> **NiceGUI-Umsetzung** = `admin.py:753-766` (PAGE_MAP, 12 Einträge inkl. 📊 Dashboard).
+> **NiceGUI-Umsetzung** = `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 12 Einträge inkl. 📊 Dashboard).
 
 | # | Seite | Modus | Regel |
 |---|---|---|---|
@@ -82,7 +82,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | 8–10 | 6️⃣ Pre-Screen (Recruiting) · 7️⃣ Onboarding (HR) · 8️⃣ Feedback | wie EMPLOYER | Vollzugriff auf die Portal-Funktionen |
 | 11–12 | 💼 Stellenangebote (HR-write) · 🏢 Arbeitgeber-Portal | wie EMPLOYER | In NiceGUI als PAGE_MAP-Einträge „stellen“/„portal“ vorhanden. |
 
-**ADMIN-Zugang zum 👤 Candidate Portal (Ist-Code, Design-Entscheidung ⓘ09.10.2026):** Der Code lässt die ADMIN-Rolle **durch** — `webui/pages/candidate.py:1737` (`if role != "candidate" and role != "admin":`) und `webui/main.py:84` (`role == page_role or (role == "admin" and page_role in ("candidate", "employer"))`). Die frühere Regel „kein Zugang für ADMIN" ist damit **durch den Ist-Code überholt** (Abweichung vom ursprünglichen Rollenmodell bewusst als Ist dokumentiert = Design-Entscheidung).
+**ADMIN-Zugang zum 👤 Candidate Portal (Ist-Code, Design-Entscheidung ⓘ09.10.2026):** Der Code lässt die ADMIN-Rolle **durch** — `webui/pages/candidate.py` (gemessen 10.10.2026) (`if role != "candidate" and role != "admin":`) und `webui/main.py` (gemessen 10.10.2026) (`role == page_role or (role == "admin" and page_role in ("candidate", "employer"))`). Die frühere Regel „kein Zugang für ADMIN" ist damit **durch den Ist-Code überholt** (Abweichung vom ursprünglichen Rollenmodell bewusst als Ist dokumentiert = Design-Entscheidung).
 
 ### 2.5 Gesamt-Matrix
 
@@ -99,7 +99,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | 6️⃣ Pre-Screen | ❌ | ✅ Selbstmodus | ✅ Recruiting-Modus | ✅ Recruiting-Modus | – |
 | 7️⃣ Generate Onboarding | ❌ | ✅ nach Freigabe | ✅ erstellen + freigeben | ✅ erstellen + freigeben | – |
 | 8️⃣ Store Feedback | ❌ | ❌ | ✅ | ✅ | – |
-| 👤 Candidate Portal | ❌ | ✅ | ❌ | ✅ *(Ist-Code: `candidate.py:1737` + `main.py:84`, ⓘ09.10.2026, Design-Entscheidung)* | – |
+| 👤 Candidate Portal | ❌ | ✅ | ❌ | ✅ *(Ist-Code: `webui/pages/candidate.py` (gemessen 10.10.2026) + `webui/main.py` (gemessen 10.10.2026), ⓘ09.10.2026, Design-Entscheidung)* | – |
 | 💼 Stellenangebote | ❌ | ✅ read + write | ✅ HR-write | ✅ HR-write | – |
 | 🏢 Arbeitgeber-Portal | ❌ | ❌ | ✅ | ✅ | – |
 
@@ -111,11 +111,11 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 
 | Bereich | Regel |
 |---|---|
-| Sidebar | Genau 11 Seiten (= PAGE_MAP `employer.py:1649-1660`, Stand 28.09.2026; Korrektur: war „Genau 9 Seiten", widersprach §2.1 — 📊 Dashboard und 🔍 Kandidaten-Suche fehlten): 📊 Dashboard · 🔍 Kandidaten-Suche · 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen · 7️⃣ Onboarding · 8️⃣ Feedback · 💼 Stellenangebote · 🏢 Portal. **Kein 📤 Upload, kein 1️⃣ Extract, keine Tool-Seiten 4️⃣/5️⃣.** |
+| Sidebar | Genau 11 Seiten (PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Stand 28.09.2026; Korrektur: war „Genau 9 Seiten", widersprach §2.1 — 📊 Dashboard und 🔍 Kandidaten-Suche fehlten): 📊 Dashboard · 🔍 Kandidaten-Suche · 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen · 7️⃣ Onboarding · 8️⃣ Feedback · 💼 Stellenangebote · 🏢 Portal. **Kein 📤 Upload, kein 1️⃣ Extract, keine Tool-Seiten 4️⃣/5️⃣.** |
 | Kandidat-Selector (HR) | HR wählt den Matching-Kandidaten für die Ergebnis-Sichten und Skills 6/7/8. Selector nur auf diesen Seiten, nur in HR-Sessions, Population: Status ≥ `lebenslauf_hochgeladen`. |
 | 2️⃣ Match-Ergebnis | Read-only: zeigt den agent-generierten Match-Bericht (Kategorien-Scores, Begründung) des gewählten Kandidaten. Quelle: `ergebnisse/` + DB. Kein Rerun, keine Dateiauswahl, kein Speichern. |
 | 3️⃣ Compliance-Ergebnis | Read-only: agent-generierter Compliance-Bericht zum gewählten Kandidaten. Kein Auslösen von Prüfungen. |
-| 4️⃣ E-Mails (Contact) | Bleiben vollständig agent-generiert (`ergebnisse/email-*.md`). **Kein Einladungs-/Mail-Button auf dieser E-Mails-Seite** (Seitenkontext!) – Statuswechsel laufen über den Einladungs-/Ablehnungs-/Einstellungs-Dialog in 📄 Match (`_page_match`, Dialoge ab Zeile 602) bzw. die Status-Buttons über 💼/Tab 3; der Agent kontaktiert. (Präzisiert 28.09.2026, vorher wortwörtlich „Kein Einladungs-Button im UI" — kollidierte mit dem dokumentierten `_page_match`-Dialog, `agent-automation.md:134`.) |
+| 4️⃣ E-Mails (Contact) | Bleiben vollständig agent-generiert (`ergebnisse/email-*.md`). **Kein Einladungs-/Mail-Button auf dieser E-Mails-Seite** (Seitenkontext!) – Statuswechsel laufen über den Einladungs-/Ablehnungs-/Einstellungs-Dialog in 📄 Match (`_page_match`, Dialoge ab Zeile 602) bzw. die Status-Buttons über 💼/Tab 3; der Agent kontaktiert. (Präzisiert 28.09.2026, vorher wortwörtlich „Kein Einladungs-Button im UI" — kollidierte mit dem dokumentierten `_page_match`-Dialog, `knowledge/system/agent-automation.md`.) |
 | 6️⃣ Pre-Screen (Recruiting) | Wie v2: Fragen + VDO.Ninja + ICS + Video-Einsicht. |
 | 7️⃣ Onboarding (HR) | Wie v2: erstellen + „Onboarding freigeben". |
 | 💼 Stellenangebote | Wie v2 (aktive Bewerber + Archiv). |
@@ -144,8 +144,8 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 |---|---|
 | Admin-Login | Separater, geschützter Zugang (Umsetzungsdetail im Plan, z. B. eigener Login-Tab „🛡️ Admin"). Eine ADMIN-Session ist exklusiv – keine parallele Kandidaten-/Arbeitgeber-Identität. |
 | Zweck | Betrieb und Kontrolle der Agent-Ebene im UI: Ingestion, Extract/Match/Compliance/Contact/Culture-Fit manuell ausführen, Ergebnisse prüfen. Der reguläre Ablauf bleibt agent-gesteuert. |
-| Sichtbarkeit | ADMIN sieht die Vollansicht (12 Seiten, `admin.py:753-766`) – die v4.3-Seiten + NiceGUI-Dashboard. |
-| Abgrenzung | 👤 Candidate Portal **im Ist-Code zugänglich** (nicht ausgeschlossen): Gate `webui/pages/candidate.py:1737` (`role != "candidate" and role != "admin"`) + `webui/main.py:84` erlauben `admin` für `page_role="candidate"` (ⓘ09.10.2026; Abweichung vom ursprünglichen „ausgeschlossen" = **Design-Entscheidung**). Der ADMIN ist kein Arbeitgeber-Account: keine `employers`-Zeile, kein `employer_id`-Kontext. |
+| Sichtbarkeit | ADMIN sieht die Vollansicht (12 Seiten, `webui/pages/admin.py` (gemessen 10.10.2026)) – die v4.3-Seiten + NiceGUI-Dashboard. |
+| Abgrenzung | 👤 Candidate Portal **im Ist-Code zugänglich** (nicht ausgeschlossen): Gate `webui/pages/candidate.py` (gemessen 10.10.2026) (`role != "candidate" and role != "admin"`) + `webui/main.py` (gemessen 10.10.2026) erlauben `admin` für `page_role="candidate"` (ⓘ09.10.2026; Abweichung vom ursprünglichen „ausgeschlossen" = **Design-Entscheidung**). Der ADMIN ist kein Arbeitgeber-Account: keine `employers`-Zeile, kein `employer_id`-Kontext. |
 
 ### 3.5 Profil-Check bleibt
 
@@ -157,7 +157,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 
 | # | Änderung | Ort | Verhalten |
 |---|---|---|---|
-| 1 | `_seiten_fuer_rolle("employer")` → 9 Seiten: `["2️⃣ Match-Ergebnis", "3️⃣ Compliance-Ergebnis", "🔍 Agent-Details", "🗂️ Dokumente", "6️⃣ Pre-Screen", "7️⃣ Generate Onboarding", "8️⃣ Store Feedback", "💼 Stellenangebote", "🏢 Arbeitgeber-Portal"]` | Sidebar (app.py:1123-1131, `_seiten_fuer_rolle`) | Employer-Menü ohne Upload/Extract/Tools 4–5 |
+| 1 | `_seiten_fuer_rolle("employer")` → 9 Seiten: `["2️⃣ Match-Ergebnis", "3️⃣ Compliance-Ergebnis", "🔍 Agent-Details", "🗂️ Dokumente", "6️⃣ Pre-Screen", "7️⃣ Generate Onboarding", "8️⃣ Store Feedback", "💼 Stellenangebote", "🏢 Arbeitgeber-Portal"]` | Sidebar (`app.py` (Codemarke `def _seiten_fuer_rolle`, gemessen 10.10.2026), `_seiten_fuer_rolle`) | Employer-Menü ohne Upload/Extract/Tools 4–5 |
 | 2 | Zwei neue Read-only-Seiten | Skill-Blöcke | „2️⃣ Match-Ergebnis" / „3️⃣ Compliance-Ergebnis": anzeigen agent-generierte Berichte zum gewählten Kandidaten (Datei in `ergebnisse/` via Score-Kandidaten-Mapping oder zuletzt erzeugter Bericht), **ohne Button/Selector zum Ausführen** |
 | 3 | Candidate-Liste | Sidebar | 7 Tabs (NiceGUI, `_TAB_MAP` `webui/pages/candidate.py`, Stand 02.10.2026) |
 | 4 | Kandidat-Selector-Navigation | Sidebar | Selector erscheint auf: Match-Ergebnis, Compliance-Ergebnis, 6/7/8 (nicht mehr auf Upload/Extract) |
@@ -173,7 +173,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 
 | # | Szenario | Erwartung |
 |---|---|---|
-| 1 | EMPLOYER-Login | Sidebar: genau 11 Seiten (Dashboard, Portal, Stellenangebote HR-write, Kandidaten-Suche, Match-Ergebnis, Compliance-Ergebnis, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback – `employer.py:1649-1660`, Zeilenstand 28.09.2026`) – **kein Upload, kein Extract, kein 4️⃣/5️⃣** |
+| 1 | EMPLOYER-Login | Sidebar: genau 11 Seiten (Dashboard, Portal, Stellenangebote HR-write, Kandidaten-Suche, Match-Ergebnis, Compliance-Ergebnis, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback – `webui/pages/employer.py` (gemessen 10.10.2026), Zeilenstand 28.09.2026`) – **kein Upload, kein Extract, kein 4️⃣/5️⃣** |
 | 2 | EMPLOYER öffnet 2️⃣ Match-Ergebnis | Read-only Ansicht des agent-Berichts; kein Ausführ-Button |
 | 3 | EMPLOYER öffnet 3️⃣ Compliance-Ergebnis | Read-only Ansicht; keine Prüf-Aktion |
 | 4 | EMPLOYER-Vollflow | Bewerber verwalten (💼) → Pre-Screen (Recruiting) → Onboarding freigeben → Feedback speichern – ohne Skills 1–5 erreichbar |
@@ -183,7 +183,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 | 8 | Direkter Navigationssversuch auf entfernte Seite (manipulierte Session) | Defense-in-Depth-Blockierung |
 | 9 | Agent-Workflow | Skills 0–5 laufen regulär über opencode/MCP; im UI nur durch ADMIN ausführbar |
 | 10 | ADMIN-Login | Sidebar: 12 Seiten inkl. Tools 0–5; Tools ausführbar |
-| 11 | ADMIN öffnet 👤 Candidate Portal (direkt) | **Erlaubt** (Ist-Code: `candidate.py:1737` + `main.py:84`, ⓘ09.10.2026, Design-Entscheidung — frühere Erwartung „blockiert" überholt) |
+| 11 | ADMIN öffnet 👤 Candidate Portal (direkt) | **Erlaubt** (Ist-Code: `webui/pages/candidate.py` (gemessen 10.10.2026) + `webui/main.py` (gemessen 10.10.2026), ⓘ09.10.2026, Design-Entscheidung — frühere Erwartung „blockiert" überholt) |
 
 ---
 

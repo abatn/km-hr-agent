@@ -1,6 +1,7 @@
 {
   "ack": {
     "anchors": [
+      "app.py",
       "application_status_history",
       "candidate_id",
       "candidate_status_history",
@@ -11,26 +12,30 @@
       "end_at",
       "ergebnisse/entscheidungen.md",
       "ergebnisse/phase-d-p10-mentoring.md",
+      "knowledge/lifecycle/application-status.md",
+      "knowledge/lifecycle/matching-criteria.md",
       "knowledge/lifecycle/mentoring.md",
       "knowledge/templates/",
       "knowledge/templates/language-templates/templates-de.md",
       "knowledge/templates/language-templates/templates-en.md",
       "knowledge/templates/language-templates/templates-fr.md",
       "mentor_name",
-      "onboarding-freigabe-bewerbung-{app_id}.md",
-      "onboarding-freigabe-bewerbung-{id}.md",
       "scripts/agent-runner.py",
       "start_at",
       "status='eingestellt'",
-      "webui/pages/"
+      "webui/components.py",
+      "webui/logic.py",
+      "webui/pages/",
+      "webui/pages/candidate.py",
+      "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:17+00:00",
+    "at": "2026-10-10T13:29:32+00:00",
     "code_blobs": {
       "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "6a06f099668c01815293a1c61edb1a22a09d9a12",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/mentoring.md gegen den Pair-Code geprueft und nachgewiesen (61 von 61 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
+    "note": "skills/mentoring/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

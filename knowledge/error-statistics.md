@@ -27,7 +27,7 @@ Quelle: `logs/agent-errors.log` + eigene API-Tests (16.09.2026)
 | Retry mit 5s Backoff | nemotron-120b | 100% Erholung |
 | kimi-k3 Fallback | moonshotai/kimi-k3 | Timeout (>30s) |
 
-**Umgesetzt (nicht nur Empfehlung):** Exponential Backoff (5→10→20s, `wait=[5,10,20]`) + lightning-30b als Fallback — Implementierung 16.09.2026 in `scripts/agent-runner.py:1041-1043`, Modellkette `:1026-1030`; verifiziert 24.09.2026 (Phase-E P0)
+**Umgesetzt (nicht nur Empfehlung):** Exponential Backoff (5→10→20s, `wait=[5,10,20]`) + lightning-30b als Fallback — Implementierung 16.09.2026 in `scripts/agent-runner.py` (gemessen 10.10.2026), Modellkette; verifiziert 24.09.2026 (Phase-E P0)
 
 ## NVIDIA Free-Tier Limit
 

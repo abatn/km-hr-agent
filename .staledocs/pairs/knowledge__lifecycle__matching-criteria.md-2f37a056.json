@@ -1,12 +1,13 @@
 {
   "ack": {
     "anchors": [
+      "HR_BENCHMARK_SERVER",
       "adjust_weights_from_feedback()",
+      "app.py",
       "berechne_match_score",
       "berechne_match_score()",
-      "candidate.py:15",
-      "candidate.py:17",
       "candidates.lebenslauf_text",
+      "connectors/hr-benchmark-server.py",
       "employers.branche",
       "ergebnisse/m16-timing-20260929.md",
       "ergebnisse/phase-d-pG-candidate-match-score.md",
@@ -19,20 +20,24 @@
       "logic.berechne_match_score()",
       "matching-criteria.md",
       "opencode.json",
+      "scripts/agent-runner.py",
       "skills/explain-match/SKILL.md",
       "tests/e2e_candidate_score.py",
       "ui.row",
       "webui.logic.get_current_weights()",
+      "webui/components.py",
       "webui/logic.py",
-      "webui/pages/candidate.py"
+      "webui/pages/candidate.py",
+      "webui/pages/employer.py",
+      "webui/theme.py"
     ],
-    "at": "2026-10-10T11:05:04+00:00",
+    "at": "2026-10-10T13:29:25+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "cdf0e67fa8a6f26c0eb2c5a7c657376be6dad8ef",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/matching-criteria.md gegen den Pair-Code geprueft und nachgewiesen (52 von 52 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "35e914720f546cce47dd1604623e5bcbc9f8d458",
+    "note": "knowledge/lifecycle/matching-criteria.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/lifecycle/matching-criteria.md",
   "schema": 1

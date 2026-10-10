@@ -30,7 +30,7 @@ description: Arbeitsvertrag-Prüfung (Contract Preflight) – Gehalt gegen Minde
 
 ### 2. Mindestlohn-Check (DE)
 - **Wert einlesen aus** `knowledge/legal/contract-sources.md` (Key `mindestlohn_2026`, 13,90 €/h Stand 2026, Quellenstatus sekundär)
-- Stundenlohn (oder Jahresgehalt/1720) ≥ Mindestlohn → ✅ / sonst ❌
+- Stundenlohn (oder Jahresgehalt/1720) ≥ Mindestlohn → ✅ / sonst ❌ (Teiler 1720 = **Design-Entscheidung**, keine externe Quelle — gebräuchliche Jahresstunden-Näherung)
 - Kein Gehalt in der Stelle → ⚠️ HINWEIS (Design-Entscheidung, kein FEHLER – Parität zu `app.py` MiLoG-Logik)
 
 ### 3. Formfall-Hinweise (statisch aus Spec §4 + Link-Katalog)

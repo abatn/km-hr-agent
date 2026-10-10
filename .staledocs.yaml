@@ -43,8 +43,6 @@ pairs:
     code: ["connectors/**"]
   - doc: connectors/hr-api-connectors.md
     code: ["connectors/**"]
-  - doc: km-hr-agent-connector-fix.md
-    code: ["connectors/**"]
   - doc: knowledge/system/mcp-connector-config.md
     code: ["connectors/**"]
 
@@ -157,7 +155,9 @@ mirror:
 # Docs that intentionally have no code counterpart (ops runbooks, philosophy).
 # Wird aus dem Rest der unklassifizierten Doku automatisch gefüllt (C1).
 standalone:
-  - PRUEFBERICHT-FINAL.md
+  - archiv/PRUEFBERICHT-FINAL.md
+  - archiv/km-hr-agent-connector-fix.md
+  - knowledge/system/doku-authority.md
   - knowledge/export-templates/README.md
   - knowledge/language-courses.md
   - knowledge/legal/agb.ar.md
@@ -213,7 +213,35 @@ global:
 
 anchors:
   min_length: 3
-  ignore: []       # tokens to skip (exact; entries with * ? [ also act as globs)
+  # S6 (10.10.2026): Tokens, die wie Pfade aussehen, aber KEINE Repo-Pfad-Claims
+  # sind (Symbole, Modulnamen, Glob-Muster, geplante Dateien). Exact-Tokens;
+  # Eintraege mit * ? [ wirken als Globs.
+  ignore:
+    # JSON-Felder / Python-Module / UI-Identifikatoren (keine Pfade)
+    - "kontakt.email"
+    - "kontakt.telefon"
+    - "standort.aktuell"
+    - "importlib.metadata"
+    - "ui.echart"
+    - "ui.footer"
+    - "ui.animate"
+    - "babel.cfg"                        # existiert by design nicht (knowledge/system/i18n.md)
+    - "git@github.com:abatn/km-hr-agent.git"   # Git-Remote-URL
+    # Glob-Muster: generierte Artefakte / Katalog-Dateien
+    - "webui/locales/*/messages.po"
+    - "webui/locales/*/messages.mo"
+    - "webui/locales/*/messages.{po,mo}"
+    - "notify_user-*.md"
+    - "onboarding-freigabe-*.md"
+    - "contract-preflight-*.md"
+    - "*-kandidat-{id}-*.md"
+    - "verify_documents-kandidat-{id}-*.md"
+    # Geplante, (noch) nicht angelegte Dateien — Prosa ist korrekt (Backlog/Bauplan)
+    - "tests/e2e_matching_filter.py"
+    - "tests/e2e_c2_connector.py"
+    - "webui/tool_catalog.py"
+    - "scripts/migrate_sqlite_to_supabase.py"
+    - "supabase/migrations/0001_init_schema.sql"
   include_fenced: false
   path_roots: []   # extra prefixes for resolving doc-quoted paths (e.g. [src])
   # quoted branch names (feature/dark-mode) are not paths; first segments

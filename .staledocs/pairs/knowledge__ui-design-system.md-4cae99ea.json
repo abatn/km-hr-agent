@@ -35,10 +35,7 @@
       "dialog.close()",
       "ergebnisse/pushstate-protokoll-2026-10-01.md",
       "ergebnisse/screenshots/n-k1-kandidaten-filter.png",
-      "ergebnisse/ui-analyse-2026-09-29.md:65",
-      "ergebnisse/ui-analyse-2026-09-29.md:66",
-      "ergebnisse/ui-analyse-2026-09-29.md:84",
-      "ergebnisse/ui-analyse-2026-09-29.md:86",
+      "ergebnisse/ui-analyse-2026-09-29.md",
       "gap-1",
       "gap-2",
       "gap-4",
@@ -93,19 +90,19 @@
       "ui.row",
       "ui.tabs",
       "webui/components.py",
-      "webui/components.py::data_table()",
+      "webui/pages/admin.py",
       "webui/pages/candidate.py",
       "webui/pages/employer.py",
-      "webui/pages/employer.py::_page_match"
+      "webui/theme.py"
     ],
-    "at": "2026-10-10T11:05:11+00:00",
+    "at": "2026-10-10T13:29:31+00:00",
     "code_blobs": {
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "05c0e8f2253e70c822ab250868e5e53571c6e124",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/portal/applicants-first.md gegen den Pair-Code geprueft und nachgewiesen (117 von 117 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "0ec1258399639cea8613c86bb226e39e6329c1f9",
+    "note": "knowledge/ui-design-system.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/ui-design-system.md",
   "schema": 1

@@ -2,24 +2,27 @@
   "ack": {
     "anchors": [
       "_gewichts_prompt_zeile()",
+      "app.py",
       "berechne_match_score()",
       "ergebnisse/entscheidungen.md",
       "get_current_weights()",
       "gewichtung_historie",
+      "knowledge/lifecycle/matching-criteria.md",
       "opencode.json",
       "pdf-reader",
+      "scripts/agent-runner.py",
       "webui/",
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:16+00:00",
+    "at": "2026-10-10T13:29:32+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "9dd51f876a3243cc674a3418c49213ce6b42c551",
-    "note": "C2-Verifikation 10.10.2026: Claim opencode.json gegen den Pair-Code geprueft und nachgewiesen (17 von 17 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
+    "note": "skills/match-candidate/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "skills/match-candidate/SKILL.md",
   "schema": 1

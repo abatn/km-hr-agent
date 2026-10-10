@@ -4,16 +4,17 @@
       "evaluate_policy",
       "logs/agent-errors.log",
       "registry.npmjs.org",
+      "scripts/agent-runner.py",
       "use_with_caution",
       "verify_integrity"
     ],
-    "at": "2026-10-10T11:05:02+00:00",
+    "at": "2026-10-10T13:29:24+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "769d092727f928c2dedaf38f1b3d894f69a91b74",
-    "note": "C2-Verifikation 10.10.2026: Claim evaluate_policy gegen den Pair-Code geprueft und nachgewiesen (4 von 4 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
+    "note": "knowledge/error-statistics.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/error-statistics.md",
   "schema": 1

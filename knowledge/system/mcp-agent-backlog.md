@@ -25,7 +25,7 @@
 |---|---|---|---|---|
 | P1 DB-Pool | psycopg-`ConnectionPool`, `close_returns=True`, `_get_pg_pool` | Supabase/psycopg-Doku (offiziell); min/max = Design | fehlt | `webui/db.py` ohne Pool-Symbole |
 | P2 Event-Loop | `run.io_bound` für argon2/PDF/Sprachtest + `_CEFR_SERVER_MOD`-Cache | NiceGUI-FAQ (offiziell); Cache = Design | fehlt | `webui/pages/login.py` argon2 synchron; `logic.py::cefr_from_avg` lädt Modul je Aufruf |
-| P3 conn-Reuse | `conn`-Durchreichen in `berechne_match_score` | Design | fehlt | `webui/logic.py::berechne_match_score(k, j)` ohne `conn` |
+| P3 conn-Reuse | `conn`-Durchreichen in `berechne_match_score` | Design | fehlt | `webui/logic.py` (Codemarke `def berechne_match_score`, gemessen 10.10.2026) ohne `conn` |
 | P4 MCP-Client | offizieller `stdio_client`+`ClientSession(read_timeout=60)`; stdout-Leck-Fix | MCP-Doku (offiziell); 60 s = Design | fehlt | `logic.py::_mcp_connector_call` = Popen-Pipe; `language-test-server.py` `print` ohne `stderr` |
 
 > Altbestände, die überlebt haben: `get_current_weights(conn=None)`, `_GEHALT_TOL_CACHE`.

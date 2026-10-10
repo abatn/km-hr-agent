@@ -41,6 +41,38 @@ stehen in `ergebnisse/entscheidungen.md` (Phase-E P0, append-only).
 
 ---
 
+## Skill-Nummern (Code-Numerierung)
+
+*Übernommen aus `knowledge.md` (S3-Dedup 10.10.2026) — die Nummern sind Skill-Inventar und gehören zur Skill-Übersicht.*
+
+Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Phase-E P0). Nummerierung = Sidebar-/Code-Numerierung der laufenden App (Upload = 0, kein SKILL.md).
+
+**Code-belegte Nummern (Codemarke + Messdatum ⓘ09.10.2026, `app.py` = Archiv):** 0 (Codemarke `Skill 0: Upload`, `app.py` Archiv), 4 (Sidebar `4️⃣ Contact Candidate`, `app.py` Archiv), 6 (Sidebar `6️⃣ Pre-Screen`, `app.py` Archiv), 9 (Codemarke `Skill 9: explain-match`, `app.py` Archiv + Runner-Prompt `explain_match`, `scripts/agent-runner.py`), 12 (Bericht `verify-documents-lab-test-2026-09-12.md`), 13 (Codemarke `Skill 13: check-gdpr`, `app.py` Archiv + Runner-Task `check_gdpr`, `scripts/agent-runner.py`), 16 (Codemarke `Skill 16: export-report`, `app.py` Archiv + `def export_report`, `scripts/agent-runner.py`), 17 (Codemarke `Skill 17: notify-user`, `app.py` Archiv + Runner-Task `notify_user`, `scripts/agent-runner.py`), 18 (`def handle_errors`, `scripts/agent-runner.py`), 23 (`def contract_preflight`, `scripts/agent-runner.py`). Slots 14 und 19–22 sind bisher **nirgends belegt** (in der alten Fassung stand fälschlich ein Pre-Screen-Duplikat auf 14) — die 5 Skills ohne Nummern-Nachweis stehen separat.
+
+| # | Skill | MCP-Connector | Tool |
+|---|---|---|---|
+| 0 | Upload (UI-Aktion, kein SKILL.md) | filesystem | write_file |
+| 1 | extract-profile | filesystem + pdf-reader | read_text_file + read_pdf_text |
+| 2 | match-candidate | filesystem + LLM | read_text_file + write_file |
+| 3 | check-compliance | filesystem + ansvar-*-law | read_text_file + validate_citation |
+| 4 | contact-candidate | filesystem + email-sender | read_text_file + send_email |
+| 5 | assess-culture-fit | filesystem | read_text_file |
+| 6 | pre-screen | filesystem + meeting-tools | read_text_file + generate_screening_questions + generate_ics_file |
+| 7 | generate-onboarding | filesystem | write_file |
+| 8 | store-feedback | filesystem | write_file |
+| 9 | explain-match | filesystem | read_text_file + write_file |
+| 10 | employer-portal | filesystem + SQLite | read_text_file + write_file |
+| 11 | job-application | filesystem + SQLite | read_text_file + write_file |
+| 12 | verify-documents | pdf-reader + ansvar-german/french/swiss-law + filesystem | read_pdf_text + validate_citation + write_file |
+| 13 | check-gdpr | filesystem | read_text_file |
+| 15 | candidate-portal | filesystem + SQLite | read_text_file + write_file |
+| 16 | export-report | filesystem | write_file |
+| 17 | notify-user | filesystem + email-sender | read_text_file + send_email |
+| 18 | handle-errors | filesystem | write_file |
+| 23 | contract-management | filesystem + ansvar-german-law + fetch | read_text_file + write_file + fetch |
+
+**Ohne Nummern-Nachweis (5 Skills):** `check-visa`, `language-course`, `nicegui-migration`, `mentoring`, `housing-search` — Zählkontrolle: 18 nummerierte Skills (Zeilen 1–13, 15–18, 23; Upload zählt nicht) + 5 ohne Nr. = **23**.
+
 ## Workflow
 
 ```

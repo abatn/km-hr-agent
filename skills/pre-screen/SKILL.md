@@ -19,8 +19,8 @@ Server. Spec: `knowledge/system/vdo-ninja-migration.md`.
 > **Korrektur 27.09.2026 (Faktencheck, Lab-Prinzip):** Dieser Skill behauptete bisher, der Raum werde
 > über `jitsi-meeting.jitsi_join_meeting` erstellt. **Das stimmte nicht** — gemessen: **0 Aufrufe** von
 > `jitsi-meeting` im gesamten Code. Die Raum-URL wird als **String** gebaut:
-> `scripts/agent-runner.py` (Einladung), `webui/components.py:608` (Werkzeug),
-> `webui/pages/candidate.py:707` (Selbstpräsentation) — Muster
+> `scripts/agent-runner.py` (Einladung), `webui/components.py` (gemessen 10.10.2026) (Werkzeug),
+> `webui/pages/candidate.py` (gemessen 10.10.2026) (Selbstpräsentation) — Muster
 > `https://vdo.ninja/?director=prescreening{code}` (Raumname **ohne Bindestrich** seit 04.10.2026,
 > Quelle: docs.vdo.ninja/advanced-settings/setup-parameters/room — *„1 to 49-characters long:
 > aLphaNumEric-characters; case sensitive."*, Spec: `knowledge/system/vdo-ninja-migration.md` §2.5).
@@ -29,7 +29,7 @@ Server. Spec: `knowledge/system/vdo-ninja-migration.md`.
 
 | Modus | Rolle | Ablauf |
 |---|---|---|
-| **Selbstpräsentation** | CANDIDATE | Kandidat sieht seine eigenen Screening-Fragen (aus eigenem Profil: Skills + Lücken) + eigenen VDO.Ninja-Raum `self-presentation-[code]`. Aufgenommene Video-Selbstpräsentation wird im eigenen Profil referenziert und ist für HR im Recruiting-Modus einsehbar — **bewusst OHNE Status-Gate**, damit HR die Vorstellung **vor** der Übernahme (`eingeladen`) bewerten kann (Nutzer-Entscheidung 28.09.2026, Design-Entscheidung; Kontakt-Daten bleiben erst ab `eingeladen` frei). Persistenz des Video-Links: Abschnitt `## Video-Vorstellung` in `ergebnisse/self-presentation-kandidat-{id}-{datum}.md` (Generierung im Sprachtest-Tab, Parität `app.py:3055-3067`). Keine fremden Kandidaten wählbar. |
+| **Selbstpräsentation** | CANDIDATE | Kandidat sieht seine eigenen Screening-Fragen (aus eigenem Profil: Skills + Lücken) + eigenen VDO.Ninja-Raum `self-presentation-[code]`. Aufgenommene Video-Selbstpräsentation wird im eigenen Profil referenziert und ist für HR im Recruiting-Modus einsehbar — **bewusst OHNE Status-Gate**, damit HR die Vorstellung **vor** der Übernahme (`eingeladen`) bewerten kann (Nutzer-Entscheidung 28.09.2026, Design-Entscheidung; Kontakt-Daten bleiben erst ab `eingeladen` frei). Persistenz des Video-Links: Abschnitt `## Video-Vorstellung` in `ergebnisse/self-presentation-kandidat-{id}-{datum}.md` (Generierung im Sprachtest-Tab, Parität `app.py` (gemessen 10.10.2026)). Keine fremden Kandidaten wählbar. |
 | **Recruiting** | EMPLOYER (HR) | Wie bisher: Screening für ausgewählten Matching-Kandidaten (Fragen + VDO.Ninja + ICS). NEU: Einsicht der Selbstpräsentations-Videos der Kandidaten (falls vorhanden). |
 
 ### Sackgassen-Regel für Leertexte (P1-3, 29.09.2026, Nutzer-GO)
@@ -89,7 +89,7 @@ Jeder Leerzustand in Pre-Screen/Onboarding enthält **mindestens einen klickbare
 ## Beispiel-Aufrufe
 
 ### Meeting-Raum-URL (seit 27.09.2026 VDO.Ninja, KEIN MCP-Tool)
-> ⚠️ **Kein Tool-Aufruf.** `jitsi-meeting` wurde am 27.09.2026 aus `opencode.json` entfernt (0 Aufrufe im Code). Die Raum-URL wird als **String** im Runner gebildet — Codemarken `vdo_ninja_url` (Director) + `vdo_ninja_gast_url` (Kandidaten-Gast-Link mit `&record=off`, seit 28.09.2026), gemessen `scripts/agent-runner.py:591/594` ⓘ09.10.2026; Variante A (Nutzer-Entscheidung 27.09.2026, Härtung 28.09.2026): **kein aufnahme-aktivierender** Parameter in der Einladungs-URL.
+> ⚠️ **Kein Tool-Aufruf.** `jitsi-meeting` wurde am 27.09.2026 aus `opencode.json` entfernt (0 Aufrufe im Code). Die Raum-URL wird als **String** im Runner gebildet — Codemarken `vdo_ninja_url` (Director) + `vdo_ninja_gast_url` (Kandidaten-Gast-Link mit `&record=off`, seit 28.09.2026), gemessen `scripts/agent-runner.py` (gemessen 10.10.2026) ⓘ09.10.2026; Variante A (Nutzer-Entscheidung 27.09.2026, Härtung 28.09.2026): **kein aufnahme-aktivierender** Parameter in der Einladungs-URL.
 
 ```python
 code = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))   # 8 Zeichen, pro Einladung neu
@@ -100,7 +100,7 @@ vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"
 |---|---|
 | Muster (HR/Director) | `https://vdo.ninja/?director=prescreening{code}` |
 | Muster (Kandidat/Gast) | `https://vdo.ninja/?room=prescreening{code}&record=off` |
-| `code` | 8 Zeichen (Kleinbuchstaben + Ziffern) — `random.choices(string.ascii_lowercase + string.digits, k=8)`, gemessen `scripts/agent-runner.py:585` ⓘ09.10.2026 — **Design-Entscheidung**, keine externe Quelle |
+| `code` | 8 Zeichen (Kleinbuchstaben + Ziffern) — `random.choices(string.ascii_lowercase + string.digits, k=8)`, gemessen `scripts/agent-runner.py` (gemessen 10.10.2026) ⓘ09.10.2026 — **Design-Entscheidung**, keine externe Quelle |
 | Aufnahme | `&record` speichert beim **Gast** (WebM, mit Einwilligung). `&autorecord`/`&autorecordremote` zeichnen **automatisch beim Laden** → § 26 Abs. 2 BDSG. **Nicht verwenden.** |
 | Anbieter-Status | Aufnahme = „experimental" (vdo.ninja) |
 

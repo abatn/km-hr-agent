@@ -64,7 +64,7 @@
 
 ### 2.5 Semantik-Buttons: Quasar-`color=` statt Tailwind-`bg-*` (P1-4, 29.09.2026)
 
-> **Regel (verbindlich ab 29.09.2026):** Aktions-/Status-**Buttons** nutzen Quasar-Semantik (`props("color=primary|negative|positive")` + `apply_brand_colors()`-Palette, `theme.py:634-645`), **keine** Tailwind-`bg-*`-Klassen. Grund: Tailwind-Klassen werden von Quasars Button-Hintergrund überstimmt → Kontrast unbelegt (Plan-Befund N-S1/M-04-Muster); die Semantik-Palette ist WCAG-geprüft (Primary #1D4ED8 = 6.7:1, Negative #B91C1C = 6.47:1, Positive #15803D = 5.02:1 — alle ≥ 4.5:1). **Nicht Button-Familie** (dürfen Tailwind behalten): Progress-Bars, Info-Karten, Badges/Labels ohne `ui.button`.
+> **Regel (verbindlich ab 29.09.2026):** Aktions-/Status-**Buttons** nutzen Quasar-Semantik (`props("color=primary|negative|positive")` + `apply_brand_colors()`-Palette, `webui/theme.py` (Codemarke `def apply_brand_colors`, gemessen 10.10.2026)), **keine** Tailwind-`bg-*`-Klassen. Grund: Tailwind-Klassen werden von Quasars Button-Hintergrund überstimmt → Kontrast unbelegt (Plan-Befund N-S1/M-04-Muster); die Semantik-Palette ist WCAG-geprüft (Primary #1D4ED8 = 6.7:1, Negative #B91C1C = 6.47:1, Positive #15803D = 5.02:1 — alle ≥ 4.5:1). **Nicht Button-Familie** (dürfen Tailwind behalten): Progress-Bars, Info-Karten, Badges/Labels ohne `ui.button`.
 
 | Aktion | Quasar-`color` | Kontrast (weißer Text) |
 |---|---|---|
@@ -349,7 +349,7 @@ ui.switch("Dark Mode", value=dark.value, on_change=lambda e: dark.set_value(e.va
 📊 Dashboard (NEU 01.10.2026, 1. Tab) · 👤 Mein Profil (inkl. Lebenslauf-Upload + Dokumente, 02.10.2026) · 💼 Stellen · 📨 Bewerbungen · 🗣️ Sprachtest · 📹 Pre-Screen · 📋 Onboarding
 ```
 
-### 8.2 Employer (shell()-Drawer, 11 Seiten – PAGE_MAP `employer.py:1649-1660`, Zeilenstand 28.09.2026)
+### 8.2 Employer (shell()-Drawer, 11 Seiten – PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Zeilenstand 28.09.2026)
 
 ```
 📊 Dashboard
@@ -365,7 +365,7 @@ ui.switch("Dark Mode", value=dark.value, on_change=lambda e: dark.set_value(e.va
 💬 Feedback
 ```
 
-### 8.3 Admin (shell()-Drawer, 12 Seiten – PAGE_MAP `admin.py:753-766`)
+### 8.3 Admin (shell()-Drawer, 12 Seiten – PAGE_MAP `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026))
 
 ```
 📊 Dashboard
@@ -430,13 +430,13 @@ NiceGUI nutzt Material Icons (via Quasar). Bevorzugte Icons:
 
 ## 11. Dropdown-/Filter-Optionen (Regel)
 
-> **Stand:** 01.10.2026 (N-K1 — Befund `ergebnisse/ui-analyse-2026-09-29.md:65`
+> **Stand:** 01.10.2026 (N-K1 — Befund `ergebnisse/ui-analyse-2026-09-29.md`
 > „Kandidaten-Filter zeigt DB-Slug `lebenslauf_hochgeladen`“).
 
 | Regel | Umsetzung | Beispiel |
 |---|---|---|
 | **Klartext statt DB-Slug** | Beschriftung immer über `status_label()` (`components.STATUS_LABELS`) — der rohe Slug wird nie gerendert | `lebenslauf_hochgeladen` → „Lebenslauf hochgeladen“ |
-| **Keine toten Optionen** | Filterwerte = nur Werte, die in der DB **real vorkommen** (Pool ∩ `COUNT > 0`) | `employer.py::_cand_status_options()` |
+| **Keine toten Optionen** | Filterwerte = nur Werte, die in der DB **real vorkommen** (Pool ∩ `COUNT > 0`) | `webui/pages/employer.py` (Codemarke `def _cand_status_options`, gemessen 10.10.2026) |
 | **Ein Sammelwert** | Erste Option = Sammelwert mit Wert `"alle"` | „Alle mit Lebenslauf“ |
 
 **Umsetzung N-K1 (`webui/pages/employer.py`):** `_cand_status_options(conn)` liefert
@@ -455,17 +455,17 @@ zweite Label-Kopie `CAND_STATUS_LABELS` ist entfernt — Klartext-Quelle ist aus
 
 ### 11.1 Klickziel je Tabellenzeile (Regel, M-07)
 
-> **Stand:** 01.10.2026 (M-07 — Befund `ergebnisse/ui-analyse-2026-09-29.md:84`
+> **Stand:** 01.10.2026 (M-07 — Befund `ergebnisse/ui-analyse-2026-09-29.md`
 > „Zeilen ohne Klickziel“).
 
 | Regel | Umsetzung |
 |---|---|
 | **Keine tote Zeile** | Jede Datenzeile einer Tabelle hat ein Klickziel — entweder Navigation oder Detail-Dialog; nie ein `cursor: auto`-Zeile ohne Reaktion |
-| **`on_row_click` braucht `selection`** | `components.data_table()` setzt `on_select=on_row_click` **nur** wirksam, wenn zugleich `selection` gesetzt ist. NiceGUI setzt sonst den Prop auf `'none'` (`nicegui/elements/table.py:77` — `selection or 'none'`), das Quasar-`selection`-Event feuert nie. Daher: `selection="single" if on_row_click else None` |
+| **`on_row_click` braucht `selection`** | `components.data_table()` setzt `on_select=on_row_click` **nur** wirksam, wenn zugleich `selection` gesetzt ist. NiceGUI setzt sonst den Prop auf `'none'` (Upstream-Code NiceGUI, nicegui/elements/table.py — `selection or 'none'`, gemessen 10.10.2026), das Quasar-`selection`-Event feuert nie. Daher: `selection="single" if on_row_click else None` |
 | **Auflösbar → Sprung mit Fokus** | Ist das Zeilen-Ziel ein DB-Objekt, führt der Klick auf die Detailseite **mit Fokus-Parameter** (z. B. `/employer/match?kandidat=<id>`) |
 | **Nicht auflösbar → Dialog** | Ist kein Objekt zuordenbar (Altbestand/Datenrest), zeigt der Klick einen **Detail-Dialog** mit dem gespeicherten Datensatz, statt auf eine falsche Seite zu springen |
 
-**Umsetzung M-07:** `webui/components.py::data_table()` (Auswahl aktivieren) +
+**Umsetzung M-07:** `webui/components.py` (Codemarke `def data_table`, gemessen 10.10.2026) (Auswahl aktivieren) +
 `webui/pages/employer.py` (`_page_kandidaten` `on_select` mit `?kandidat=<id>`;
 `_page_feedback` `_zeile_geklickt` mit `_feedback_row_cid()` = 3-stufiger Resolver:
 Vorgangs-Nr. `…-cand-<id>` → exakter Klarname → Namens-Token-Menge, nur bei eindeutigem
@@ -480,7 +480,7 @@ Treffer).
 
 ### 11.2 Listen-Kürzung (Regel, M-18)
 
-> **Stand:** 01.10.2026 (M-18 — Befund `ergebnisse/ui-analyse-2026-09-29.md:86`
+> **Stand:** 01.10.2026 (M-18 — Befund `ergebnisse/ui-analyse-2026-09-29.md`
 > „Skill-Darstellung hart auf 4 gekürzt → Skills unvollständig“).
 
 | Regel | Umsetzung |
@@ -489,7 +489,7 @@ Treffer).
 | **Marke „+N weitere“** | Erste N Elemente + ein Marker `+{Rest} weitere`; der Marker trägt die übrigen Werte als **Tooltip** (nichts bleibt verborgen) |
 | **Leere Werte raus** | Beim Splitten kommaseparierter Felder leere Einträge verwerfen (`if s.strip()`) |
 
-**Umsetzung M-18:** `webui/pages/employer.py::_page_match` (Kandidatenkarte) —
+**Umsetzung M-18:** `webui/pages/employer.py` (Codemarke `def _page_match`, gemessen 10.10.2026) (Kandidatenkarte) —
 `_skills = [s.strip() for s in str(h_skills).split(",") if s.strip()]`; erste 4 als
 `skill_chip`, bei mehr `ui.chip(f"+{n} weitere", color="grey").props("dense").tooltip(...)`.
 Datenprobe (read-only): bis zu **21** Skills/Kandidat → „alle zeigen“ würde die Karte
@@ -504,7 +504,7 @@ oder Kürzung markiert“.
 
 ### 11.3 Button-Farben (Regel, N-M1)
 
-> **Stand:** 01.10.2026 (N-M1 — Befund `ergebnisse/ui-analyse-2026-09-29.md:66`).
+> **Stand:** 01.10.2026 (N-M1 — Befund `ergebnisse/ui-analyse-2026-09-29.md`).
 
 | Regel | Umsetzung |
 |---|---|
@@ -512,9 +512,9 @@ oder Kürzung markiert“.
 | **Neutraler Abbrechen-Knopf** | `.props("flat")` |
 | **Beleg** | `grep -n 'bg-' employer.py` darf **keinen** `ui.button`-Treffer zeigen; Kontrastlauf `tests/ui_measure.py` |
 
-**Umsetzung N-M1 (`webui/pages/employer.py`):** Match-Dialoge (`:1215` Einladen=`primary`,
-`:1264` Ablehnen=`negative`, `:1304` Einstellen=`positive`), Visum/ICS (`:1553`/`:1573`),
-Onboarding (`:2333`/`:2354`/`:2367`). **Beweis:** `tests/test_nm1_nm2.py` (kein Button
+**Umsetzung N-M1 (`webui/pages/employer.py`):** Match-Dialoge ( Einladen=`primary`,
+ Ablehnen=`negative` Einstellen=`positive`), Visum/ICS ,
+Onboarding . **Beweis:** `tests/test_nm1_nm2.py` (kein Button
 mit `bg-`). **Design-Entscheidung:** Farbzuordnung (primary/negative/positive/warning/flat).
 
 ---
@@ -709,7 +709,7 @@ webui/
 **SPA-Navigations-Regel (P2, 22.09.2026):**
 
 > Jeder Aufruf von `history.pushState` / `run_javascript` in Navigationspfaden MUSS in `try/except` stehen.
-> **Warum:** NiceGUI-Slot-Stack hat keinen aktiven Client im Test-/Headless-Kontext → uncaught Exception killt den Content-Render (Bug-Muster Sidebar `components.py:692-695`, übernommen für `navigate_to` `components.py:34`).
+> **Warum:** NiceGUI-Slot-Stack hat keinen aktiven Client im Test-/Headless-Kontext → uncaught Exception killt den Content-Render (Bug-Muster Sidebar `webui/components.py` (Codemarke `def navigate_to`, gemessen 10.10.2026), übernommen für `navigate_to` `webui/components.py` (Codemarke `def navigate_to`, gemessen 10.10.2026)).
 > **Umsetzung:** Sidebar-Click nutzt Content-Render zuerst, dann pushState in try/except → Content bleibt sichtbar, URL-Update ist Best-Effort.
 > **Quelle (Code):** `webui/components.py` `_make_click()`.
 

@@ -32,7 +32,7 @@
 1. Trigger: `workflow_run` → `workflows: [CI]`, `branches: [main]`, `types: [completed]`.
 2. Gate: `if: github.event.workflow_run.conclusion == 'success'` — **Deploy nur nach grünem CI**.
 3. Secret nach `~/.ssh/id_contabo` (600) + `ssh-keyscan 169.58.83.32`.
-4. SSH nach Contabo: `git fetch origin main` → `git reset --hard $TARGET_SHA` (= `workflow_run.head_sha`)
+4. SSH nach Contabo: `git fetch origin main` → `git reset --hard $TARGET_SHA` (`workflow_run.head_sha`)
    → `git clean -fd` → `pip install -r requirements.txt` **nur bei Änderung** →
    `systemctl restart km-hr-agent` → Health-Loop `curl 127.0.0.1:8080` (max 60 s).
 5. Abschluss: `git rev-parse HEAD` (Server) **muss** `== TARGET_SHA` sein, sonst Fehler.

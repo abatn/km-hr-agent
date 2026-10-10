@@ -47,7 +47,7 @@ Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikat
 - **Datum:** {{datum}}
 - **Uhrzeit:** {{uhrzeit}}
 - **Format:** {{format}} (Online/Präsenz)
-- **Dauer:** ca. 45–60 Minuten
+- **Dauer:** ca. 45–60 Minuten (**Design-Entscheidung**, keine externe Quelle; Pre-Screening-Dauer 15–30 Min. kommt aus `prescreen-config`)
 
 **Gesprächspartner:**
 {{gespraechspartner}}
@@ -118,7 +118,7 @@ Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikat
 - **Datum:** Freitag, 15. Oktober 2026
 - **Uhrzeit:** 10:00 Uhr
 - **Format:** Online (Teams)
-- **Dauer:** ca. 45–60 Minuten
+- **Dauer:** ca. 45–60 Minuten (**Design-Entscheidung**, keine externe Quelle; Pre-Screening-Dauer 15–30 Min. kommt aus `prescreen-config`)
 
 **Gesprächspartner:**
 Max Mustermann (CTO)

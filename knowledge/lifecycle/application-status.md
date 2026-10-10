@@ -61,7 +61,7 @@ eingegangen ──▶ angesehen ──▶ eingeladen ──▶ eingestellt
 | CV-Pflicht | Bewerbung nur mit hochgeladenem Lebenslauf (Kandidat-Status ≥ `lebenslauf_hochgeladen`) – entscheidet der Nutzer, bestätigt 11.09.2026 |
 | Zweckbindung | Bewerbungsdaten nur für diesen Stellenprozess verwenden |
 | Rückzug | Kandidat kann jederzeit zurückziehen → Status `zurückgezogen`; Profil wird danach für diese Stelle nicht mehr angezeigt |
-| Wiederverwendung nach Rückzug | **P1-1, 30.09.2026 (Nutzerentscheid „Reaktivieren“)**: `zurückgezogen` ist die EINZIGE aufhebbare Endlage. Erneutes Bewerben setzt dieselbe `applications`-Zeile auf `eingegangen` (neuer `bewerbungstext`, neuer `aktualisiert_am`, zusätzlicher History-Eintrag) – kein INSERT, keine Doppelzeile. Alle übrigen Endstatus (`abgelehnt`, `eingestellt`) sperren weiterhin. Umsetzung: `webui/db.py::apply_to_job`; UI: `webui/pages/candidate.py::_tab_stellen` („Erneut bewerben“). Tests: `tests/test_reapply_after_withdraw.py` |
+| Wiederverwendung nach Rückzug | **P1-1, 30.09.2026 (Nutzerentscheid „Reaktivieren“)**: `zurückgezogen` ist die EINZIGE aufhebbare Endlage. Erneutes Bewerben setzt dieselbe `applications`-Zeile auf `eingegangen` (neuer `bewerbungstext`, neuer `aktualisiert_am`, zusätzlicher History-Eintrag) – kein INSERT, keine Doppelzeile. Alle übrigen Endstatus (`abgelehnt`, `eingestellt`) sperren weiterhin. Umsetzung: `webui/db.py` (Codemarke `def apply_to_job`, gemessen 10.10.2026); UI: `webui/pages/candidate.py` (Codemarke `def _tab_stellen`, gemessen 10.10.2026) („Erneut bewerben“). Tests: `tests/test_reapply_after_withdraw.py` |
 | Löschung | Bewerbungsdaten werden 6 Monate nach Prozessende gelöscht (wie Kandidaten-Portal, siehe `gdpr-policy.md`) – **automatisch via DSGVO-Cleanup-Job, Phase 4.5 (siehe unten)** |
 
 ---
@@ -102,14 +102,14 @@ eingegangen ──▶ angesehen ──▶ eingeladen ──▶ eingestellt
 
 | Schritt | Verhalten | Codestelle |
 |---|---|---|
-| Reaktivierung | dieselbe `applications`-Zeile auf `eingegangen`, History-Eintrag, **kein** `return` mehr vor dem Queue-Block | `webui/db.py:157-179` |
-| Generation berechnen (vor `conn.close()`) | Reaktivierung: `gen = MAX(COALESCE(json_extract(payload,'$.gen'),0)) + 1` über alle Tasks der Application; frischer INSERT: `gen = 0` | `webui/db.py:170-179` (reaktiviert), `:191` (frisch) |
-| Queue-Payload | alle Kettentasks derselben Bewerbung tragen `"gen": gen` | `webui/db.py:194-195` |
-| Dedupe | `queue_agent_task` prüft Tag + Typ + Application **+ Generation** (`AND COALESCE(json_extract(payload,'$.gen'),0) = ?`): gleicher Tag mit neuem `gen` wird gequeued, gleiches `gen` weiterhin geduped | `webui/db.py:71`, `:80` |
-| notify_hr-Guard | `_maybe_gatekeeper` bewertet nur die höchste Generation der Application; ein alter notify_hr-Marker einer früheren Generation blockiert die neue Auswertung **nicht**, zweiter Sweep derselben Generation bleibt idempotent | `scripts/agent-runner.py:1143`, `:1162-1186` |
+| Reaktivierung | dieselbe `applications`-Zeile auf `eingegangen`, History-Eintrag, **kein** `return` mehr vor dem Queue-Block | `webui/db.py` (gemessen 10.10.2026) |
+| Generation berechnen (vor `conn.close()`) | Reaktivierung: `gen = MAX(COALESCE(json_extract(payload,'$.gen'),0)) + 1` über alle Tasks der Application; frischer INSERT: `gen = 0` | `webui/db.py` (gemessen 10.10.2026) (reaktiviert) (frisch) |
+| Queue-Payload | alle Kettentasks derselben Bewerbung tragen `"gen": gen` | `webui/db.py` (gemessen 10.10.2026) |
+| Dedupe | `queue_agent_task` prüft Tag + Typ + Application **+ Generation** (`AND COALESCE(json_extract(payload,'$.gen'),0) = ?`): gleicher Tag mit neuem `gen` wird gequeued, gleiches `gen` weiterhin geduped | `webui/db.py` (Codemarke `def queue_agent_task`, gemessen 10.10.2026) |
+| notify_hr-Guard | `_maybe_gatekeeper` bewertet nur die höchste Generation der Application; ein alter notify_hr-Marker einer früheren Generation blockiert die neue Auswertung **nicht**, zweiter Sweep derselben Generation bleibt idempotent | `scripts/agent-runner.py` (Codemarke `def _maybe_gatekeeper`, gemessen 10.10.2026) |
 
 - **Altbestand ohne `gen`-Feld:** `COALESCE(…, 0)` liest Bestands-Tasks als Generation 0 → Verhalten für Bestandsdaten unverändert.
-- **Design-Entscheidung (30.09.2026, keine externe Quelle):** Die Reaktivierung queue't dieselben Task-Typen wie die Erstbewerbung (eine Codepfad-Quelle, `webui/db.py::apply_to_job`). Die erneute Eingangsbestätigung (`send_confirmation`) gilt als **Bestätigung der Neubewerbung**, nicht als Störmail.
+- **Design-Entscheidung (30.09.2026, keine externe Quelle):** Die Reaktivierung queue't dieselben Task-Typen wie die Erstbewerbung (eine Codepfad-Quelle, `webui/db.py` (Codemarke `def apply_to_job`, gemessen 10.10.2026)). Die erneute Eingangsbestätigung (`send_confirmation`) gilt als **Bestätigung der Neubewerbung**, nicht als Störmail.
 - **Tests:** `tests/test_r32_gatekeeper_gen.py` (gen 0 → gen 1 → gen 2, **eine** `applications`-Zeile, History `eingegangen → zurückgezogen → eingegangen`), `tests/test_reapply_after_withdraw.py` (Reaktivierungs-Guards bleiben grün), `tests/test_application_id_match.py` (Quelltext: genau ein `return app_id`, erst nach dem Queue-Block).
 
 ---

@@ -28,9 +28,13 @@
       "prescreen-config",
       "salary-data",
       "score_answer",
-      "smtp.mail.yahoo.com"
+      "scripts/agent-runner.py",
+      "scripts/ansvar_gateway.py",
+      "smtp.mail.yahoo.com",
+      "webui/logic.py",
+      "webui/pages/candidate.py"
     ],
-    "at": "2026-10-10T11:05:11+00:00",
+    "at": "2026-10-10T13:29:30+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -39,9 +43,9 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "21006a1dbbf00f79377f60cc6d981f5f31ca4eaa",
-    "note": "C2-Verifikation 10.10.2026: Claim instructions.md gegen den Pair-Code geprueft und nachgewiesen (55 von 55 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
+    "note": "knowledge/system/mcp-connector-config.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/system/mcp-connector-config.md",
   "schema": 1

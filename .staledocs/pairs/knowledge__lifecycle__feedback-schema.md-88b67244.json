@@ -3,23 +3,25 @@
     "anchors": [
       "adjust_weights_from_feedback",
       "adjust_weights_from_feedback()",
+      "app.py",
       "eingeladen='Ja'",
       "eingeladen='Nein'",
-      "ergebnisse/phase-4-feedback-loop.md:61",
+      "ergebnisse/phase-4-feedback-loop.md",
       "feedback.eingeladen",
       "get_current_weights()",
       "get_score_category",
       "gewichtung_historie",
       "knowledge/lifecycle/matching-criteria.md",
+      "webui/components.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:03+00:00",
+    "at": "2026-10-10T13:29:25+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "fcda20acbea5dcfe0ed9ec2d4f709616d60a9a65",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/matching-criteria.md gegen den Pair-Code geprueft und nachgewiesen (14 von 14 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "7ab0edf7736ab4dae86df13a417c01009aaea965",
+    "note": "knowledge/lifecycle/feedback-schema.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/lifecycle/feedback-schema.md",
   "schema": 1

@@ -23,19 +23,19 @@ description: Mentoring / Patenschaft – HR vergibt Mentoren (HR-Klick), Agent b
 | Rolle | Zugriff |
 |---|---|
 | **EMPLOYER (HR)** | ✅ Mentor **wählen und zuweisen** (HR-Klick, Spec §2 Option A – empfohlen); Patenschaft **beenden** (§4); optionalen Agent-Vorschlag (§2B) prüfen/ablehnen; Angaben für Onboarding-Checkliste |
-| **CANDIDATE** | ✅ Mentor **im bestehenden Onboarding-Tab ansehen** (Anzeige-Endpunkt, `candidate.py:1077` Muster); Patenschaft nutzen – **keine** Auswahl |
+| **CANDIDATE** | ✅ Mentor **im bestehenden Onboarding-Tab ansehen** (Anzeige-Endpunkt, `webui/pages/candidate.py` (gemessen 10.10.2026) Muster); Patenschaft nutzen – **keine** Auswahl |
 | **ADMIN** | ✅ alle Funktionen |
 | **Agent-Ebene** | ✅ `{MENTOR}`-Platzhalter deterministisch befüllen in Report/Mail/Checkliste (§5); optional Score-Vorschlag erzeugen (§2B, **nur Vorschlag**) – **niemals** selbst zuweisen/beenden (Variante A, User-Entscheidung 12.09.2026) |
 
-**Portal-Sitz (Spec §2A, Beweis `employer.py:665-685` `do_hire`):** HR-Klick im Employer-Portal (Onboarding- oder Kandidaten-Verwaltung), analog `→ eingestellt` mit `db.queue_agent_task(..., trigger="hr_klick_portal")`.
+**Portal-Sitz (Spec §2A, Beweis `webui/pages/employer.py` (Codemarke `def do_hire`, gemessen 10.10.2026) `do_hire`):** HR-Klick im Employer-Portal (Onboarding- oder Kandidaten-Verwaltung), analog `→ eingestellt` mit `db.queue_agent_task(..., trigger="hr_klick_portal")`.
 
 ---
 
 ## Trigger
 
 - **Vergabe:** HR-Klick im Employer-Portal (Variante A – human-in-the-loop). Kein automatischer Trigger.
-- **Befüllung:** läuft nach erfolgter Vergabe automatisch, sobald `{MENTOR}`-Wert aus DB gesetzt ist (deterministisch wie `send_onboarding_mail`, `agent-runner.py:376`).
-- **Vorschlag (§2B, optional):** Score-Keyword `webui/logic.py:238` (`teamführung`/`mentoring` → +3 Pkt.) kann als Vorschlags-UX dienen – **nie** automatische Zuweisung.
+- **Befüllung:** läuft nach erfolgter Vergabe automatisch, sobald `{MENTOR}`-Wert aus DB gesetzt ist (deterministisch wie `send_onboarding_mail`, `scripts/agent-runner.py` (Codemarke `def send_onboarding_mail`, gemessen 10.10.2026)).
+- **Vorschlag (§2B, optional):** Score-Keyword `webui/logic.py` (gemessen 10.10.2026) (`teamführung`/`mentoring` → +3 Pkt.) kann als Vorschlags-UX dienen – **nie** automatische Zuweisung.
 - **Feature-Freeze:** ❌ ~~aufgehoben~~ **USER-GO erteilt 24.09.2026** für §2A (HR-Klick), §3C (separate Tabelle), §4 (Ende HR-Klick manuell), Anzeige im bestehenden Onboarding-Tab. Offene optionale Punkte: §2B (Score-Vorschlag-UX), Frist-Automatik (§4-Option 2), Anzeige in weiteren Tabs.
 
 ---
@@ -44,20 +44,20 @@ description: Mentoring / Patenschaft – HR vergibt Mentoren (HR-Klick), Agent b
 
 ### 1. Datenfeld festlegen (§3 – User-Go)
 
-**Empfehlung (Design-Entscheidung):** Option C – **separate Tabelle `mentoring`** (Vorbild `candidate_status_history`, `app.py:2729-2737`):
+**Empfehlung (Design-Entscheidung):** Option C – **separate Tabelle `mentoring`** (Vorbild `candidate_status_history`, `app.py` (gemessen 10.10.2026)):
 - Spalten (Design, angelehnt an History-Muster): `id`, `candidate_id` (FK), `mentor_name`, `status` (`vorgeschlagen`/`aktiv`/`beendet`), `changed_by`, `notizen`, `changed_at`, `start_at`, `end_at`
 - Vorteil: Historie + Laufzeit + eigene DSGVO-Löschung koppelbar
 - Alternative A (`candidates.mentor_name`-Spalte) nur 1 Patenschaft ohne Historie; Alternative B (Report-Feld) unstrukturiert
 
 ### 2. HR-Vergabe (§2 Option A – HR-Klick)
 
-**Muster:** `do_hire()` `webui/pages/employer.py:665-685`
+**Muster:** `do_hire()` `webui/pages/employer.py` (Codemarke `def do_hire`, gemessen 10.10.2026)
 1. HR wählt Mentor (Name/Freitext – Quelle: HR-Eingabe, keine externe Mentor-Datenbank)
 2. HR-Klick → `UPDATE mentoring SET status='aktiv', changed_by='arbeitgeber', changed_at=now` (bei Go: INSERT mit History)
-3. History-Insert analog `application_status_history` (`knowledge/lifecycle/application-status.md:49`)
+3. History-Insert analog `application_status_history` (`knowledge/lifecycle/application-status.md`)
 4. Optional: `db.queue_agent_task(..., trigger="hr_klick_portal")` für nachgelagerte Befüllung
 
-**Variante B (optional, nur Vorschlag):** `berechne_match_score()`-Keyword `webui/logic.py:238` listet Kandidaten mit `+3 Pkt: Teamführung/Mentoring` (`matching-criteria.md:73`) als Vorschlag – HR prüft/lehnt ab, **kein** Auto-Match (Score misst Kandidaten-Passing, nicht Mentor-Qualität – Design-Entscheidung).
+**Variante B (optional, nur Vorschlag):** `berechne_match_score()`-Keyword `webui/logic.py` (Codemarke `def berechne_match_score`, gemessen 10.10.2026) listet Kandidaten mit `+3 Pkt: Teamführung/Mentoring` (`knowledge/lifecycle/matching-criteria.md`) als Vorschlag – HR prüft/lehnt ab, **kein** Auto-Match (Score misst Kandidaten-Passing, nicht Mentor-Qualität – Design-Entscheidung).
 
 ### 3. `{MENTOR}` befüllen (§5 – Agent, deterministisch)
 
@@ -70,9 +70,9 @@ Platzhalter (toter Platzhalter seit Schritt-0, `ergebnisse/phase-d-p10-mentoring
 | `knowledge/templates/language-templates/templates-fr.md` | 54 | `Votre contact: {MENTOR}` |
 
 **Drei Konsum-Punkte (Bestandsmuster):**
-1. **Onboarding-Generator (UI):** `onboarding_generator_section()` `webui/components.py:657` – Mentor-Zeile in Willkommens-E-Mail-Abschnitt ergänzen (`components.py:716-722`, aktuell ohne Mentor)
-2. **Mail #6:** `send_onboarding_mail()` `scripts/agent-runner.py:376` – Mentor per String-Ersatz wie `name`/`titel` (`agent-runner.py:415-418`), JOIN aus DB analog `agent-runner.py:396-398`
-3. **Freigabe-Report:** `onboarding_release` schreibt `onboarding-freigabe-bewerbung-{app_id}.md` (`agent-runner.py:1311-1316`) – Mentor-Abschnitt analog Visum-Abschnitt ergänzen
+1. **Onboarding-Generator (UI):** `onboarding_generator_section()` `webui/components.py` (Codemarke `def onboarding_generator_section`, gemessen 10.10.2026) – Mentor-Zeile in Willkommens-E-Mail-Abschnitt ergänzen (`webui/components.py` (gemessen 10.10.2026), aktuell ohne Mentor)
+2. **Mail #6:** `send_onboarding_mail()` `scripts/agent-runner.py` (Codemarke `def send_onboarding_mail`, gemessen 10.10.2026) – Mentor per String-Ersatz wie `name`/`titel` (`scripts/agent-runner.py` (gemessen 10.10.2026)), JOIN aus DB analog `scripts/agent-runner.py` (gemessen 10.10.2026)
+3. **Freigabe-Report:** `onboarding_release` schreibt `onboarding-freigabe-bewerbung-{app_id}.md` (`scripts/agent-runner.py` (gemessen 10.10.2026)) – Mentor-Abschnitt analog Visum-Abschnitt ergänzen
 
 **Kein Wert gesetzt → `{MENTOR}` bleibt unangetastet oder wird Zeile-weise ausgelassen (Design-Entscheidung).**
 
@@ -90,7 +90,7 @@ Platzhalter (toter Platzhalter seit Schritt-0, `ergebnisse/phase-d-p10-mentoring
 
 ### 5. Anzeige Kandidat (optional, User-Go)
 
-- Kein neuer Tab: Anzeige im **bestehenden Onboarding-Tab** `_tab_onboarding` (`candidate.py:1032`, zeigt Freigabe-Report ab `status='eingestellt'` `candidate.py:1038-1045`)
+- Kein neuer Tab: Anzeige im **bestehenden Onboarding-Tab** `_tab_onboarding` (`webui/pages/candidate.py` (Codemarke `def _tab_onboarding`, gemessen 10.10.2026), zeigt Freigabe-Report ab `status='eingestellt'` `webui/pages/candidate.py` (gemessen 10.10.2026))
 - `_TAB_MAP` hat Stand 02.10.2026 **7 Tabs** (📊 Dashboard als 1. Tab; Upload/Dokumente in 👤 Mein Profil) – kein zusätzlicher Tab für Mentoring
 
 ---
@@ -110,12 +110,12 @@ Platzhalter (toter Platzhalter seit Schritt-0, `ergebnisse/phase-d-p10-mentoring
 
 | Skill | Verbindung |
 |---|---|
-| `generate-onboarding` | Onboarding-Generator + Checkliste sind Konsum-Punkt 1 für `{MENTOR}` (`components.py:657`) |
-| `notify-user` (Mail #6) | `send_onboarding_mail` `agent-runner.py:376` ist Konsum-Punkt 2 (Willkommens-Mail mit Mentor) |
+| `generate-onboarding` | Onboarding-Generator + Checkliste sind Konsum-Punkt 1 für `{MENTOR}` (`webui/components.py` (gemessen 10.10.2026)) |
+| `notify-user` (Mail #6) | `send_onboarding_mail` `scripts/agent-runner.py` (Codemarke `def send_onboarding_mail`, gemessen 10.10.2026) ist Konsum-Punkt 2 (Willkommens-Mail mit Mentor) |
 | `export-report` | Freigabe-Report `onboarding-freigabe-bewerbung-{id}.md` ist Konsum-Punkt 3 |
-| `match-candidate` | §2B-Vorschlag stützt sich auf Score-Keyword `webui/logic.py:238` (+3 Pkt. Teamführung/Mentoring) |
+| `match-candidate` | §2B-Vorschlag stützt sich auf Score-Keyword `webui/logic.py` (gemessen 10.10.2026) (+3 Pkt. Teamführung/Mentoring) |
 | `check-gdpr` | Eigene Tabelle (§3C) an Löschfristen koppeln |
-| `employer-portal` | HR-Klick-Sitz (Seite Onboarding / Kandidaten-Verwaltung, PAGE_MAP `employer.py:1649-1660`) |
+| `employer-portal` | HR-Klick-Sitz (Seite Onboarding / Kandidaten-Verwaltung, PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026)) |
 | `candidate-portal` | Anzeige im bestehenden Onboarding-Tab (kein neuer Tab) |
 
 ---

@@ -138,20 +138,20 @@
 
 | Regel | Wert | Quelle |
 |---|---|---|
-| Aufenthaltszweck TN-Kandidat | § 18a (Fachkraft) oder § 18b (Blue Card) | `knowledge/legal/visa-rules.md:131` |
-| ZAV-Zustimmung | BaA muss zustimmen (§ 39 AufenthG), 4–8 Wochen | `knowledge/legal/visa-rules.md:157` |
-| Blue Card Mindestgehalt 2026 | 50.700 € / Mangelberufe 45.934 € | `knowledge/legal/visa-rules.md:149`; Herkunft laut `AGENTS.md` Hardcoded-Tabelle = BAMF/ZAV (offiziell); externe Neuprüfung 24.09.2026 nicht möglich (bamf.de-Abrufe 404 bzw. ohne Inhalt) |
-| Anerkennung IT-Berufe | freiwillig (reglementierte Berufe: Pflicht) | `knowledge/legal/visa-rules.md:132` |
-| Visum Botschaft Tunis | Bearbeitungszeit 4–8 Wochen | `knowledge/legal/visa-rules.md:141-143` |
-| Gesamtprozess ZAV + Visum + Einreise | 3–6 Monate (Kandidat nicht sofort startfähig) | `knowledge/legal/visa-rules.md:160` |
+| Aufenthaltszweck TN-Kandidat | § 18a (Fachkraft) oder § 18b (Blue Card) | `knowledge/legal/visa-rules.md` |
+| ZAV-Zustimmung | BaA muss zustimmen (§ 39 AufenthG), 4–8 Wochen | `knowledge/legal/visa-rules.md` |
+| Blue Card Mindestgehalt 2026 | 50.700 € / Mangelberufe 45.934 € | `knowledge/legal/visa-rules.md`; Herkunft laut `AGENTS.md` Hardcoded-Tabelle = BAMF/ZAV (offiziell); externe Neuprüfung 24.09.2026 nicht möglich (bamf.de-Abrufe 404 bzw. ohne Inhalt) |
+| Anerkennung IT-Berufe | freiwillig (reglementierte Berufe: Pflicht) | `knowledge/legal/visa-rules.md` |
+| Visum Botschaft Tunis | Bearbeitungszeit 4–8 Wochen | `knowledge/legal/visa-rules.md` |
+| Gesamtprozess ZAV + Visum + Einreise | 3–6 Monate (Kandidat nicht sofort startfähig) | `knowledge/legal/visa-rules.md` |
 | Kultur-Fit ist kein Rechts-Check | Visumsfragen bleiben beim Skill `check-visa`, nicht in der Kultur-Bewertung | **Design-Entscheidung** |
 
 ### Erwartungshaltung – Design-Entscheidung
 
 | Seite | Erwartung | Kennzeichnung |
 |---|---|---|
-| HR an TN-Kandidat | Deutsch B2 empfohlen (keine Pflicht für Blue Card) | `knowledge/legal/visa-rules.md:133` (intern) |
-| HR an TN-Kandidat | Start erst nach 3–6 Monaten einplanen | `knowledge/legal/visa-rules.md:160` (intern) |
+| HR an TN-Kandidat | Deutsch B2 empfohlen (keine Pflicht für Blue Card) | `knowledge/legal/visa-rules.md` (intern) |
+| HR an TN-Kandidat | Start erst nach 3–6 Monaten einplanen | `knowledge/legal/visa-rules.md` (intern) |
 | HR an TN-Kandidat | Kultur-Fit-Score ist Indiz, kein Ausschlusskriterium – finale Entscheidung immer Mensch (Variant A, 12.09.2026) | `AGENTS.md`, Abschnitt „Human-in-the-loop Variant A" |
 | TN-Kandidat an HR | Transparenz über Visumsweg, Anerkennung, Gehaltsband | **Design-Entscheidung** |
 | Score-Wirkung | Spezialisierung ändert **keine** Punktegewichte (25/20/25/30, Zeile 14–17) und **keine** Kategorisierungsschwellen (Zeile 159–163) – sie spezifiziert nur die Bewertungs-/Begründungstexte | **Design-Entscheidung** |

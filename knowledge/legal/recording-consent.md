@@ -3,7 +3,7 @@
 > **Stand:** 27.09.2026 · **Update 28.09.2026 (Nutzer-GO, Schritt 2):** Gates 8/9/10 umgesetzt (Gast-Link `&record=off`, HR-Prozessregel als UI-Hinweis, Feld `recording: false`); 9/12 offen (Einwilligungsdialog + Löschfrist u. a.)
 > **TODO 03.10.2026 (Nutzerauftrag):** Aufnahme-Einwilligung **bei der Registrierung** einholen.
 > **IST 09.10.2026 (Code-Angleichung):** Die Kandidaten-**Selbstpräsentation** trägt jetzt
-> `https://vdo.ninja/?push=<id>&record=6000` (`webui/pages/candidate.py:1117`/`:1512`) — die frühere
+> `https://vdo.ninja/?push=<id>&record=6000` (`webui/pages/candidate.py` (gemessen 10.10.2026)) — die frühere
 > Vorgabe „ohne `&record`" ist durch den 04.10.2026-Fix (`vdo-ninja-migration.md` §2.4) überholt.
 > Das 12-Punkte-Gate (d) + (i) Punkt 8 gelten **weiterhin für den HR-Aufnahme-Fall** (Meeting-Raum,
 > Director-/Gast-Link).
@@ -193,8 +193,8 @@ Der Arbeitgeber muss **belegen** können, dass eingewilligt wurde. Das ist eine
 
 | Daten | Frist | Quelle |
 |---|---|---|
-| Aufnahmedatei (Bild/Ton) | **6 Monate nach Prozessende** — Vorschlag, **parallel** zur Bewerbungsdaten-Frist | **Design-Entscheidung**; orientiert an `knowledge/legal/gdpr-policy.md:46-51` (Bewerbungsdaten = 6 Monate). **Nicht aus einem Gesetz abgeleitet** — DSB-Bestätigung nötig |
-| Einwilligungsnachweis selbst | **36 Monate** | `knowledge/legal/gdpr-policy.md:52` („Compliance-Daten \| DSGVO-Report, Einwilligung \| 36 Monate (Pflicht)") — Projektwert, **nicht** gesetzlich abgeleitet |
+| Aufnahmedatei (Bild/Ton) | **6 Monate nach Prozessende** — Vorschlag, **parallel** zur Bewerbungsdaten-Frist | **Design-Entscheidung**; orientiert an `knowledge/legal/gdpr-policy.md` (Bewerbungsdaten = 6 Monate). **Nicht aus einem Gesetz abgeleitet** — DSB-Bestätigung nötig |
+| Einwilligungsnachweis selbst | **36 Monate** | `knowledge/legal/gdpr-policy.md` („Compliance-Daten \| DSGVO-Report, Einwilligung \| 36 Monate (Pflicht)") — Projektwert, **nicht** gesetzlich abgeleitet |
 
 ⚠️ **Spannung, die nicht aufgelöst ist:** Art. 7 Abs. 1 verlangt den Nachweis, Art. 5 Abs. 1 lit. e
 verlangt die Begrenzung. Deshalb ist „Aufnahme löschen, Nachweis behalten" die einzige konsistente
@@ -275,7 +275,7 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
    Die Einwilligung zur Aufnahme muss **im Registrierungs-Flow** des Kandidaten eingeholt und
    nachgewiesen werden (nicht erst im Gespräch). **Ist-Code (09.10.2026):**
    - Der Kandidaten-Link zur **Selbstpräsentation** ist **`https://vdo.ninja/?push=<id>&record=6000`**
-     (Solo-Sender + Aufnahme-Knopf) — Code-Stellen `webui/pages/candidate.py:1117`/`:1512`; der
+     (Solo-Sender + Aufnahme-Knopf) — Code-Stellen `webui/pages/candidate.py` (gemessen 10.10.2026); der
      04.10.2026-Fix hat `&record=6000` ergänzt (`vdo-ninja-migration.md` §2.4). Die Aufnahme landet
      lokal im Download-Ordner des Kandidaten.
    - Offizielle VDO-Doku (Abruf 03.10.2026): Solo-Selbstpräsentation = **`&push`**, **nicht**
@@ -304,8 +304,8 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 | „Stillschweigen, bereits angekreuzte Kästchen oder Untätigkeit … keine Einwilligung" | Erwägungsgrund 32 DSGVO (EUR-Lex, CELEX:32016R0679, Amtsblatt L 119/1 vom 4.5.2016) | Verordnung, **im Wortlaut geprüft** |
 | „echte oder freie Wahl … verweigern oder zurückzuziehen, ohne Nachteile zu erleiden" | Erwägungsgrund 42 DSGVO, ebd. | Verordnung, **im Wortlaut geprüft** |
 | Keine gesonderte Einwilligung / Vertragserfüllung ≠ Zwang | Erwägungsgrund 43 DSGVO, ebd. | Verordnung, **im Wortlaut geprüft** |
-| Löschfrist Aufnahme **6 Monate** | **Design-Entscheidung** — orientiert an `knowledge/legal/gdpr-policy.md:46-51`; **kein Gesetz abgeleitet** | Projekt |
-| Einwilligungsnachweis **36 Monate** | `knowledge/legal/gdpr-policy.md:52` (Projektwert „Compliance-Daten"), **nicht** gesetzlich abgeleitet | Projekt |
+| Löschfrist Aufnahme **6 Monate** | **Design-Entscheidung** — orientiert an `knowledge/legal/gdpr-policy.md`; **kein Gesetz abgeleitet** | Projekt |
+| Einwilligungsnachweis **36 Monate** | `knowledge/legal/gdpr-policy.md` (Projektwert „Compliance-Daten"), **nicht** gesetzlich abgeleitet | Projekt |
 | `&record` speichert beim **Gast** in lokaler Download-Ordner | docs.vdo.ninja/advanced-settings/recording-parameters/and-record, abgerufen 27.09.2026 | Anbieter-Doku, **im Wortlaut geprüft** |
 | `&record=off`/`false` deaktiviert die Aufnahmefunktion | ebd. | Anbieter-Doku |
 | **Director kann ferngesteuert aufnehmen, auch ohne `&record`** | ebd. | Anbieter-Doku |

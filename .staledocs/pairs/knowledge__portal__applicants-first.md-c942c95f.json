@@ -8,13 +8,10 @@
       "_page_match.match_content()",
       "_page_stellen",
       "app.py",
-      "app.py:3630",
-      "app.py:3635",
-      "app.py:3895",
-      "app.py:3898",
       "employer-portal",
       "ergebnisse/entscheidungen.md",
       "knowledge/lifecycle/application-status.md",
+      "knowledge/portal/employer-portal-fields.md",
       "scripts/**",
       "section_header",
       "tests/e2e_agent_details.py",
@@ -23,16 +20,15 @@
       "tests/e2e_housing.py",
       "tests/e2e_vorgemerkt.py",
       "webui/db.py",
-      "webui/pages/employer.py",
-      "webui/pages/employer.py::refresh_cands"
+      "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:05+00:00",
+    "at": "2026-10-10T13:29:26+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "0439fafbcce258537db845625fd0fda610712d75",
-    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (42 von 42 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
+    "note": "knowledge/portal/applicants-first.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/portal/applicants-first.md",
   "schema": 1

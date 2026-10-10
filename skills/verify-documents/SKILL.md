@@ -88,7 +88,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"evaluate_p
 |---|---|---|
 | `evaluate_policy` | Trust-Verdict (4-Wert-Skala) | `trust_and_use` / `use_with_caution` / `human_review_required` / `reject` |
 | `verify_integrity` | Revisions-Anzahl, Incremental Updates | Anzahl Revisionen, ob Objekte hinzugefügt wurden |
-| `verify_signatur` | Kryptografische Signatur-Verifizierung | `valid` / `invalid` / `indeterminate` (Ist-Code ruft nur `evaluate_policy` + `verify_integrity` auf, s. `scripts/agent-runner.py:76/99` ⓘ09.10.2026) |
+| `verify_signatur` | Kryptografische Signatur-Verifizierung | `valid` / `invalid` / `indeterminate` (Ist-Code ruft nur `evaluate_policy` + `verify_integrity` auf, s. `scripts/agent-runner.py` (gemessen 10.10.2026) ⓘ09.10.2026) |
 
 **Ergebnis:** Trust-Verdict wird als zusätzliche Variable in den LLM-Prompt übergeben.
 `use_with_caution` (kein Signatur) → LLM weiß: " technische Echtheitsprüfung nicht möglich".
@@ -110,7 +110,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"evaluate_p
 
 ### 5. Ergebnis speichern
 
-- Bericht: `ergebnisse/verify_documents-kandidat-{N}-{datum}.md` (write_file; Glob im Code: `verify_documents-kandidat-{id}-*.md`, `scripts/agent-runner.py:343` ⓘ09.10.2026)
+- Bericht: `ergebnisse/verify_documents-kandidat-{N}-{datum}.md` (write_file; Glob im Code: `verify_documents-kandidat-{id}-*.md`, `scripts/agent-runner.py` (gemessen 10.10.2026) ⓘ09.10.2026)
 - Struktur wie `check-compliance`-Berichte: Typ · extrahierte Felder · Indizien-Tabelle ·
   Gesamtstatus (`PLAUSIBEL`/`AUFFAELLIG`/`UNBEKANNT`) · manuelle Prüfpunkte · AI-Hinweis (EU AI Act Art. 50)
 - **Keine** Dokumentkopien, **keine** Pass-/Visa-Nummern im Bericht (nur Typ + Gültigkeitsjahr)

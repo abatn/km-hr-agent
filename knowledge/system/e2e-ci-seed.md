@@ -68,7 +68,7 @@ Wer lokal denselben Stand wie der CI haben will, braucht die vier Setup-/Exklusi
 | 1 | Seed-DB statt Live-DB | `cp tests/fixtures/seed.db data/feedback.db` | DSGVO: die echte `data/feedback.db` ist (bzw. soll) nicht im Repo sein; anonymisierte Fixture statt dessen |
 | 2 | Spiegel-Verzeichnis | `mkdir -p /tmp/opencode` | `tests/conftest.py` schreibt den Spiegel-Pointer `/tmp/opencode/kmhr-mirror-last.txt` |
 | 3 | Dummy-`.env` | `printf 'KMHR_STORAGE_SECRET=…\nKMHR_ADMIN_SEED_PASSWORD=…\n' > .env` | R6-2.2: die App startet ohne diese beiden Variablen nicht (`start-webui.sh` + `python3 -m webui.main` verweigern) |
-| 4 | Daten-Exklusionen | `--ignore=tests/test_r33_compliance_reports.py` (8 Tests) + `--deselect tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname` (1 Test) | beide brauchen Dateien aus `ergebnisse/` bzw. `testdaten/`, die aus DSGVO-Gründen nicht im Repo liegen |
+| 4 | Daten-Exklusionen | `--ignore=` für `tests/test_r33_compliance_reports.py` (8 Tests) + `--deselect` für `tests/test_ui_fixes_p0.py` (`test_profile_display_name_kein_dateiname`, 1 Test) | beide brauchen Dateien aus `ergebnisse/` bzw. `testdaten/`, die aus DSGVO-Gründen nicht im Repo liegen |
 
 **Zählkonsequenz (Messung 10.10.2026):** lokal `pytest -q` = **434 passed**; mit den vier CI-Schritten
 (`--ignore` + `--deselect`) = **425 passed, 1 deselected, 148,73 s**. Die Differenz von 9 = 8 (`test_r33`)

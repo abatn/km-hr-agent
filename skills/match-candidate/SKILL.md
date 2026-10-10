@@ -186,15 +186,15 @@ Festwert-Liste im Prompt:
 
 | Aspekt | Wert | Quelle |
 |---|---|---|
-| Quelle der Wahrheit | `gewichtung_historie` (normalisiert auf Summe 100) | `webui/logic.py:338` `get_current_weights()` |
-| Verbrauch im Prompt | `scripts/agent-runner.py:754` `_gewichts_prompt_zeile()`, eingebaut `:851` | Codeweis `grep -n "_gewichts_prompt_zeile" scripts/agent-runner.py` |
+| Quelle der Wahrheit | `gewichtung_historie` (normalisiert auf Summe 100) | `webui/logic.py` (Codemarke `def get_current_weights`, gemessen 10.10.2026) `get_current_weights()` |
+| Verbrauch im Prompt | `scripts/agent-runner.py` (Codemarke `def _gewichts_prompt_zeile`, gemessen 10.10.2026) `_gewichts_prompt_zeile()`, eingebaut | Codeweis `grep -n "_gewichts_prompt_zeile" scripts/agent-runner.py` |
 | Live-Stand 24.09.2026 | kern 25.0 / erfahrung 29.2 / bildung 12.5 / standort 8.3 / branche 8.3 / soft 8.3 / sprache 8.3 | Beweis-Snippet in `ergebnisse/entscheidungen.md` (Phase-E Runde 2) |
-| Baseline (Startwert) | 30/25/15/10/10/10/0 | `knowledge/lifecycle/matching-criteria.md:23` |
+| Baseline (Startwert) | 30/25/15/10/10/10/0 | `knowledge/lifecycle/matching-criteria.md` |
 
 **Design-Entscheidungen:** Rundung auf **1 Nachkommastelle**; **Fallback = Baseline**,
 wenn die Historie leer ist oder die DB nicht erreichbar (robust, kein Task-Abbruch).
 
 **Konsistenz:** Prompt-Werte und Portal-Score sind damit identisch (gleiche Funktion).
-Die Differenz-Warning des archivierten `app.py:1927` ist dadurch gegenstandslos —
+Die Differenz-Warning des archivierten `app.py` (gemessen 10.10.2026) ist dadurch gegenstandslos —
 NiceGUI `webui/` hat bewusst keine (Nutzerentscheidung 24.09.2026, siehe
 `ergebnisse/entscheidungen.md`, Phase-E Runde 2).

@@ -37,7 +37,7 @@ description: Kandidaten-Portal – Registrierung, Profil anlegen, Status verfolg
 
 ### 2. Profil anlegen/bearbeiten
 
-**Eingabe:** candidate_id (= `app.storage.user['user_cand_id']`, NICHT frei wählbar), feld-wert-paare
+**Eingabe:** candidate_id (`app.storage.user['user_cand_id']`, NICHT frei wählbar), feld-wert-paare
 
 **Erlaubte Felder:**
 - Persönliche Daten: telefon, standort, geburtsdatum, nationalitaet, visum_status, verfuegbarkeit

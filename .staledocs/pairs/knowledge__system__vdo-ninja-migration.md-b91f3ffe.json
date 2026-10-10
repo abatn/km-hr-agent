@@ -14,7 +14,6 @@
       "_dokumente_section",
       "access-control.md",
       "agent-automation.md",
-      "agent-runner.py:594",
       "agent_tasks.result_json",
       "c2-service.md",
       "candidate.py",
@@ -30,7 +29,12 @@
       "jitsi_url",
       "knowledge.md",
       "knowledge/legal/recording-consent.md",
+      "knowledge/system/agent-automation.md",
+      "knowledge/system/c2-service.md",
+      "knowledge/system/mcp-connector-config.md",
+      "knowledge/system/mvp.md",
       "max_file_size=150_000_000",
+      "mcp-meeting-server.py",
       "meet_url",
       "meeting-tools",
       "mvp.md",
@@ -45,17 +49,18 @@
       "vdo_ninja_gast_url",
       "vdo_ninja_url",
       "webui/components.py",
-      "webui/pages/candidate.py"
+      "webui/pages/candidate.py",
+      "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:11+00:00",
+    "at": "2026-10-10T13:29:30+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "5de9541a0da454365a50cf4bef7776f4f543ee8b",
-    "note": "C2-Verifikation 10.10.2026: Claim AGENTS.md gegen den Pair-Code geprueft und nachgewiesen (53 von 53 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
+    "note": "knowledge/system/vdo-ninja-migration.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

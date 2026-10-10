@@ -13,17 +13,17 @@ Mail-Versand, kein LLM-/Netz-Call).
 | Artefakt | Sprache | Quelle |
 |---|---|---|
 | Toasts (z. B. „Profil gespeichert!", „Lebenslauf hochgeladen …", „Bewerbung gesendet! …") | **Session-Sprache** | `webui/pages/candidate.py` (`ui.notify(_(...))`) |
-| `notifications`-Zeilen (`Neue Bewerbung`, `{0} hat sich beworben: {1}`) | **Erzeugungs-Sprache** (= Kandidaten-Session beim Trigger) | `webui/pages/candidate.py::_notify_neue_bewerbung` → `db.insert_notification(..., _(...))` |
-| Statische UI (Tabs, Labels, Status über `status_label`) | **Session-Sprache** | `webui/i18n.py::_()` |
+| `notifications`-Zeilen (`Neue Bewerbung`, `{0} hat sich beworben: {1}`) | **Erzeugungs-Sprache** (Kandidaten-Session beim Trigger) | `webui/pages/candidate.py` (Codemarke `def _notify_neue_bewerbung`, gemessen 10.10.2026) → `db.insert_notification(..., _(...))` |
+| Statische UI (Tabs, Labels, Status über `status_label`) | **Session-Sprache** | `webui/i18n.py` (gemessen 10.10.2026) |
 | Portal-erzeugte MD (Onboarding-Checkliste, Pre-Screen-MD, Feedback-MD) | **Erzeugungs-Sprache** | P9.4, `knowledge/system/i18n.md` Klasse E |
-| **Runner-erzeugte Artefakte** (Mails #1–#6, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (= Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver |
+| **Runner-erzeugte Artefakte** (Mails #1–#6, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core.py` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver |
 | **LLM-Berichts-Body** (`extract_profile-*`, `match_candidate-*`, `check_compliance-*`, `assess_culture_fit-*`, `verify_documents-*`, `check_visa-*`, `explain_match-*`, `notify_user-*.md` in `ergebnisse/`) | **Payload-Sprache** (Prompt-Anweisung `Antworte in <Klarname>.`, §7.1 Punkt 5) — Altbestand **vor** 07.10.2026 bleibt deutsch (Punkt 4), z. B. `extract_profile-kandidat-13-2026-09-24.md` | `scripts/agent-runner.py`, Codemarke `Antworte in` (Prompt-Bau); Anzeige in 🏢 🔎 Agent-Details via `logic.ERGEBNISSE.glob(_glob)` (neueste Datei je Task) |
-| **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Prosa-Zeile in Payload-Sprache; Titel-Marker sprachstabil (deutsch)** — nur die `>`-Zeile `(> Agent-Task (Phase 5, live …), Modell: …)` läuft über `tr()`; der **Task-Titel bleibt englisch** (= Identifier, entspricht Dateiname-Prefix und Badge-Key) und die **Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` bleiben IMMER deutsch** (sprachstabile, maschinell geparste Identifier) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen", korrigiert 09.10.2026 (parse-kritische Marker)**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Parser: `webui/pages/employer.py` Codemarke `_BERICHT_STELLE` (`Stelle #(\d+)`) + `tests/test_r33_compliance_reports.py` (`Stelle #\d+`); Beweise `tests/test_runner_i18n.py::test_p9_5b_header_de_byteidentisch` (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) |
+| **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Prosa-Zeile in Payload-Sprache; Titel-Marker sprachstabil (deutsch)** — nur die `>`-Zeile `(> Agent-Task (Phase 5, live …), Modell: …)` läuft über `tr()`; der **Task-Titel bleibt englisch** (Identifier, entspricht Dateiname-Prefix und Badge-Key) und die **Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` bleiben IMMER deutsch** (sprachstabile, maschinell geparste Identifier) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen", korrigiert 09.10.2026 (parse-kritische Marker)**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Parser: `webui/pages/employer.py` Codemarke `_BERICHT_STELLE` (`Stelle #(\d+)`) + `tests/test_r33_compliance_reports.py` (`Stelle #\d+`); Beweise `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_header_de_byteidentisch`, gemessen 10.10.2026) (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) |
 
 **Design-Entscheidung (keine externe Quelle):** Runner-Artefakte liefen bis P1 fix Deutsch (kein
 Session-Kontext). Seit **P2/P3 (07.10.2026, Variante B)** tragen die Tasks `language` im Payload
-(`webui/db.py::queue_agent_task` + Resolver-Hook) und der Runner übersetzt Mails #1–#6 + die 3
-deterministischen Reports über `tr()` aus der **framework-freien** Kernschicht `webui/i18n_core`
+(`webui/db.py` (Codemarke `def queue_agent_task`, gemessen 10.10.2026) + Resolver-Hook) und der Runner übersetzt Mails #1–#6 + die 3
+deterministischen Reports über `tr()` aus der **framework-freien** Kernschicht `webui/i18n_core.py`
 (kein NiceGUI-Import). Alt-Tasks ohne `language` → `de` (keine Rück-Übersetzung bestehender Dateien).
 
 ## 3. Methode (R6-0, deterministisch, offline)
@@ -107,7 +107,7 @@ Port 8085, `rc=0`, 186,7 s, alle 4 Sprachen `rc=0`, Live-DB-sha256 unverändert.
   **Grenze (war Restgrenze, geschlossen in P2b 07.10.2026):** Die vom `email-sender`/
   `meeting-tools`-MCP **selbst erzeugten** Mailtexte (`send_pre_screen_invitation`) und
   Screening-Fragen (`generate_screening_questions`) laufen jetzt ebenfalls über `tr(..., language)`;
-  der Runner übergibt `"language": lang` an beide Calls (P2b, `tests/test_runner_i18n.py::test_p2b_*`).
+  der Runner übergibt `"language": lang` an beide Calls (P2b, `tests/test_runner_i18n.py` (gemessen 10.10.2026)).
 - ~~**M1–M3 (Rest-Lücken aus unabhängiger Verifikation):**~~ → **behoben 07.10.2026 (P2c):**
   `notify_hr` Body-Zeile `"Compliance: COMPLIANT"` → `tr("Compliance: {0}", lang).format("COMPLIANT")`
   (Label übersetzt, technischer Token bleibt Platzhalterwert); `create_invitation` übergibt
@@ -116,8 +116,8 @@ Port 8085, `rc=0`, 186,7 s, alle 4 Sprachen `rc=0`, Live-DB-sha256 unverändert.
   „(Katalog-Key {0} ohne URL)" über `tr(...)` (reine **Anzeige** — **kein** Parser-/Persistenz-Marker;
   der geschützte `"Kandidat #"`-Parser betrifft nur `feedback.kandidat_name`/`_feedback_klarname`,
   nicht den Contract-Report). Katalog 969 → **972** (+3).
-- **Bewusst NICHT abgedeckt (Legacy-MCP-Tools, 0 Aufrufer):** `mcp-email-server.py::send_interview_invitation`
-  und `mcp-meeting-server.py::create_meeting_link` bleiben deutsch (kein `language`-Parameter) —
+- **Bewusst NICHT abgedeckt (Legacy-MCP-Tools, 0 Aufrufer):** `mcp-email-server.py` (Codemarke `def send_interview_invitation`, gemessen 10.10.2026)
+  und `mcp-meeting-server.py` (Codemarke `def create_meeting_link`, gemessen 10.10.2026) bleiben deutsch (kein `language`-Parameter) —
   Design-Entscheidung, da toter Code ohne Aufrufer (nicht P2b-geändert).
 - Native-Review der EN/FR/AR-Erstfassungen (steht projektweit offen).
 
@@ -131,9 +131,9 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
 ### 7.1 Bausteine
 1. **`webui/i18n_core.py` (neu, framework-frei):** pures `gettext` + `lru_cache`,
    `tr(msgid, lang, **fmt)` (Fallback: Original; `de` = Identität). **Eine Katalogquelle**
-   `webui/locales`. `webui/i18n.py::_()` delegiert an `i18n_core` (NiceGUI-Session bleibt dort).
-   Der Runner importiert **nur** `webui/i18n_core` (kein NiceGUI) → löst die Prozess-Trennung.
-2. **Transport `language`:** `webui/db.py::queue_agent_task` injiziert
+   `webui/locales`. `webui/i18n.py` (gemessen 10.10.2026) delegiert an `i18n_core` (NiceGUI-Session bleibt dort).
+   Der Runner importiert **nur** `webui/i18n_core.py` (kein NiceGUI) → löst die Prozess-Trennung.
+2. **Transport `language`:** `webui/db.py` (Codemarke `def queue_agent_task`, gemessen 10.10.2026) injiziert
    `payload.setdefault("language", <Resolver>)` über einen **Resolver-Hook**
    `db.set_language_resolver(fn)`; registriert in `webui/i18n.py` (`db.set_language_resolver(get_language)`).
    Damit sind **alle 28 Aufrufer** zentral abgedeckt (candidate/employer/admin/components), ohne sie
@@ -159,20 +159,20 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
    #(\d+)")`, HR-Compliance-Seite) und von `tests/test_r33_compliance_reports.py` (`Stelle #\d+`);
    die frühere FR-Titelzeile `Candidat #1 / Poste #9` brach das Schema (`job_id=None`). Nur die
    `>`-Prosa-Zeile bleibt übersetzt. Bei `de` byte-identisch mit dem Altbestand
-   (Beweis `tests/test_runner_i18n.py::test_p9_5b_header_de_byteidentisch`; E2E
+   (Beweis `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_header_de_byteidentisch`, gemessen 10.10.2026); E2E
    `e2e_admin_downloads` rc=0). **Badge-Härtung (Nutzer-GO „Prompt-Härtung"):** hinter dem
    Sprach-Suffix `Antworte in …` folgt eine feste deutschsprachige Prompt-Regel, dass die
    Status-Tokens (`COMPLIANT`/`NICHT_COMPLIANT`/`KONFORM`/`NICHT_KONFORM`/`PLAUSIBEL`/`AUFFAELLIG`/
    `UNBEKANNT`/`UNGEWISS`/`ERFORDERLICH`/`NICHT ERFORDERLICH`) IMMER unverändert ausgegeben werden
    → `_badge_icon` (employer.py) bleibt auch bei FR/AR-Berichten funktionsfähig; interne Regel wie
    `Antworte in <Klarname>`, **keine** msgid (nicht nutzersichtbar, kein Katalogeintrag).
-   Beweis `tests/test_runner_i18n.py::test_p9_5b_prompt_token_haertung`. **Altbestand** (Dateien vor
+   Beweis `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_prompt_token_haertung`, gemessen 10.10.2026). **Altbestand** (Dateien vor
    07.10.2026, z. B. `extract_profile-kandidat-13-2026-09-24.md`) bleibt deutsch (Punkt 4,
    Nutzer-GO „Liegen lassen" — keine Rück-Übersetzung).
-6. **MCP-Server-Texte (P2b, 07.10.2026):** `mcp-email-server.py::send_pre_screen_invitation`
-   und `mcp-meeting-server.py::generate_screening_questions` erhalten den Parameter
+6. **MCP-Server-Texte (P2b, 07.10.2026):** `mcp-email-server.py` (Codemarke `def send_pre_screen_invitation`, gemessen 10.10.2026)
+   und `mcp-meeting-server.py` (Codemarke `def generate_screening_questions`, gemessen 10.10.2026) erhalten den Parameter
    `language: str = "de"` und bauen `subject`/`body` bzw. Kategorien/Fragetemplates/Kopf+Fuß
-   über `tr(..., language)`; `scripts/agent-runner.py::create_invitation` übergibt `"language": lang`.
+   über `tr(..., language)`; `scripts/agent-runner.py` (Codemarke `def create_invitation`, gemessen 10.10.2026) übergibt `"language": lang`.
    Fehlendes/ungültiges `language` → `de` (Altverhalten). Neuer Katalog-Bestand: **+42 msgids**
    (927 → **969**; Übersetzungen EN/FR/AR = **Design-Entscheidung**, eigene Erstfassung,
    Native-Review offen).

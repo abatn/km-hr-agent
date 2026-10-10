@@ -7,8 +7,6 @@
       "_tab_prescreen()",
       "_tab_stellen",
       "app.py",
-      "app.py:2204",
-      "app.py:3278",
       "cand[7]",
       "cand[7\u21928]",
       "cand[8]",
@@ -17,7 +15,10 @@
       "db.apply_to_job()",
       "e2e_apply_dialog.py",
       "ergebnisse/entscheidungen.md",
+      "instructions.md",
       "k_data",
+      "knowledge/lifecycle/application-status.md",
+      "knowledge/portal/cv-pflicht.md",
       "lebenslauf_datei",
       "lebenslauf_hochgeladen",
       "lebenslauf_text",
@@ -25,6 +26,7 @@
       "save_profile",
       "scripts/**",
       "show_scores",
+      "skills/candidate-portal/SKILL.md",
       "status='lebenslauf_hochgeladen'",
       "status='profil_vollstaendig'",
       "tests/e2e_apply_dialog.py",
@@ -35,18 +37,16 @@
       "ui-mvp-plan-v2.md",
       "ui.button(...).props(\"disable\")",
       "ui.label(...)",
-      "webui/db.py::apply_to_job",
-      "webui/db.py::apply_to_job()",
-      "webui/pages/candidate.py",
-      "webui/pages/candidate.py::_tab_stellen"
+      "webui/db.py",
+      "webui/pages/candidate.py"
     ],
-    "at": "2026-10-10T11:05:06+00:00",
+    "at": "2026-10-10T13:29:26+00:00",
     "code_blobs": {
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "34c7173a0c8ebb5c20a067206bb335047fe8c174",
-    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (50 von 50 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
+    "note": "knowledge/portal/cv-pflicht.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/portal/cv-pflicht.md",
   "schema": 1

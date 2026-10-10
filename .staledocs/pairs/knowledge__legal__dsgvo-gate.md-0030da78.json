@@ -8,7 +8,6 @@
       "_page_dokumente()",
       "_visible_documents",
       "app.py",
-      "app.py:2053",
       "app_status",
       "applications.status",
       "data/feedback.db",
@@ -28,19 +27,18 @@
       "tests/e2e_dsgvo_gate.py",
       "tests/test_employer_agent_b.py",
       "verify_documents",
+      "webui/db.py",
       "webui/logic.py",
       "webui/pages/candidate.py",
-      "webui/pages/employer.py",
-      "webui/pages/employer.py::_page_dokumente",
-      "webui/pages/employer.py::_visible_documents()"
+      "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:03+00:00",
+    "at": "2026-10-10T13:29:24+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "1b35b54a9eb3af7ed5ab1ce79ce87301b1011a46",
-    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (31 von 31 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
+    "note": "knowledge/legal/dsgvo-gate.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

@@ -119,14 +119,14 @@ Die Datenbank wird beim ersten Aufruf von `store-feedback` automatisch erstellt.
 
 ## UI-Optionsliste „Eingeladen?" (O3, 23.09.2026)
 
-- Employer-Tab-4 (Streamlit `app.py:3924` + NiceGUI `webui/pages/employer.py`): Options `["Ja", "Nein", "Vorgemerkt"]`, Default `Ja`.
-- Semantik: `Vorgemerkt` = neutral — löst den Phase-4-Weight-Loop NICHT aus (`adjust_weights_from_feedback` → `return ""`, Beleg: `ergebnisse/phase-4-feedback-loop.md:61`). Speicherung unverändert in `feedback.eingeladen` (CHECK Z.32 erlaubt den Wert bereits).
-- **Skill-8 bewusst nur 2 Optionen (NB2, Entscheidung 23.09.2026):** Das Skill-8-Feedback-Formular zeigt `['Ja','Nein']` — NiceGUI `webui/components.py:824` UND Streamlit `app.py:2578` identisch (Default `Ja`). `Vorgemerkt` bleibt Tab-4-exklusiv → **keine Paritätslücke, keine Änderung.**
+- Employer-Tab-4 (Streamlit `app.py` (gemessen 10.10.2026) + NiceGUI `webui/pages/employer.py`): Options `["Ja", "Nein", "Vorgemerkt"]`, Default `Ja`.
+- Semantik: `Vorgemerkt` = neutral — löst den Phase-4-Weight-Loop NICHT aus (`adjust_weights_from_feedback` → `return ""`, Beleg: `ergebnisse/phase-4-feedback-loop.md`). Speicherung unverändert in `feedback.eingeladen` (CHECK Z.32 erlaubt den Wert bereits).
+- **Skill-8 bewusst nur 2 Optionen (NB2, Entscheidung 23.09.2026):** Das Skill-8-Feedback-Formular zeigt `['Ja','Nein']` — NiceGUI `webui/components.py` (gemessen 10.10.2026) UND Streamlit `app.py` (gemessen 10.10.2026) identisch (Default `Ja`). `Vorgemerkt` bleibt Tab-4-exklusiv → **keine Paritätslücke, keine Änderung.**
 
 ## Restore-Regel `gewichtung_historie` / `gew_max` (NB3, Entscheidung 23.09.2026)
 
 - `gew_max` = `MAX(id) FROM gewichtung_historie` — DB-Ist 23.09.2026: **4 Zeilen** (count=4).
 - Es gibt **keinen Festwert-Soll**: grep `gew_max` in knowledge/ + skills/ + instructions.md + AGENTS.md = 0 Treffer. Die in einem E2E-Lauf auftauchende „Soll = 8" war eine Test-Prompt-Annahme, **keine MD-Spezifikation** (Lab-Prinzip 1: keine Quelle → keine Regel).
 - **Regel:** E2E-Restore vergleicht pre==post (Zustand vor dem Test vs. danach), nie auf eine konstante Zahlenzahl pochen.
-- Skill 8 (`app.py:2578` / `webui/components.py:824`) bewusst nur `["Ja", "Nein"]` — Parität in BEIDEN Apps, keine Lücke.
-- Quelle der Portierung: `app.py:3924` (Streamlit-Verhalten, keine Erfindung).
+- Skill 8 (`app.py` (gemessen 10.10.2026) / `webui/components.py` (gemessen 10.10.2026)) bewusst nur `["Ja", "Nein"]` — Parität in BEIDEN Apps, keine Lücke.
+- Quelle der Portierung: `app.py` (gemessen 10.10.2026) (Streamlit-Verhalten, keine Erfindung).

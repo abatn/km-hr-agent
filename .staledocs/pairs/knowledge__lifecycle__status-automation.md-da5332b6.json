@@ -17,9 +17,9 @@
       "do_reject()",
       "employer-portal",
       "ergebnisse/entscheidungen.md",
-      "ergebnisse/entscheidungen.md:1397",
       "knowledge/legal/dsgvo-gate.md",
       "knowledge/lifecycle/application-status.md",
+      "knowledge/lifecycle/relocation.md",
       "knowledge/system/agent-automation.md",
       "onboarding_release",
       "send_rejection",
@@ -33,18 +33,18 @@
       "tests/e2e_vorgemerkt.py",
       "ui.notify",
       "webui/",
-      "webui/pages/employer.py::_page_dokumente()",
-      "webui/pages/employer.py::_page_match",
-      "webui/pages/employer.py::_page_stellen"
+      "webui/pages/admin.py",
+      "webui/pages/candidate.py",
+      "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:04+00:00",
+    "at": "2026-10-10T13:29:25+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "5ac1e3fa167faf4cc11bb782022b55226ef5ec11",
-    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (39 von 39 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "068228ab7ce3ec2315415324bbf630de12d95092",
+    "note": "knowledge/lifecycle/status-automation.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/lifecycle/status-automation.md",
   "schema": 1

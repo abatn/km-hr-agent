@@ -235,7 +235,7 @@ Ein Kandidat erscheint in der Kandidaten-Liste einer Stelle, wenn:
 
 ## Employer-Portal Sidebar (Streamlit-Ära: 8 Seiten, 17.09.2026; NiceGUI: 10 Seiten, 20.09.2026 Phase 1)
 
-> **NiceGUI-Umsetzung** = `employer.py:1649-1660` (PAGE_MAP, 11 Einträge; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Portal (Firmenprofil + Stellen, **P1.2 portiert 20.09.2026**) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber-Status-Verwaltung + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung: einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger, **P1.3 portiert 20.09.2026**) · 📄 Match (read-only + Visum-Klick, GAP-3) · ✅ Compliance · 🔎 Agent-Details · 🗂️ Dokumente · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll, GAP-2). Die folgende Tabelle dokumentiert die Streamlit-Sidebar (inkl. 4-Tab-Portal) als historische Referenz.
+> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 11 Einträge; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Portal (Firmenprofil + Stellen, **P1.2 portiert 20.09.2026**) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber-Status-Verwaltung + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung: einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger, **P1.3 portiert 20.09.2026**) · 📄 Match (read-only + Visum-Klick, GAP-3) · ✅ Compliance · 🔎 Agent-Details · 🗂️ Dokumente · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll, GAP-2). Die folgende Tabelle dokumentiert die Streamlit-Sidebar (inkl. 4-Tab-Portal) als historische Referenz.
 
 | Seite | Beschreibung | Nur lesen? |
 |---|---|---|
@@ -319,7 +319,7 @@ Nicht existierende Stellen bzw. fremde Arbeitgeber werden **gezählt, nicht vers
 |---|---|
 | Auslöser | die 3 HR-Klick-Ziel-Status **`eingeladen` / `abgelehnt` / `eingestellt`** |
 | Handler | `do_invite` / `do_reject` / `do_hire` (📄 Match) **und** `make_transition` (💼 Stellenangebote) — jeweils **NACH** erfolgreichem `UPDATE` + `commit` |
-| Helper | `webui/pages/employer.py::_notify_statuswechsel(conn, app_id, status)` |
+| Helper | `webui/pages/employer.py` (Codemarke `def _notify_statuswechsel`, gemessen 10.10.2026) |
 | Query | `applications` → `JOIN jobs` → `JOIN employers` (candidate_id + Firma + Stellen-Titel) |
 | Schreibung | EINE Zeile `notifications(user_id = candidate_id, role = 'candidate', titel = 'Bewerbungsstatus', nachricht = …, gelesen = 0)` |
 | Nachricht | `Deine Bewerbung bei <Firma> für <Titel>: <Status>` |
@@ -369,9 +369,9 @@ Nicht existierende Stellen bzw. fremde Arbeitgeber werden **gezählt, nicht vers
 - **Ablehnen (Match-Dialog):** schließt ALLE aktiven Bewerbungen des Kandidaten bei diesem Employer (Aktiv-IN-Liste `eingegangen`/`angesehen`/`eingeladen`) — UPDATE + History je Bewerbung, GENAU EIN `send_rejection`-Task mit `{application_id: neueste aktive, candidate_id, trigger: hr_klick_portal}`.
 - **Einladen / Einstellen:** handeln ausschließlich die neueste aktive Bewerbung (`LIMIT 1`, dieselbe Aktiv-IN-Liste); beide Payloads (`create_invitation`, `onboarding_release`) tragen zusätzlich `candidate_id`.
 - **Kein aktiver Treffer** (z. B. nur Terminal-Status): Fehler-`ui.notify` „Keine aktive Bewerbung", kein DB-Write, kein Task.
-- **Terminal-Status unantastbar:** `eingestellt`, `abgelehnt`, `zurückgezogen` werden von keinem der 3 Dialoge geändert (erl-Matrix `webui/pages/employer.py:374`).
+- **Terminal-Status unantastbar:** `eingestellt`, `abgelehnt`, `zurückgezogen` werden von keinem der 3 Dialoge geändert (erl-Matrix `webui/pages/employer.py` (gemessen 10.10.2026)).
 - **Identity-Regel:** Dialog-States speichern die Candidate-ID (`_reject_cid`/`_invite_cid`/`_hire_cid`); die echte `application_id` wird am Queue-Punkt per SELECT (employer-JOIN, id DESC) aufgelöst — Spec: `knowledge/system/agent-automation.md` §4, Identity-Regel.
-- **NB5 (behoben, 23.09.2026):** alle `'zurueckgezogen'`-Filter (ASCII) auf `'zurückgezogen'` (UTF-8-ü, DB-Sollwert) umgestellt: `webui/pages/employer.py:696/:717/:1220` + Label `:469`, `webui/pages/candidate.py:273`, `webui/pages/admin.py:639`, `scripts/agent-runner.py:969`, `app.py:1879` (Parität). Sweep 0, App 22-Verifikation bestanden.
+- **NB5 (behoben, 23.09.2026):** alle `'zurueckgezogen'`-Filter (ASCII) auf `'zurückgezogen'` (UTF-8-ü, DB-Sollwert) umgestellt: `webui/pages/employer.py` (gemessen 10.10.2026) + Label, `webui/pages/candidate.py` (gemessen 10.10.2026), `webui/pages/admin.py` (gemessen 10.10.2026), `scripts/agent-runner.py` (gemessen 10.10.2026), `app.py` (gemessen 10.10.2026) (Parität). Sweep 0, App 22-Verifikation bestanden.
 
 ---
 

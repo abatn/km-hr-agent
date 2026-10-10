@@ -1,0 +1,16 @@
+{
+  "anchors": [
+    "ergebnisse/entscheidungen.md",
+    "ergebnisse/zeilenangaben-drift-2026-10-01.md",
+    "knowledge/**",
+    "knowledge/lifecycle/feedback-schema.md",
+    "knowledge/lifecycle/matching-criteria.md",
+    "knowledge/portal/*-fields.md",
+    "knowledge/system/access-control.md",
+    "skills/*/SKILL.md"
+  ],
+  "at": "2026-10-10T12:53:18+00:00",
+  "doc": "knowledge/system/doku-authority.md",
+  "note": "",
+  "schema": 1
+}

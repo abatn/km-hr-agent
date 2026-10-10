@@ -5,7 +5,7 @@
       "_TAB_MAP",
       "_tab_profil()",
       "aktuelle_position",
-      "app.py:2781",
+      "app.py",
       "berufserfahrung_jahre",
       "candidate-portal",
       "cv-pflicht.md",
@@ -28,14 +28,14 @@
       "visum_status",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-10T11:05:06+00:00",
+    "at": "2026-10-10T13:29:26+00:00",
     "code_blobs": {
       "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "c76a0dc767f6a4cdd6b0ae51cfda027e3f1171d3",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/application-status.md gegen den Pair-Code geprueft und nachgewiesen (43 von 43 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "83c62985c170af195f23fc3fbba9b898656013eb",
+    "note": "knowledge/portal/candidate-portal-fields.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

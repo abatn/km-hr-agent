@@ -55,6 +55,7 @@
       "start_source=",
       "test@example.de",
       "test_dialog_identity",
+      "test_profile_display_name_kein_dateiname",
       "test_r33",
       "test_r33_compliance_reports",
       "test_r35_status_notify",
@@ -63,9 +64,11 @@
       "tests/conftest.py",
       "tests/e2e_harness.py",
       "tests/e2e_isolation.py",
-      "tests/fixtures/seed.db"
+      "tests/fixtures/seed.db",
+      "tests/test_r33_compliance_reports.py",
+      "tests/test_ui_fixes_p0.py"
     ],
-    "at": "2026-10-10T11:05:09+00:00",
+    "at": "2026-10-10T13:29:29+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -174,9 +177,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "e4c59f51120e701dd5124ac7237fba2f16d6ae00",
-    "note": "C2-Verifikation 10.10.2026: Claim .github/workflows/ci.yml gegen den Pair-Code geprueft und nachgewiesen (64 von 64 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "e97275a92d649884611f6e7134210f012a21f63a",
+    "note": "knowledge/system/e2e-ci-seed.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

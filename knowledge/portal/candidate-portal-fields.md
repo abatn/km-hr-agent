@@ -173,25 +173,25 @@ CREATE TABLE IF NOT EXISTS candidate_status_history (
 ## Read-View Anzeige (NiceGUI) — 12 Speicher-Felder
 
 > **Stand:** 22.09.2026 (P1, Profil-Parität)
-> **Quelle Speicher-Liste:** `app.py:2798-2806` (UPDATE candidates SET …, 12 Parameter + cand_id)
-> **Quelle Edit-Formular:** `app.py:2779-2795`
+> **Quelle Speicher-Liste:** `app.py` (gemessen 10.10.2026) (UPDATE candidates SET …, 12 Parameter + cand_id)
+> **Quelle Edit-Formular:** `app.py` (gemessen 10.10.2026)
 > **Umsetzung:** `webui/pages/candidate.py` `_tab_profil()` Read-View (expansionsloser Karten-Block vor „Profil bearbeiten")
 > **Regel:** Jedes der 12 Felder, die `save_profile()` in die DB schreibt, MUSS vor dem Edit-Expander lesbar angezeigt werden (Parität zur Streamlit-Read-View).
 
 | # | Feld (DB) | Anzeige-Karte | NiceGUI-Helfer | Quelle Edit (Streamlit) |
 |---|---|---|---|---|
-| 1 | `standort` | Persönliche Daten | `info_row` | `app.py:2779` |
-| 2 | `nationalitaet` | Persönliche Daten | `info_row` | `app.py:2780` |
-| 3 | `visum_status` | Persönliche Daten | `info_row` | `app.py:2781` |
-| 4 | `verfuegbarkeit` | Persönliche Daten | `info_row` | `app.py:2782` |
-| 5 | `aktuelle_position` | Persönliche Daten | `info_row` | `app.py:2784` |
-| 6 | `berufserfahrung_jahre` | Berufserfahrung | `stat_card` | `app.py:2785` |
-| 7 | `hard_skills` | Fachkompetenzen | `skill_chip` | `app.py:2786` |
-| 8 | `soft_skills` | Fachkompetenzen | `info_row` | `app.py:2787` |
-| 9 | `abschluss` | Berufserfahrung | `info_row` | `app.py:2791` |
-| 10 | `deutsch` | Sprachen | `info_row` | `app.py:2792` |
-| 11 | `englisch` | Sprachen | `info_row` | `app.py:2793` |
-| 12 | `gehaltsvorstellung` | Gehaltsvorstellung (eigene Karte) | `stat_card` | `app.py:2795` |
+| 1 | `standort` | Persönliche Daten | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 2 | `nationalitaet` | Persönliche Daten | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 3 | `visum_status` | Persönliche Daten | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 4 | `verfuegbarkeit` | Persönliche Daten | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 5 | `aktuelle_position` | Persönliche Daten | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 6 | `berufserfahrung_jahre` | Berufserfahrung | `stat_card` | `app.py` (gemessen 10.10.2026) |
+| 7 | `hard_skills` | Fachkompetenzen | `skill_chip` | `app.py` (gemessen 10.10.2026) |
+| 8 | `soft_skills` | Fachkompetenzen | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 9 | `abschluss` | Berufserfahrung | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 10 | `deutsch` | Sprachen | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 11 | `englisch` | Sprachen | `info_row` | `app.py` (gemessen 10.10.2026) |
+| 12 | `gehaltsvorstellung` | Gehaltsvorstellung (eigene Karte) | `stat_card` | `app.py` (gemessen 10.10.2026) |
 
 **Bereits vor P1 vorhanden (unverändert):** `name`, `email`, `status` (Persönliche Daten), Status-Historie-Karte, Passwort-Expander.
 

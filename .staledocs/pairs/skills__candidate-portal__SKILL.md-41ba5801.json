@@ -13,13 +13,13 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-10T11:05:12+00:00",
+    "at": "2026-10-10T13:29:31+00:00",
     "code_blobs": {
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "19af5ce362a2951c21b7b7da1ee5b7d1bc0a25a6",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/portal/cv-pflicht.md gegen den Pair-Code geprueft und nachgewiesen (22 von 22 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
+    "note": "skills/candidate-portal/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "skills/candidate-portal/SKILL.md",
   "schema": 1

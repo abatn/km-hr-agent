@@ -30,13 +30,13 @@ zeigt dann 9× „Kein Bericht vorhanden" (⚪), obwohl `agent_tasks` die abgesc
 
 ## Lösung (Schritt 2) — MD-first
 
-1. **Runner** (`scripts/agent-runner.py::run_llm_task`): Berichtstext **additiv** in `result_json["text"]`
+1. **Runner** (`scripts/agent-runner.py` (Codemarke `def run_llm_task`, gemessen 10.10.2026)): Berichtstext **additiv** in `result_json["text"]`
    ablegen (gekappt auf `RESULT_TEXT_MAX`). Die Altfelder `result_path`/`agent_chars` bleiben unverändert
    (keine Aufrufer brechen).
-2. **DB-Helfer** (`webui/db.py::get_candidate_agent_tasks`): je `task_type` die **letzte** Task (höchste id)
+2. **DB-Helfer** (`webui/db.py` (Codemarke `def get_candidate_agent_tasks`, gemessen 10.10.2026)): je `task_type` die **letzte** Task (höchste id)
    über **alle Bewerbungen** des Kandidaten; liefert `status`, `text` (aus `result_json`), `created_at`,
    `application_id`, `gen`. Bewusst **ohne** `json_extract` (Payload in Python parsen).
-3. **UI** (`webui/pages/employer.py::_page_agent_details`): Badges/Berichte aus dem DB-Helfer; Datei-Glob
+3. **UI** (`webui/pages/employer.py` (Codemarke `def _page_agent_details`, gemessen 10.10.2026)): Badges/Berichte aus dem DB-Helfer; Datei-Glob
    entfällt. Legacy-Tasks ohne `text` → Badge aus `status` + ehrlicher Hinweis (kein Fake-Inhalt).
 
 ## Kennzeichnung (Lab-Prinzip)

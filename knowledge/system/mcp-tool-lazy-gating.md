@@ -18,7 +18,7 @@ Der in P4 eingeführte **offizielle MCP-Client** ist korrekt, aber **teuer pro A
 1. **Frischer Subprozess je Tool-Call** → Kaltstart **~1,5–2,2 s** (eigene Messung 05.10.2026).
 2. **`tools/list`-Roundtrip je Session** (Client validiert das Ergebnis, lädt das
    Katalog-Schema neu) → zusätzliche Latenz.
-3. Beides läuft **synchron** in `webui/logic.py::_mcp_connector_call` und wird u. a. aus
+3. Beides läuft **synchron** in `webui/logic.py` (Codemarke `def _mcp_connector_call`, gemessen 10.10.2026) und wird u. a. aus
    dem (synchronen) Match-Render gerufen → blockiert den Event-Loop > 2 s →
    NiceGUI-Ping-Timeout → **„Connection lost"** (live reproduziert 05.10.2026).
 
@@ -109,7 +109,7 @@ Warm ≈ **500×** schneller als der Ein-Schuss-Pfad; der Kaltstart zahlt `initi
 ## Warm-up der MCP-Sessions beim App-Start (Plan A, 08.10.2026)
 
 - **Befund (Lag-Monitor 08.10.2026):** Der ERSTE `/employer/match`-Render startet die MCP-Sessions/Connector-Caches synchron im NiceGUI-Event-Loop → **2,97 s Block** (> `pingTimeout=2000 ms` → sichtbarer Timeout beim ersten Aufruf). Gegenprobe P4-only: 9,4 s Block. Warm: kein Block.
-- **Lösung:** `webui/logic.py::warm_mcp_connectors()` startet beim App-Start (aus `app_bootstrap()`) einen **Daemon-Thread**, der die MCP-Sessions für hr-benchmark (`get_score_category`, score 80), salary-data (`calculate_salary_tolerance`, midpoint 50000) und prescreen-config (`get_optimal_duration`) per `_mcp_connector_call` **vorwärmt** (öffnet die persistenten Sessions + füllt die Caches). Danach ist der erste Render warm.
+- **Lösung:** `webui/logic.py` (Codemarke `def warm_mcp_connectors`, gemessen 10.10.2026) startet beim App-Start (aus `app_bootstrap()`) einen **Daemon-Thread**, der die MCP-Sessions für hr-benchmark (`get_score_category`, score 80), salary-data (`calculate_salary_tolerance`, midpoint 50000) und prescreen-config (`get_optimal_duration`) per `_mcp_connector_call` **vorwärmt** (öffnet die persistenten Sessions + füllt die Caches). Danach ist der erste Render warm.
 - **Rollback:** Env `KMHR_MCP_WARMUP=0` deaktiviert das Vorwärmen (Design-Entscheidung).
 - **Quelle (S1):** Muster „Dynamic Server Management"/„pre-warm" = **Design-Entscheidung** (kein externer Zwang); die Latenz-Begründung = eigene Messung 08.10.2026.
 - **Verifikation:** `tests/test_mcp_warmup.py` + Lag-Monitor (kalt kein Block >1 s).

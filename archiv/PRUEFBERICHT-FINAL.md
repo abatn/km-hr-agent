@@ -123,13 +123,13 @@
 | Priorität | Datei | Korrektur | Begründung |
 |-----------|-------|-----------|------------|
 | P1 | `AGENTS.md`, `instructions.md`, `knowledge.md` | "12 Skills" → "17 Skills" | Root-Dokumentation veraltet |
-| P2 | `knowledge/mcp-connector-config.md` | "7 aktive MCP-Server" → "11 aktive MCP-Server" | Doku veraltet |
-| P3 | `knowledge/employer-portal-fields.md` | jobs "20 Felder" → "18 Felder" | branche_erfahrung + startdatum nicht in DB |
+| P2 | `knowledge/system/mcp-connector-config.md` | "7 aktive MCP-Server" → "11 aktive MCP-Server" | Doku veraltet |
+| P3 | `knowledge/portal/employer-portal-fields.md` | jobs "20 Felder" → "18 Felder" | branche_erfahrung + startdatum nicht in DB |
 
 ### WICHTIG (bei Gelegenheit)
 | Priorität | Datei | Korrektur | Begründung |
 |-----------|-------|-----------|------------|
-| P4 | `knowledge/mcp-connector-config.md` | Google Meet-Eintrag entfernt/klarisiert | ✅ ERLEDIGT |
+| P4 | `knowledge/system/mcp-connector-config.md` | Google Meet-Eintrag entfernt/klarisiert | ✅ ERLEDIGT |
 | P5 | `AGENTS.md` | "13 DB-Tabellen" → "14 DB-Tabellen" | candidate_status_history fehlte |
 
 ### NACHZUVERLASSEN

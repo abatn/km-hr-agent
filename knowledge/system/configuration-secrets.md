@@ -12,19 +12,19 @@ Diese Datei ist die MD-Wahrheit für die Laufzeit-Konfiguration des NiceGUI-Fron
 
 | Variable | Zweck | Default wenn nicht gesetzt | Fundstelle |
 |---|---|---|---|
-| `KMHR_STORAGE_SECRET` | Signiert die NiceGUI-Session-/Browser-Storage-Cookies (`storage_secret=`) | `km-hr-agent-phase0-secret` (**Entwicklung**, unsicher) | `webui/main.py:31` |
-| `KMHR_ADMIN_SEED_EMAIL` | E-Mail des Admin-Seed-Kontos | `admin@km-hr-agent.local` | `webui/pages/login.py:319` |
-| `KMHR_ADMIN_SEED_PASSWORD` | Passwort des Admin-Seed-Kontos — seit R3-4 **Pflicht** (ohne `KMHR_DEV`) | `admin-agent-2026` (**Entwicklung**, unsicher, nur noch unter `KMHR_DEV`) | `webui/pages/login.py:322` |
-| `KMHR_DEV` | Schalter: hebt das Fail-closed-Gate für beide Pflicht-Variablen auf | nicht gesetzt → **Gate aktiv** | `webui/main.py:51` |
+| `KMHR_STORAGE_SECRET` | Signiert die NiceGUI-Session-/Browser-Storage-Cookies (`storage_secret=`) | `km-hr-agent-phase0-secret` (**Entwicklung**, unsicher) | `webui/main.py` (gemessen 10.10.2026) |
+| `KMHR_ADMIN_SEED_EMAIL` | E-Mail des Admin-Seed-Kontos | `admin@km-hr-agent.local` | `webui/pages/login.py` (gemessen 10.10.2026) |
+| `KMHR_ADMIN_SEED_PASSWORD` | Passwort des Admin-Seed-Kontos — seit R3-4 **Pflicht** (ohne `KMHR_DEV`) | `admin-agent-2026` (**Entwicklung**, unsicher, nur noch unter `KMHR_DEV`) | `webui/pages/login.py` (gemessen 10.10.2026) |
+| `KMHR_DEV` | Schalter: hebt das Fail-closed-Gate für beide Pflicht-Variablen auf | nicht gesetzt → **Gate aktiv** | `webui/main.py` (Codemarke `KMHR_DEV`, gemessen 10.10.2026) |
 
 **R3-4 (30.09.2026): fail closed.** Ohne `KMHR_DEV` startet die App nur, wenn
 `KMHR_STORAGE_SECRET` **und** `KMHR_ADMIN_SEED_PASSWORD` gesetzt und nicht-leer sind.
 Fehlt eine Variable, schreibt der Start eine **ABBRUCH-Meldung nach stderr** (mit den
 fehlenden Namen) und beendet sich mit `SystemExit(1)` — und zwar **vor**
-`logic.app_bootstrap()` (`webui/main.py:68`, erster DB-Zugriff) und **vor** `ui.run()`
-(`webui/main.py:133`). Details: Abschnitt (e).
+`logic.app_bootstrap()` (`webui/main.py` (gemessen 10.10.2026), erster DB-Zugriff) und **vor** `ui.run()`
+(`webui/main.py` (gemessen 10.10.2026)). Details: Abschnitt (e).
 
-Die **P1-10-Default-Warnung bleibt unverändert** (`webui/main.py:34-40`). Sie steht
+Die **P1-10-Default-Warnung bleibt unverändert** (`webui/main.py` (gemessen 10.10.2026)). Sie steht
 textlich VOR dem Gate und wird deshalb auch in einem Abbruchlauf noch ausgegeben;
 inhaltlich gilt sie nur noch für `KMHR_DEV`-Läufe, denn ohne `KMHR_DEV` wird nie mit
 dem Default gestartet.
@@ -95,7 +95,7 @@ KMHR_PORT=8098 KMHR_DB_PATH=/tmp/... KMHR_RUNNER_AUTOSTART=0 \
 
 **Quelle: Nutzer-GO R3-4 (30.09.2026) „A: Fail-closed, KMHR_DEV=1-Override“.**
 
-Gate in `webui/main.py:51-65` (Kurzform):
+Gate in `webui/main.py` (gemessen 10.10.2026) (Kurzform):
 
 ```python
 KMHR_DEV = os.environ.get("KMHR_DEV", "").strip().lower() in ("1", "true", "yes")
@@ -113,8 +113,8 @@ if _missing and not KMHR_DEV:
 | (c) | beide Secrets gesetzt (kein `KMHR_DEV` nötig) | Start erlaubt, **keine** Default-Warnung |
 
 Verhaltensregeln:
-1. **Reihenfolge:** Gate nach dem STORAGE_SECRET-Block (`webui/main.py:31-40`), vor
-   `logic.app_bootstrap()` (`:68`) und vor `ui.run()` (`:133`) — es feuert damit bei
+1. **Reihenfolge:** Gate nach dem STORAGE_SECRET-Block (`webui/main.py` (Codemarke `STORAGE_SECRET`, gemessen 10.10.2026)), vor
+   `logic.app_bootstrap()`  und vor `ui.run()`  — es feuert damit bei
    jedem Ausführen/Import der Datei. Reihenfolge-Nachweis im Test:
    `test_gate_liegt_vor_app_bootstrap_und_ui_run`.
 2. **Leer-String zählt als fehlend** (`.strip()`); `KMHR_DEV` akzeptiert

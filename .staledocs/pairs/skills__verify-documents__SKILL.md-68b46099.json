@@ -15,19 +15,20 @@
       "pdf-reader.read_pdf_text",
       "profil-{kandidat}.md",
       "read_pdf_text",
+      "scripts/agent-runner.py",
       "testdaten/",
       "use_with_caution",
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-10T11:05:19+00:00",
+    "at": "2026-10-10T13:29:33+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
       "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "3395f1a357786c69e66e9f75afd7156e91a5e554",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/legal/document-types.md gegen den Pair-Code geprueft und nachgewiesen (29 von 29 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
+    "note": "skills/verify-documents/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

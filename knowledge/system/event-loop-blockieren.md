@@ -49,7 +49,7 @@ angepasst auf `main`.
 ---
 
 ## Phase 4 — Offizieller MCP-Client (P4) — umgesetzt 08.10.2026
-- **Problem:** `webui/logic.py::_mcp_connector_call` startete je Aufruf einen Subprozess (handgeschriebene Popen-Pipe) OHNE Aufruf-Timeout → ein hängender Server blockierte den Aufrufer unbegrenzt (im NiceGUI-Render: Event-Loop-Block → Timeout/„Connection lost").
+- **Problem:** `webui/logic.py` (Codemarke `def _mcp_connector_call`, gemessen 10.10.2026) startete je Aufruf einen Subprozess (handgeschriebene Popen-Pipe) OHNE Aufruf-Timeout → ein hängender Server blockierte den Aufrufer unbegrenzt (im NiceGUI-Render: Event-Loop-Block → Timeout/„Connection lost").
 - **Lösung:** offizieller `mcp.Client` (stdio): `_mcp_call_async` nutzt `stdio_client` + `ClientSession(read_timeout_seconds=60)`; `_run_coro_blocking` führt die Coroutine in einem **eigenen Thread** mit eigenem Event-Loop aus (weil der Aufruf aus dem NiceGUI-Loop-Thread kommt → `asyncio.run` dort unzulässig). `env=dict(os.environ)` ist Pflicht (sonst fehlen den Servern NVIDIA_API_KEY/KMHR_LLM_MODEL).
 - **Signatur/Aufrufer unverändert** (`_mcp_connector_call(server_py, tool, args, python_path=None) -> dict`); Fehlerpfad → `{}`.
 - **DRY-RUN-Guard:** `KMHR_MCP_DRY_RUN` → Log auf stderr + `{}` (kein Subprozess).

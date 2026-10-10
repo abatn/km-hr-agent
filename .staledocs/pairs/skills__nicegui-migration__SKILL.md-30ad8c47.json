@@ -35,6 +35,8 @@
       "end_mentoring()",
       "ergebnisse/agent-details-doku.md",
       "ergebnisse/entscheidungen.md",
+      "ergebnisse/lab-2-design-entscheidungen.md",
+      "ergebnisse/matching-connector-recherche.md",
       "ergebnisse/nicegui-phase-2-rest-portierung.md",
       "ergebnisse/paritaets-matrix-final-2026-09-23.md",
       "ergebnisse/runde4-abschluss.md",
@@ -66,6 +68,7 @@
       "kategorie='Schwach'",
       "knowledge/lifecycle/feedback-schema.md",
       "knowledge/portal/candidate-portal-fields.md",
+      "knowledge/system/access-control.md",
       "knowledge/system/agent-automation.md",
       "knowledge/ui-design-system.md",
       "logic.gehalt_check()",
@@ -74,7 +77,6 @@
       "navigate_to",
       "navigate_to(\"admin\",\"kandidaten\")",
       "navigate_to()",
-      "onboarding-freigabe-bewerbung-{app_id}.md",
       "onboarding-kandidat-*",
       "onboarding-{stem}-{startdatum}.md",
       "pre-screen-{stem}-{date}.md",
@@ -89,6 +91,7 @@
       "section_header",
       "send_rejection",
       "skeleton_loader()",
+      "skills/employer-portal/SKILL.md",
       "skills/nicegui-migration/SKILL.md",
       "soft_skills",
       "st.download_button",
@@ -144,11 +147,13 @@
       "webui/",
       "webui/components.py",
       "webui/logic.py",
+      "webui/main.py",
       "webui/pages/admin.py",
       "webui/pages/candidate.py",
-      "webui/pages/employer.py"
+      "webui/pages/employer.py",
+      "webui/theme.py"
     ],
-    "at": "2026-10-10T11:05:17+00:00",
+    "at": "2026-10-10T13:29:32+00:00",
     "code_blobs": {
       "webui/main.py": "83e65652a904f8d7d5c34095a812002fd9a85428",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -160,9 +165,9 @@
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "6e47212ad3136b7c1829365fd5996dd0b817743d",
-    "note": "C2-Verifikation 10.10.2026: Claim app.py gegen den Pair-Code geprueft und nachgewiesen (171 von 171 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "878afb292a044e3e1d3ed4fe6d80b69b9f5c6dba",
+    "note": "skills/nicegui-migration/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

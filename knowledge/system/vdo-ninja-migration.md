@@ -20,21 +20,21 @@ machine (or a VM) … Only one recording at a time is supported on a single jibr
 
 | Ort | ALT | NEU |
 |---|---|---|
-| `scripts/agent-runner.py:522` (Director-URL; Gast-URL `&record=off` ab `:525`, Einladung an den Kandidaten) | `jitsi_url = f"https://meet.jit.si/pre-screening-{code}"` | `vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"` + `vdo_ninja_gast_url = f"https://vdo.ninja/?room=prescreening{code}&record=off"` (letzteres seit 28.09.2026, §2.2; **Raumname ohne Bindestrich seit 04.10.2026, §2.5**) |
-| `webui/components.py:608` (Pre-Screen-Werkzeug) | `meet_url = f"https://meet.jit.si/pre-screening-{room_code}"` | `meet_url = f"https://vdo.ninja/?director=prescreening{room_code}"` (Raumname ohne Bindestrich seit 04.10.2026, §2.5) |
-| `webui/pages/candidate.py:707` (Selbstpräsentation) | `meet_url = f"https://meet.jit.si/{room_name}"` | `meet_url = f"https://vdo.ninja/?director={room_name}"` (inzwischen `?push=` — §2.3) |
-| `mcp-meeting-server.py:41` (LEGACY-Tool `create_meeting_link`, 0 py-Aufrufer, per MCP-stdio erreichbar; Details §4 Punkt e) | `https://meet.jit.si/pre-screening-{code}` | `https://vdo.ninja/?director=prescreening{code}` (Raumname ohne Bindestrich seit 04.10.2026, §2.5) |
+| `scripts/agent-runner.py` (gemessen 10.10.2026) (Director-URL; Gast-URL `&record=off`, Einladung an den Kandidaten) | `jitsi_url = f"https://meet.jit.si/pre-screening-{code}"` | `vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"` + `vdo_ninja_gast_url = f"https://vdo.ninja/?room=prescreening{code}&record=off"` (letzteres seit 28.09.2026, §2.2; **Raumname ohne Bindestrich seit 04.10.2026, §2.5**) |
+| `webui/components.py` (gemessen 10.10.2026) (Pre-Screen-Werkzeug) | `meet_url = f"https://meet.jit.si/pre-screening-{room_code}"` | `meet_url = f"https://vdo.ninja/?director=prescreening{room_code}"` (Raumname ohne Bindestrich seit 04.10.2026, §2.5) |
+| `webui/pages/candidate.py` (gemessen 10.10.2026) (Selbstpräsentation) | `meet_url = f"https://meet.jit.si/{room_name}"` | `meet_url = f"https://vdo.ninja/?director={room_name}"` (inzwischen `?push=` — §2.3) |
+| `mcp-meeting-server.py` (Codemarke `def create_meeting_link`, gemessen 10.10.2026) (LEGACY-Tool `create_meeting_link`, 0 py-Aufrufer, per MCP-stdio erreichbar; Details §4 Punkt e) | `https://meet.jit.si/pre-screening-{code}` | `https://vdo.ninja/?director=prescreening{code}` (Raumname ohne Bindestrich seit 04.10.2026, §2.5) |
 
 **Warum trotzdem „keine Code-Änderung nötig" im Auftragstext nicht zutrifft:** Der Auftrag forderte
 beides — „URL ersetzen" und „ohne Änderung am Code". Es ist eine **Code-Änderung** an genau diesen
 drei Zeilen. Die Projektarchitektur, Abhängigkeiten und Abläufe bleiben unangetastet.
 
 ### 2.1 JSON-Feldname: seit 27.09.2026 (§I-F) `vdo_ninja_url` statt `jitsi_url`
-Der Runner gibt das Ergebnis als `{"vdo_ninja_url": ..., "vdo_ninja_gast_url": ..., "recording": false, "ics_path_hr": ...}` zurück (`agent-runner.py:594`, Stand 28.09.2026).
-Gelesen wird der Schlüssel in `webui/pages/candidate.py:562` und `webui/pages/employer.py:898`.
+Der Runner gibt das Ergebnis als `{"vdo_ninja_url": ..., "vdo_ninja_gast_url": ..., "recording": false, "ics_path_hr": ...}` zurück (`scripts/agent-runner.py` (gemessen 10.10.2026), Stand 28.09.2026).
+Gelesen wird der Schlüssel in `webui/pages/candidate.py` (gemessen 10.10.2026) und `webui/pages/employer.py` (gemessen 10.10.2026).
 
 → **Umbenannt** in einem eigenen Schritt (§I-F, nach dem Nutzer-GO für Variante A). Grund: der alte
-Name beschrieb einen Provider, den es nicht mehr gibt; die Feldsumme in `agent-automation.md:68/:78`
+Name beschrieb einen Provider, den es nicht mehr gibt; die Feldsumme in `knowledge/system/agent-automation.md`
 und die Portal-Specs würden sonst weiter „Jitsi" behaupten.
 
 **Abwärtskompatibilität (bewusst):** Beide Leser prüfen `vdo_ninja_url` **zuerst** und fallen auf
@@ -50,7 +50,7 @@ zeigt VDO.Ninja.
 - **Kandidat (Gast):** `https://vdo.ninja/?room=prescreening{code}&record=off` — Variable `vdo_ninja_gast_url` in `scripts/agent-runner.py` (`create_invitation`). Quellen: docs.vdo.ninja/getting-started/rooms („Guests have their own link to join a room"; Passwort optional) + docs.vdo.ninja/advanced-settings/recording-parameters/and-record (`off` deaktiviert die Aufnahme, auch den Remote-Trigger). **Raumname ohne Bindestrich seit 04.10.2026 (§2.5).**
 - **HR (Director):** `https://vdo.ninja/?director=prescreening{code}` (`vdo_ninja_url`); Rollentrennung (`recording-consent.md`: „Der Arbeitgeber ist der Director"). **Raumname ohne Bindestrich seit 04.10.2026 (§2.5).**
 - **Leser:** Einladungs-Mail + Kandidaten-ICS (`ics_path`) + Kandidaten-Karte (`candidate.py`) = Gast-Link; HR-Karte (`employer.py`) + HR-ICS (`ics_path_hr`) = Director-Link; Einladungs-Bericht zeigt beide. Alt-Einladungen ohne die neuen Keys fallen per Fallback auf `vdo_ninja_url` zurück.
-- **Überholt durch §2.3/§2.4 (Ist 09.10.2026):** `candidate.py` (Selbstpräsentation) — der frühere `?director=`-Stand gilt **nicht mehr**; Ist-Code `webui/pages/candidate.py:1117`/`:1512` = `https://vdo.ninja/?push=<id>&record=6000` (Solo-Sender + Aufnahme-Knopf, §2.3/§2.4). **Bewusst unverändert:** nur `mcp-meeting-server.py:41` (LEGACY-Tool, 0 py-Aufrufer).
+- **Überholt durch §2.3/§2.4 (Ist 09.10.2026):** `candidate.py` (Selbstpräsentation) — der frühere `?director=`-Stand gilt **nicht mehr**; Ist-Code `webui/pages/candidate.py` (gemessen 10.10.2026) = `https://vdo.ninja/?push=<id>&record=6000` (Solo-Sender + Aufnahme-Knopf, §2.3/§2.4). **Bewusst unverändert:** nur `mcp-meeting-server.py` (Codemarke `mcp`, gemessen 10.10.2026) (LEGACY-Tool, 0 py-Aufrufer).
 
 ### 2.3 ⚠️ KORREKTUR (03.10.2026): Selbstpräsentation ist ein **Solo-Sender** (`&push`), nicht `&director`
 **Befund (Nutzerauftrag „VDO prüfen", Analyse + offizielle Doku):** Die Selbstpräsentation des
@@ -106,7 +106,7 @@ die Verbindung funktionierte — die Warnung und der abweichende Raumname entfal
 
 - **Geändert wurde ausschließlich der Raumname** (ohne Bindestrich); `code`/`room_code` bleibt
   8 Zeichen Kleinbuchstaben+Ziffern (`string.ascii_lowercase + string.digits`, `random.choices`).
-- **Bewusst unverändert:** `mcp-meeting-server.py:41` (LEGACY, 0 py-Aufrufer) und die
+- **Bewusst unverändert:** `mcp-meeting-server.py` (Codemarke `mcp`, gemessen 10.10.2026) (LEGACY, 0 py-Aufrufer) und die
   Kandidaten-`?push=`-IDs (`self-presentation-…`, `vorstellung-…`) — außerhalb des Auftrags.
 - **Keine Migration bestehender Links/ICS** (wie §2.3): Alt-Einladungen behalten ihren Raumnamen.
 - **Verifikation (04.10.2026, isolierte Browser-Prüfung):** Director- und Gast-Link ohne
@@ -158,16 +158,16 @@ Voraussetzung, nicht Kür.
 **„experimental"** bezeichnet. Auch das spricht gegen eine automatische Aktivierung.
 
 ## 4. Was unverändert bleibt
-- **`meeting-tools`: Screening-Fragen + ICS bleiben unverändert** (`agent-runner.py:568`/`:573`; HR-ICS-Varianz `:582` seit 28.09.2026).
+- **`meeting-tools`: Screening-Fragen + ICS bleiben unverändert** (`scripts/agent-runner.py` (gemessen 10.10.2026); HR-ICS-Varianz seit 28.09.2026).
   **Ausnahme Punkt e) (27.09.2026, Runde c–g):** das LEGACY-Tool `create_meeting_link`
   (**0 Aufrufer**, gemessen `grep -rn create_meeting_link --include=*.py`) erzeugt seit
   27.09.2026 `https://vdo.ninja/?director=pre-screening-{code}` statt
-  `https://meet.jit.si/pre-screening-{code}` – Vorbild = Projektstandard `agent-runner.py:522`.
+  `https://meet.jit.si/pre-screening-{code}` – Vorbild = Projektstandard `scripts/agent-runner.py` (gemessen 10.10.2026).
   **Warum Umbau statt Entfernen** (Auftrag lautete „entfernen oder umbauen“): (1) „VDO.Ninja
-  only, NO Jitsi“ (AGENTS.md:84) gilt auch für angebotene, ungenutzte Tools – der Server ist
-  `enabled` in `opencode.json:24-27` und kann von Agent-Sessions jederzeit aufgerufen werden;
+  only, NO Jitsi“ (`AGENTS.md`) gilt auch für angebotene, ungenutzte Tools – der Server ist
+  `enabled` in `opencode.json` (gemessen 10.10.2026) und kann von Agent-Sessions jederzeit aufgerufen werden;
   (2) Löschung hätte den MD-Folat in mindestens 5 Dateien ausgelöst (Census-Zeilen in
-  `mcp-connector-config.md:257`, `instructions.md:24`, `skills/README.md:99`, `knowledge.md:196`,
+  `knowledge/system/mcp-connector-config.md`, `instructions.md`, `skills/README.md`, `knowledge.md`,
   diese Spec) bei gleichem Konsistenznutzen; (3) Präzedenz der §I-F-Migration: alle URL-Stellen
   wurden **umgebaut, nicht gelöscht** (entscheidungen.md, Stand 27.09.2026 00:32).
 - Die ICS-Datei enthält nur die `meet_url` — sie zeigt jetzt also auf VDO.Ninja.
@@ -177,8 +177,8 @@ Voraussetzung, nicht Kür.
 
 ## 5. Erledigt (§I-F, 27.09.2026)
 1. ✅ **`jitsi-meeting` aus `opencode.json` entfernt** (11 Tools, 0 Aufrufe). `mcp` = 14 (13 local +
-   1 remote). Zählwerk in `AGENTS.md:70`, `mvp.md:70`, `mcp-connector-config.md:68/:259`,
-   `knowledge.md:163`, `instructions.md:25`, `c2-service.md:6` nachgezogen.
+   1 remote). Zählwerk in `AGENTS.md`, `knowledge/system/mvp.md`, `knowledge/system/mcp-connector-config.md`,
+   `knowledge.md`, `instructions.md`, `knowledge/system/c2-service.md` nachgezogen.
 2. ✅ **Feldname `jitsi_url` → `vdo_ninja_url`** (siehe 2.1), mit Legacy-Fallback in beiden Lesern.
 3. ✅ **Doc-Stellen** in `access-control.md`, `README.md`, `knowledge.md`, `agent-automation.md`,
    `pre-screen/SKILL.md`, `skills/README.md`, `instructions.md`, `mvp.md`, `c2-service.md`, `AGENTS.md`

@@ -9,7 +9,30 @@
         "origin",
         "release"
       ],
-      "ignore": [],
+      "ignore": [
+        "*-kandidat-{id}-*.md",
+        "babel.cfg",
+        "contract-preflight-*.md",
+        "git@github.com:abatn/km-hr-agent.git",
+        "importlib.metadata",
+        "kontakt.email",
+        "kontakt.telefon",
+        "notify_user-*.md",
+        "onboarding-freigabe-*.md",
+        "scripts/migrate_sqlite_to_supabase.py",
+        "standort.aktuell",
+        "supabase/migrations/0001_init_schema.sql",
+        "tests/e2e_c2_connector.py",
+        "tests/e2e_matching_filter.py",
+        "ui.animate",
+        "ui.echart",
+        "ui.footer",
+        "verify_documents-kandidat-{id}-*.md",
+        "webui/locales/*/messages.mo",
+        "webui/locales/*/messages.po",
+        "webui/locales/*/messages.{po,mo}",
+        "webui/tool_catalog.py"
+      ],
       "include_fenced": false,
       "min_length": 3
     },
@@ -25,7 +48,6 @@
       "connectors/README.md",
       "connectors/hr-api-connectors.md",
       "instructions.md",
-      "km-hr-agent-connector-fix.md",
       "knowledge.md",
       "knowledge/error-statistics.md",
       "knowledge/language-tests.md",
@@ -85,7 +107,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-10T11:05:19+00:00",
+  "at": "2026-10-10T13:44:06+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

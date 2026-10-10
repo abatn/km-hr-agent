@@ -17,6 +17,8 @@ description: Versendet Benachrichtigungen bei Top-Matches per E-Mail oder Slack
 | Score 80–89 | **SOFT** benachrichtigen |
 | Score < 80 | Keine Benachrichtigung |
 
+Schwellen 90/80 = **Design-Entscheidung** (keine externe Quelle; verwandt mit den Score-Schwellen aus `knowledge/lifecycle/matching-criteria.md`).
+
 ### 2. Benachrichtigungstyp festlegen
 
 #### 📧 E-Mail-Benachrichtigung

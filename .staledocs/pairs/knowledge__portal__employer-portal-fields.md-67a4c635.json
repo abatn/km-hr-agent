@@ -3,7 +3,9 @@
     "anchors": [
       "Begr\u00fcndung:",
       "NICHT_COMPLIANT",
+      "PAGE_MAP",
       "_compliance_rows",
+      "app.py",
       "application-status.md",
       "application_id",
       "berufserfahrung_jahre",
@@ -34,6 +36,7 @@
       "onboarding_release",
       "refresh_cands()",
       "save_feedback",
+      "scripts/agent-runner.py",
       "send_rejection",
       "soft_skills",
       "tests/conftest.py",
@@ -43,15 +46,17 @@
       "tests/test_r35_status_notify.py",
       "ui.expansion(\"Begr\u00fcndung\")",
       "ui.notify",
+      "webui/pages/admin.py",
+      "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T11:05:06+00:00",
+    "at": "2026-10-10T13:29:26+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
-    "doc_blob": "3631a8ae0f675961c7679d2d809e10b6cce9ad7b",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/lifecycle/application-status.md gegen den Pair-Code geprueft und nachgewiesen (54 von 54 Claims ok)"
+    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "doc_blob": "781da4508059c707878cc8a19bb4ebde7cee33ef",
+    "note": "knowledge/portal/employer-portal-fields.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1
