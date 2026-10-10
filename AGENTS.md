@@ -40,6 +40,20 @@ Arbeite einen Skill nach dem anderen ab. Nicht alles auf einmal.
 - Keine Inkonsistenz zwischen MD und Code.
 - Keine Behauptung ohne Beweis.
 
+## Schritt 6: Prüfen (Pflicht bei JEDER Änderung)
+Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-Prüfkette** belegt — jeder Punkt mit `rc=0`:
+
+| # | Prüfung | Befehl | Soll |
+|---|---|---|---|
+| 1 | Doku↔Code | `./.venv-streamlit/bin/staledocs check --gate strict` | **rc=0** (0 rot) |
+| 2 | Doku-Beispiele/Links | `npx -y docrot-cli --fail-on=error` | **A+, rc=0** |
+| 3 | Tests | `./.venv-streamlit/bin/python3 -m pytest -q` | grün (0 neue Fehler) |
+| 4 | Syntax/Import | `./.venv-streamlit/bin/python3 -m compileall -q webui/ scripts/ connectors/` | rc=0 |
+| 5 | Lint | `./.venv-streamlit/bin/python3 -m pyflakes webui/ scripts/ connectors/ tests/` | **0 blockierende** (undefined name/Syntax) |
+| 6 | Transparenz | `ergebnisse/entscheidungen.md` (Schritt 4) + `git status` (nur gewollte Dateien) | belegt |
+
+**Ein roter oder fehlender Pflicht-Punkt ⇒ KEIN Commit/Push.** Bei Doku-Änderungen zusätzlich die staledocs-Baseline aktualisieren (`ack`, s. Gotchas). Bedeutung/CI-Parität der Gates: Abschnitt „## CI-Gates (verbindlich)".
+
 ---
 
 ## Setup & Betrieb
@@ -71,6 +85,7 @@ Arbeite einen Skill nach dem anderen ab. Nicht alles auf einmal.
 - **E2E-Sleep-Falle (WSL):** `goto` auf `/employer/stellen` hängt den Playwright-Driver — Einladen über den Match-Seiten-Dialog (`knowledge/system/i18n-runner-chain.md` §5).
 - **`.bak`-Retention-Bugfix (01.10.2026):** `_bak_timestamp` liest nur den Stempel **nach** `bak` — vorher matchte das Original-Datum und löschte frische Backups (wirklich eingetreten). Nachweis `tests/test_bak_retention.py`.
 - **Zeilenangaben-Drift:** alle 78 Code-Refs in `ergebnisse/reports/*.md` waren gedriftet (53/53 getroffen anders als beschrieben) — Verweis-Regel siehe Conventions.
+- **ASGI-Socket.IO-Guard (10.10.2026):** engineio wirft bei Client-Abbruch/Probe vor dem 1. Event `KeyError: 'REQUEST_METHOD'` (`engineio/async_server.py:238` greift auf `{}` zu, weil `translate_request` bei Erst-Event ≠ `http.request`/`websocket.connect` leer zurückgibt) → `webui/asgi_guard.py::SocketioAbortGuard` (registriert in `webui/main.py` **vor** `ui.run`) antwortet **400 statt 500**; Spec `knowledge/system/asgi-guard.md`.
 
 ## Conventions (verbindlich)
 

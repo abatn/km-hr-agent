@@ -128,6 +128,13 @@ async def _handle_404(request, exc):
     return RedirectResponse("/404")
 
 
+# ─── ASGI-Guard: Socket.IO-Client-Abbruch → 400 statt 500 (10.10.2026) ─
+# Spec: knowledge/system/asgi-guard.md (engineio-KeyError 'REQUEST_METHOD').
+from webui.asgi_guard import SocketioAbortGuard  # noqa: E402
+
+app.add_middleware(SocketioAbortGuard)
+
+
 # ─── Run ──────────────────────────────────────────────────────────────
 # Port per Env KMHR_PORT übersteuerbar (E2E-Isolation 27.09.2026);
 # ohne Env weiterhin 8080. DB-Seite: webui/db.py (KMHR_DB_PATH).

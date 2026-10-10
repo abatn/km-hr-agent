@@ -153,9 +153,9 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-10T13:29:32+00:00",
+    "at": "2026-10-10T14:29:44+00:00",
     "code_blobs": {
-      "webui/main.py": "83e65652a904f8d7d5c34095a812002fd9a85428",
+      "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "0f16dc331f91552b2b88cb811962ac11aa298627",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
@@ -165,9 +165,9 @@
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
     "doc_blob": "878afb292a044e3e1d3ed4fe6d80b69b9f5c6dba",
-    "note": "skills/nicegui-migration/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": "Re-Ack 10.10.2026: ASGI-Guard (SocketIOAbortGuard in webui/asgi_guard.py + main.py-Registrierung) + neue Spec knowledge/system/asgi-guard.md"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

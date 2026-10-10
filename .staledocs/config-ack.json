@@ -68,6 +68,7 @@
       "knowledge/portal/matching-filter.md",
       "knowledge/system/access-control.md",
       "knowledge/system/agent-automation.md",
+      "knowledge/system/asgi-guard.md",
       "knowledge/system/configuration-secrets.md",
       "knowledge/system/dependency-pinning.md",
       "knowledge/system/e2e-ci-seed.md",
@@ -107,7 +108,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-10T13:44:06+00:00",
+  "at": "2026-10-10T14:38:22+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

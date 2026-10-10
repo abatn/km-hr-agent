@@ -57,6 +57,8 @@ pairs:
     code: ["scripts/agent-runner.py", "scripts/ci/mcp_handshake.py"]
   - doc: knowledge/system/access-control.md
     code: ["webui/main.py", "webui/pages/**"]
+  - doc: knowledge/system/asgi-guard.md
+    code: ["webui/asgi_guard.py"]
   - doc: knowledge/system/configuration-secrets.md
     code: ["scripts/ci/checks.py", "tests/test_secrets_from_env.py"]
   - doc: knowledge/system/dependency-pinning.md

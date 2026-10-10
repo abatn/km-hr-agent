@@ -35,6 +35,7 @@
       "ergebnisse/entscheidungen.md",
       "ergebnisse/reports/*.md",
       "ergebnisse/zeilenangaben-drift-2026-10-01.md",
+      "http.request",
       "knowledge/**",
       "knowledge/error-statistics.md",
       "knowledge/language-courses.md",
@@ -58,6 +59,7 @@
       "knowledge/portal/matching-filter.md",
       "knowledge/system/access-control.md",
       "knowledge/system/agent-automation.md",
+      "knowledge/system/asgi-guard.md",
       "knowledge/system/configuration-secrets.md",
       "knowledge/system/deploy-pipeline.md",
       "knowledge/system/doku-authority.md",
@@ -84,9 +86,14 @@
       "tests/test_bak_retention.py",
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py",
-      "webui/logic.py"
+      "translate_request",
+      "ui.run",
+      "websocket.connect",
+      "webui/asgi_guard.py::SocketioAbortGuard",
+      "webui/logic.py",
+      "webui/main.py"
     ],
-    "at": "2026-10-10T13:29:23+00:00",
+    "at": "2026-10-10T14:38:22+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -170,6 +177,7 @@
       "tests/run_nachweis.sh": "3cdcc5114047accc5601901af3ffe2fc049b6c3f",
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_application_id_match.py": "7eac7d1ae0e3f3439093a60194b1275713ea4870",
+      "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
       "tests/test_bak_retention.py": "6cd8f772f00a33d4cfc187ed73eb14360be110a3",
       "tests/test_compliance_scope.py": "de899a6a1409e827650142fa33cdcde793d0b01b",
       "tests/test_compliance_writer.py": "8ccfa66b35b9e889451425e4583e0166e5023b47",
@@ -214,6 +222,7 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc",
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
+      "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
@@ -227,7 +236,7 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "1337eff7271d69b4a8e4d5e069e654fcd62c3fbc",
       "webui/locales/fr/LC_MESSAGES/messages.po": "1dbce4cba9a34810cf4fffc32f9f80e9bb49cf94",
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/main.py": "83e65652a904f8d7d5c34095a812002fd9a85428",
+      "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "0f16dc331f91552b2b88cb811962ac11aa298627",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
@@ -241,9 +250,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
-    "doc_blob": "98de84f1e04859a9fba58980d977199d04e79fa3",
-    "note": "AGENTS.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
+    "doc_blob": "14238c22a354bf103fb3bb1a5d82f17b1f25b796",
+    "note": "AGENTS.md: Pflicht-Schritt 6 (Pr\u00fcf-Kette staledocs/docrot/pytest/compileall/pyflakes) erg\u00e4nzt"
   },
   "doc": "AGENTS.md",
   "schema": 1

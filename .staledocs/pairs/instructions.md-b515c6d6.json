@@ -50,7 +50,7 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-10T12:53:38+00:00",
+    "at": "2026-10-10T14:29:41+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
@@ -67,6 +67,7 @@
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
+      "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
@@ -80,7 +81,7 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "1337eff7271d69b4a8e4d5e069e654fcd62c3fbc",
       "webui/locales/fr/LC_MESSAGES/messages.po": "1dbce4cba9a34810cf4fffc32f9f80e9bb49cf94",
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/main.py": "83e65652a904f8d7d5c34095a812002fd9a85428",
+      "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "0f16dc331f91552b2b88cb811962ac11aa298627",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
@@ -94,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "instructions.md = Workflow-Handbuch + Connector-Census (S3); Rollen/Matching/Skills-Duplikate durch Verweise auf access-control.md / matching-criteria.md / skills/README.md ersetzt"
+    "note": "Re-Ack 10.10.2026: ASGI-Guard (SocketIOAbortGuard in webui/asgi_guard.py + main.py-Registrierung) + neue Spec knowledge/system/asgi-guard.md"
   },
   "doc": "instructions.md",
   "schema": 1

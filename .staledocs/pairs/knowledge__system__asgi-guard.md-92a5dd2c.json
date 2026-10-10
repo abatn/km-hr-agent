@@ -1,0 +1,30 @@
+{
+  "ack": {
+    "anchors": [
+      "BaseExceptionGroup",
+      "BaseHTTPMiddleware",
+      "KeyError('REQUEST_METHOD')",
+      "REQUEST_METHOD",
+      "async_server.py:238",
+      "environ['REQUEST_METHOD']",
+      "ergebnisse/asgi-trace-2026-10-01.md",
+      "ergebnisse/entscheidungen.md",
+      "http.request",
+      "scope[\"type\"]==\"http\"",
+      "tests/test_asgi_guard.py",
+      "translate_request",
+      "websocket.connect",
+      "webui/asgi_guard.py::SocketioAbortGuard",
+      "webui/main.py"
+    ],
+    "at": "2026-10-10T14:29:46+00:00",
+    "code_blobs": {
+      "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac"
+    },
+    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
+    "doc_blob": "3966b6fb918be26f75767f818444e97b5a6a85e2",
+    "note": "Re-Ack 10.10.2026: ASGI-Guard (SocketIOAbortGuard in webui/asgi_guard.py + main.py-Registrierung) + neue Spec knowledge/system/asgi-guard.md"
+  },
+  "doc": "knowledge/system/asgi-guard.md",
+  "schema": 1
+}
