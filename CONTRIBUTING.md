@@ -106,7 +106,7 @@ VDO: Raumname alphanumerisch (prescreening{code}) statt pre-screening-{code}
 ## 7. Sicherheit
 
 - **Niemals Secrets committen** (`.env*`, `github.key`, Tokens, Schlüssel). `.gitignore` deckt `.env*` und `*.bak-*` ab.
-- Keine personenbezogenen Daten (CVs, Bewerbungen, Reports) in das Repo — `testdaten/`, `ergebnisse/`, `data/` sind ausgeschlossen.
+- Keine personenbezogenen Daten (CVs, Bewerbungen, Reports) in das Repo — die Laufzeit-Ordner für Testdaten, Reports und Datenbank sind über `.gitignore` ausgeschlossen.
 - Zugangsdaten nur über Umgebungsvariablen / `.env` (lokal).
 
 ## 8. Wo finde ich was?

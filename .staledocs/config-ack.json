@@ -13,8 +13,6 @@
         "*-kandidat-{id}-*.md",
         "babel.cfg",
         "contract-preflight-*.md",
-        "data/",
-        "ergebnisse/",
         "git@github.com:abatn/km-hr-agent.git",
         "importlib.metadata",
         "kontakt.email",
@@ -24,7 +22,6 @@
         "scripts/migrate_sqlite_to_supabase.py",
         "standort.aktuell",
         "supabase/migrations/0001_init_schema.sql",
-        "testdaten/",
         "tests/e2e_c2_connector.py",
         "tests/e2e_matching_filter.py",
         "ui.animate",
@@ -111,7 +108,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-11T21:30:51+00:00",
-  "note": "anchors.ignore + testdaten/, ergebnisse/, data/ (gitignored Laufzeit-Ordner; in CONTRIBUTING.md \u00a77 korrekt als ausgeschlossen zitiert; lokal vorhanden, in CI abwesend -> Non-Path-Tokens)",
+  "at": "2026-10-11T21:34:10+00:00",
+  "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }
