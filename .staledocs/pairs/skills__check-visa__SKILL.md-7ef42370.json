@@ -14,13 +14,13 @@
       "search(\"BeschV\")",
       "stellenprofil-{name}.txt"
     ],
-    "at": "2026-10-10T11:05:13+00:00",
+    "at": "2026-10-11T11:29:56+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88"
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "f6fee1c23868beea0897af4d4fdbce082a79cbcb",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/legal/visa-rules.md gegen den Pair-Code geprueft und nachgewiesen (16 von 16 Claims ok)"
+    "note": "geprueft: check-visa SKILL.md:10 nennt ergebnisse/; Runner schreibt Bericht weiterhin nach ergebnisse/"
   },
   "doc": "skills/check-visa/SKILL.md",
   "schema": 1

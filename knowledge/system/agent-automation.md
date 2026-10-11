@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS agent_tasks (
     status TEXT DEFAULT 'pending',      -- pending | running | done | failed | skipped
     payload TEXT NOT NULL,              -- JSON: candidate_id, job_id, application_id, kontext
     result_path TEXT,                   -- ergebnisse/*.md (Agent-Ausgabe)
-    result_json TEXT,                   -- Runner-Ausgaben (vdo_ninja_url, ics_path, termin, mail, Gatekeeper-Entscheid)
+    result_json TEXT,                   -- Runner-Ausgaben (vdo_ninja_url, ics_path, termin, mail, Gatekeeper-Entscheid, text=vollständiger Berichtstext ungekappt)
     error_text TEXT,                    -- bei failed
     attempts INTEGER DEFAULT 0,         -- Max. 3, dann failed final
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -78,6 +78,13 @@ CREATE INDEX IF NOT EXISTS idx_agent_tasks_status ON agent_tasks(status);
 ```
 
 **Erweitertes Schema (Implementierung v3):** `result_json` speichert Runner-Ausgaben (vdo_ninja_url, ics_path, termin, mail, gatekeeper-Entscheid) für die Portal-Sichten. Tabelle wird beim App-Start idempotent angelegt (init_agent_tasks_table()).
+
+**Berichtstext vollständig (Plan-ii, 11.10.2026):** Der Runner legt den **vollständigen** Berichtstext
+(Header + Agent-Antwort, **ungekappt**) zusätzlich in `result_json["text"]` ab — additiv zu `result_path`
+und `agent_chars`, keine Aufrufer brechen. Die frühere Obergrenze `RESULT_TEXT_MAX = 20000` ist
+**entfernt** (Design-Entscheidung, keine externe Quelle). Die HR-Anzeige (🔎 Agent-Details) ist
+**DB-primär**: sie liest `result_json["text"]` über `db.get_candidate_agent_tasks`, nicht mehr lokale
+`ergebnisse/*.md` (die `ergebnisse/` ist `gitignored` und im CI-Checkout leer). Details §7.1.
 
 **Regeln:**
 - App schreibt NUR INSERTs (Events) – nie Agent-Logik im UI-Prozess.
@@ -179,6 +186,29 @@ Jeder Prompt referenziert die Skills + Wissensdateien (wie scripts/agent-test.sh
 | 💼/🏢 Bewerber-Expander | Badge „🤖 Agent-Ergebnisse: Match ✅ · Compliance ✅ · Culture-Fit ✅" (Verweis auf result_paths, read-only views existieren bereits) |
 | 2️⃣/3️⃣ Ergebnis-Sichten | unverändert (lesen ergebnisse/*.md) |
 | Übergangs-Buttons | unverändert in der Logik; NUR der Hook nach dem Status-Write erzeugt Tasks (A2-Prinzip: ein Klick, automatische Kette) |
+
+### 7.1 Agent-Details (🔎) — DB-primär, Plan-ii (11.10.2026)
+
+- **Berichtstext vollständig:** `agent_tasks.result_json["text"]` trägt Header + Agent-Antwort
+  **ungekappt** (kein `RESULT_TEXT_MAX` mehr) → die Anzeige zeigt den Bericht **ohne Verlust**. Die
+  Altfelder `result_path`/`agent_chars` bleiben erhalten.
+- **Anzeige DB-primär:** `_page_agent_details` (`webui/pages/employer.py`, Codemarke
+  `def _page_agent_details`) liest je `task_type` die letzte Task über `db.get_candidate_agent_tasks`
+  (`webui/db.py`, Codemarke `def get_candidate_agent_tasks`) — Quelle ist `agent_tasks.result_json`,
+  **nicht** mehr der lokale `ergebnisse/*.md`-Glob (der in CI leer ist, `.gitignore`).
+- **Badge inhaltsbasiert:** `_badge_icon` (`webui/pages/employer.py`, Codemarke `def _badge_icon`)
+  wertet den gespeicherten Text aus (z. B. „AUFFÄLLIG" → 🔴; „COMPLIANT"/„NICHT ERFORDERLICH" → 🟢;
+  sonst 🟡). Ein fehlender Text fällt auf das ehrliche **Status-Mapping** zurück (`_legacy_badge_icon`:
+  `done`→🟢, `failed`→🔴, sonst 🟡).
+- **`notify_user` = Info-Mail:** Der LLM-Task `notify_user` (Liste `notify_user` in §5) ist eine
+  **Info-Mail** an den Kandidaten; sein Badge folgt dem **Task-Status** (kein Inhalts-Status), d. h.
+  `done`→🟢. Es gibt keine inhaltliche „JA/NEIN"-Auswertung dieses Berichts.
+- **Altbestand bleibt (keine Rückübersetzung):** Tasks ohne `result_json["text"]` werden **nicht**
+  nachträglich befüllt oder rückübersetzt — sie zeigen den Hinweis „Kein Berichtstext gespeichert
+  (Altbestand)" und ein Status-Badge.
+- **Quelle:** Nutzer-GO **Plan(ii) 11.10.2026** (keine externe Quelle) → **Design-Entscheidung**.
+  Historische Herkunft dieses Designs: `knowledge/system/p8-cloud-datenquellen.md` (⚰️ tot/überholt,
+  Cloud entfällt).
 
 ## 8. E-Mail-Matrix (alle 6, erweitert Spec v6 12.09.2026)
 

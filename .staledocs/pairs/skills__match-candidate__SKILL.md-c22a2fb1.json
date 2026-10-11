@@ -15,14 +15,14 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T13:29:32+00:00",
+    "at": "2026-10-11T11:29:57+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
-    "note": "skills/match-candidate/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": "geprueft: match-candidate SKILL.md:190 nennt agent-runner.py _gewichts_prompt_zeile; unveraendert"
   },
   "doc": "skills/match-candidate/SKILL.md",
   "schema": 1

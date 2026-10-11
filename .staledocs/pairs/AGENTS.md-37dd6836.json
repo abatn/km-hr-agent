@@ -93,7 +93,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-10T14:38:22+00:00",
+    "at": "2026-10-11T11:29:43+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -102,7 +102,7 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1",
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3",
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -201,7 +201,7 @@
       "tests/test_no_undefined_names.py": "059bd0e5eb35f3ea5b52265a179fe0136c911e29",
       "tests/test_p2_8_pseudonym.py": "6f7692c6866c445797850c361949623323a134f7",
       "tests/test_p2_block.py": "cb19c04a68aaaed3f51ba877c6486a71522ac2b3",
-      "tests/test_p8_2_agent_details.py": "a97296173433d3a1e488f6a03acc7d43e6136d25",
+      "tests/test_p8_2_agent_details.py": "71d53b872acd0a8fd3162cd03dd097c6e4c0d7b8",
       "tests/test_profile_save.py": "b4d87c0f42337e527cfeab721b36c0d292b4dedc",
       "tests/test_r32_gatekeeper_gen.py": "416de069b066028f19c63ececacd3a1fe85f9c1b",
       "tests/test_r33_compliance_reports.py": "52e52511126b2c71a28a0d4f4e2c379eb7d9e157",
@@ -250,9 +250,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "14238c22a354bf103fb3bb1a5d82f17b1f25b796",
-    "note": "AGENTS.md: Pflicht-Schritt 6 (Pr\u00fcf-Kette staledocs/docrot/pytest/compileall/pyflakes) erg\u00e4nzt"
+    "note": "geprueft: AGENTS.md:79/92 nennt ergebnisse/ + gitignored-Regel; agent-runner.py-Kommentar (ergebnisse/ gitignored) geaendert, Aussage unveraendert korrekt (Plan(ii) 11.10.2026)"
   },
   "doc": "AGENTS.md",
   "schema": 1

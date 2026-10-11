@@ -4,14 +4,14 @@
       "knowledge/legal/visa-rules.md",
       "knowledge/lifecycle/cultural-fit-criteria.md"
     ],
-    "at": "2026-10-10T11:05:12+00:00",
+    "at": "2026-10-11T11:30:27+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "d36c0fb3e94672745fb4bd2498ebf2ab3e6218ee",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
-    "note": "C2-Verifikation 10.10.2026: Claim knowledge/legal/visa-rules.md gegen den Pair-Code geprueft und nachgewiesen (4 von 4 Claims ok)"
+    "note": "geprueft: Doku nennt agent-runner.py nicht; Code-Move beruehrt keine Aussage"
   },
   "doc": "skills/assess-culture-fit/SKILL.md",
   "schema": 1

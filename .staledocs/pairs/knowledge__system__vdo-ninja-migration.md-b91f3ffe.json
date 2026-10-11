@@ -52,15 +52,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T13:29:30+00:00",
+    "at": "2026-10-11T11:29:56+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
-    "note": "knowledge/system/vdo-ninja-migration.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": "geprueft: vdo-ninja-migration.md:23/33/50 nennt agent-runner.py + vdo_ninja_gast_url; unveraendert"
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

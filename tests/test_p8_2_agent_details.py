@@ -10,7 +10,10 @@ Abgedeckt:
   (c) fehlendes `result_json`/`text` ⇒ None (Legacy).
   (d) eine übergebene `conn` wird nicht geschlossen und keine eigene geöffnet.
   (e) Badge-Mapping: „AUFFÄLLIG"→🔴, „COMPLIANT"→🟢, Legacy `done`→🟢.
-Zusätzlich: Runner speichert den Berichtstext gekappt (Quelltext-Beleg).
+  (f) Badge DB-basiert: der in `result_json["text"]` gespeicherte Text
+      („AUFFÄLLIG") schlägt den Status `done` → 🔴.
+Zusätzlich: Runner speichert den Berichtstext UNGEKAPPT (Quelltext-Beleg,
+Plan-ii 11.10.2026 — `RESULT_TEXT_MAX` entfernt).
 """
 from __future__ import annotations
 
@@ -131,11 +134,34 @@ def test_badge_mapping():
     assert employer._agent_task_icon({"text": "", "status": "failed"}) == "🔴"
 
 
-# ─── Runner: Berichtstext additiv + gekappt ─────────────────────────────────
+# ─── (f) Badge DB-basiert: result_json["text"] schlägt den Status ───────────
+# Kein `/tmp`: DB ausschließlich in `tmp_path` (pytest-isoliert); die übergebene
+# `conn` wird genutzt, keine Live-DB (`db.AGENT_TASKS_DB`) geöffnet.
 
-def test_runner_speichert_text_gekappt():
+def test_badge_db_basiert_auffaellig(tmp_path):
+    conn = _seed(tmp_path)
+    # Task-Text „AUFFÄLLIG" bei Status `done` → Inhalts-Badge 🔴 (nicht 🟢).
+    conn.execute(
+        "INSERT INTO agent_tasks (task_type, status, payload, result_json, created_at)"
+        " VALUES ('assess_culture_fit','done',?,?, '2026-10-05')",
+        (json.dumps({"application_id": 10, "gen": 0}),
+         json.dumps({"text": "GESAMTSTATUS: AUFFÄLLIG"})),
+    )
+    conn.commit()
+    by = {t["task_type"]: t for t in db.get_candidate_agent_tasks(7, conn=conn)}
+    row = by["assess_culture_fit"]
+    assert row["status"] == "done"
+    assert row["text"] == "GESAMTSTATUS: AUFFÄLLIG"
+    assert employer._agent_task_icon(row) == "🔴"
+    conn.close()
+
+
+# ─── Runner: Berichtstext additiv + ungekappt (Plan-ii 11.10.2026) ──────────
+
+def test_runner_speichert_text_ungekappt():
     src = (Path(__file__).resolve().parents[1] / "scripts" / "agent-runner.py").read_text("utf-8")
-    assert "RESULT_TEXT_MAX = 20000" in src
-    assert '"text": report_text[:RESULT_TEXT_MAX]' in src
+    # Plan-ii: keine Kappung mehr
+    assert "RESULT_TEXT_MAX" not in src
+    assert '"text": report_text}' in src
     # Additiv: die Altfelder bleiben erhalten
     assert '"result_path": result_path, "agent_chars": len(agent_text)' in src

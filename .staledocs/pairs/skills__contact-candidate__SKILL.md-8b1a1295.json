@@ -3,13 +3,13 @@
     "anchors": [
       "prescreen-config"
     ],
-    "at": "2026-10-10T13:40:10+00:00",
+    "at": "2026-10-11T11:30:28+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88"
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "a74aaadaa78720e9ede5d129462cd417faa2a97a",
-    "note": "skills/contact-candidate/SKILL.md: S4 10.10.2026 \u2014 unbelegte Zahlwerte als Design-Entscheidung markiert (1720-Teiler, Notify-Schwellen 90/80, Interview-Dauer 45-60 Min); uebrige Claims per grep verifiziert"
+    "note": "geprueft: Doku nennt agent-runner.py nicht; Code-Move beruehrt keine Aussage"
   },
   "doc": "skills/contact-candidate/SKILL.md",
   "schema": 1

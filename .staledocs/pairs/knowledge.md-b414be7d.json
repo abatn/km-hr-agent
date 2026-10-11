@@ -110,7 +110,7 @@
       "verify_documents",
       "visa-rules.md"
     ],
-    "at": "2026-10-10T14:29:42+00:00",
+    "at": "2026-10-11T11:29:52+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -159,7 +159,7 @@
       "knowledge/portal/matching-filter.md": "51506ba8a98d478f80dcdc146b84b06e95839152",
       "knowledge/profiles/README.md": "5578fd70feefdd6b50e07944ade5a65cd7f4745e",
       "knowledge/system/access-control.md": "b74345b427f343382d2e65ca29a2c6bdaf954227",
-      "knowledge/system/agent-automation.md": "7939d8cc1384d2a04f3950241ad404f57dfa6f7d",
+      "knowledge/system/agent-automation.md": "f7d682be2eeb9db066af833e4491a295f81509ba",
       "knowledge/system/asgi-guard.md": "3966b6fb918be26f75767f818444e97b5a6a85e2",
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
       "knowledge/system/configuration-secrets.md": "cb84520c4b11684efee3daae03f173e536bc082c",
@@ -174,7 +174,7 @@
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
       "knowledge/system/mvp.md": "7401288fa01cea42529f4f25d1cc055b9428ab89",
-      "knowledge/system/p8-cloud-datenquellen.md": "7de861b5804ed9a5009df7fe7b1729c2f52b810f",
+      "knowledge/system/p8-cloud-datenquellen.md": "6d6b91e3a295dd81d9e6595bab242701dbcc06b0",
       "knowledge/system/vdo-ninja-migration.md": "da1432a45551bc7252632d4ca9d25c93182848e7",
       "knowledge/team-profile.md": "31626b6e650f69f8c4df53db401e32a236d25da5",
       "knowledge/templates/contract-templates/arbeitsvertrag-de-skeleton.md": "b1cadf6fafd722d469dc5bdf1eb37f0dc51dbb2c",
@@ -187,9 +187,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "0ec1258399639cea8613c86bb226e39e6329c1f9"
     },
-    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "c7b6ba24330cea5f1cd481a0cbae4e8cd78767aa",
-    "note": "Re-Ack 10.10.2026: ASGI-Guard (SocketIOAbortGuard in webui/asgi_guard.py + main.py-Registrierung) + neue Spec knowledge/system/asgi-guard.md"
+    "note": "geprueft: knowledge.md:21 Index nennt agent-automation.md + p8-cloud-datenquellen.md; beide existieren (p8 als tot/ueberholt markiert)"
   },
   "doc": "knowledge.md",
   "schema": 1

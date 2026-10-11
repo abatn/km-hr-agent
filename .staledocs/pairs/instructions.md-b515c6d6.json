@@ -50,9 +50,9 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-10T14:29:41+00:00",
+    "at": "2026-10-11T11:29:44+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -95,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "d1fd0a93ed46cecefe781da755e78da919ca7fa1",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "Re-Ack 10.10.2026: ASGI-Guard (SocketIOAbortGuard in webui/asgi_guard.py + main.py-Registrierung) + neue Spec knowledge/system/asgi-guard.md"
+    "note": "geprueft: instructions.md:111 nennt scripts/agent-runner.py; Datei unveraendert vorhanden, nur Text-Kappung entfernt"
   },
   "doc": "instructions.md",
   "schema": 1

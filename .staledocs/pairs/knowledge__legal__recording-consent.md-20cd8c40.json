@@ -27,14 +27,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T13:29:24+00:00",
+    "at": "2026-10-11T11:29:53+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "e877bde44af680c71bcdf5918a29ed9f54188f88",
+      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
     "doc_blob": "1af7a67f13a2afdbcd2ada676dc22c18beb9dede",
-    "note": "knowledge/legal/recording-consent.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": "geprueft: recording-consent.md:14/22/136 nennt agent-runner.py + vdo_ninja_gast_url; unveraendert"
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1
