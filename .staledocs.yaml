@@ -244,6 +244,11 @@ anchors:
     - "webui/tool_catalog.py"
     - "scripts/migrate_sqlite_to_supabase.py"
     - "supabase/migrations/0001_init_schema.sql"
+    # Gitignored Laufzeit-Ordner (11.10.2026): in CONTRIBUTING.md §7 korrekt als
+    # „ausgeschlossen" zitiert — Non-Path-Token (existieren lokal, fehlen in CI).
+    - "testdaten/"
+    - "ergebnisse/"
+    - "data/"
   include_fenced: false
   path_roots: []   # extra prefixes for resolving doc-quoted paths (e.g. [src])
   # quoted branch names (feature/dark-mode) are not paths; first segments
