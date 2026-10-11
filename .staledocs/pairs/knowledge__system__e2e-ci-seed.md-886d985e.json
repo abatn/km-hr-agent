@@ -68,7 +68,7 @@
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py"
     ],
-    "at": "2026-10-11T11:29:55+00:00",
+    "at": "2026-10-11T12:23:43+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -165,7 +165,7 @@
       "tests/test_r35_status_notify.py": "554a12ac6e0374a3f28ce1081c6eb13a3f8be179",
       "tests/test_reapply_after_withdraw.py": "502f35d0c7d5a8e449ab98901d1c845cfe04347e",
       "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
-      "tests/test_runner_i18n.py": "110a21e006336909dcdb6b7278525eba75ed398f",
+      "tests/test_runner_i18n.py": "f6275309245d668888a32d171bc7c4f6586be20d",
       "tests/test_secrets_from_env.py": "f89a3b42d13e93697928ee9541339d5f240e0c90",
       "tests/test_send_onboarding_guard.py": "406de816d32c7ad0328b22ccfaf2efb9b8e989c5",
       "tests/test_send_rejection_guard.py": "22901adf0e5c481c927b2bcb1a74b902b0f163c5",
@@ -178,9 +178,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "e97275a92d649884611f6e7134210f012a21f63a",
-    "note": "geprueft: e2e-ci-seed.md:96 result_json text aus DB (P8.2) bleibt korrekt; test_p8_2_agent_details.py angepasst (ungekappt + Badge-Text)"
+    "note": "knowledge/system/e2e-ci-seed.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

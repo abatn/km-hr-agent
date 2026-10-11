@@ -2983,3 +2983,24 @@ msgstr "مهمة الوكيل (المرحلة 5، بتاريخ {0})، النمو
 
 msgid "Kein Berichtstext gespeichert (Altbestand)"
 msgstr "لا يوجد نص تقرير محفوظ (قديم)"
+
+msgid "kern"
+msgstr "الجوهري"
+
+msgid "erfahrung"
+msgstr "الخبرة"
+
+msgid "bildung"
+msgstr "التعليم"
+
+msgid "standort"
+msgstr "الموقع"
+
+msgid "branche"
+msgstr "القطاع"
+
+msgid "soft"
+msgstr "المهارات الناعمة"
+
+msgid "sprache"
+msgstr "اللغة"

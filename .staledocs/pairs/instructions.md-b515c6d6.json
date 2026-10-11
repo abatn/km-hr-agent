@@ -50,9 +50,9 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-11T11:29:44+00:00",
+    "at": "2026-10-11T12:23:32+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
+      "scripts/agent-runner.py": "006b51f4326a352d10d4e52af6fc4abd942ae116",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -72,14 +72,14 @@
       "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "b279dca38451c8ea33c368b0638a341a6bcabe84",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "47cb67a997ed8485a46d6ba44f34293acbeded13",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "0e7da3f635be1bc02871ea7b3a1b88021d76222c",
-      "webui/locales/de/LC_MESSAGES/messages.po": "355403ec63ed6ae5eb011c4fd856d274d5a5bd43",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "822919af98ecdd071693632983ab407cd74e4a69",
-      "webui/locales/en/LC_MESSAGES/messages.po": "4262100c771738217e592d5f61f17d4016f534fc",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "1337eff7271d69b4a8e4d5e069e654fcd62c3fbc",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "1dbce4cba9a34810cf4fffc32f9f80e9bb49cf94",
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "7725efefb668b8690447ef22a86ee7d905ea77a2",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "c9a996705a11abaf581d286ec90c83beeb4c0d3a",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "e9e4411d175de4ba95fab857216190fd19ec8930",
+      "webui/locales/de/LC_MESSAGES/messages.po": "bb78445cac3fd4eb56c52cb2b31258f316603c58",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "d26cec858794b7bb3082a3940ad5fecfec888023",
+      "webui/locales/en/LC_MESSAGES/messages.po": "70dd392104b035a1a7c81745ee8f38e53bdd8594",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "660c5d2ce6ae7145c1b5d2dd975bb3c2cb892454",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "f8cb1ee6644bb3bcfc2a096430d8ce27248a9492",
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -95,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "geprueft: instructions.md:111 nennt scripts/agent-runner.py; Datei unveraendert vorhanden, nur Text-Kappung entfernt"
+    "note": "instructions.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
   },
   "doc": "instructions.md",
   "schema": 1

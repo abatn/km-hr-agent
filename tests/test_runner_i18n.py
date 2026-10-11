@@ -838,3 +838,122 @@ def test_p9_5b_agent_task_msgid_in_katalogen():
         assert val.strip(), f"{lang}: leerer msgstr für {key!r}"
         if lang != "de":
             assert val != key, f"{lang}: Fallback auf msgid statt Übersetzung"
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# O1 (11.10.2026): Prompt-Struktur-Labels in der Payload-Sprache.
+# Spec: knowledge/system/i18n-runner-chain.md §7.1 Punkt 5 (Ergänzung O1).
+#   scripts/agent-runner.py: `_gewichts_prompt_zeile(lang)` +
+#   `tr('Kategorie', lang)` in `match_candidate` + Sektionsliste im
+#   `extract_profile`-Prompt (Codemarken, gemessen 11.10.2026).
+# Beweis ueber Prompt-Fang: `requests.post` wird gemockt (kein Netz/LLM),
+# `ERGEBNISSE` -> pytest-`tmp_path` (kein Schreiben nach ergebnisse/);
+# Gewichte deterministisch auf die Baseline gepinnt (unabhaengig von der
+# Live-`gewichtung_historie`). `de` = Altbestand (byte-identisch).
+# ═══════════════════════════════════════════════════════════════════════════
+
+BASELINE_GEWICHTE = {"kern": 30, "erfahrung": 25, "bildung": 15, "standort": 10,
+                     "branche": 10, "soft": 10, "sprache": 0}
+
+# Erwartete Struktur-Labels je Sprache (Quelle: webui/locales/*/messages.po,
+# ⓘ11.10.2026 — Sektions-/Kategorie-Labels Altbestand, 7 Gewichte O1).
+SEKTIONEN = {
+    "de": "Sektionen: Profil,\nKernkompetenzen, Berufserfahrung, Bildung, Sprache, Standort).",
+    "en": "Sektionen: Profile,\nCore competencies, Professional experience, Education, Language, Location).",
+    "fr": "Sektionen: Profil,\nCompétences clés, Expérience professionnelle, Formation, Langue, Lieu).",
+    "ar": "Sektionen: الملف الشخصي,\nالكفاءات الأساسية, الخبرة المهنية, التعليم, اللغة, الموقع).",
+}
+KATEGORIE = {
+    "de": "'Kategorie: <Name>'",
+    "en": "'Category: <Name>'",
+    "fr": "'Catégorie: <Name>'",
+    "ar": "'الفئة: <Name>'",
+}
+GEWICHTSZEILE = {
+    "de": "kern 30.0 / erfahrung 25.0 / bildung 15.0 / standort 10.0 / branche 10.0 / soft 10.0 / sprache 0.0",
+    "en": "core 30.0 / experience 25.0 / education 15.0 / location 10.0 / industry 10.0 / soft skills 10.0 / language 0.0",
+    "fr": "cœur 30.0 / expérience 25.0 / formation 15.0 / lieu 10.0 / secteur 10.0 / compétences comportementales 10.0 / langue 0.0",
+    "ar": "الجوهري 30.0 / الخبرة 25.0 / التعليم 15.0 / الموقع 10.0 / القطاع 10.0 / المهارات الناعمة 10.0 / اللغة 0.0",
+}
+
+
+def _capture_prompt(monkeypatch, tmp_path, task_type: str, payload: dict) -> str:
+    """Faengt den an die LLM-API gesendeten Prompt (`requests.post` gemockt).
+
+    Kein Netz, kein LLM: der Fake liefert 200 + >100 Zeichen Text, damit
+    `run_llm_task` den Bericht nach `tmp_path` schreibt und regulaer zurueckkehrt.
+    """
+    mod = _load_runner()
+    monkeypatch.setattr(mod, "DRY_RUN", False)
+    monkeypatch.setattr(mod, "ERGEBNISSE", tmp_path)
+    monkeypatch.setenv("NVIDIA_API_KEY", "test-key-o1")
+    from webui import logic as _logic
+    monkeypatch.setattr(_logic, "get_current_weights", lambda: dict(BASELINE_GEWICHTE))
+    gefangen: dict = {}
+
+    class _Resp:
+        status_code = 200
+
+        def json(self):
+            return {"choices": [{"message": {"content": "L" * 200}}]}
+
+    def _fake_post(url, headers=None, json=None, timeout=None):
+        gefangen["prompt"] = (json or {}).get("messages", [{}])[0].get("content", "")
+        return _Resp()
+
+    monkeypatch.setattr(mod.requests, "post", _fake_post)
+    mod.run_llm_task(task_type, payload)
+    assert gefangen.get("prompt"), "kein requests.post-Aufruf gefangen (Prompt leer)"
+    return gefangen["prompt"]
+
+
+def test_o1_gewichtszeile_de_byteidentisch(monkeypatch):
+    """`de` == Altbestand-Formel: rohe Keys + Wert (z. B. `kern 30.0 …`).
+
+    Gegenprobe mit Nicht-Baseline-Werten beweist, dass `de` nichts uebersetzt
+    (nur Reihenfolge/Rundung zaehlen) — identisch zur alten `f"{k} {wert}"`-Zeile.
+    """
+    mod = _load_runner()
+    from webui import logic as _logic
+    monkeypatch.setattr(_logic, "get_current_weights", lambda: dict(BASELINE_GEWICHTE))
+    assert mod._gewichts_prompt_zeile("de") == GEWICHTSZEILE["de"]
+
+    w = {"kern": 23.076923076923077, "erfahrung": 30.76923076923077,
+         "bildung": 11.538461538461538, "standort": 7.6923076923076925,
+         "branche": 7.6923076923076925, "soft": 7.6923076923076925,
+         "sprache": 11.538461538461538}
+    monkeypatch.setattr(_logic, "get_current_weights", lambda: dict(w))
+    erwartet = " / ".join(f"{k} {round(float(v), 1)}" for k, v in w.items())
+    assert mod._gewichts_prompt_zeile("de") == erwartet, \
+        "de weicht von der Altbestands-Formel ab"
+
+
+@pytest.mark.parametrize("lang", LANGS)
+def test_o1_prompt_struktur_labels_lokalisiert(lang, monkeypatch, tmp_path):
+    """Sektionsliste (extract_profile) + Gewichtszeile + Kategorie (match_candidate)
+    erscheinen in der Payload-Sprache."""
+    ep = _capture_prompt(monkeypatch, tmp_path, "extract_profile",
+                         {"candidate_id": None, "language": lang})
+    assert SEKTIONEN[lang] in ep, \
+        f"extract_profile/{lang}: Sektionsliste nicht lokalisiert: {ep[:400]}"
+
+    mc = _capture_prompt(monkeypatch, tmp_path, "match_candidate",
+                         {"candidate_id": None, "job_id": None, "language": lang})
+    assert GEWICHTSZEILE[lang] in mc, \
+        f"match_candidate/{lang}: Gewichtszeile nicht lokalisiert"
+    assert KATEGORIE[lang] in mc, \
+        f"match_candidate/{lang}: Kategorie-Label nicht lokalisiert"
+    if lang != "de":
+        assert "Sektionen: Profil,\nKernkompetenzen" not in ep, \
+            f"{lang}: deutscher Altbestand taucht weiter auf"
+
+
+def test_o1_de_prompt_byteidentisch_altbestand(monkeypatch, tmp_path):
+    """`de`-Prompt enthaelt die alten Struktur-Zeilen verbatim (Altbestand)."""
+    ep = _capture_prompt(monkeypatch, tmp_path, "extract_profile",
+                         {"candidate_id": None, "language": "de"})
+    assert SEKTIONEN["de"] in ep
+    mc = _capture_prompt(monkeypatch, tmp_path, "match_candidate",
+                         {"candidate_id": None, "job_id": None, "language": "de"})
+    assert GEWICHTSZEILE["de"] in mc
+    assert KATEGORIE["de"] in mc

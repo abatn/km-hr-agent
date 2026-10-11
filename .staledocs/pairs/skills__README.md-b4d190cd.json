@@ -60,7 +60,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-10T13:40:10+00:00",
+    "at": "2026-10-11T12:23:49+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -86,9 +86,9 @@
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "74ef3b442764c9dcae7e810e9bd3208d124cbb47",
-    "note": "skills/README.md: S4 10.10.2026 \u2014 unbelegte Zahlwerte als Design-Entscheidung markiert (1720-Teiler, Notify-Schwellen 90/80, Interview-Dauer 45-60 Min); uebrige Claims per grep verifiziert"
+    "note": ""
   },
   "doc": "skills/README.md",
   "schema": 1

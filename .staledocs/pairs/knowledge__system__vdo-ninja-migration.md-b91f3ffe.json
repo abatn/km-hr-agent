@@ -52,15 +52,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T11:29:56+00:00",
+    "at": "2026-10-11T12:23:48+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3",
+      "scripts/agent-runner.py": "006b51f4326a352d10d4e52af6fc4abd942ae116",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
-    "note": "geprueft: vdo-ninja-migration.md:23/33/50 nennt agent-runner.py + vdo_ninja_gast_url; unveraendert"
+    "note": "knowledge/system/vdo-ninja-migration.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

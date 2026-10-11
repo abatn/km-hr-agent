@@ -13,13 +13,13 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-10T13:29:31+00:00",
+    "at": "2026-10-11T12:23:50+00:00",
     "code_blobs": {
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
-    "note": "skills/candidate-portal/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": ""
   },
   "doc": "skills/candidate-portal/SKILL.md",
   "schema": 1

@@ -2983,3 +2983,24 @@ msgstr "Tâche d'agent (phase 5, du {0}), modèle : {1}"
 
 msgid "Kein Berichtstext gespeichert (Altbestand)"
 msgstr "Aucun texte de rapport enregistré (hérité)"
+
+msgid "kern"
+msgstr "cœur"
+
+msgid "erfahrung"
+msgstr "expérience"
+
+msgid "bildung"
+msgstr "formation"
+
+msgid "standort"
+msgstr "lieu"
+
+msgid "branche"
+msgstr "secteur"
+
+msgid "soft"
+msgstr "compétences comportementales"
+
+msgid "sprache"
+msgstr "langue"

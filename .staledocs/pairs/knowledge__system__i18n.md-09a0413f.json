@@ -67,6 +67,7 @@
       "feedback.stellenprofil",
       "gehalt_check",
       "get_language()",
+      "gewichtung_historie",
       "i18n-runner-chain.md",
       "is_rtl()",
       "label=_('Titel')",
@@ -109,24 +110,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T13:29:29+00:00",
+    "at": "2026-10-11T12:23:47+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
-      "tests/test_runner_i18n.py": "110a21e006336909dcdb6b7278525eba75ed398f",
+      "tests/test_runner_i18n.py": "f6275309245d668888a32d171bc7c4f6586be20d",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "b279dca38451c8ea33c368b0638a341a6bcabe84",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "47cb67a997ed8485a46d6ba44f34293acbeded13",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "0e7da3f635be1bc02871ea7b3a1b88021d76222c",
-      "webui/locales/de/LC_MESSAGES/messages.po": "355403ec63ed6ae5eb011c4fd856d274d5a5bd43",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "822919af98ecdd071693632983ab407cd74e4a69",
-      "webui/locales/en/LC_MESSAGES/messages.po": "4262100c771738217e592d5f61f17d4016f534fc",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "1337eff7271d69b4a8e4d5e069e654fcd62c3fbc",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "1dbce4cba9a34810cf4fffc32f9f80e9bb49cf94"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "7725efefb668b8690447ef22a86ee7d905ea77a2",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "c9a996705a11abaf581d286ec90c83beeb4c0d3a",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "e9e4411d175de4ba95fab857216190fd19ec8930",
+      "webui/locales/de/LC_MESSAGES/messages.po": "bb78445cac3fd4eb56c52cb2b31258f316603c58",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "d26cec858794b7bb3082a3940ad5fecfec888023",
+      "webui/locales/en/LC_MESSAGES/messages.po": "70dd392104b035a1a7c81745ee8f38e53bdd8594",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "660c5d2ce6ae7145c1b5d2dd975bb3c2cb892454",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "f8cb1ee6644bb3bcfc2a096430d8ce27248a9492"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "7dbfe82cb500363fb0f055b796e0827b0ad81e6f",
-    "note": "knowledge/system/i18n.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": "knowledge/system/i18n.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

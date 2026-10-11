@@ -2983,3 +2983,24 @@ msgstr "Agent-Task (Phase 5, live {0}), Modell: {1}"
 
 msgid "Kein Berichtstext gespeichert (Altbestand)"
 msgstr "Kein Berichtstext gespeichert (Altbestand)"
+
+msgid "kern"
+msgstr "kern"
+
+msgid "erfahrung"
+msgstr "erfahrung"
+
+msgid "bildung"
+msgstr "bildung"
+
+msgid "standort"
+msgstr "standort"
+
+msgid "branche"
+msgstr "branche"
+
+msgid "soft"
+msgstr "soft"
+
+msgid "sprache"
+msgstr "sprache"

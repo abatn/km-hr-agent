@@ -110,7 +110,7 @@
       "verify_documents",
       "visa-rules.md"
     ],
-    "at": "2026-10-11T11:29:52+00:00",
+    "at": "2026-10-11T12:23:33+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -168,7 +168,7 @@
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
       "knowledge/system/e2e-ci-seed.md": "e97275a92d649884611f6e7134210f012a21f63a",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
-      "knowledge/system/i18n-runner-chain.md": "be7b3c48a3af6d6ac02b334e1dfbcc0153d0a0be",
+      "knowledge/system/i18n-runner-chain.md": "98af93b2f600349d8694946a6cf732b8b8872452",
       "knowledge/system/i18n.md": "7dbfe82cb500363fb0f055b796e0827b0ad81e6f",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
@@ -187,9 +187,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "0ec1258399639cea8613c86bb226e39e6329c1f9"
     },
-    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "c7b6ba24330cea5f1cd481a0cbae4e8cd78767aa",
-    "note": "geprueft: knowledge.md:21 Index nennt agent-automation.md + p8-cloud-datenquellen.md; beide existieren (p8 als tot/ueberholt markiert)"
+    "note": "knowledge.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
   },
   "doc": "knowledge.md",
   "schema": 1

@@ -14,13 +14,13 @@
       "search(\"BeschV\")",
       "stellenprofil-{name}.txt"
     ],
-    "at": "2026-10-11T11:29:56+00:00",
+    "at": "2026-10-11T12:23:52+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "603aed68f976e13c524aaaa7634e8cc375a66fa3"
+      "scripts/agent-runner.py": "006b51f4326a352d10d4e52af6fc4abd942ae116"
     },
-    "commit": "8baaccdce2c39c843cfc674a50f6f18d3c95104e",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "f6fee1c23868beea0897af4d4fdbce082a79cbcb",
-    "note": "geprueft: check-visa SKILL.md:10 nennt ergebnisse/; Runner schreibt Bericht weiterhin nach ergebnisse/"
+    "note": "skills/check-visa/SKILL.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
   },
   "doc": "skills/check-visa/SKILL.md",
   "schema": 1

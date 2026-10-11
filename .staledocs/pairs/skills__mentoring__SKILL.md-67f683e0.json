@@ -29,13 +29,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-10T13:29:32+00:00",
+    "at": "2026-10-11T12:23:57+00:00",
     "code_blobs": {
       "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-    "note": "skills/mentoring/SKILL.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": ""
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

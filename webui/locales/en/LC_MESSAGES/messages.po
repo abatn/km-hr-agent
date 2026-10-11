@@ -2983,3 +2983,24 @@ msgstr "Agent task (Phase 5, live {0}), model: {1}"
 
 msgid "Kein Berichtstext gespeichert (Altbestand)"
 msgstr "No report text stored (legacy)"
+
+msgid "kern"
+msgstr "core"
+
+msgid "erfahrung"
+msgstr "experience"
+
+msgid "bildung"
+msgstr "education"
+
+msgid "standort"
+msgstr "location"
+
+msgid "branche"
+msgstr "industry"
+
+msgid "soft"
+msgstr "soft skills"
+
+msgid "sprache"
+msgstr "language"

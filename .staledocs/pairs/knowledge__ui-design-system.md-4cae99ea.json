@@ -95,14 +95,14 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-10T13:29:31+00:00",
+    "at": "2026-10-11T12:23:48+00:00",
     "code_blobs": {
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "1c46df3770cde72a1b7d235c8bc123fa495712bc",
+    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
     "doc_blob": "0ec1258399639cea8613c86bb226e39e6329c1f9",
-    "note": "knowledge/ui-design-system.md: S6 10.10.2026 \u2014 Datei:Zeile-Zitate auf Codemarke + Messdatum umgestellt (Zeilenangaben-Drift-Regel); Codemarken per grep in der Zieldatei belegt, Claim-Inhalte unveraendert"
+    "note": ""
   },
   "doc": "knowledge/ui-design-system.md",
   "schema": 1

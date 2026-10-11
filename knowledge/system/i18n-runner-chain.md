@@ -169,6 +169,19 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
    Beweis `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_prompt_token_haertung`, gemessen 10.10.2026). **Altbestand** (Dateien vor
    07.10.2026, z. B. `extract_profile-kandidat-13-2026-09-24.md`) bleibt deutsch (Punkt 4,
    Nutzer-GO „Liegen lassen" — keine Rück-Übersetzung).
+   **Struktur-Labels in der Payload-Sprache (O1, Nutzer-GO „O1" 11.10.2026, Design-Entscheidung):**
+   die **Struktur-Labels** des LLM-Prompts — die **Sektionsliste** (`Profil`, `Kernkompetenzen`,
+   `Berufserfahrung`, `Bildung`, `Sprache`, `Standort`), die **7 Gewichts-Labels**
+   (`kern`/`erfahrung`/`bildung`/`standort`/`branche`/`soft`/`sprache`) und das `Kategorie`-Label —
+   werden über `tr(msgid, payload.language)` in der **Payload-Sprache** erzeugt
+   (`scripts/agent-runner.py`, Codemarken `_gewichts_prompt_zeile(lang)` + `tr('Kategorie', lang)`
+   in `run_llm_task` sowie die Sektionsliste im `extract_profile`-Prompt, gemessen 11.10.2026);
+   der **freie Fließtext** bleibt bewusst in der **Generierungssprache** (Design-Entscheidung — kein
+   `tr()` auf Prosa); der **Altbestand** (**199** Berichte = `result_json["text"]`, DB-Stichprobe
+   11.10.2026) wird **nicht** rückübersetzt (Punkt 4). Katalog-Auswirkung: **+7** Gewichts-msgids
+   (**993 → 1000** je Sprache); die Sektions-/`Kategorie`-Labels waren bereits katalogisiert.
+   Quelle: **Design-Entscheidung** (keine externe Quelle); die EN/FR/AR-Erstfassungen der 7 Labels
+   sind eigene Übersetzung (Native-Review offen, Muster Punkt 6).
 6. **MCP-Server-Texte (P2b, 07.10.2026):** `mcp-email-server.py` (Codemarke `def send_pre_screen_invitation`, gemessen 10.10.2026)
    und `mcp-meeting-server.py` (Codemarke `def generate_screening_questions`, gemessen 10.10.2026) erhalten den Parameter
    `language: str = "de"` und bauen `subject`/`body` bzw. Kategorien/Fragetemplates/Kopf+Fuß

@@ -818,7 +818,7 @@ def _update_candidate_from_extract(cid: int, agent_text: str) -> None:
         log(f"   extract_profile DB-Update fehlgeschlagen (Kandidat #{cid}): {e}")
 
 
-def _gewichts_prompt_zeile() -> str:
+def _gewichts_prompt_zeile(lang: str = "de") -> str:
     """Baut die Gewichtszeile für den match_candidate-Prompt aus den LIVE-Werten.
 
     Quelle der Wahrheit: `gewichtung_historie` via `webui.logic.get_current_weights()`
@@ -837,7 +837,7 @@ def _gewichts_prompt_zeile() -> str:
     except Exception as exc:
         log(f"   Gewichtsquelle fallback ({exc}) – nutze Baseline")
         w = fallback
-    return " / ".join(f"{k} {round(float(v), 1)}" for k, v in w.items())
+    return " / ".join(f"{tr(k, lang)} {round(float(v), 1)}" for k, v in w.items())
 
 
 def _parse_compliance_status(text: str) -> str | None:
@@ -909,7 +909,7 @@ def llm_report_header(task_type: str, cid, jid, datum: str, lang: str) -> str:
 
 
 def run_llm_task(task_type: str, payload: dict) -> dict:
-    cid = payload.get("candidate_id"); jid = payload.get("job_id")
+    cid = payload.get("candidate_id"); jid = payload.get("job_id"); lang = _lang(payload)
     datum = datetime.now().strftime("%Y-%m-%d")
     kand = _db_candidate_context(cid)
     job = _db_job_context(jid)
@@ -978,19 +978,19 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
     prompts = {
         "extract_profile": (f"Extrahiere ein strukturiertes HR-Profil aus dem folgenden Lebenslauf.\n"
                             f"Du darfst bei Bedarf knowledge/*/*.md im Projekt lesen (erlaubt).\n"
-                            f"Antworte NUR mit dem strukturierten Profil (Markdown, Sektionen: Profil,\n"
-                            f"Kernkompetenzen, Berufserfahrung, Bildung, Sprache, Standort).\n\n"
+                            f"Antworte NUR mit dem strukturierten Profil (Markdown, Sektionen: {tr('Profil', lang)},\n"
+                            f"{tr('Kernkompetenzen', lang)}, {tr('Berufserfahrung', lang)}, {tr('Bildung', lang)}, {tr('Sprache', lang)}, {tr('Standort', lang)}).\n\n"
                             f"=== LEBENSLAUF (Kandidat #{cid}) ===\n"
                             f"{(cv_text or kand_block)[:4500]}\n"),
         "match_candidate": (f"Führe ein Matching nach folgenden Gewichten durch: "
-                            f"{_gewichts_prompt_zeile()} "
+                            f"{_gewichts_prompt_zeile(lang)} "
                             f"(Summe 100, Quelle: Live-DB `gewichtung_historie` über "
                             f"webui.logic.get_current_weights; Spezifikation: "
                             f"knowledge/lifecycle/matching-criteria.md). Verwende KEINE Werkzeuge, antworte "
                             f"nur aus dem gegebenen Kontext. Kandidat #{cid}:\n{kand_block}\nCV (Auszug):\n"
                             f"{cv_text[:2500]}\n\nStelle #{jid}:\n{job_block}\n\n"
                             f"Antworte mit: einer Zeile 'Match-Score: N/100', einer Zeile "
-                            f"'Kategorie: <Name>', dann Begründung je Kategorie (kurz)."),
+                            f"'{tr('Kategorie', lang)}: <Name>', dann Begründung je Kategorie (kurz)."),
         "check_compliance": (f"Du bist ein HR-Compliance-Prüfer. Verwende KEINE Werkzeuge und lies "
                              f"KEINE Dateien – antworte ausschließlich aus dem gegebenen Kontext und "
                              f"den hier genannten Regeln (Live-Fix: Tool-Calls truncieren den Stream).\n"
