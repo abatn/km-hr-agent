@@ -1,6 +1,7 @@
 {
   "ack": {
     "anchors": [
+      "--only",
       "./.env",
       "./start-webui.sh",
       ".bak",
@@ -93,7 +94,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-11T18:31:02+00:00",
+    "at": "2026-10-11T21:21:34+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -251,9 +252,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
-    "doc_blob": "14238c22a354bf103fb3bb1a5d82f17b1f25b796",
-    "note": "AGENTS.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
+    "commit": "d6091ad797f06dbfd374c8b946051e03f0354bd6",
+    "doc_blob": "dfac7332c14af60e9dec27f0647444a33df5fb43",
+    "note": "AGENTS.md: Doc-Gates-Bullet um en CI-Job 'Doku\u2194Code (staledocs)' (ci.yml, staledocs==2.1.0, fetch-depth 0) ergaenzt \u2014 Job in ci.yml verifiziert, YAML valide"
   },
   "doc": "AGENTS.md",
   "schema": 1

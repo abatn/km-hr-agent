@@ -124,3 +124,27 @@ jobs:
           pytest -q \
             --ignore=tests/test_r33_compliance_reports.py \
             --deselect tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Doku↔Code-Drift (staledocs) — deterministisch, kein LLM.
+  # Offizielle Quelle: staledocs 2.1.0 (PyPI Synforger/staledocs), README
+  # „CI and hooks" →  `pip install staledocs && staledocs check --gate strict`.
+  # Voll-Historie nötig (fetch-depth: 0) für Commit-Topologie/Paar-Frische.
+  # ──────────────────────────────────────────────────────────────────────
+  docs-drift:
+    name: Doku↔Code (staledocs)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: staledocs installieren
+        run: pip install "staledocs==2.1.0"
+
+      - name: Doku↔Code-Gate (strict, rc=0)
+        run: staledocs check --gate strict

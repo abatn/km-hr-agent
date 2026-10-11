@@ -74,9 +74,24 @@ Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-
 ## CI-Gates (verbindlich)
 
 - **`ci.yml`:** `pyflakes` über `webui/ scripts/ connectors/ tests/` + Root-MCP-Server mit Ausnahmen-Liste (nur blockierende Fehler; `app.py` und `docs/sphinxats-github-app.py` ausgenommen) · `python -m compileall -q` · Secret-Scan · i18n-Katalog-Gleichheit (Key-Menge je Sprache == DE) · `pytest` mit den beiden DSGVO-Exklusionen (siehe Tests).
-- **Doc-Gates:** `./.venv-streamlit/bin/staledocs check` (PyPI **2.1.0** — **nicht** `npx staledocs`, das ist ein anderes npm-Paket ohne `ack`) + `npx -y docrot-cli`; Config `.staledocs.yaml` (`gate: strict`), Workflow `.github/workflows/docrot.yml`. **`staledocs check --gate strict` muss `rc=0` liefern, bevor gepusht wird.**
+- **Doc-Gates:** `./.venv-streamlit/bin/staledocs check` (PyPI **2.1.0** — **nicht** `npx staledocs`, das ist ein anderes npm-Paket ohne `ack`) + `npx -y docrot-cli`; Config `.staledocs.yaml` (`gate: strict`), Workflow `.github/workflows/docrot.yml`. **`staledocs check --gate strict` muss `rc=0` liefern, bevor gepusht wird** — seit 11.10.2026 **in der CI erzwungen**: Job „Doku↔Code (staledocs)" (`ci.yml`, `pip install staledocs==2.1.0` + `staledocs check --gate strict`, `fetch-depth: 0`).
 - **Kein Formatter konfiguriert** — die CI-Gates oben sind verbindlich.
 - **Deploy (lokal → GitHub → Contabo VPS):** `git push` (RefSpec `remote.origin.push = master:main`) → GitHub-`CI` grün → `deploy-contabo.yml` → VPS-Restart + Health-Check. Spec: `knowledge/system/deploy-pipeline.md`. **Nie als synchron** (gitignored): `.env*`, `data/`, `testdaten/`, `ergebnisse/`, `.venv-*/`. Rollback = SSH `git reset --hard <SHA>`.
+
+## Doku-Tools — korrekte Nutzung & Verifikation (offiziell)
+
+> **Quellen:** `staledocs` **2.1.0** (PyPI `Synforger/staledocs`, Apache-2.0, Python ≥3.11) · `docrot-cli` **0.2.5** (npm `getdocrot/docrot`, MIT, Node ≥18.17). Verifikation immer **read-only** (kein `ack`/`init`/`--fix`), **ein Befehl pro Call**, Soll `rc=0`.
+
+**staledocs (Doku↔Code-Drift):**
+- **Kanonische Verifikation:** `staledocs --version` → `2.1.0`; `staledocs check --gate strict --json` (Soll: `red 0 / amber 0 / green 55`; `coverage` alle Kategorien **0** — unclassified/orphans/uncovered/dead-docs; `config.weakenings: []`; `anchor_status.baseline_missing: []`); `staledocs pairs --health`; `staledocs unarmed`; `staledocs explain` (nur wenn rot).
+- **Ack — zweistufig, vom Tool erzwungen:** `staledocs ack <doc>` → Evidence + Token → `staledocs ack <doc> --confirm <token> -m '<was geprüft>'` (die Note muss etwas aus der Evidence benennen; „looks fine" wird abgelehnt). **Bulk ist offiziell:** `ack --all` / `ack --broken` (Onboarding/Refactor). **Aufweichungen** (Pair/Gate/`ignore`) sind rot bis `staledocs ack --config -m '<warum>'`. Ledger `.staledocs/pairs/` **wird committet**. Exit-Codes: `0` ok · `1` Gate · `2` Usage · `3` ack pending.
+- **Setup:** `staledocs init --suggest` → `.staledocs.yaml` prüfen → `check` → `ack` (§Gotcha „staledocs-Ack-Falle").
+
+**docrot (Markdown gegen Code):**
+- **Kanonische Verifikation:** `npx -y docrot-cli --json --fail-on=error` (Soll: `grade: A+`, `errors: 0`, `findings: []`). Flags: `--fail-on error|warning|never`, `--reporter pretty|github|json`, `--fix`, `--only`, `--exclude`, `--include-changelogs`.
+- **CI-Action (offizielles Snippet):** `uses: getdocrot/docrot@v0` mit `with: fail-on: error` (s. `.github/workflows/docrot.yml`).
+
+**Regel:** Prüfen stets mit den **offiziellen** Befehlen + `rc=0`. **Verboten:** unbelegtes `ack` (ohne Evidence-Lesen) oder das Umgehen der Weakenings-Sperre — das Tool erzwingt Evidence und meldet jede Aufweichung (`config.weakenings`).
 
 ## Gotchas & Tool-Fallen
 
