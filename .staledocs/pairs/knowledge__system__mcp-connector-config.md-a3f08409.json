@@ -34,7 +34,7 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-11T12:23:47+00:00",
+    "at": "2026-10-11T18:31:23+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -43,7 +43,7 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
     "note": ""
   },

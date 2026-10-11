@@ -110,7 +110,7 @@
       "verify_documents",
       "visa-rules.md"
     ],
-    "at": "2026-10-11T12:23:33+00:00",
+    "at": "2026-10-11T18:31:08+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -154,7 +154,7 @@
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "83c62985c170af195f23fc3fbba9b898656013eb",
       "knowledge/portal/cv-pflicht.md": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-      "knowledge/portal/employer-portal-fields.md": "781da4508059c707878cc8a19bb4ebde7cee33ef",
+      "knowledge/portal/employer-portal-fields.md": "14353716df60b594421fdbfe202cb603af336122",
       "knowledge/portal/housing-search.md": "1a5c4e815fce15138231ed39c3efa4ae63a6c74c",
       "knowledge/portal/matching-filter.md": "51506ba8a98d478f80dcdc146b84b06e95839152",
       "knowledge/profiles/README.md": "5578fd70feefdd6b50e07944ade5a65cd7f4745e",
@@ -187,9 +187,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "0ec1258399639cea8613c86bb226e39e6329c1f9"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "c7b6ba24330cea5f1cd481a0cbae4e8cd78767aa",
-    "note": "knowledge.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
+    "note": "knowledge.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
   },
   "doc": "knowledge.md",
   "schema": 1

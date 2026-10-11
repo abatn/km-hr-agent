@@ -17,11 +17,11 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/main.py"
     ],
-    "at": "2026-10-11T12:23:41+00:00",
+    "at": "2026-10-11T18:31:19+00:00",
     "code_blobs": {
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "3966b6fb918be26f75767f818444e97b5a6a85e2",
     "note": ""
   },

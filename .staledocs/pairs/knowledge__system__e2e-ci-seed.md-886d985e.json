@@ -68,7 +68,7 @@
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py"
     ],
-    "at": "2026-10-11T12:23:43+00:00",
+    "at": "2026-10-11T18:31:21+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -143,6 +143,7 @@
       "tests/test_feedback_row_click.py": "f9bff67866181394559062cacf9633b8f09c3113",
       "tests/test_gatekeeper_memo.py": "445339baf6344eaf49abfe7dc65c02cbaa8dec43",
       "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
+      "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
       "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a",
@@ -178,9 +179,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "e97275a92d649884611f6e7134210f012a21f63a",
-    "note": "knowledge/system/e2e-ci-seed.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
+    "note": "knowledge/system/e2e-ci-seed.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

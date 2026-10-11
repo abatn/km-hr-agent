@@ -611,29 +611,41 @@ def _page_portal(s: dict) -> None:
                     ui.notify(_('❌ Beschreibung muss mindestens 50 Zeichen haben.'), type="negative")
                     return
 
-                job_id = db.insert_job(
-                    employer_id=employer_id,
-                    titel=titel_input.value,
-                    beschreibung=beschreibung_input.value,
-                    standort=standort_input.value,
-                    land=land_select.value,
-                    stellentyp=typ_select.value,
-                    hard_skills=hard_input.value,
-                    soft_skills=soft_input.value,
-                    berufserfahrung_jahre=int(erfahrung_input.value),
-                    deutsch_level=de_select.value,
-                    englisch_level=en_select.value,
-                    abschluss=abschluss_select.value,
-                    gehaltsrahmen_min=int(gehalt_min.value) if gehalt_min.value else None,
-                    gehaltsrahmen_max=int(gehalt_max.value) if gehalt_max.value else None,
-                )
-                if job_id:
-                    ui.notify(_('✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich.').format(titel_input.value), type="positive")
-                    refresh_jobs()
-                else:
-                    ui.notify(_('❌ Fehler beim Erstellen der Stelle.'), type="negative")
+                btn_stelle.disable()
+                try:
+                    job_id = db.insert_job(
+                        employer_id=employer_id,
+                        titel=titel_input.value,
+                        beschreibung=beschreibung_input.value,
+                        standort=standort_input.value,
+                        land=land_select.value,
+                        stellentyp=typ_select.value,
+                        hard_skills=hard_input.value,
+                        soft_skills=soft_input.value,
+                        berufserfahrung_jahre=int(erfahrung_input.value),
+                        deutsch_level=de_select.value,
+                        englisch_level=en_select.value,
+                        abschluss=abschluss_select.value,
+                        gehaltsrahmen_min=int(gehalt_min.value) if gehalt_min.value else None,
+                        gehaltsrahmen_max=int(gehalt_max.value) if gehalt_max.value else None,
+                    )
+                    if job_id:
+                        ui.notify(_('✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich.').format(titel_input.value), type="positive")
+                        titel_input.value = None
+                        beschreibung_input.value = None
+                        standort_input.value = None
+                        hard_input.value = None
+                        soft_input.value = None
+                        erfahrung_input.value = 3
+                        gehalt_min.value = 0
+                        gehalt_max.value = 0
+                        refresh_jobs()
+                    else:
+                        ui.notify(_('❌ Fehler beim Erstellen der Stelle.'), type="negative")
+                finally:
+                    btn_stelle.enable()
 
-            ui.button(_('📢 Stelle ausschreiben'), on_click=create_job).classes(C.BTN_PRIMARY + " mt-4")
+            btn_stelle = ui.button(_('📢 Stelle ausschreiben'), on_click=create_job).classes(C.BTN_PRIMARY + " mt-4")
 
             ui.separator().classes("my-6")
             ui.label(_('Meine Stellen')).classes(C.CARD_TITLE + " mb-4")

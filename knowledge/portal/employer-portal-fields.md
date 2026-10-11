@@ -72,6 +72,18 @@
 
 ---
 
+## Doppelklick-Schutz beim Veröffentlichen (Doppel-Submit-Schutz)
+
+**Regel:** Eine Stellenanzeige wird **nur einmal** gespeichert.
+
+- Der Absende-Button ist während des Speicherns gesperrt (Codemarke `create_job`) und wird danach wieder freigegeben.
+- Das Formular wird nach Erfolg zurückgesetzt (Textfelder), damit ein zweiter Klick keine identische Stelle anlegt (Codemarke `create_job`).
+- `insert_job` unterdrückt identische Wiederholungen (gleicher `employer_id`+`titel`+`standort`) innerhalb eines kurzen Zeitfensters (≤ 60 s): es legt **keine** zweite Zeile an, sondern gibt idempotent die bestehende `job_id` zurück (Codemarke `insert_job`).
+
+**Kennzeichnung:** **Design-Entscheidung** (Lab-Prinzip 1 — keine externe Quelle). Anlass: Live-Vorfall 11.10.2026, Doppelklick speicherte dieselbe Stelle zweimal (`jobs` #10/#11, employer_id 3, 16 s Abstand, UTC).
+
+---
+
 ## Status-Lebenszyklus einer Stelle
 
 | Status | Beschreibung | Sichtbar für Arbeitgeber |

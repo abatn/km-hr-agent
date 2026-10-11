@@ -93,7 +93,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-11T12:23:27+00:00",
+    "at": "2026-10-11T18:31:02+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -187,6 +187,7 @@
       "tests/test_feedback_row_click.py": "f9bff67866181394559062cacf9633b8f09c3113",
       "tests/test_gatekeeper_memo.py": "445339baf6344eaf49abfe7dc65c02cbaa8dec43",
       "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
+      "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
       "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a",
@@ -224,7 +225,7 @@
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
-      "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
+      "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
       "webui/locales/ar/LC_MESSAGES/messages.mo": "7725efefb668b8690447ef22a86ee7d905ea77a2",
@@ -240,7 +241,7 @@
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "0f16dc331f91552b2b88cb811962ac11aa298627",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
-      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002",
+      "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
@@ -250,9 +251,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "14238c22a354bf103fb3bb1a5d82f17b1f25b796",
-    "note": "AGENTS.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
+    "note": "AGENTS.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
   },
   "doc": "AGENTS.md",
   "schema": 1

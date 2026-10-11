@@ -110,7 +110,7 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T12:23:47+00:00",
+    "at": "2026-10-11T18:31:22+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
       "tests/test_runner_i18n.py": "f6275309245d668888a32d171bc7c4f6586be20d",
@@ -125,9 +125,9 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "660c5d2ce6ae7145c1b5d2dd975bb3c2cb892454",
       "webui/locales/fr/LC_MESSAGES/messages.po": "f8cb1ee6644bb3bcfc2a096430d8ce27248a9492"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "7dbfe82cb500363fb0f055b796e0827b0ad81e6f",
-    "note": "knowledge/system/i18n.md: O1-Fix (Prompt-Struktur-Labels i18n, scripts/agent-runner.py) verifiziert"
+    "note": ""
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

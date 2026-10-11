@@ -28,14 +28,14 @@
       "visum_status",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-11T12:23:38+00:00",
+    "at": "2026-10-11T18:31:15+00:00",
     "code_blobs": {
-      "webui/db.py": "074c877a532b651d1e4b345c4726d7644d43d938",
+      "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "83c62985c170af195f23fc3fbba9b898656013eb",
-    "note": ""
+    "note": "knowledge/portal/candidate-portal-fields.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

@@ -508,10 +508,23 @@ def insert_job(employer_id: int, titel: str, beschreibung: str, standort: str,
     P1-11 (30.09.2026): Fehlerursache wird protokolliert (vorher `except Exception:
     return None` ohne jede Spur); der Aufrufer zeigt bereits eine Fehlermeldung,
     konnte aber keinen Grund nennen.
+
+    Doppelklick-Schutz (11.10.2026, Design-Entscheidung): eine identische Stelle
+    (employer_id + titel + standort) innerhalb der letzten 60 s wird nicht erneut
+    eingefuegt — stattdessen wird die vorhandene id zurueckgegeben. Nur dieses
+    kurze Fenster; spaetere legitime Wiederholungen bleiben erlaubt.
     """
     try:
         conn = sqlite3.connect(str(DB_PATH))
         cur = conn.cursor()
+        row = cur.execute(
+            "SELECT id FROM jobs WHERE employer_id = ? AND titel = ? AND standort = ? "
+            "AND erstellt_am >= datetime('now', '-60 seconds') ORDER BY id DESC LIMIT 1",
+            (employer_id, titel, standort),
+        ).fetchone()
+        if row:
+            conn.close()
+            return row[0]
         cur.execute(
             """INSERT INTO jobs (employer_id, titel, beschreibung, standort, land, stellentyp,
                hard_skills, soft_skills, berufserfahrung_jahre, deutsch_level, englisch_level,

@@ -40,11 +40,11 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-11T12:23:39+00:00",
+    "at": "2026-10-11T18:31:16+00:00",
     "code_blobs": {
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
     "note": ""
   },

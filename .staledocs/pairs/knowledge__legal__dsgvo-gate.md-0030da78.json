@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T12:23:35+00:00",
+    "at": "2026-10-11T18:31:10+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "69825840c7640796d51a205be0d5cd6f2cf4f002"
+      "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": ""
+    "note": "knowledge/legal/dsgvo-gate.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

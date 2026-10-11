@@ -31,11 +31,11 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-11T12:23:36+00:00",
+    "at": "2026-10-11T18:31:12+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "6ec26b1fd8f3029e982e34446df2026d76b9e412",
+    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
     "doc_blob": "35e914720f546cce47dd1604623e5bcbc9f8d458",
     "note": ""
   },
