@@ -97,7 +97,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-12T19:14:46+00:00",
+    "at": "2026-10-12T20:40:55+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -257,9 +257,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
-    "doc_blob": "b51496933e5b5212a6eb54a334bb1d8f56045636",
-    "note": "code moved: scripts/agent-runner.py, tests/test_admin_i18n.py, tests/test_i18n.py, tests/test_logic_i18n.py, tests/test_p8_2_agent_details.py, tests/test_runner_i18n.py, webui/locales/ar/LC_MESSAGES/messages.mo, webui/locales/ar/LC_MESSAGES/messages.po, webui/locales/de/LC_MESSAGES/messages.mo, webui/locales/de/LC_MESSAGES/messages.po, webui/locales/en/LC_MESSAGES/messages.mo, webui/locales/en/LC_MESSAGES/messages.po, webui/locales/fr/LC_MESSAGES/messages.mo, webui/locales/fr/LC_MESSAGES/messages.po, webui/pages/admin.py, webui/pages/candidate.py, webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "commit": "033b496ddc4402ca53271d5ab841e91267267f92",
+    "doc_blob": "9a461535bccc2b0409ad70bc45c1ab87612b947d",
+    "note": "Re-Ack nach Messzahlen-Korrektur L71/L72 (450/441 -> Spannen 477-482 / 468-473 + Flaky-Hinweis): Evidence-Claims tests/conftest.py, tests/fixtures/seed.db, test_language_scoring, tests/test_r33_compliance_reports.py, tests/test_ui_fixes_p0.py und Ident test_profile_display_name_kein_dateiname gegen HEAD 033b496 geprueft - alle vorhanden (ui_fixes_p0.py:70), Deselect-Target zudem per CI-Paritaets-Lauf belegt (473 passed, 1 deselected, rc=0)"
   },
   "doc": "AGENTS.md",
   "schema": 1

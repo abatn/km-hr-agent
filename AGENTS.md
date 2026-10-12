@@ -68,8 +68,8 @@ Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-
 
 ## Tests
 
-- **Unit-Tests:** `.venv-streamlit/bin/python3 -m pytest -q` → **450 passed, 0 failed** (Messung 12.10.2026; `tests/conftest.py` spiegelt `tests/fixtures/seed.db` → deterministisch). Netz-/LLM-abhängig: einzelne `test_language_scoring`-Kombinationen **skippen** (Language-Test-Server liefert 0 Fragen), wenn Server/LLM nicht erreichbar — kein Regressionssignal.
-- **CI-Parität:** mit `--ignore=` für `tests/test_r33_compliance_reports.py` + `--deselect` für `tests/test_ui_fixes_p0.py` (Test `test_profile_display_name_kein_dateiname`) = 441 passed, 1 deselected (Messung 12.10.2026; Differenz 9 = 8 DSGVO-Tests + 1 Deselect). Spec: `knowledge/system/e2e-ci-seed.md`.
+- **Unit-Tests:** `.venv-streamlit/bin/python3 -m pytest -q` → **477–482 passed, 0 failed** (Spanne statt Momentzahl, Messreihe 12.10.2026; `tests/conftest.py` spiegelt `tests/fixtures/seed.db` → deterministisch). **Flaky = Spannen-Ursache:** netz-/LLM-abhängige `test_language_scoring`-Kombinationen **skippen** (Language-Test-Server liefert 0 Fragen), wenn Server/LLM nicht erreichbar — **0–5 skipped** verschieben die Passed-Zahl (Messwerte 477 passed + 5 skipped bzw. 482 passed + 0 skipped), kein Regressionssignal.
+- **CI-Parität:** mit `--ignore=` für `tests/test_r33_compliance_reports.py` + `--deselect` für `tests/test_ui_fixes_p0.py` (Test `test_profile_display_name_kein_dateiname`) = **468–473 passed, 1 deselected** (Spanne analog zur Unit-Zeile, Messreihe 12.10.2026; Differenz zur Vollliste **9** = 8 DSGVO-Tests + 1 Deselect). Spec: `knowledge/system/e2e-ci-seed.md`.
 - **E2E (Playwright):** immer **isoliert** via `tests/e2e_isolation.py <port>` — `tests/e2e_harness.py` bricht ohne `KMHR_E2E_BASE` ab (R6-0), **nie** gegen die Live-App :8080. Konten: lokal Originale-Mails (Spiegel der Live-DB), in CI anonymisierte Seed-Konten (`KMHR_E2E_SEED=1`) — Voll-Mapping in `knowledge/system/e2e-ci-seed.md`. Bestand 10.10.2026 (Messung): 50 Dateien `tests/e2e_*.py`, davon 48 lauffähig; letzter dokumentierter Volllauf 07.10.2026: 47/47 `rc=0` (datierte Messung).
 
 ## CI-Gates (verbindlich)
