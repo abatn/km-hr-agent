@@ -6,14 +6,14 @@
       "pdf-reader",
       "read_pdf_text"
     ],
-    "at": "2026-10-12T14:54:33+00:00",
+    "at": "2026-10-12T19:14:59+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "7f8b1884fdc4e8a2ffbc9c8069bb93da892d53ba",
-      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+      "scripts/agent-runner.py": "216b6c133e349731e9e35ca8075b40ef7e045d78",
+      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "50f95c7d4161ae020d90a5e18ea55257e7e3a5df",
-    "note": "code moved: scripts/agent-runner.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
+    "note": "code moved: scripts/agent-runner.py, webui/pages/candidate.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "skills/extract-profile/SKILL.md",
   "schema": 1

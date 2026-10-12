@@ -113,7 +113,8 @@ def send_interview_invitation(
     time: str,
     duration_minutes: int = 45,
     format: str = "Online (Jitsi Meet – kostenlos)",
-    match_score: int = 0
+    match_score: int = 0,
+    language: str = "de"
 ) -> str:
     """
     Sendet eine personalisierte Interview-Einladung.
@@ -128,46 +129,48 @@ def send_interview_invitation(
         duration_minutes: Dauer in Minuten
         format: Interview-Format
         match_score: Match-Score (0-100)
+        language: Zielsprache der Mail (de/en/fr/ar; Default de – Altverhalten)
 
     Returns:
         Erfolgsmeldung
     """
-    subject = f"Einladung zum Vorstellungsgespräch – {position}"
+    subject = tr("Einladung zum Vorstellungsgespräch – {position}",
+                 language, position=position)
 
-    body = f"""Sehr geehrte(r) {candidate_name},
-
-wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung mitteilen zu können.
-
-Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikationen hervorragend zu unserer Position als **{position}** bei **{company}** passen.
-
-**Wir laden Sie herzlich ein zum:**
-
-- **Datum:** {date}
-- **Uhrzeit:** {time}
-- **Format:** {format}
-- **Dauer:** ca. {duration_minutes} Minuten
-
-**Agenda:**
-1. Vorstellung des Unternehmens (5 Min.)
-2. Technische Fragen (20 Min.)
-3. Kulturelles Fit (10 Min.)
-4. Fragen des Kandidaten (10 Min.)
-
-**Vorbereitung:**
-Bitte bringen Sie folgende Unterlagen mit:
-- Aktuellen Lebenslauf
-- Zeugnisse
-- Referenzen (falls vorhanden)
-
----
-**Rechtliche Hinweise:**
-- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß Art. 6(1)(b) DSGVO verarbeitet.
-- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit KI-Unterstützung erstellt.
-
-Mit freundlichen Grüßen,
-HR Team
-{company}
-"""
+    body = "\n\n".join([
+        tr("Sehr geehrte(r) {0},", language).format(candidate_name),
+        tr("wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung "
+           "mitteilen zu können.", language),
+        tr("Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass "
+           "Ihre Qualifikationen hervorragend zu unserer Position als "
+           "**{position}** bei **{company}** passen.", language,
+           position=position, company=company),
+        tr("**Wir laden Sie herzlich ein zum:**", language),
+        "\n".join([
+            tr("- **Datum:** {date}", language, date=date),
+            tr("- **Uhrzeit:** {time}", language, time=time),
+            tr("- **Format:** {format}", language, format=format),
+            tr("- **Dauer:** ca. {duration_minutes} Minuten", language,
+               duration_minutes=duration_minutes),
+        ]),
+        tr("**Agenda:**", language) + "\n" + tr(
+            "1. Vorstellung des Unternehmens (5 Min.)\n"
+            "2. Technische Fragen (20 Min.)\n"
+            "3. Kulturelles Fit (10 Min.)\n"
+            "4. Fragen des Kandidaten (10 Min.)", language),
+        tr("**Vorbereitung:**", language) + "\n" + tr(
+            "Bitte bringen Sie folgende Unterlagen mit:\n"
+            "- Aktuellen Lebenslauf\n"
+            "- Zeugnisse\n"
+            "- Referenzen (falls vorhanden)", language),
+        "---\n" + tr("**Rechtliche Hinweise:**", language) + "\n" + "\n".join([
+            tr("- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß "
+               "Art. 6(1)(b) DSGVO verarbeitet.", language),
+            tr("- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit "
+               "KI-Unterstützung erstellt.", language),
+        ]),
+        tr("Mit freundlichen Grüßen,\nHR Team", language) + f"\n{company}\n",
+    ])
 
     return send_email(to, subject, body)
 

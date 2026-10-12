@@ -9,15 +9,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-12T12:26:54+00:00",
+    "at": "2026-10-12T19:15:03+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
-      "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
+      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59",
+      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "8ebf516dcb76fe73f9c0f1335b16b25706b20e27",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `knowledge/lifecycle/application-status.md`, `knowledge/portal/employer-portal-fields.md`, `webui/pages/candidate.py`"
+    "note": "code moved: webui/pages/candidate.py, webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

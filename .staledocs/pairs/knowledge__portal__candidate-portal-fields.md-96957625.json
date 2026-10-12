@@ -28,14 +28,14 @@
       "visum_status",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-12T12:26:43+00:00",
+    "at": "2026-10-12T19:14:51+00:00",
     "code_blobs": {
       "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
-      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
+      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "83c62985c170af195f23fc3fbba9b898656013eb",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge/lifecycle/application-status.md`, `knowledge/portal/cv-pflicht.md`"
+    "note": "code moved: webui/pages/candidate.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

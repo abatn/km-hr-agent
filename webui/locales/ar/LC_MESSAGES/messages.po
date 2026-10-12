@@ -3004,3 +3004,426 @@ msgstr "المهارات الناعمة"
 
 msgid "sprache"
 msgstr "اللغة"
+
+msgid "**Agenda:**"
+msgstr "**جدول الأعمال:**"
+
+msgid "**Rechtliche Hinweise:**"
+msgstr "**إشعارات قانونية:**"
+
+msgid "**Vorbereitung:**"
+msgstr "**التحضير:**"
+
+msgid "**Wir laden Sie herzlich ein zum:**"
+msgstr "**ندعوكم بكل سرور إلى:**"
+
+msgid "- **Datum:** {date}"
+msgstr "- **التاريخ:** {date}"
+
+msgid "- **Dauer:** ca. {duration_minutes} Minuten"
+msgstr "- **المدة:** حوالي {duration_minutes} دقيقة"
+
+msgid "- **Format:** {format}"
+msgstr "- **التنسيق:** {format}"
+
+msgid "- **Uhrzeit:** {time}"
+msgstr "- **الوقت:** {time}"
+
+msgid "- Interviewer: [Name eintragen]"
+msgstr "- المحاور: [أدخل الاسم]"
+
+msgid "- Kandidat: [Name eintragen]"
+msgstr "- المرشح: [أدخل الاسم]"
+
+msgid "- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit KI-Unterstützung erstellt."
+msgstr "- ⚖️ قانون الذكاء الاصطناعي الأوروبي المادة 50: تم إنشاء هذه الدعوة بمساعدة الذكاء الاصطناعي."
+
+msgid "- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß Art. 6(1)(b) DSGVO verarbeitet."
+msgstr "- 🔒 اللائحة العامة لحماية البيانات المادة 13: تتم معالجة بياناتك وفقاً للمادة 6(1)(ب) من اللائحة."
+
+msgid "1. Vorstellung des Unternehmens (5 Min.)\n2. Technische Fragen (20 Min.)\n3. Kulturelles Fit (10 Min.)\n4. Fragen des Kandidaten (10 Min.)"
+msgstr "1. تقديم الشركة (5 دقائق)\n2. أسئلة تقنية (20 دقيقة)\n3. التوافق الثقافي (10 دقائق)\n4. أسئلة المرشح (10 دقائق)"
+
+msgid "=== CALENDAR-EVENT (zum Kopieren) ==="
+msgstr "=== حدث التقويم (للنسخ) ==="
+
+msgid "=== MEETING ERSTELLT ==="
+msgstr "=== تم إنشاء الاجتماع ==="
+
+msgid "=== TEILNEHMER ==="
+msgstr "=== المشاركون ==="
+
+msgid "===ICS-DATEI (optional) ==="
+msgstr "===ملف ICS (اختياري) ==="
+
+msgid "Admin Dashboard"
+msgstr "لوحة تحكم المسؤول"
+
+msgid "Admin nicht gefunden."
+msgstr "المسؤول غير موجود."
+
+msgid "Agent-Tasks nach Status"
+msgstr "مهام الوكيل حسب الحالة"
+
+msgid "Algorithmus-Feedback"
+msgstr "ملاحظات الخوارزمية"
+
+msgid "Alle Kandidaten haben bereits ein extrahiertes Profil."
+msgstr "جميع المرشحين لديهم بالفعل ملف شخصي مستخرج."
+
+msgid "Alle {0} analysieren"
+msgstr "تحليل كل {0}"
+
+msgid "Alle {0} extrahieren"
+msgstr "استخراج كل {0}"
+
+msgid "Alle {0} kontaktieren"
+msgstr "التواصل مع كل {0}"
+
+msgid "Alle {0} matchen"
+msgstr "مطابقة كل {0}"
+
+msgid "Alle {0} pruefen"
+msgstr "فحص كل {0}"
+
+msgid "Bereits heute gequeued oder Fehler."
+msgstr "تم وضعه في قائمة الانتظار اليوم بالفعل أو حدثت أخطاء."
+
+msgid "Beschreibung: {beschreibung}"
+msgstr "الوصف: {beschreibung}"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich bewerben."
+msgstr "تظهر الطلبات هنا بمجرد تقديم المرشحين."
+
+msgid "Bewerbungen mit Status 'beworben' werden dem Agenten zur Score-Berechnung zugeführt."
+msgstr "تُحال الطلبات ذات الحالة 'مُقدَّم' إلى الوكيل لحساب النتيجة."
+
+msgid "Bewerbungen pro Monat"
+msgstr "الطلبات شهرياً"
+
+msgid "Bewerbungen werden dem Agenten zur Kultur-Fit-Bewertung (0-100) zugeführt."
+msgstr "تُحال الطلبات إلى الوكيل لتقييم التوافق الثقافي (0-100)."
+
+msgid "Bewerbungen werden dem Agenten zur laenderspezifischen Rechts-Pruefung zugeführt."
+msgstr "تُحال الطلبات إلى الوكيل لإجراء الفحص القانوني الخاص بكل بلد."
+
+msgid "Bitte bringen Sie folgende Unterlagen mit:\n- Aktuellen Lebenslauf\n- Zeugnisse\n- Referenzen (falls vorhanden)"
+msgstr "يرجى إحضار المستندات التالية:\n- السيرة الذاتية الحالية\n- الشهادات\n- المراجع (إن وجدت)"
+
+msgid "Check Compliance"
+msgstr "التحقق من الامتثال"
+
+msgid "Compliance-Pruefung (DSGVO, AGG, BDSG)"
+msgstr "فحص الامتثال (اللائحة العامة لحماية البيانات، AGG، BDSG)"
+
+msgid "Compliance-Tool"
+msgstr "أداة الامتثال"
+
+msgid "Contact Candidate"
+msgstr "التواصل مع المرشح"
+
+msgid "Culture Fit"
+msgstr "التوافق الثقافي"
+
+msgid "Datei auswaehlen"
+msgstr "اختيار ملف"
+
+msgid "Datum: {date_formatted}"
+msgstr "التاريخ: {date_formatted}"
+
+msgid "Dauer: {duration_minutes} Minuten"
+msgstr "المدة: {duration_minutes} دقيقة"
+
+msgid "Eingeladene Kandidaten werden dem Agenten zur E-Mail-Generierung zugeführt."
+msgstr "يُحال المرشحون المدعوون إلى الوكيل لإنشاء البريد الإلكتروني."
+
+msgid "Einladung zum Vorstellungsgespräch – {position}"
+msgstr "دعوة إلى مقابلة – {position}"
+
+msgid "Ende: {date}T{end}:00"
+msgstr "النهاية: {date}T{end}:00"
+
+msgid "Ergebnis: {0}"
+msgstr "النتيجة: {0}"
+
+msgid "Extract Profile"
+msgstr "استخراج الملف الشخصي"
+
+msgid "Extract-Task #{0} gequeued"
+msgstr "مهمة الاستخراج رقم {0} في قائمة الانتظار"
+
+msgid "Fehler beim Speichern."
+msgstr "خطأ أثناء الحفظ."
+
+msgid "Firmenprofil #{0} gespeichert."
+msgstr "تم حفظ ملف الشركة رقم {0}."
+
+msgid "Format: Online (VDO.Ninja)"
+msgstr "التنسيق: عبر الإنترنت (VDO.Ninja)"
+
+msgid "Gespeichert: {0}"
+msgstr "تم الحفظ: {0}"
+
+msgid "Gewichtung"
+msgstr "الترجيح"
+
+msgid "HR"
+msgstr "الموارد البشرية"
+
+msgid "HR-Write"
+msgstr "كتابة الموارد البشرية"
+
+msgid "Kandidat #{0} – {1}"
+msgstr "المرشح رقم {0} – {1}"
+
+msgid "Kandidaten kontaktieren"
+msgstr "التواصل مع المرشحين"
+
+msgid "Kandidaten ohne extrahiertes Profil (hard_skills IS NULL) werden dem Agenten zur Profil-Extraktion zugeführt."
+msgstr "يُحال المرشحون الذين ليس لديهم ملف شخصي مستخرج (hard_skills IS NULL) إلى الوكيل لاستخراج الملف الشخصي."
+
+msgid "Kandidaten werden nach Einladung durch HR hier angezeigt."
+msgstr "يُعرض المرشحون هنا بعد دعوتهم من قبل الموارد البشرية."
+
+msgid "Kandidaten-Liste als PDF herunterladen."
+msgstr "تنزيل قائمة المرشحين بصيغة PDF."
+
+msgid "Kandidaten-Matching mit Stellen"
+msgstr "مطابقة المرشحين مع الوظائف"
+
+msgid "Keine Arbeitgeber vorhanden"
+msgstr "لا يوجد أصحاب عمل"
+
+msgid "Keine Bewerbungen mit Status 'beworben' oder 'eingegangen'."
+msgstr "لا توجد طلبات بالحالة 'مُقدَّم' أو 'مستلَم'."
+
+msgid "Keine Bewerbungen zur Kultur-Analyse"
+msgstr "لا توجد طلبات للتحليل الثقافي"
+
+msgid "Keine Bewerbungen zur Pruefung"
+msgstr "لا توجد طلبات للفحص"
+
+msgid "Keine Datei empfangen."
+msgstr "لم يتم استلام أي ملف."
+
+msgid "Keine Dateien vorhanden."
+msgstr "لا توجد ملفات."
+
+msgid "Keine Kandidaten ohne Profil"
+msgstr "لا يوجد مرشحون بدون ملف شخصي"
+
+msgid "Keine Tasks gequeued (bereits aktiv oder Fehler)."
+msgstr "لم يتم وضع أي مهام في قائمة الانتظار (نشطة بالفعل أو أخطاء)."
+
+msgid "Keine eingeladenen Kandidaten"
+msgstr "لا يوجد مرشحون مدعوون"
+
+msgid "Keine offenen Bewerbungen"
+msgstr "لا توجد طلبات مفتوحة"
+
+msgid "Keine offenen Bewerbungen gefunden."
+msgstr "لم يتم العثور على طلبات مفتوحة."
+
+msgid "Kultur-Fit-Analyse"
+msgstr "تحليل التوافق الثقافي"
+
+msgid "Lebenslaeufe hochladen"
+msgstr "رفع السير الذاتية"
+
+msgid "Lebenslauf"
+msgstr "السيرة الذاتية"
+
+msgid "Lebenslauf oder Stellenprofil hochladen"
+msgstr "رفع السيرة الذاتية أو الملف الوظيفي"
+
+msgid "Link: {meet_url}"
+msgstr "الرابط: {meet_url}"
+
+msgid "Match Candidate"
+msgstr "مطابقة المرشح"
+
+msgid "Match-Tool"
+msgstr "أداة المطابقة"
+
+msgid "Moechtest du {0} Compliance-Tasks wirklich starten?"
+msgstr "هل تريد حقاً بدء {0} مهام امتثال؟"
+
+msgid "Moechtest du {0} Culture-Fit-Tasks wirklich starten?"
+msgstr "هل تريد حقاً بدء {0} مهام توافق ثقافي؟"
+
+msgid "Moechtest du {0} Extract-Tasks wirklich starten?"
+msgstr "هل تريد حقاً بدء {0} مهام استخراج؟"
+
+msgid "Moechtest du {0} Kontakt-Tasks wirklich starten?"
+msgstr "هل تريد حقاً بدء {0} مهام تواصل؟"
+
+msgid "Moechtest du {0} Match-Tasks wirklich starten?"
+msgstr "هل تريد حقاً بدء {0} مهام مطابقة؟"
+
+msgid "Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikationen hervorragend zu unserer Position als **{position}** bei **{company}** passen."
+msgstr "بعد مراجعة سيرتك الذاتية، وجدنا أن مؤهلاتك تتناسب تماماً مع وظيفتنا كـ **{position}** في **{company}**."
+
+msgid "Noch kein Ergebnis vorhanden – Task unten ausloesen, der Runner schreibt das MD nach ergebnisse/."
+msgstr "لا توجد نتيجة بعد – قم بتشغيل المهمة أدناه؛ يكتب المشغّل ملف MD إلى ergebnisse/."
+
+msgid "Ort: {meet_url}"
+msgstr "المكان: {meet_url}"
+
+msgid "PDF- und TXT-Dateien werden in testdaten/ gespeichert und dem Agenten zur Extraktion zugeführt."
+msgstr "يتم حفظ ملفات PDF وTXT في testdaten/ وإحالتها إلى الوكيل للاستخراج."
+
+msgid "Portal-Verwaltung"
+msgstr "إدارة البوابة"
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens."
+msgstr "الفرز المسبق في إطار عملية التقديم."
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens. Meet-Link: {meet_url}"
+msgstr "الفرز المسبق في إطار عملية التقديم. رابط الاجتماع: {meet_url}"
+
+msgid "Profil-Extraktion aus Lebenslaeufen"
+msgstr "استخراج الملف الشخصي من السير الذاتية"
+
+msgid "Recruiting"
+msgstr "التوظيف"
+
+msgid "Skill 1 - Profil-Extraktion"
+msgstr "المهارة 1 - استخراج الملف الشخصي"
+
+msgid "Skill 2 - Kandidaten-Matching"
+msgstr "المهارة 2 - مطابقة المرشحين"
+
+msgid "Skill 3 - Rechts-Pruefung"
+msgstr "المهارة 3 - الفحص القانوني"
+
+msgid "Skill 4 - Kontakt"
+msgstr "المهارة 4 - التواصل"
+
+msgid "Skill 5 - Kultur-Analyse"
+msgstr "المهارة 5 - التحليل الثقافي"
+
+msgid "Sprache: {0}"
+msgstr "اللغة: {0}"
+
+msgid "Start: {date}T{time}:00"
+msgstr "البداية: {date}T{time}:00"
+
+msgid "Starten"
+msgstr "بدء"
+
+msgid "Stellen-Status"
+msgstr "حالة الوظيفة"
+
+msgid "System-Uebersicht"
+msgstr "نظرة عامة على النظام"
+
+msgid "Task-Verteilung"
+msgstr "توزيع المهام"
+
+msgid "Tasks starten?"
+msgstr "بدء المهام؟"
+
+msgid "Thema: {topic}"
+msgstr "الموضوع: {topic}"
+
+msgid "Titel: {topic}"
+msgstr "العنوان: {topic}"
+
+msgid "Uhrzeit: {time_range}"
+msgstr "الوقت: {time_range}"
+
+msgid "Upload (Ingestion)"
+msgstr "رفع (الاستيعاب)"
+
+msgid "Upload fehlgeschlagen: {0}"
+msgstr "فشل الرفع: {0}"
+
+msgid "Visum-Schritte-Mail an den Kandidaten ausgeloest (Agent sendet)."
+msgstr "تم تشغيل بريد خطوات التأشيرة إلى المرشح (يرسل الوكيل)."
+
+msgid "Vorhandene Dateien"
+msgstr "الملفات الموجودة"
+
+msgid "wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung mitteilen zu können."
+msgstr "يسعدنا أن نبلغك باهتمامنا بطلبك."
+
+msgid "{0} Bewerbungen zur Compliance-Pruefung"
+msgstr "{0} طلبات لفحص الامتثال"
+
+msgid "{0} Bewerbungen zur Kultur-Analyse"
+msgstr "{0} طلبات للتحليل الثقافي"
+
+msgid "{0} Compliance-Tasks gequeued"
+msgstr "تم وضع {0} مهام امتثال في قائمة الانتظار"
+
+msgid "{0} Culture-Fit-Tasks gequeued"
+msgstr "تم وضع {0} مهام توافق ثقافي في قائمة الانتظار"
+
+msgid "{0} Extract-Tasks gequeued"
+msgstr "تم وضع {0} مهام استخراج في قائمة الانتظار"
+
+msgid "{0} Kandidat #{1} – {2} ({3}, {4})"
+msgstr "{0} مرشح رقم {1} – {2} ({3}, {4})"
+
+msgid "{0} Kandidaten ohne Profil"
+msgstr "{0} مرشحون بدون ملف شخصي"
+
+msgid "{0} Kontakt-Tasks gequeued"
+msgstr "تم وضع {0} مهام تواصل في قائمة الانتظار"
+
+msgid "{0} Match-Tasks gequeued"
+msgstr "تم وضع {0} مهام مطابقة في قائمة الانتظار"
+
+msgid "{0} eingeladene Kandidaten"
+msgstr "{0} مرشحون مدعوون"
+
+msgid "{0} offene Bewerbungen"
+msgstr "{0} طلبات مفتوحة"
+
+msgid "{0} · Eingegangen: {1}"
+msgstr "{0} · مستلَم: {1}"
+
+msgid "{start} – {end} Uhr"
+msgstr "{start} – {end}"
+
+msgid "{time} Uhr ({duration_minutes} Min.)"
+msgstr "{time} ({duration_minutes} دقيقة)"
+
+msgid "💾 Profil speichern"
+msgstr "💾 حفظ الملف الشخصي"
+
+msgid "Montag"
+msgstr "الاثنين"
+
+msgid "Dienstag"
+msgstr "الثلاثاء"
+
+msgid "Mittwoch"
+msgstr "الأربعاء"
+
+msgid "Donnerstag"
+msgstr "الخميس"
+
+msgid "Freitag"
+msgstr "الجمعة"
+
+msgid "Samstag"
+msgstr "السبت"
+
+msgid "Sonntag"
+msgstr "الأحد"
+
+msgid "Benutzer nicht gefunden."
+msgstr "المستخدم غير موجود."
+
+msgid "Altes Passwort ist nicht korrekt."
+msgstr "كلمة المرور القديمة غير صحيحة."
+
+msgid "Neues Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل."
+
+msgid "Neues Passwort darf nicht dem alten Passwort entsprechen."
+msgstr "يجب ألا تكون كلمة المرور الجديدة مطابقة لكلمة المرور القديمة."
+
+msgid "Passwort geändert."
+msgstr "تم تغيير كلمة المرور."

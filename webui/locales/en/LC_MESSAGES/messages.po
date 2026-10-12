@@ -3004,3 +3004,426 @@ msgstr "soft skills"
 
 msgid "sprache"
 msgstr "language"
+
+msgid "**Agenda:**"
+msgstr "**Agenda:**"
+
+msgid "**Rechtliche Hinweise:**"
+msgstr "**Legal notices:**"
+
+msgid "**Vorbereitung:**"
+msgstr "**Preparation:**"
+
+msgid "**Wir laden Sie herzlich ein zum:**"
+msgstr "**We cordially invite you to:**"
+
+msgid "- **Datum:** {date}"
+msgstr "- **Date:** {date}"
+
+msgid "- **Dauer:** ca. {duration_minutes} Minuten"
+msgstr "- **Duration:** approx. {duration_minutes} minutes"
+
+msgid "- **Format:** {format}"
+msgstr "- **Format:** {format}"
+
+msgid "- **Uhrzeit:** {time}"
+msgstr "- **Time:** {time}"
+
+msgid "- Interviewer: [Name eintragen]"
+msgstr "- Interviewer: [enter name]"
+
+msgid "- Kandidat: [Name eintragen]"
+msgstr "- Candidate: [enter name]"
+
+msgid "- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit KI-Unterstützung erstellt."
+msgstr "- ⚖️ EU AI Act Art. 50: This invitation was created with AI assistance."
+
+msgid "- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß Art. 6(1)(b) DSGVO verarbeitet."
+msgstr "- 🔒 GDPR Art. 13: Your data is processed in accordance with Art. 6(1)(b) GDPR."
+
+msgid "1. Vorstellung des Unternehmens (5 Min.)\n2. Technische Fragen (20 Min.)\n3. Kulturelles Fit (10 Min.)\n4. Fragen des Kandidaten (10 Min.)"
+msgstr "1. Company introduction (5 min.)\n2. Technical questions (20 min.)\n3. Cultural fit (10 min.)\n4. Candidate questions (10 min.)"
+
+msgid "=== CALENDAR-EVENT (zum Kopieren) ==="
+msgstr "=== CALENDAR EVENT (to copy) ==="
+
+msgid "=== MEETING ERSTELLT ==="
+msgstr "=== MEETING CREATED ==="
+
+msgid "=== TEILNEHMER ==="
+msgstr "=== PARTICIPANTS ==="
+
+msgid "===ICS-DATEI (optional) ==="
+msgstr "===ICS FILE (optional) ==="
+
+msgid "Admin Dashboard"
+msgstr "Admin Dashboard"
+
+msgid "Admin nicht gefunden."
+msgstr "Admin not found."
+
+msgid "Agent-Tasks nach Status"
+msgstr "Agent tasks by status"
+
+msgid "Algorithmus-Feedback"
+msgstr "Algorithm feedback"
+
+msgid "Alle Kandidaten haben bereits ein extrahiertes Profil."
+msgstr "All candidates already have an extracted profile."
+
+msgid "Alle {0} analysieren"
+msgstr "Analyze all {0}"
+
+msgid "Alle {0} extrahieren"
+msgstr "Extract all {0}"
+
+msgid "Alle {0} kontaktieren"
+msgstr "Contact all {0}"
+
+msgid "Alle {0} matchen"
+msgstr "Match all {0}"
+
+msgid "Alle {0} pruefen"
+msgstr "Check all {0}"
+
+msgid "Bereits heute gequeued oder Fehler."
+msgstr "Already queued today or errors."
+
+msgid "Beschreibung: {beschreibung}"
+msgstr "Description: {beschreibung}"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich bewerben."
+msgstr "Applications appear here as soon as candidates apply."
+
+msgid "Bewerbungen mit Status 'beworben' werden dem Agenten zur Score-Berechnung zugeführt."
+msgstr "Applications with status 'applied' are passed to the agent for score calculation."
+
+msgid "Bewerbungen pro Monat"
+msgstr "Applications per month"
+
+msgid "Bewerbungen werden dem Agenten zur Kultur-Fit-Bewertung (0-100) zugeführt."
+msgstr "Applications are passed to the agent for cultural fit assessment (0-100)."
+
+msgid "Bewerbungen werden dem Agenten zur laenderspezifischen Rechts-Pruefung zugeführt."
+msgstr "Applications are passed to the agent for country-specific legal review."
+
+msgid "Bitte bringen Sie folgende Unterlagen mit:\n- Aktuellen Lebenslauf\n- Zeugnisse\n- Referenzen (falls vorhanden)"
+msgstr "Please bring the following documents:\n- Current CV\n- Certificates\n- References (if available)"
+
+msgid "Check Compliance"
+msgstr "Check Compliance"
+
+msgid "Compliance-Pruefung (DSGVO, AGG, BDSG)"
+msgstr "Compliance check (GDPR, AGG, BDSG)"
+
+msgid "Compliance-Tool"
+msgstr "Compliance tool"
+
+msgid "Contact Candidate"
+msgstr "Contact Candidate"
+
+msgid "Culture Fit"
+msgstr "Culture Fit"
+
+msgid "Datei auswaehlen"
+msgstr "Select file"
+
+msgid "Datum: {date_formatted}"
+msgstr "Date: {date_formatted}"
+
+msgid "Dauer: {duration_minutes} Minuten"
+msgstr "Duration: {duration_minutes} minutes"
+
+msgid "Eingeladene Kandidaten werden dem Agenten zur E-Mail-Generierung zugeführt."
+msgstr "Invited candidates are passed to the agent for email generation."
+
+msgid "Einladung zum Vorstellungsgespräch – {position}"
+msgstr "Interview invitation – {position}"
+
+msgid "Ende: {date}T{end}:00"
+msgstr "End: {date}T{end}:00"
+
+msgid "Ergebnis: {0}"
+msgstr "Result: {0}"
+
+msgid "Extract Profile"
+msgstr "Extract Profile"
+
+msgid "Extract-Task #{0} gequeued"
+msgstr "Extract task #{0} queued"
+
+msgid "Fehler beim Speichern."
+msgstr "Error while saving."
+
+msgid "Firmenprofil #{0} gespeichert."
+msgstr "Company profile #{0} saved."
+
+msgid "Format: Online (VDO.Ninja)"
+msgstr "Format: Online (VDO.Ninja)"
+
+msgid "Gespeichert: {0}"
+msgstr "Saved: {0}"
+
+msgid "Gewichtung"
+msgstr "Weighting"
+
+msgid "HR"
+msgstr "HR"
+
+msgid "HR-Write"
+msgstr "HR write"
+
+msgid "Kandidat #{0} – {1}"
+msgstr "Candidate #{0} – {1}"
+
+msgid "Kandidaten kontaktieren"
+msgstr "Contact candidates"
+
+msgid "Kandidaten ohne extrahiertes Profil (hard_skills IS NULL) werden dem Agenten zur Profil-Extraktion zugeführt."
+msgstr "Candidates without an extracted profile (hard_skills IS NULL) are passed to the agent for profile extraction."
+
+msgid "Kandidaten werden nach Einladung durch HR hier angezeigt."
+msgstr "Candidates are displayed here after being invited by HR."
+
+msgid "Kandidaten-Liste als PDF herunterladen."
+msgstr "Download candidate list as PDF."
+
+msgid "Kandidaten-Matching mit Stellen"
+msgstr "Candidate matching with jobs"
+
+msgid "Keine Arbeitgeber vorhanden"
+msgstr "No employers available"
+
+msgid "Keine Bewerbungen mit Status 'beworben' oder 'eingegangen'."
+msgstr "No applications with status 'applied' or 'received'."
+
+msgid "Keine Bewerbungen zur Kultur-Analyse"
+msgstr "No applications for cultural analysis"
+
+msgid "Keine Bewerbungen zur Pruefung"
+msgstr "No applications for review"
+
+msgid "Keine Datei empfangen."
+msgstr "No file received."
+
+msgid "Keine Dateien vorhanden."
+msgstr "No files available."
+
+msgid "Keine Kandidaten ohne Profil"
+msgstr "No candidates without a profile"
+
+msgid "Keine Tasks gequeued (bereits aktiv oder Fehler)."
+msgstr "No tasks queued (already active or errors)."
+
+msgid "Keine eingeladenen Kandidaten"
+msgstr "No invited candidates"
+
+msgid "Keine offenen Bewerbungen"
+msgstr "No open applications"
+
+msgid "Keine offenen Bewerbungen gefunden."
+msgstr "No open applications found."
+
+msgid "Kultur-Fit-Analyse"
+msgstr "Cultural fit analysis"
+
+msgid "Lebenslaeufe hochladen"
+msgstr "Upload CVs"
+
+msgid "Lebenslauf"
+msgstr "CV"
+
+msgid "Lebenslauf oder Stellenprofil hochladen"
+msgstr "Upload CV or job profile"
+
+msgid "Link: {meet_url}"
+msgstr "Link: {meet_url}"
+
+msgid "Match Candidate"
+msgstr "Match Candidate"
+
+msgid "Match-Tool"
+msgstr "Match tool"
+
+msgid "Moechtest du {0} Compliance-Tasks wirklich starten?"
+msgstr "Do you really want to start {0} compliance tasks?"
+
+msgid "Moechtest du {0} Culture-Fit-Tasks wirklich starten?"
+msgstr "Do you really want to start {0} culture-fit tasks?"
+
+msgid "Moechtest du {0} Extract-Tasks wirklich starten?"
+msgstr "Do you really want to start {0} extract tasks?"
+
+msgid "Moechtest du {0} Kontakt-Tasks wirklich starten?"
+msgstr "Do you really want to start {0} contact tasks?"
+
+msgid "Moechtest du {0} Match-Tasks wirklich starten?"
+msgstr "Do you really want to start {0} match tasks?"
+
+msgid "Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikationen hervorragend zu unserer Position als **{position}** bei **{company}** passen."
+msgstr "After reviewing your CV, we found that your qualifications match our position as **{position}** at **{company}** excellently."
+
+msgid "Noch kein Ergebnis vorhanden – Task unten ausloesen, der Runner schreibt das MD nach ergebnisse/."
+msgstr "No result yet – trigger the task below; the runner writes the MD to ergebnisse/."
+
+msgid "Ort: {meet_url}"
+msgstr "Location: {meet_url}"
+
+msgid "PDF- und TXT-Dateien werden in testdaten/ gespeichert und dem Agenten zur Extraktion zugeführt."
+msgstr "PDF and TXT files are saved in testdaten/ and passed to the agent for extraction."
+
+msgid "Portal-Verwaltung"
+msgstr "Portal management"
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens."
+msgstr "Pre-screening as part of the application process."
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens. Meet-Link: {meet_url}"
+msgstr "Pre-screening as part of the application process. Meeting link: {meet_url}"
+
+msgid "Profil-Extraktion aus Lebenslaeufen"
+msgstr "Profile extraction from CVs"
+
+msgid "Recruiting"
+msgstr "Recruiting"
+
+msgid "Skill 1 - Profil-Extraktion"
+msgstr "Skill 1 - Profile extraction"
+
+msgid "Skill 2 - Kandidaten-Matching"
+msgstr "Skill 2 - Candidate matching"
+
+msgid "Skill 3 - Rechts-Pruefung"
+msgstr "Skill 3 - Legal review"
+
+msgid "Skill 4 - Kontakt"
+msgstr "Skill 4 - Contact"
+
+msgid "Skill 5 - Kultur-Analyse"
+msgstr "Skill 5 - Cultural analysis"
+
+msgid "Sprache: {0}"
+msgstr "Language: {0}"
+
+msgid "Start: {date}T{time}:00"
+msgstr "Start: {date}T{time}:00"
+
+msgid "Starten"
+msgstr "Start"
+
+msgid "Stellen-Status"
+msgstr "Job status"
+
+msgid "System-Uebersicht"
+msgstr "System overview"
+
+msgid "Task-Verteilung"
+msgstr "Task distribution"
+
+msgid "Tasks starten?"
+msgstr "Start tasks?"
+
+msgid "Thema: {topic}"
+msgstr "Subject: {topic}"
+
+msgid "Titel: {topic}"
+msgstr "Title: {topic}"
+
+msgid "Uhrzeit: {time_range}"
+msgstr "Time: {time_range}"
+
+msgid "Upload (Ingestion)"
+msgstr "Upload (Ingestion)"
+
+msgid "Upload fehlgeschlagen: {0}"
+msgstr "Upload failed: {0}"
+
+msgid "Visum-Schritte-Mail an den Kandidaten ausgeloest (Agent sendet)."
+msgstr "Visa steps email to the candidate triggered (agent sends)."
+
+msgid "Vorhandene Dateien"
+msgstr "Existing files"
+
+msgid "wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung mitteilen zu können."
+msgstr "we are pleased to inform you of our interest in your application."
+
+msgid "{0} Bewerbungen zur Compliance-Pruefung"
+msgstr "{0} applications for compliance review"
+
+msgid "{0} Bewerbungen zur Kultur-Analyse"
+msgstr "{0} applications for cultural analysis"
+
+msgid "{0} Compliance-Tasks gequeued"
+msgstr "{0} compliance tasks queued"
+
+msgid "{0} Culture-Fit-Tasks gequeued"
+msgstr "{0} culture-fit tasks queued"
+
+msgid "{0} Extract-Tasks gequeued"
+msgstr "{0} extract tasks queued"
+
+msgid "{0} Kandidat #{1} – {2} ({3}, {4})"
+msgstr "{0} candidate #{1} – {2} ({3}, {4})"
+
+msgid "{0} Kandidaten ohne Profil"
+msgstr "{0} candidates without a profile"
+
+msgid "{0} Kontakt-Tasks gequeued"
+msgstr "{0} contact tasks queued"
+
+msgid "{0} Match-Tasks gequeued"
+msgstr "{0} match tasks queued"
+
+msgid "{0} eingeladene Kandidaten"
+msgstr "{0} invited candidates"
+
+msgid "{0} offene Bewerbungen"
+msgstr "{0} open applications"
+
+msgid "{0} · Eingegangen: {1}"
+msgstr "{0} · Received: {1}"
+
+msgid "{start} – {end} Uhr"
+msgstr "{start} – {end}"
+
+msgid "{time} Uhr ({duration_minutes} Min.)"
+msgstr "{time} ({duration_minutes} min.)"
+
+msgid "💾 Profil speichern"
+msgstr "💾 Save profile"
+
+msgid "Montag"
+msgstr "Monday"
+
+msgid "Dienstag"
+msgstr "Tuesday"
+
+msgid "Mittwoch"
+msgstr "Wednesday"
+
+msgid "Donnerstag"
+msgstr "Thursday"
+
+msgid "Freitag"
+msgstr "Friday"
+
+msgid "Samstag"
+msgstr "Saturday"
+
+msgid "Sonntag"
+msgstr "Sunday"
+
+msgid "Benutzer nicht gefunden."
+msgstr "User not found."
+
+msgid "Altes Passwort ist nicht korrekt."
+msgstr "Old password is incorrect."
+
+msgid "Neues Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "New password must be at least 8 characters long."
+
+msgid "Neues Passwort darf nicht dem alten Passwort entsprechen."
+msgstr "New password must not be the same as the old password."
+
+msgid "Passwort geändert."
+msgstr "Password changed."

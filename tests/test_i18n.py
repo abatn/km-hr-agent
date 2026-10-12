@@ -786,3 +786,56 @@ def test_p9_5_status_timeline_klartext():
     # Abwesenheit der 3 rohen Muster.
     for roh in ('f"{h_status}"', 'f"{h_icon} {h_status}"', 'f"{_h_icon} {_h_status}"'):
         assert roh not in cand, f"roher Status-Slug in Timeline: {roh!r}"
+
+
+# ─── Rollout 12.10.2026: neue Admin-/MCP-/Logic-msgids ──────────────────────
+# Regression-Guard zur Katalog-Pflege: Jedes literal genutzte Erstargument von
+# _()/tr()/_gettext() aus admin.py + den beiden MCP-Servern muss in ALLEN vier
+# Katalogen liegen (nicht-leer; DE = Identitaet). Dazu die dynamischen Keys, die
+# per Wert durch den Katalog laufen: die 7 Wochentage (mcp-meeting-server.py
+# `tr(day_name_de[start.weekday()], language)`) und die 5 `logic.change_password`-
+# Meldungen (Konsum via `_(msg)` in admin/candidate/employer).
+# Extraktion = AST (nur Literale, keine f-Strings) — wie in der Rollout-Vorlage.
+_ROLLOUT_QUELLEN = (
+    BASE / "webui" / "pages" / "admin.py",
+    BASE / "mcp-email-server.py",
+    BASE / "mcp-meeting-server.py",
+)
+_ROLLOUT_DYNAMISCH = (
+    "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag",
+    "Benutzer nicht gefunden.",
+    "Altes Passwort ist nicht korrekt.",
+    "Neues Passwort muss mindestens 8 Zeichen lang sein.",
+    "Neues Passwort darf nicht dem alten Passwort entsprechen.",
+    "Passwort geändert.",
+)
+
+
+def _rollout_genutzte_msgids() -> set[str]:
+    keys: set[str] = set()
+    for path in _ROLLOUT_QUELLEN:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        for n in ast.walk(tree):
+            if not isinstance(n, ast.Call):
+                continue
+            f = n.func
+            name = f.id if isinstance(f, ast.Name) else (
+                f.attr if isinstance(f, ast.Attribute) else None)
+            if name not in {"_", "tr", "_gettext"} or not n.args:
+                continue
+            a0 = n.args[0]
+            if isinstance(a0, ast.Constant) and isinstance(a0.value, str):
+                keys.add(a0.value)
+    return keys | set(_ROLLOUT_DYNAMISCH)
+
+
+def test_rollout_1210_genutzte_msgids_in_allen_katalogen():
+    """Jeder genutzte Rollout-msgid liegt nicht-leer in allen 4 Katalogen, DE = Identitaet."""
+    keys = _rollout_genutzte_msgids()
+    assert len(keys) >= 240, f"Extraktion zu klein: {len(keys)}"
+    for key in keys:
+        for lang in LANGS:
+            cat = _catalog(lang)
+            assert key in cat._catalog, f"{lang}: Rollout-Key {key!r} fehlt im .mo"
+            assert str(cat._catalog[key]).strip(), f"{lang}: leerer msgstr für {key!r}"
+        assert _catalog("de").gettext(key) == key, f"DE: msgstr != msgid für {key!r}"

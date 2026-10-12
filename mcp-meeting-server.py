@@ -31,7 +31,7 @@ mcp = FastMCP("meeting-tools")
 
 
 @mcp.tool()
-def create_meeting_link(topic: str, date: str, time: str, duration_minutes: int = 45) -> str:
+def create_meeting_link(topic: str, date: str, time: str, duration_minutes: int = 45, language: str = "de") -> str:
     """
     Erstellt einen VDO.Ninja-Link und Meeting-Metadaten
     (LEGACY-Tool – im Projekt aktuell 0 Aufrufer; Umbau Jitsi → VDO.Ninja 27.09.2026).
@@ -41,6 +41,7 @@ def create_meeting_link(topic: str, date: str, time: str, duration_minutes: int 
         date: Datum im Format YYYY-MM-DD
         time: Uhrzeit im Format HH:MM
         duration_minutes: Dauer in Minuten (Standard: 45)
+        language: Zielsprache der Ausgabe (de/en/fr/ar; Default de – Altverhalten)
     
     Returns:
         Meeting-Link + Metadaten als strukturierter Text
@@ -54,47 +55,52 @@ def create_meeting_link(topic: str, date: str, time: str, duration_minutes: int 
     try:
         start = datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M")
         end = start + timedelta(minutes=duration_minutes)
-        time_range = f"{start.strftime('%H:%M')} – {end.strftime('%H:%M')} Uhr"
+        time_range = tr("{start} – {end} Uhr", language,
+                        start=start.strftime('%H:%M'), end=end.strftime('%H:%M'))
         day_name_de = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"]
-        day_name = day_name_de[start.weekday()]
+        day_name = tr(day_name_de[start.weekday()], language)
         date_formatted = f"{day_name}, {start.strftime('%d.%m.%Y')}"
     except:
-        time_range = f"{time} Uhr ({duration_minutes} Min.)"
+        time_range = tr("{time} Uhr ({duration_minutes} Min.)", language,
+                        time=time, duration_minutes=duration_minutes)
         date_formatted = date
     
-    result = f"""OK
-=== MEETING ERSTELLT ===
-
-Thema: {topic}
-Datum: {date_formatted}
-Uhrzeit: {time_range}
-Dauer: {duration_minutes} Minuten
-Format: Online (VDO.Ninja)
-
-Link: {meet_url}
-
-=== TEILNEHMER ===
-- Interviewer: [Name eintragen]
-- Kandidat: [Name eintragen]
-
-=== CALENDAR-EVENT (zum Kopieren) ===
-Titel: {topic}
-Start: {date}T{time}:00
-Ende: {date}T{end.strftime('%H:%M')}:00
-Ort: {meet_url}
-Beschreibung: Pre-Screening im Rahmen des Bewerbungsverfahrens.
-
-===ICS-DATEI (optional) ===
-BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-DTSTART:{date.replace('-','')}T{time.replace(':','')}00
-DTEND:{date.replace('-','')}T{end.strftime('%H%M')}00
-SUMMARY:{topic}
-LOCATION:{meet_url}
-DESCRIPTION:Pre-Screening im Rahmen des Bewerbungsverfahrens.
-END:VEVENT
-END:VCALENDAR"""
+    beschreibung = tr("Pre-Screening im Rahmen des Bewerbungsverfahrens.", language)
+    result = "\n".join([
+        "OK",
+        tr("=== MEETING ERSTELLT ===", language),
+        "",
+        tr("Thema: {topic}", language, topic=topic),
+        tr("Datum: {date_formatted}", language, date_formatted=date_formatted),
+        tr("Uhrzeit: {time_range}", language, time_range=time_range),
+        tr("Dauer: {duration_minutes} Minuten", language, duration_minutes=duration_minutes),
+        tr("Format: Online (VDO.Ninja)", language),
+        "",
+        tr("Link: {meet_url}", language, meet_url=meet_url),
+        "",
+        tr("=== TEILNEHMER ===", language),
+        tr("- Interviewer: [Name eintragen]", language),
+        tr("- Kandidat: [Name eintragen]", language),
+        "",
+        tr("=== CALENDAR-EVENT (zum Kopieren) ===", language),
+        tr("Titel: {topic}", language, topic=topic),
+        tr("Start: {date}T{time}:00", language, date=date, time=time),
+        tr("Ende: {date}T{end}:00", language, date=date, end=end.strftime('%H:%M')),
+        tr("Ort: {meet_url}", language, meet_url=meet_url),
+        tr("Beschreibung: {beschreibung}", language, beschreibung=beschreibung),
+        "",
+        tr("===ICS-DATEI (optional) ===", language),
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "BEGIN:VEVENT",
+        f"DTSTART:{date.replace('-','')}T{time.replace(':','')}00",
+        f"DTEND:{date.replace('-','')}T{end.strftime('%H%M')}00",
+        f"SUMMARY:{topic}",
+        f"LOCATION:{meet_url}",
+        f"DESCRIPTION:{beschreibung}",
+        "END:VEVENT",
+        "END:VCALENDAR",
+    ])
     
     return result
 
@@ -209,7 +215,7 @@ def generate_screening_questions(candidate_name: str, position: str, match_score
 
 
 @mcp.tool()
-def generate_ics_file(topic: str, date: str, time: str, duration_minutes: int, meet_url: str, description: str = "") -> str:
+def generate_ics_file(topic: str, date: str, time: str, duration_minutes: int, meet_url: str, description: str = "", language: str = "de") -> str:
     """
     Generiert eine ICS-Datei für Calendar-Import.
     
@@ -220,6 +226,7 @@ def generate_ics_file(topic: str, date: str, time: str, duration_minutes: int, m
         duration_minutes: Dauer in Minuten
         meet_url: VDO.Ninja-Link
         description: Beschreibung (optional)
+        language: Zielsprache der Beschreibung (de/en/fr/ar; Default de – Altverhalten)
     
     Returns:
         ICS-Inhalt
@@ -235,7 +242,8 @@ def generate_ics_file(topic: str, date: str, time: str, duration_minutes: int, m
     dt_stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
     uid = str(uuid.uuid4())
     
-    desc = description or f"Pre-Screening im Rahmen des Bewerbungsverfahrens. Meet-Link: {meet_url}"
+    desc = description or tr("Pre-Screening im Rahmen des Bewerbungsverfahrens. "
+                             "Meet-Link: {meet_url}", language, meet_url=meet_url)
     
     ics = f"""BEGIN:VCALENDAR
 VERSION:2.0

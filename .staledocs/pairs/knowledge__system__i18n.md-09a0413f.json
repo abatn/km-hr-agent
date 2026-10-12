@@ -111,24 +111,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T14:54:31+00:00",
+    "at": "2026-10-12T19:14:55+00:00",
     "code_blobs": {
-      "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
-      "tests/test_runner_i18n.py": "c140816d03ba71904143a039edf070387004e89e",
+      "tests/test_i18n.py": "d94d68c4e55d8a7a1bb8e7cfe0c4a82655e55285",
+      "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "7725efefb668b8690447ef22a86ee7d905ea77a2",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "c9a996705a11abaf581d286ec90c83beeb4c0d3a",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "e9e4411d175de4ba95fab857216190fd19ec8930",
-      "webui/locales/de/LC_MESSAGES/messages.po": "bb78445cac3fd4eb56c52cb2b31258f316603c58",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "d26cec858794b7bb3082a3940ad5fecfec888023",
-      "webui/locales/en/LC_MESSAGES/messages.po": "70dd392104b035a1a7c81745ee8f38e53bdd8594",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "660c5d2ce6ae7145c1b5d2dd975bb3c2cb892454",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "f8cb1ee6644bb3bcfc2a096430d8ce27248a9492"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "c4b9960e1326ed4ab63b30a041edc6fed3776d03",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "f513172357df2031d4b715e678d75f708a13e01a",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "be5747c69cadeb8925eae65839f4003ddc0ffb6d",
+      "webui/locales/de/LC_MESSAGES/messages.po": "af13f45a7ce9cf0fe51957d0f0cc244ee15ec56d",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "399fac8b0a3e24e8a1a70d33cebd12f9579ff705",
+      "webui/locales/en/LC_MESSAGES/messages.po": "165efcaaa002f3c6f1aa4721a1ebbad60b10c8dd",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "0d1f78cb54c6372120a8fbcf39483c92bb2cd7de",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "65fa79dae3a285c822f2e9e233b6258f10c40c40"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
-    "doc_blob": "7dbfe82cb500363fb0f055b796e0827b0ad81e6f",
-    "note": "code moved: tests/test_runner_i18n.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "doc_blob": "857db631dd6214cc8df25397692f0489f22e6d61",
+    "note": "code moved: tests/test_i18n.py, tests/test_runner_i18n.py, webui/locales/ar/LC_MESSAGES/messages.mo, webui/locales/ar/LC_MESSAGES/messages.po, webui/locales/de/LC_MESSAGES/messages.mo, webui/locales/de/LC_MESSAGES/messages.po, webui/locales/en/LC_MESSAGES/messages.mo, webui/locales/en/LC_MESSAGES/messages.po, webui/locales/fr/LC_MESSAGES/messages.mo, webui/locales/fr/LC_MESSAGES/messages.po \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

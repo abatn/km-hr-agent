@@ -162,6 +162,8 @@ def test_runner_speichert_text_ungekappt():
     src = (Path(__file__).resolve().parents[1] / "scripts" / "agent-runner.py").read_text("utf-8")
     # Plan-ii: keine Kappung mehr
     assert "RESULT_TEXT_MAX" not in src
-    assert '"text": report_text}' in src
+    assert '"text": report_text' in src
+    # S4a (12.10.2026): Berichtssprache additiv im Ergebnis-Dict
+    assert '"language": _langval' in src
     # Additiv: die Altfelder bleiben erhalten
     assert '"result_path": result_path, "agent_chars": len(agent_text)' in src

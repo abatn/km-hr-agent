@@ -5,24 +5,29 @@
 > **Bindend für:** alle agent-erzeugten, nutzersichtbaren Texte der Kette.
 
 ## 1. Ziel
-Nachweis, dass die nutzersichtbare Agent-Kette (Runner + MCP) in **jeder Sprache** (DE/EN/FR/AR)
-korrekt bedient wird — mit E2E-Beweis je Sprache und ohne externe Nebenwirkung (kein echter
-Mail-Versand, kein LLM-/Netz-Call). **Präzisierung (12.10.2026, Abgleich mit den Grenzen aus §7.1):**
-garantiert ist die Sprache für die **deterministischen `tr()`-Pfade** (Mails #1–#6, die
-deterministischen Reports, die `>`-Header-Prosa) — **je Sprache**; für die
-**LLM-Berichts-Bodies** gilt **best-effort**: Prompt-Anweisung + Sprach-Nachkontrolle mit **max. 1
-Retry**, Warn-Log (§7.1 Punkt 5) — **keine** harte Garantie.
+**Soll (12.10.2026, Nutzer-Entscheidung):** Die nutzersichtbare Ausgabe folgt der **UI-Sprache des
+handelnden Nutzers** (`app.storage.user["language"]`, transportiert als `language` im Task-Payload
+bzw. gelesen über `_lang(payload)`) — **die Auslöser-UI-Sprache führt**. Nachweis: die
+nutzersichtbare Agent-Kette (Runner + MCP) wird in **jeder Sprache** (DE/EN/FR/AR) mit E2E-Beweis je
+Sprache bedient — ohne externe Nebenwirkung (kein echter Mail-Versand, kein LLM-/Netz-Call).
+
+**Dokumentierte Ausnahmen zum Soll:**
+- **(a) LLM-Berichts-Bodies = best-effort:** Prompt-Anweisung + Sprach-Nachkontrolle
+  (`_body_sprache_ok`) mit **max. 1 Retry** und Warn-Log (§7.1 Punkt 5) — **keine** harte Garantie.
+- **(b) Gespeicherte Artefakte/Altbestand werden NICHT rückübersetzt:** es gilt die
+  **Erzeugungssprache** (§7.1 Punkt 4). Garantiert ist die Sprache für die **deterministischen
+  `tr()`-Pfade** (Mails #1–#6, die deterministischen Reports, die `>`-Header-Prosa) — **je Sprache**.
 
 ## 2. Was ist sprachabhängig? (Ist-Analyse, Codemarken ⓘ07.10.2026)
-| Artefakt | Sprache | Quelle |
-|---|---|---|
-| Toasts (z. B. „Profil gespeichert!", „Lebenslauf hochgeladen …", „Bewerbung gesendet! …") | **Session-Sprache** | `webui/pages/candidate.py` (`ui.notify(_(...))`) |
-| `notifications`-Zeilen (`Neue Bewerbung`, `{0} hat sich beworben: {1}`) | **Erzeugungs-Sprache** (Kandidaten-Session beim Trigger) | `webui/pages/candidate.py` (Codemarke `def _notify_neue_bewerbung`, gemessen 10.10.2026) → `db.insert_notification(..., _(...))` |
-| Statische UI (Tabs, Labels, Status über `status_label`) | **Session-Sprache** | `webui/i18n.py` (gemessen 10.10.2026) |
-| Portal-erzeugte MD (Onboarding-Checkliste, Pre-Screen-MD, Feedback-MD) | **Erzeugungs-Sprache** | P9.4, `knowledge/system/i18n.md` Klasse E |
-| **Runner-erzeugte Artefakte** (Mails #1–#6, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core.py` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver |
-| **LLM-Berichts-Body** (`extract_profile-*`, `match_candidate-*`, `check_compliance-*`, `assess_culture_fit-*`, `verify_documents-*`, `check_visa-*`, `explain_match-*`, `notify_user-*.md` in `ergebnisse/`) | **Payload-Sprache** (Prompt-Anweisung `Antworte in <Klarname>.`, §7.1 Punkt 5) — Altbestand **vor** 07.10.2026 bleibt deutsch (Punkt 4), z. B. `extract_profile-kandidat-13-2026-09-24.md` | `scripts/agent-runner.py`, Codemarke `Antworte in` (Prompt-Bau); Anzeige in 🏢 🔎 Agent-Details via `logic.ERGEBNISSE.glob(_glob)` (neueste Datei je Task) |
-| **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Prosa-Zeile in Payload-Sprache; Titel-Marker sprachstabil (deutsch)** — nur die `>`-Zeile `(> Agent-Task (Phase 5, live …), Modell: …)` läuft über `tr()`; der **Task-Titel bleibt englisch** (Identifier, entspricht Dateiname-Prefix und Badge-Key) und die **Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` bleiben IMMER deutsch** (sprachstabile, maschinell geparste Identifier) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen", korrigiert 09.10.2026 (parse-kritische Marker)**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Parser: `webui/pages/employer.py` Codemarke `_BERICHT_STELLE` (`Stelle #(\d+)`) + `tests/test_r33_compliance_reports.py` (`Stelle #\d+`); Beweise `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_header_de_byteidentisch`, gemessen 10.10.2026) (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) |
+| Artefakt | Sprache | Quelle | Abweichung zum Soll |
+|---|---|---|---|
+| Toasts (z. B. „Profil gespeichert!", „Lebenslauf hochgeladen …", „Bewerbung gesendet! …") | **Session-Sprache** | `webui/pages/candidate.py` (`ui.notify(_(...))`) | — |
+| `notifications`-Zeilen (`Neue Bewerbung`, `{0} hat sich beworben: {1}`) | **Erzeugungs-Sprache** (Kandidaten-Session beim Trigger) | `webui/pages/candidate.py` (Codemarke `def _notify_neue_bewerbung`, gemessen 10.10.2026) → `db.insert_notification(..., _(...))` | cross-person: Empfänger ≠ Auslöser (Kandidaten-Sprache beim Trigger) |
+| Statische UI (Tabs, Labels, Status über `status_label`) | **Session-Sprache** | `webui/i18n.py` (gemessen 10.10.2026) | — |
+| Portal-erzeugte MD (Onboarding-Checkliste, Pre-Screen-MD, Feedback-MD) | **Erzeugungs-Sprache** | P9.4, `knowledge/system/i18n.md` Klasse E | — |
+| **Runner-erzeugte Artefakte** (Mails #1–#6, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core.py` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver | Runner-intern ohne UI-Akteur: erbt Sprache der auslösenden Kette (`_lang(payload)`, §7) |
+| **LLM-Berichts-Body** (`extract_profile-*`, `match_candidate-*`, `check_compliance-*`, `assess_culture_fit-*`, `verify_documents-*`, `check_visa-*`, `explain_match-*`, `notify_user-*.md` in `ergebnisse/`) | **Payload-Sprache** (Prompt-Anweisung `Antworte in <Klarname>.`, §7.1 Punkt 5) — Altbestand **vor** 07.10.2026 bleibt deutsch (Punkt 4), z. B. `extract_profile-kandidat-13-2026-09-24.md` | `scripts/agent-runner.py`, Codemarke `Antworte in` (Prompt-Bau); Anzeige in 🏢 🔎 Agent-Details via `logic.ERGEBNISSE.glob(_glob)` (neueste Datei je Task) | best-effort (Prompt + `_body_sprache_ok`, max 1 Retry, §7.1 P5); Altbestand nicht rückübersetzt (P4) |
+| **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Prosa-Zeile in Payload-Sprache; Titel-Marker sprachstabil (deutsch)** — nur die `>`-Zeile `(> Agent-Task (Phase 5, live …), Modell: …)` läuft über `tr()`; der **Task-Titel bleibt englisch** (Identifier, entspricht Dateiname-Prefix und Badge-Key) und die **Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` bleiben IMMER deutsch** (sprachstabile, maschinell geparste Identifier) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen", korrigiert 09.10.2026 (parse-kritische Marker)**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Parser: `webui/pages/employer.py` Codemarke `_BERICHT_STELLE` (`Stelle #(\d+)`) + `tests/test_r33_compliance_reports.py` (`Stelle #\d+`); Beweise `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_header_de_byteidentisch`, gemessen 10.10.2026) (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) | parse-kritische Marker `Kandidat #`/`Stelle #` immer deutsch = gebundene Soll-Ausnahme (§7.1 P5) |
 
 **Design-Entscheidung (keine externe Quelle):** Runner-Artefakte liefen bis P1 fix Deutsch (kein
 Session-Kontext). Seit **P2/P3 (07.10.2026, Variante B)** tragen die Tasks `language` im Payload
@@ -120,17 +125,29 @@ Port 8085, `rc=0`, 186,7 s, alle 4 Sprachen `rc=0`, Live-DB-sha256 unverändert.
   „(Katalog-Key {0} ohne URL)" über `tr(...)` (reine **Anzeige** — **kein** Parser-/Persistenz-Marker;
   der geschützte `"Kandidat #"`-Parser betrifft nur `feedback.kandidat_name`/`_feedback_klarname`,
   nicht den Contract-Report). Katalog 969 → **972** (+3).
-- **Bewusst NICHT abgedeckt (Legacy-MCP-Tools, 0 Aufrufer):** `mcp-email-server.py` (Codemarke `def send_interview_invitation`, gemessen 10.10.2026)
-  und `mcp-meeting-server.py` (Codemarke `def create_meeting_link`, gemessen 10.10.2026) bleiben deutsch (kein `language`-Parameter) —
-  Design-Entscheidung, da toter Code ohne Aufrufer (nicht P2b-geändert).
+- **Legacy-MCP-Tools (0 Aufrufer, seit 12.10.2026 sprachparameterisiert):** `mcp-email-server.py`
+  (Codemarke `def send_interview_invitation`) und `mcp-meeting-server.py` (Codemarken
+  `def create_meeting_link`, `def generate_ics_file`) akzeptieren jetzt `language: str = "de"`
+  und bauen ihre Texte (Betreff/Body, Meeting-Labels inkl. Wochentage, ICS-Default-`DESCRIPTION`)
+  über `tr(..., language)`; fehlendes/ungültiges `language` → `de` (Altverhalten, DE-Ausgabe
+  byte-identisch). Die zugehörigen msgids laufen über den Katalog `webui/locales`; DE = Identität,
+  EN/FR/AR = Design-Entscheidung (Native-Review offen).
 - Native-Review der EN/FR/AR-Erstfassungen (steht projektweit offen).
 
 ## 7. Umsetzung Variante B (Nutzer-GO 07.10.2026)
 **Entscheidung (Nutzer):** Sprache = **Session-Sprache des Auslösers**, transportiert als `language`
 im Task-Payload. **Keine** `candidates.language`-Spalte (Variante A verworfen).
-**Bekannte Grenze (Design-Entscheidung, ausdrücklich akzeptiert):** HR-ausgelöste Kandidaten-Mails
-(Einladung/Absage/Visum/Onboarding) laufen in der **HR-Sprache**, nicht in der Sprache des
-Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
+**Bekannte Grenze — präzisiert 12.10.2026 (kein Verstoß, sondern Soll-konform):** HR-ausgelöste
+Kandidaten-Mails (Einladung/Absage/Visum/Onboarding) laufen in der **HR-Sprache** — nach dem Soll
+„Auslöser-UI-Sprache führt" ist das **konform** (Akteur = HR). **Offener Rest** ist allein die
+**Empfänger-Sprache** (Kandidat): die Mail folgt nicht der Sprache des Kandidaten. Der explizite,
+offene Pfad dafür bleibt **Variante A** (Kandidaten-Sprache, später möglich, additiv).
+
+**Weitere Abweichungsklasse (dokumentierte Grenze, kein Bug):** Runner-interne Events **ohne
+UI-Akteur** (`notify_hr`, Auto-Refresh `match_candidate`, Sweep) haben im Runner **keine
+HR-Session**; sie erben die Sprache der **auslösenden Kette** über `_lang(payload)` (Payload-Feld
+`language`). Ohne UI-Akteur ist das die einzig verfügbare Sprache — dokumentiert, nicht als Fehler
+zu werten.
 
 ### 7.1 Bausteine
 1. **`webui/i18n_core.py` (neu, framework-frei):** pures `gettext` + `lru_cache`,
@@ -155,14 +172,15 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
    `onboarding-freigabe-*`, `contract-preflight-*`, `export-kandidat-*`) über `tr(...)`.
 4. **Fallback / Altbestand:** Tasks ohne `language` (bereits in der Queue) → `de`; keine
    Rück-Übersetzung bestehender Mails/Reports **und LLM-Berichte** (P9.4-Regel „Erzeugungssprache";
-   Praxis-Fall 07.10.2026: Agent-Details zeigt Alt-Dateien vom 24.09.2026 → deutsch = korrekt).
+   Praxis-Fall 07.10.2026: Agent-Details zeigt Alt-Dateien vom 24.09.2026 → deutsch = **Abweichung
+   zum Soll, GO Liegenlassen 07.10.2026**).
 5. **LLM-Tasks:** Prompt erhält die Anweisung, in der Payload-Sprache zu antworten (HR-Sichtbar);
    als Design-Entscheidung dokumentiert. **Berichts-Header seit P9.5b (07.10.2026, Nutzer-GO
    „Mitübersetzen"):** `llm_report_header(task_type, cid, jid, datum, lang)` baut den Header über
    `tr()` in der Payload-Sprache (Prosa-Zeile „Agent-Task (Phase 5, live …), Modell: …"); der
    **Task-Titel bleibt englisch** (`task_type.title()` = Identifier, entspricht Dateiname-Prefix und
    Badge-Key — Design-Entscheidung). **Korrektur P9.5b für parse-kritische Marker (Design-Entscheidung,
-   09.10.2026):** die Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` sind **sprachstabile
+   09.10.2026) = gebundene Soll-Ausnahme (parse-kritisch):** die Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` sind **sprachstabile
    Identifier** und werden **immer deutsch** geschrieben (nicht mehr über `tr()`) — Grund: sie werden
    maschinell geparst von `webui/pages/employer.py` (Codemarke `_BERICHT_STELLE = _re.compile(r"Stelle
    #(\d+)")`, HR-Compliance-Seite) und von `tests/test_r33_compliance_reports.py` (`Stelle #\d+`);
@@ -204,7 +222,13 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
    über `tr(..., language)`; `scripts/agent-runner.py` (Codemarke `def create_invitation`, gemessen 10.10.2026) übergibt `"language": lang`.
    Fehlendes/ungültiges `language` → `de` (Altverhalten). Neuer Katalog-Bestand: **+42 msgids**
    (927 → **969**; Übersetzungen EN/FR/AR = **Design-Entscheidung**, eigene Erstfassung,
-   Native-Review offen).
+   Native-Review offen). **Legacy-Tools (12.10.2026):** auch `send_interview_invitation`
+   (`mcp-email-server.py`, Codemarke `def send_interview_invitation`) sowie `create_meeting_link`
+   und `generate_ics_file` (`mcp-meeting-server.py`) sind sprachparameterisiert
+   (`language: str = "de"`, Texte über `tr(..., language)`, fehlend/ungültig → `de`); die
+   DE-Ausgabe ist byte-identisch zu vorher (backward compatible). Die zugehörigen msgids laufen
+   über den Katalog `webui/locales`; DE = Identität, EN/FR/AR = Design-Entscheidung
+   (Native-Review offen).
 
 ### 7.2 Nachweis
 - Unit: `tests/test_runner_i18n.py` (`tr()` je Sprache, Fallback, `_lang`-Priorität, Dedupe ignoriert
@@ -220,8 +244,12 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
 Drei von der unabhängigen Verifikation gefundene Rest-Lücken sind geschlossen (Details §6):
 M1 `notify_hr` „Compliance: {0}", M2 `create_invitation` `strengths`/`gaps` „siehe Match-Bericht"
 (kandidensichtbar), M3 `contract_preflight` Report-Fallbacks (reine Anzeige). Katalog **969 → 972**.
-**Nicht abgedeckt (Design-Entscheidung):** die Legacy-Tools `send_interview_invitation` und
-`create_meeting_link` (0 Aufrufer) bleiben unübersetzt.
+**Nachtrag Legacy-Tools (12.10.2026):** die zuvor ausgenommenen Legacy-Tools
+`send_interview_invitation` (`mcp-email-server.py`) sowie `create_meeting_link` und
+`generate_ics_file` (`mcp-meeting-server.py`) sind jetzt sprachparameterisiert
+(`language: str = "de"`, Texte über `tr(..., language)`, fehlend/ungültig → `de`); die DE-Ausgabe
+ist byte-identisch zu vorher (backward compatible). Die zugehörigen msgids laufen über den Katalog
+`webui/locales`; DE = Identität, EN/FR/AR = Design-Entscheidung (Native-Review offen).
 
 ### 7.4 Nachtrag P4c (07.10.2026) — `export_report`
 Der als letzte Rest-Lücke gefundene deterministische Report-Generator **`export_report`** (Skill 16,

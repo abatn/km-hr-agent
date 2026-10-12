@@ -1,9 +1,19 @@
 # E-Mail-Vorlage: Interview-Einladung
 
+> **Hinweis (12.10.2026):** Die Vorlage ist **sprachparameterisiert**. Das MCP-Tool
+> `email-sender.send_interview_invitation` baut Betreff + Body über `tr(..., language)`
+> (`webui/i18n_core`, Katalog `webui/locales`) und akzeptiert `language`
+> (`de`/`en`/`fr`/`ar`; Default `de` – fehlende/ungültige Werte → `de`).
+> Die folgende Fassung ist die **`de`-Variante** (msgid = Identität); die
+> Übersetzungen liefern die Kataloge. Die `{{...}}`-Platzhalter entsprechen den
+> Tool-Parametern (`{{stelle}}`→`position`, `{{kandidat_email}}`→`to`, `{{datum}}`→`date`,
+> `{{uhrzeit}}`→`time`, `{{unternehmen}}`→`company`).
+
 ---
 
 **Von:** {{absender_name}} / {{unternehmen}}  
 **An:** {{kandidat_email}}  
+**Sprache:** {{sprache}} (de/en/fr/ar; Default de)  
 **Betreff:** Einladung zum Vorstellungsgespräch – {{stelle}}
 
 ---

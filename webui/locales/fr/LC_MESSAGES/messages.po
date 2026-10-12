@@ -3004,3 +3004,426 @@ msgstr "compétences comportementales"
 
 msgid "sprache"
 msgstr "langue"
+
+msgid "**Agenda:**"
+msgstr "**Ordre du jour :**"
+
+msgid "**Rechtliche Hinweise:**"
+msgstr "**Mentions légales :**"
+
+msgid "**Vorbereitung:**"
+msgstr "**Préparation :**"
+
+msgid "**Wir laden Sie herzlich ein zum:**"
+msgstr "**Nous vous invitons cordialement à :**"
+
+msgid "- **Datum:** {date}"
+msgstr "- **Date :** {date}"
+
+msgid "- **Dauer:** ca. {duration_minutes} Minuten"
+msgstr "- **Durée :** env. {duration_minutes} minutes"
+
+msgid "- **Format:** {format}"
+msgstr "- **Format :** {format}"
+
+msgid "- **Uhrzeit:** {time}"
+msgstr "- **Heure :** {time}"
+
+msgid "- Interviewer: [Name eintragen]"
+msgstr "- Intervieweur : [saisir le nom]"
+
+msgid "- Kandidat: [Name eintragen]"
+msgstr "- Candidat : [saisir le nom]"
+
+msgid "- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit KI-Unterstützung erstellt."
+msgstr "- ⚖️ Règlement IA de l'UE art. 50 : Cette invitation a été créée avec l'aide de l'IA."
+
+msgid "- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß Art. 6(1)(b) DSGVO verarbeitet."
+msgstr "- 🔒 RGPD art. 13 : Vos données sont traitées conformément à l'art. 6(1)(b) du RGPD."
+
+msgid "1. Vorstellung des Unternehmens (5 Min.)\n2. Technische Fragen (20 Min.)\n3. Kulturelles Fit (10 Min.)\n4. Fragen des Kandidaten (10 Min.)"
+msgstr "1. Présentation de l'entreprise (5 min)\n2. Questions techniques (20 min)\n3. Adéquation culturelle (10 min)\n4. Questions du candidat (10 min)"
+
+msgid "=== CALENDAR-EVENT (zum Kopieren) ==="
+msgstr "=== ÉVÉNEMENT AGENDA (à copier) ==="
+
+msgid "=== MEETING ERSTELLT ==="
+msgstr "=== RÉUNION CRÉÉE ==="
+
+msgid "=== TEILNEHMER ==="
+msgstr "=== PARTICIPANTS ==="
+
+msgid "===ICS-DATEI (optional) ==="
+msgstr "===FICHIER ICS (optionnel) ==="
+
+msgid "Admin Dashboard"
+msgstr "Tableau de bord admin"
+
+msgid "Admin nicht gefunden."
+msgstr "Administrateur introuvable."
+
+msgid "Agent-Tasks nach Status"
+msgstr "Tâches de l'agent par statut"
+
+msgid "Algorithmus-Feedback"
+msgstr "Retour de l'algorithme"
+
+msgid "Alle Kandidaten haben bereits ein extrahiertes Profil."
+msgstr "Tous les candidats ont déjà un profil extrait."
+
+msgid "Alle {0} analysieren"
+msgstr "Analyser les {0}"
+
+msgid "Alle {0} extrahieren"
+msgstr "Extraire les {0}"
+
+msgid "Alle {0} kontaktieren"
+msgstr "Contacter les {0}"
+
+msgid "Alle {0} matchen"
+msgstr "Associer les {0}"
+
+msgid "Alle {0} pruefen"
+msgstr "Vérifier les {0}"
+
+msgid "Bereits heute gequeued oder Fehler."
+msgstr "Déjà mis en file aujourd'hui ou erreurs."
+
+msgid "Beschreibung: {beschreibung}"
+msgstr "Description : {beschreibung}"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich bewerben."
+msgstr "Les candidatures apparaissent ici dès que des candidats postulent."
+
+msgid "Bewerbungen mit Status 'beworben' werden dem Agenten zur Score-Berechnung zugeführt."
+msgstr "Les candidatures au statut « postulé » sont transmises à l'agent pour le calcul du score."
+
+msgid "Bewerbungen pro Monat"
+msgstr "Candidatures par mois"
+
+msgid "Bewerbungen werden dem Agenten zur Kultur-Fit-Bewertung (0-100) zugeführt."
+msgstr "Les candidatures sont transmises à l'agent pour l'évaluation de l'adéquation culturelle (0-100)."
+
+msgid "Bewerbungen werden dem Agenten zur laenderspezifischen Rechts-Pruefung zugeführt."
+msgstr "Les candidatures sont transmises à l'agent pour l'examen juridique spécifique au pays."
+
+msgid "Bitte bringen Sie folgende Unterlagen mit:\n- Aktuellen Lebenslauf\n- Zeugnisse\n- Referenzen (falls vorhanden)"
+msgstr "Veuillez apporter les documents suivants :\n- CV à jour\n- Diplômes\n- Références (si disponibles)"
+
+msgid "Check Compliance"
+msgstr "Vérifier la conformité"
+
+msgid "Compliance-Pruefung (DSGVO, AGG, BDSG)"
+msgstr "Contrôle de conformité (RGPD, AGG, BDSG)"
+
+msgid "Compliance-Tool"
+msgstr "Outil de conformité"
+
+msgid "Contact Candidate"
+msgstr "Contacter le candidat"
+
+msgid "Culture Fit"
+msgstr "Adéquation culturelle"
+
+msgid "Datei auswaehlen"
+msgstr "Choisir un fichier"
+
+msgid "Datum: {date_formatted}"
+msgstr "Date : {date_formatted}"
+
+msgid "Dauer: {duration_minutes} Minuten"
+msgstr "Durée : {duration_minutes} minutes"
+
+msgid "Eingeladene Kandidaten werden dem Agenten zur E-Mail-Generierung zugeführt."
+msgstr "Les candidats invités sont transmis à l'agent pour la génération d'e-mails."
+
+msgid "Einladung zum Vorstellungsgespräch – {position}"
+msgstr "Invitation à un entretien – {position}"
+
+msgid "Ende: {date}T{end}:00"
+msgstr "Fin : {date}T{end}:00"
+
+msgid "Ergebnis: {0}"
+msgstr "Résultat : {0}"
+
+msgid "Extract Profile"
+msgstr "Extraire le profil"
+
+msgid "Extract-Task #{0} gequeued"
+msgstr "Tâche d'extraction n°{0} mise en file"
+
+msgid "Fehler beim Speichern."
+msgstr "Erreur lors de l'enregistrement."
+
+msgid "Firmenprofil #{0} gespeichert."
+msgstr "Profil d'entreprise n°{0} enregistré."
+
+msgid "Format: Online (VDO.Ninja)"
+msgstr "Format : En ligne (VDO.Ninja)"
+
+msgid "Gespeichert: {0}"
+msgstr "Enregistré : {0}"
+
+msgid "Gewichtung"
+msgstr "Pondération"
+
+msgid "HR"
+msgstr "RH"
+
+msgid "HR-Write"
+msgstr "Écriture RH"
+
+msgid "Kandidat #{0} – {1}"
+msgstr "Candidat n°{0} – {1}"
+
+msgid "Kandidaten kontaktieren"
+msgstr "Contacter les candidats"
+
+msgid "Kandidaten ohne extrahiertes Profil (hard_skills IS NULL) werden dem Agenten zur Profil-Extraktion zugeführt."
+msgstr "Les candidats sans profil extrait (hard_skills IS NULL) sont transmis à l'agent pour l'extraction du profil."
+
+msgid "Kandidaten werden nach Einladung durch HR hier angezeigt."
+msgstr "Les candidats sont affichés ici après avoir été invités par les RH."
+
+msgid "Kandidaten-Liste als PDF herunterladen."
+msgstr "Télécharger la liste des candidats au format PDF."
+
+msgid "Kandidaten-Matching mit Stellen"
+msgstr "Mise en correspondance des candidats avec les postes"
+
+msgid "Keine Arbeitgeber vorhanden"
+msgstr "Aucun employeur disponible"
+
+msgid "Keine Bewerbungen mit Status 'beworben' oder 'eingegangen'."
+msgstr "Aucune candidature au statut « postulé » ou « reçu »."
+
+msgid "Keine Bewerbungen zur Kultur-Analyse"
+msgstr "Aucune candidature pour l'analyse culturelle"
+
+msgid "Keine Bewerbungen zur Pruefung"
+msgstr "Aucune candidature à examiner"
+
+msgid "Keine Datei empfangen."
+msgstr "Aucun fichier reçu."
+
+msgid "Keine Dateien vorhanden."
+msgstr "Aucun fichier disponible."
+
+msgid "Keine Kandidaten ohne Profil"
+msgstr "Aucun candidat sans profil"
+
+msgid "Keine Tasks gequeued (bereits aktiv oder Fehler)."
+msgstr "Aucune tâche mise en file (déjà active ou erreurs)."
+
+msgid "Keine eingeladenen Kandidaten"
+msgstr "Aucun candidat invité"
+
+msgid "Keine offenen Bewerbungen"
+msgstr "Aucune candidature ouverte"
+
+msgid "Keine offenen Bewerbungen gefunden."
+msgstr "Aucune candidature ouverte trouvée."
+
+msgid "Kultur-Fit-Analyse"
+msgstr "Analyse de l'adéquation culturelle"
+
+msgid "Lebenslaeufe hochladen"
+msgstr "Téléverser des CV"
+
+msgid "Lebenslauf"
+msgstr "CV"
+
+msgid "Lebenslauf oder Stellenprofil hochladen"
+msgstr "Téléverser un CV ou un profil de poste"
+
+msgid "Link: {meet_url}"
+msgstr "Lien : {meet_url}"
+
+msgid "Match Candidate"
+msgstr "Associer le candidat"
+
+msgid "Match-Tool"
+msgstr "Outil de mise en correspondance"
+
+msgid "Moechtest du {0} Compliance-Tasks wirklich starten?"
+msgstr "Voulez-vous vraiment démarrer {0} tâches de conformité ?"
+
+msgid "Moechtest du {0} Culture-Fit-Tasks wirklich starten?"
+msgstr "Voulez-vous vraiment démarrer {0} tâches d'adéquation culturelle ?"
+
+msgid "Moechtest du {0} Extract-Tasks wirklich starten?"
+msgstr "Voulez-vous vraiment démarrer {0} tâches d'extraction ?"
+
+msgid "Moechtest du {0} Kontakt-Tasks wirklich starten?"
+msgstr "Voulez-vous vraiment démarrer {0} tâches de contact ?"
+
+msgid "Moechtest du {0} Match-Tasks wirklich starten?"
+msgstr "Voulez-vous vraiment démarrer {0} tâches de mise en correspondance ?"
+
+msgid "Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikationen hervorragend zu unserer Position als **{position}** bei **{company}** passen."
+msgstr "Après examen de votre CV, nous avons constaté que vos qualifications correspondent parfaitement à notre poste de **{position}** chez **{company}**."
+
+msgid "Noch kein Ergebnis vorhanden – Task unten ausloesen, der Runner schreibt das MD nach ergebnisse/."
+msgstr "Pas encore de résultat – déclenchez la tâche ci-dessous ; le runner écrit le MD dans ergebnisse/."
+
+msgid "Ort: {meet_url}"
+msgstr "Lieu : {meet_url}"
+
+msgid "PDF- und TXT-Dateien werden in testdaten/ gespeichert und dem Agenten zur Extraktion zugeführt."
+msgstr "Les fichiers PDF et TXT sont enregistrés dans testdaten/ et transmis à l'agent pour extraction."
+
+msgid "Portal-Verwaltung"
+msgstr "Gestion du portail"
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens."
+msgstr "Pré-sélection dans le cadre du processus de candidature."
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens. Meet-Link: {meet_url}"
+msgstr "Pré-sélection dans le cadre du processus de candidature. Lien de réunion : {meet_url}"
+
+msgid "Profil-Extraktion aus Lebenslaeufen"
+msgstr "Extraction de profil à partir des CV"
+
+msgid "Recruiting"
+msgstr "Recrutement"
+
+msgid "Skill 1 - Profil-Extraktion"
+msgstr "Compétence 1 - Extraction de profil"
+
+msgid "Skill 2 - Kandidaten-Matching"
+msgstr "Compétence 2 - Mise en correspondance des candidats"
+
+msgid "Skill 3 - Rechts-Pruefung"
+msgstr "Compétence 3 - Examen juridique"
+
+msgid "Skill 4 - Kontakt"
+msgstr "Compétence 4 - Contact"
+
+msgid "Skill 5 - Kultur-Analyse"
+msgstr "Compétence 5 - Analyse culturelle"
+
+msgid "Sprache: {0}"
+msgstr "Langue : {0}"
+
+msgid "Start: {date}T{time}:00"
+msgstr "Début : {date}T{time}:00"
+
+msgid "Starten"
+msgstr "Démarrer"
+
+msgid "Stellen-Status"
+msgstr "Statut des postes"
+
+msgid "System-Uebersicht"
+msgstr "Aperçu du système"
+
+msgid "Task-Verteilung"
+msgstr "Répartition des tâches"
+
+msgid "Tasks starten?"
+msgstr "Démarrer les tâches ?"
+
+msgid "Thema: {topic}"
+msgstr "Objet : {topic}"
+
+msgid "Titel: {topic}"
+msgstr "Titre : {topic}"
+
+msgid "Uhrzeit: {time_range}"
+msgstr "Heure : {time_range}"
+
+msgid "Upload (Ingestion)"
+msgstr "Téléversement (ingestion)"
+
+msgid "Upload fehlgeschlagen: {0}"
+msgstr "Échec du téléversement : {0}"
+
+msgid "Visum-Schritte-Mail an den Kandidaten ausgeloest (Agent sendet)."
+msgstr "E-mail des étapes de visa au candidat déclenché (l'agent envoie)."
+
+msgid "Vorhandene Dateien"
+msgstr "Fichiers existants"
+
+msgid "wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung mitteilen zu können."
+msgstr "nous avons le plaisir de vous informer de notre intérêt pour votre candidature."
+
+msgid "{0} Bewerbungen zur Compliance-Pruefung"
+msgstr "{0} candidatures pour contrôle de conformité"
+
+msgid "{0} Bewerbungen zur Kultur-Analyse"
+msgstr "{0} candidatures pour analyse culturelle"
+
+msgid "{0} Compliance-Tasks gequeued"
+msgstr "{0} tâches de conformité mises en file"
+
+msgid "{0} Culture-Fit-Tasks gequeued"
+msgstr "{0} tâches d'adéquation culturelle mises en file"
+
+msgid "{0} Extract-Tasks gequeued"
+msgstr "{0} tâches d'extraction mises en file"
+
+msgid "{0} Kandidat #{1} – {2} ({3}, {4})"
+msgstr "{0} candidat n°{1} – {2} ({3}, {4})"
+
+msgid "{0} Kandidaten ohne Profil"
+msgstr "{0} candidats sans profil"
+
+msgid "{0} Kontakt-Tasks gequeued"
+msgstr "{0} tâches de contact mises en file"
+
+msgid "{0} Match-Tasks gequeued"
+msgstr "{0} tâches de mise en correspondance mises en file"
+
+msgid "{0} eingeladene Kandidaten"
+msgstr "{0} candidats invités"
+
+msgid "{0} offene Bewerbungen"
+msgstr "{0} candidatures ouvertes"
+
+msgid "{0} · Eingegangen: {1}"
+msgstr "{0} · Reçu : {1}"
+
+msgid "{start} – {end} Uhr"
+msgstr "{start} – {end}"
+
+msgid "{time} Uhr ({duration_minutes} Min.)"
+msgstr "{time} ({duration_minutes} min)"
+
+msgid "💾 Profil speichern"
+msgstr "💾 Enregistrer le profil"
+
+msgid "Montag"
+msgstr "lundi"
+
+msgid "Dienstag"
+msgstr "mardi"
+
+msgid "Mittwoch"
+msgstr "mercredi"
+
+msgid "Donnerstag"
+msgstr "jeudi"
+
+msgid "Freitag"
+msgstr "vendredi"
+
+msgid "Samstag"
+msgstr "samedi"
+
+msgid "Sonntag"
+msgstr "dimanche"
+
+msgid "Benutzer nicht gefunden."
+msgstr "Utilisateur introuvable."
+
+msgid "Altes Passwort ist nicht korrekt."
+msgstr "L'ancien mot de passe est incorrect."
+
+msgid "Neues Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "Le nouveau mot de passe doit comporter au moins 8 caractères."
+
+msgid "Neues Passwort darf nicht dem alten Passwort entsprechen."
+msgstr "Le nouveau mot de passe ne doit pas être identique à l'ancien."
+
+msgid "Passwort geändert."
+msgstr "Mot de passe modifié."

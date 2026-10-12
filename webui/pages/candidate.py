@@ -498,7 +498,9 @@ def _tab_profil(s: dict) -> None:
                     conn_pw.close()
 
             ok, msg = await run.io_bound(_work)
-            ui.notify(msg, type="positive" if ok else "negative")
+            # S5 (12.10.2026): logic.change_password liefert deutsche msgids
+            # -> am Call-Site übersetzen (Spec: knowledge/system/i18n.md).
+            ui.notify(_(msg), type="positive" if ok else "negative")
 
         ui.button(_('Passwort aendern'), on_click=do_change_pw).classes(C.BTN_PRIMARY + " mt-2")
 

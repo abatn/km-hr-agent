@@ -556,7 +556,9 @@ def _page_portal(s: dict) -> None:
                             conn_pw.close()
 
                     ok, msg = await run.io_bound(_work)
-                    ui.notify(msg, type="positive" if ok else "negative")
+                    # S5 (12.10.2026): logic.change_password liefert deutsche
+                    # msgids -> am Call-Site übersetzen (Spec: knowledge/system/i18n.md).
+                    ui.notify(_(msg), type="positive" if ok else "negative")
 
                 ui.button(_('Passwort aendern'), on_click=do_change_pw_emp).classes(C.BTN_PRIMARY + " mt-2")
 
@@ -2022,6 +2024,29 @@ def _agent_task_icon(row: dict) -> str:
     return _legacy_badge_icon(row.get("status"))
 
 
+def _report_language(row) -> str | None:
+    """S4b (12.10.2026): Sprache eines gespeicherten Agent-Berichts, defensiv.
+
+    Liest das Row-Feld `language` oder — falls die Zeile das rohe `result_json`
+    mitfuehrt — `result_json["language"]`. Rein optionaler Hinweis; es wird
+    NICHTS rueckuebersetzt (kein Back-Translate des LLM-Texts)."""
+    if not isinstance(row, dict):
+        return None
+    lang = row.get("language")
+    if not lang:
+        rj = row.get("result_json")
+        if isinstance(rj, str):
+            try:
+                rj = json.loads(rj)
+            except (ValueError, TypeError):
+                rj = None
+        if isinstance(rj, dict):
+            lang = rj.get("language")
+    if not lang:
+        return None
+    return str(lang).strip() or None
+
+
 def _page_agent_details(s: dict) -> None:
     section_header(title=_('Agent-Details'), subtitle=_('Agent-Ergebnisse + Tasks'), icon="smart_toy")
     ui.label(
@@ -2082,6 +2107,11 @@ def _page_agent_details(s: dict) -> None:
                 _icon = _agent_task_icon(_row)
                 _status = _row.get("status") or "–"
                 with ui.expansion(text=_('{0} {1} ({2})').format(_icon, _(_label), _status)).classes("w-full mb-1"):
+                    # S4b (12.10.2026): optionaler Sprach-Hinweis (msgid via _(),
+                    # dynamischer Wert via .format — keine f-Strings, Ruff INT001).
+                    _lang = _report_language(_row)
+                    if _lang:
+                        ui.label(_("Sprache: {0}").format(_lang.upper())).classes(C.SMALL)
                     _text = _row.get("text")
                     if _text:
                         ui.markdown(_text)

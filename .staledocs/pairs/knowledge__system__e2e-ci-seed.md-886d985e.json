@@ -68,7 +68,7 @@
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py"
     ],
-    "at": "2026-10-12T14:54:30+00:00",
+    "at": "2026-10-12T19:14:54+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -132,6 +132,7 @@
       "tests/nicegui_main.py": "213e3a3685ec28d066bf909e917c06973b6afb89",
       "tests/run_nachweis.sh": "3cdcc5114047accc5601901af3ffe2fc049b6c3f",
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
+      "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
       "tests/test_application_id_match.py": "7eac7d1ae0e3f3439093a60194b1275713ea4870",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
       "tests/test_bak_retention.py": "6cd8f772f00a33d4cfc187ed73eb14360be110a3",
@@ -142,11 +143,12 @@
       "tests/test_employer_agent_b.py": "d8f8d8423074268636a600e4ded7ec4fe9d1a1da",
       "tests/test_feedback_row_click.py": "f9bff67866181394559062cacf9633b8f09c3113",
       "tests/test_gatekeeper_memo.py": "445339baf6344eaf49abfe7dc65c02cbaa8dec43",
-      "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
+      "tests/test_i18n.py": "d94d68c4e55d8a7a1bb8e7cfe0c4a82655e55285",
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
       "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a",
+      "tests/test_logic_i18n.py": "f1b57af835765385f99d5cce44e51caea45b0813",
       "tests/test_m02_m14_closure.py": "942c1156f8b2210a80fd987b88ef776e6ed54d5b",
       "tests/test_match_actions.py": "7ced73e8ebf03b744700080fa885dcf87fa657c1",
       "tests/test_mcp_official_client.py": "c804c270140e520bc4a94334065dd5f3c35c2b5a",
@@ -158,7 +160,7 @@
       "tests/test_no_undefined_names.py": "059bd0e5eb35f3ea5b52265a179fe0136c911e29",
       "tests/test_p2_8_pseudonym.py": "6f7692c6866c445797850c361949623323a134f7",
       "tests/test_p2_block.py": "cb19c04a68aaaed3f51ba877c6486a71522ac2b3",
-      "tests/test_p8_2_agent_details.py": "71d53b872acd0a8fd3162cd03dd097c6e4c0d7b8",
+      "tests/test_p8_2_agent_details.py": "174457e1c0d6b9ece9d4701203a651f26d4f06da",
       "tests/test_profile_save.py": "b4d87c0f42337e527cfeab721b36c0d292b4dedc",
       "tests/test_r32_gatekeeper_gen.py": "416de069b066028f19c63ececacd3a1fe85f9c1b",
       "tests/test_r33_compliance_reports.py": "52e52511126b2c71a28a0d4f4e2c379eb7d9e157",
@@ -166,7 +168,7 @@
       "tests/test_r35_status_notify.py": "554a12ac6e0374a3f28ce1081c6eb13a3f8be179",
       "tests/test_reapply_after_withdraw.py": "502f35d0c7d5a8e449ab98901d1c845cfe04347e",
       "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
-      "tests/test_runner_i18n.py": "c140816d03ba71904143a039edf070387004e89e",
+      "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "tests/test_secrets_from_env.py": "f89a3b42d13e93697928ee9541339d5f240e0c90",
       "tests/test_send_onboarding_guard.py": "406de816d32c7ad0328b22ccfaf2efb9b8e989c5",
       "tests/test_send_rejection_guard.py": "22901adf0e5c481c927b2bcb1a74b902b0f163c5",
@@ -179,9 +181,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "e97275a92d649884611f6e7134210f012a21f63a",
-    "note": "code moved: tests/test_runner_i18n.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
+    "note": "code moved: tests/test_admin_i18n.py, tests/test_i18n.py, tests/test_logic_i18n.py, tests/test_p8_2_agent_details.py, tests/test_runner_i18n.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

@@ -37,14 +37,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T12:26:43+00:00",
+    "at": "2026-10-12T19:14:51+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
+      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "068228ab7ce3ec2315415324bbf630de12d95092",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge/legal/dsgvo-gate.md`, `knowledge/lifecycle/application-status.md`"
+    "note": "code moved: webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/lifecycle/status-automation.md",
   "schema": 1

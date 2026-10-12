@@ -1196,8 +1196,10 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
     prompt = prompts.get(task_type)
     if not prompt:
         raise RuntimeError(f"Unbekannter LLM-Task: {task_type}")
-    # §7.1 Punkt 5: dem LLM sagen, in der Payload-Sprache zu antworten
-    # (nur Prompt-Instruktion, KEINE Nachbearbeitung der LLM-Ausgabe). Der
+    # §7.1 Punkt 5: dem LLM sagen, in der Payload-Sprache zu antworten —
+    # Prompt-Instruktion PLUS (F2, 12.10.2026) Body-Post-Check via
+    # `_body_sprache_ok` mit max. 1 gehaertetem Retry (s. §7.1 P5);
+    # Status-Tokens/Header-Marker bleiben dabei unangetastet. Der
     # Prompt ist deutsch → Anweisung mit deutschem Klarnamen (LANG_NAMES).
     _langval = _lang(payload)
     prompt += "\n\n" + f"Antworte in {LANG_NAMES.get(_langval, 'Deutsch')}."
@@ -1209,7 +1211,9 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
                "KONFORM, NICHT_KONFORM, PLAUSIBEL, AUFFAELLIG, UNBEKANNT, "
                "UNGEWISS, ERFORDERLICH und NICHT ERFORDERLICH gibst du IMMER "
                "unveraendert aus (genau so, lateinische Buchstaben) — auch wenn "
-               "der Rest deiner Antwort eine andere Sprache ist.")
+               "der Rest deiner Antwort eine andere Sprache ist. Ebenso bleiben "
+               "die festen Label-Praefixe 'Compliance-Status:' und 'Match-Score:' "
+               "IMMER unveraendert (deutsch), da sie maschinell ausgewertet werden.")
     result_path = str(ERGEBNISSE / f"{task_type}-kandidat-{cid}-{datum}.md")
     # ─── Hybrid: ansvar-Law als Rechtsquelle für check_visa/check_compliance ───
     if task_type in ("check_visa", "check_compliance"):
@@ -1337,7 +1341,7 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
     # UNGEKAPPT (Plan(ii) 11.10.2026): vollständiger Text, keine Obergrenze.
     # Spec: knowledge/system/agent-automation.md §2/§7.1
     return {"result_path": result_path, "agent_chars": len(agent_text),
-            "text": report_text}
+            "text": report_text, "language": _langval}
 
 # ─── Pförtner-Regel (Spec §3, User-Entscheidung 12.09.2026) ─────────────
 

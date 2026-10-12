@@ -145,7 +145,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-12T14:54:27+00:00",
+    "at": "2026-10-12T19:14:49+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -203,8 +203,8 @@
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
       "knowledge/system/e2e-ci-seed.md": "e97275a92d649884611f6e7134210f012a21f63a",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
-      "knowledge/system/i18n-runner-chain.md": "4ce22a2713ccd732d371ca3bcebc5e06d1de260a",
-      "knowledge/system/i18n.md": "7dbfe82cb500363fb0f055b796e0827b0ad81e6f",
+      "knowledge/system/i18n-runner-chain.md": "fc99c39a328ca25d3a8d9a6df4f4859f2cf8c7f5",
+      "knowledge/system/i18n.md": "857db631dd6214cc8df25397692f0489f22e6d61",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -213,7 +213,7 @@
       "knowledge/system/vdo-ninja-migration.md": "da1432a45551bc7252632d4ca9d25c93182848e7",
       "knowledge/team-profile.md": "31626b6e650f69f8c4df53db401e32a236d25da5",
       "knowledge/templates/contract-templates/arbeitsvertrag-de-skeleton.md": "b1cadf6fafd722d469dc5bdf1eb37f0dc51dbb2c",
-      "knowledge/templates/email-templates/interview-invitation.md": "f56171ceeb8c74eab5db43be0c51e7304b6f19e6",
+      "knowledge/templates/email-templates/interview-invitation.md": "bcb1c78dadf122d434ae2600f3a9d6f43d804c46",
       "knowledge/templates/language-templates/templates-de.md": "85ebd34d1620801d501f3d9038966f69eb1b5c28",
       "knowledge/templates/language-templates/templates-en.md": "ecc13071ab86f7cac823bb86ff17ce7619aa7c0a",
       "knowledge/templates/language-templates/templates-fr.md": "26d725321fa95aeef140ba37c1c75c13117ec0e7",
@@ -222,9 +222,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "0ec1258399639cea8613c86bb226e39e6329c1f9"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "27f3f90dcc84395dabe2bbaa75e55f585aba1034",
-    "note": "code moved: knowledge/system/i18n-runner-chain.md \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
+    "note": "code moved: knowledge/system/i18n-runner-chain.md, knowledge/system/i18n.md, knowledge/templates/email-templates/interview-invitation.md \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge.md",
   "schema": 1

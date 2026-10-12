@@ -26,21 +26,21 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T12:26:44+00:00",
+    "at": "2026-10-12T19:14:53+00:00",
     "code_blobs": {
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
-      "webui/pages/admin.py": "0f16dc331f91552b2b88cb811962ac11aa298627",
-      "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
-      "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725",
+      "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
+      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59",
+      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "b74345b427f343382d2e65ca29a2c6bdaf954227",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `AGENTS.md`, `README.md`, `app.py`"
+    "note": "code moved: webui/pages/admin.py, webui/pages/candidate.py, webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

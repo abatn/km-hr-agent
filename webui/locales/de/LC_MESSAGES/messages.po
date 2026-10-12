@@ -3004,3 +3004,430 @@ msgstr "soft"
 
 msgid "sprache"
 msgstr "sprache"
+
+# ── i18n rollout 12.10.2026: neue msgids (Admin/MCP/Logic) ──
+# DE = Identität; EN/FR/AR = eigene Erstfassung (Design-Entscheidung,
+# Native-Review offen). Additiv, keine Bestands-Keys geändert.
+
+msgid "**Agenda:**"
+msgstr "**Agenda:**"
+
+msgid "**Rechtliche Hinweise:**"
+msgstr "**Rechtliche Hinweise:**"
+
+msgid "**Vorbereitung:**"
+msgstr "**Vorbereitung:**"
+
+msgid "**Wir laden Sie herzlich ein zum:**"
+msgstr "**Wir laden Sie herzlich ein zum:**"
+
+msgid "- **Datum:** {date}"
+msgstr "- **Datum:** {date}"
+
+msgid "- **Dauer:** ca. {duration_minutes} Minuten"
+msgstr "- **Dauer:** ca. {duration_minutes} Minuten"
+
+msgid "- **Format:** {format}"
+msgstr "- **Format:** {format}"
+
+msgid "- **Uhrzeit:** {time}"
+msgstr "- **Uhrzeit:** {time}"
+
+msgid "- Interviewer: [Name eintragen]"
+msgstr "- Interviewer: [Name eintragen]"
+
+msgid "- Kandidat: [Name eintragen]"
+msgstr "- Kandidat: [Name eintragen]"
+
+msgid "- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit KI-Unterstützung erstellt."
+msgstr "- ⚖️ EU AI Act Art. 50: Diese Einladung wurde mit KI-Unterstützung erstellt."
+
+msgid "- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß Art. 6(1)(b) DSGVO verarbeitet."
+msgstr "- 🔒 DSGVO Art. 13: Ihre Daten werden gemäß Art. 6(1)(b) DSGVO verarbeitet."
+
+msgid "1. Vorstellung des Unternehmens (5 Min.)\n2. Technische Fragen (20 Min.)\n3. Kulturelles Fit (10 Min.)\n4. Fragen des Kandidaten (10 Min.)"
+msgstr "1. Vorstellung des Unternehmens (5 Min.)\n2. Technische Fragen (20 Min.)\n3. Kulturelles Fit (10 Min.)\n4. Fragen des Kandidaten (10 Min.)"
+
+msgid "=== CALENDAR-EVENT (zum Kopieren) ==="
+msgstr "=== CALENDAR-EVENT (zum Kopieren) ==="
+
+msgid "=== MEETING ERSTELLT ==="
+msgstr "=== MEETING ERSTELLT ==="
+
+msgid "=== TEILNEHMER ==="
+msgstr "=== TEILNEHMER ==="
+
+msgid "===ICS-DATEI (optional) ==="
+msgstr "===ICS-DATEI (optional) ==="
+
+msgid "Admin Dashboard"
+msgstr "Admin Dashboard"
+
+msgid "Admin nicht gefunden."
+msgstr "Admin nicht gefunden."
+
+msgid "Agent-Tasks nach Status"
+msgstr "Agent-Tasks nach Status"
+
+msgid "Algorithmus-Feedback"
+msgstr "Algorithmus-Feedback"
+
+msgid "Alle Kandidaten haben bereits ein extrahiertes Profil."
+msgstr "Alle Kandidaten haben bereits ein extrahiertes Profil."
+
+msgid "Alle {0} analysieren"
+msgstr "Alle {0} analysieren"
+
+msgid "Alle {0} extrahieren"
+msgstr "Alle {0} extrahieren"
+
+msgid "Alle {0} kontaktieren"
+msgstr "Alle {0} kontaktieren"
+
+msgid "Alle {0} matchen"
+msgstr "Alle {0} matchen"
+
+msgid "Alle {0} pruefen"
+msgstr "Alle {0} pruefen"
+
+msgid "Bereits heute gequeued oder Fehler."
+msgstr "Bereits heute gequeued oder Fehler."
+
+msgid "Beschreibung: {beschreibung}"
+msgstr "Beschreibung: {beschreibung}"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich bewerben."
+msgstr "Bewerbungen erscheinen hier, sobald Kandidaten sich bewerben."
+
+msgid "Bewerbungen mit Status 'beworben' werden dem Agenten zur Score-Berechnung zugeführt."
+msgstr "Bewerbungen mit Status 'beworben' werden dem Agenten zur Score-Berechnung zugeführt."
+
+msgid "Bewerbungen pro Monat"
+msgstr "Bewerbungen pro Monat"
+
+msgid "Bewerbungen werden dem Agenten zur Kultur-Fit-Bewertung (0-100) zugeführt."
+msgstr "Bewerbungen werden dem Agenten zur Kultur-Fit-Bewertung (0-100) zugeführt."
+
+msgid "Bewerbungen werden dem Agenten zur laenderspezifischen Rechts-Pruefung zugeführt."
+msgstr "Bewerbungen werden dem Agenten zur laenderspezifischen Rechts-Pruefung zugeführt."
+
+msgid "Bitte bringen Sie folgende Unterlagen mit:\n- Aktuellen Lebenslauf\n- Zeugnisse\n- Referenzen (falls vorhanden)"
+msgstr "Bitte bringen Sie folgende Unterlagen mit:\n- Aktuellen Lebenslauf\n- Zeugnisse\n- Referenzen (falls vorhanden)"
+
+msgid "Check Compliance"
+msgstr "Check Compliance"
+
+msgid "Compliance-Pruefung (DSGVO, AGG, BDSG)"
+msgstr "Compliance-Pruefung (DSGVO, AGG, BDSG)"
+
+msgid "Compliance-Tool"
+msgstr "Compliance-Tool"
+
+msgid "Contact Candidate"
+msgstr "Contact Candidate"
+
+msgid "Culture Fit"
+msgstr "Culture Fit"
+
+msgid "Datei auswaehlen"
+msgstr "Datei auswaehlen"
+
+msgid "Datum: {date_formatted}"
+msgstr "Datum: {date_formatted}"
+
+msgid "Dauer: {duration_minutes} Minuten"
+msgstr "Dauer: {duration_minutes} Minuten"
+
+msgid "Eingeladene Kandidaten werden dem Agenten zur E-Mail-Generierung zugeführt."
+msgstr "Eingeladene Kandidaten werden dem Agenten zur E-Mail-Generierung zugeführt."
+
+msgid "Einladung zum Vorstellungsgespräch – {position}"
+msgstr "Einladung zum Vorstellungsgespräch – {position}"
+
+msgid "Ende: {date}T{end}:00"
+msgstr "Ende: {date}T{end}:00"
+
+msgid "Ergebnis: {0}"
+msgstr "Ergebnis: {0}"
+
+msgid "Extract Profile"
+msgstr "Extract Profile"
+
+msgid "Extract-Task #{0} gequeued"
+msgstr "Extract-Task #{0} gequeued"
+
+msgid "Fehler beim Speichern."
+msgstr "Fehler beim Speichern."
+
+msgid "Firmenprofil #{0} gespeichert."
+msgstr "Firmenprofil #{0} gespeichert."
+
+msgid "Format: Online (VDO.Ninja)"
+msgstr "Format: Online (VDO.Ninja)"
+
+msgid "Gespeichert: {0}"
+msgstr "Gespeichert: {0}"
+
+msgid "Gewichtung"
+msgstr "Gewichtung"
+
+msgid "HR"
+msgstr "HR"
+
+msgid "HR-Write"
+msgstr "HR-Write"
+
+msgid "Kandidat #{0} – {1}"
+msgstr "Kandidat #{0} – {1}"
+
+msgid "Kandidaten kontaktieren"
+msgstr "Kandidaten kontaktieren"
+
+msgid "Kandidaten ohne extrahiertes Profil (hard_skills IS NULL) werden dem Agenten zur Profil-Extraktion zugeführt."
+msgstr "Kandidaten ohne extrahiertes Profil (hard_skills IS NULL) werden dem Agenten zur Profil-Extraktion zugeführt."
+
+msgid "Kandidaten werden nach Einladung durch HR hier angezeigt."
+msgstr "Kandidaten werden nach Einladung durch HR hier angezeigt."
+
+msgid "Kandidaten-Liste als PDF herunterladen."
+msgstr "Kandidaten-Liste als PDF herunterladen."
+
+msgid "Kandidaten-Matching mit Stellen"
+msgstr "Kandidaten-Matching mit Stellen"
+
+msgid "Keine Arbeitgeber vorhanden"
+msgstr "Keine Arbeitgeber vorhanden"
+
+msgid "Keine Bewerbungen mit Status 'beworben' oder 'eingegangen'."
+msgstr "Keine Bewerbungen mit Status 'beworben' oder 'eingegangen'."
+
+msgid "Keine Bewerbungen zur Kultur-Analyse"
+msgstr "Keine Bewerbungen zur Kultur-Analyse"
+
+msgid "Keine Bewerbungen zur Pruefung"
+msgstr "Keine Bewerbungen zur Pruefung"
+
+msgid "Keine Datei empfangen."
+msgstr "Keine Datei empfangen."
+
+msgid "Keine Dateien vorhanden."
+msgstr "Keine Dateien vorhanden."
+
+msgid "Keine Kandidaten ohne Profil"
+msgstr "Keine Kandidaten ohne Profil"
+
+msgid "Keine Tasks gequeued (bereits aktiv oder Fehler)."
+msgstr "Keine Tasks gequeued (bereits aktiv oder Fehler)."
+
+msgid "Keine eingeladenen Kandidaten"
+msgstr "Keine eingeladenen Kandidaten"
+
+msgid "Keine offenen Bewerbungen"
+msgstr "Keine offenen Bewerbungen"
+
+msgid "Keine offenen Bewerbungen gefunden."
+msgstr "Keine offenen Bewerbungen gefunden."
+
+msgid "Kultur-Fit-Analyse"
+msgstr "Kultur-Fit-Analyse"
+
+msgid "Lebenslaeufe hochladen"
+msgstr "Lebenslaeufe hochladen"
+
+msgid "Lebenslauf"
+msgstr "Lebenslauf"
+
+msgid "Lebenslauf oder Stellenprofil hochladen"
+msgstr "Lebenslauf oder Stellenprofil hochladen"
+
+msgid "Link: {meet_url}"
+msgstr "Link: {meet_url}"
+
+msgid "Match Candidate"
+msgstr "Match Candidate"
+
+msgid "Match-Tool"
+msgstr "Match-Tool"
+
+msgid "Moechtest du {0} Compliance-Tasks wirklich starten?"
+msgstr "Moechtest du {0} Compliance-Tasks wirklich starten?"
+
+msgid "Moechtest du {0} Culture-Fit-Tasks wirklich starten?"
+msgstr "Moechtest du {0} Culture-Fit-Tasks wirklich starten?"
+
+msgid "Moechtest du {0} Extract-Tasks wirklich starten?"
+msgstr "Moechtest du {0} Extract-Tasks wirklich starten?"
+
+msgid "Moechtest du {0} Kontakt-Tasks wirklich starten?"
+msgstr "Moechtest du {0} Kontakt-Tasks wirklich starten?"
+
+msgid "Moechtest du {0} Match-Tasks wirklich starten?"
+msgstr "Moechtest du {0} Match-Tasks wirklich starten?"
+
+msgid "Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikationen hervorragend zu unserer Position als **{position}** bei **{company}** passen."
+msgstr "Nach der Prüfung Ihres Lebenslaufs haben wir festgestellt, dass Ihre Qualifikationen hervorragend zu unserer Position als **{position}** bei **{company}** passen."
+
+msgid "Noch kein Ergebnis vorhanden – Task unten ausloesen, der Runner schreibt das MD nach ergebnisse/."
+msgstr "Noch kein Ergebnis vorhanden – Task unten ausloesen, der Runner schreibt das MD nach ergebnisse/."
+
+msgid "Ort: {meet_url}"
+msgstr "Ort: {meet_url}"
+
+msgid "PDF- und TXT-Dateien werden in testdaten/ gespeichert und dem Agenten zur Extraktion zugeführt."
+msgstr "PDF- und TXT-Dateien werden in testdaten/ gespeichert und dem Agenten zur Extraktion zugeführt."
+
+msgid "Portal-Verwaltung"
+msgstr "Portal-Verwaltung"
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens."
+msgstr "Pre-Screening im Rahmen des Bewerbungsverfahrens."
+
+msgid "Pre-Screening im Rahmen des Bewerbungsverfahrens. Meet-Link: {meet_url}"
+msgstr "Pre-Screening im Rahmen des Bewerbungsverfahrens. Meet-Link: {meet_url}"
+
+msgid "Profil-Extraktion aus Lebenslaeufen"
+msgstr "Profil-Extraktion aus Lebenslaeufen"
+
+msgid "Recruiting"
+msgstr "Recruiting"
+
+msgid "Skill 1 - Profil-Extraktion"
+msgstr "Skill 1 - Profil-Extraktion"
+
+msgid "Skill 2 - Kandidaten-Matching"
+msgstr "Skill 2 - Kandidaten-Matching"
+
+msgid "Skill 3 - Rechts-Pruefung"
+msgstr "Skill 3 - Rechts-Pruefung"
+
+msgid "Skill 4 - Kontakt"
+msgstr "Skill 4 - Kontakt"
+
+msgid "Skill 5 - Kultur-Analyse"
+msgstr "Skill 5 - Kultur-Analyse"
+
+msgid "Sprache: {0}"
+msgstr "Sprache: {0}"
+
+msgid "Start: {date}T{time}:00"
+msgstr "Start: {date}T{time}:00"
+
+msgid "Starten"
+msgstr "Starten"
+
+msgid "Stellen-Status"
+msgstr "Stellen-Status"
+
+msgid "System-Uebersicht"
+msgstr "System-Uebersicht"
+
+msgid "Task-Verteilung"
+msgstr "Task-Verteilung"
+
+msgid "Tasks starten?"
+msgstr "Tasks starten?"
+
+msgid "Thema: {topic}"
+msgstr "Thema: {topic}"
+
+msgid "Titel: {topic}"
+msgstr "Titel: {topic}"
+
+msgid "Uhrzeit: {time_range}"
+msgstr "Uhrzeit: {time_range}"
+
+msgid "Upload (Ingestion)"
+msgstr "Upload (Ingestion)"
+
+msgid "Upload fehlgeschlagen: {0}"
+msgstr "Upload fehlgeschlagen: {0}"
+
+msgid "Visum-Schritte-Mail an den Kandidaten ausgeloest (Agent sendet)."
+msgstr "Visum-Schritte-Mail an den Kandidaten ausgeloest (Agent sendet)."
+
+msgid "Vorhandene Dateien"
+msgstr "Vorhandene Dateien"
+
+msgid "wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung mitteilen zu können."
+msgstr "wir freuen uns, Ihnen unser Interesse an Ihrer Bewerbung mitteilen zu können."
+
+msgid "{0} Bewerbungen zur Compliance-Pruefung"
+msgstr "{0} Bewerbungen zur Compliance-Pruefung"
+
+msgid "{0} Bewerbungen zur Kultur-Analyse"
+msgstr "{0} Bewerbungen zur Kultur-Analyse"
+
+msgid "{0} Compliance-Tasks gequeued"
+msgstr "{0} Compliance-Tasks gequeued"
+
+msgid "{0} Culture-Fit-Tasks gequeued"
+msgstr "{0} Culture-Fit-Tasks gequeued"
+
+msgid "{0} Extract-Tasks gequeued"
+msgstr "{0} Extract-Tasks gequeued"
+
+msgid "{0} Kandidat #{1} – {2} ({3}, {4})"
+msgstr "{0} Kandidat #{1} – {2} ({3}, {4})"
+
+msgid "{0} Kandidaten ohne Profil"
+msgstr "{0} Kandidaten ohne Profil"
+
+msgid "{0} Kontakt-Tasks gequeued"
+msgstr "{0} Kontakt-Tasks gequeued"
+
+msgid "{0} Match-Tasks gequeued"
+msgstr "{0} Match-Tasks gequeued"
+
+msgid "{0} eingeladene Kandidaten"
+msgstr "{0} eingeladene Kandidaten"
+
+msgid "{0} offene Bewerbungen"
+msgstr "{0} offene Bewerbungen"
+
+msgid "{0} · Eingegangen: {1}"
+msgstr "{0} · Eingegangen: {1}"
+
+msgid "{start} – {end} Uhr"
+msgstr "{start} – {end} Uhr"
+
+msgid "{time} Uhr ({duration_minutes} Min.)"
+msgstr "{time} Uhr ({duration_minutes} Min.)"
+
+msgid "💾 Profil speichern"
+msgstr "💾 Profil speichern"
+
+msgid "Montag"
+msgstr "Montag"
+
+msgid "Dienstag"
+msgstr "Dienstag"
+
+msgid "Mittwoch"
+msgstr "Mittwoch"
+
+msgid "Donnerstag"
+msgstr "Donnerstag"
+
+msgid "Freitag"
+msgstr "Freitag"
+
+msgid "Samstag"
+msgstr "Samstag"
+
+msgid "Sonntag"
+msgstr "Sonntag"
+
+msgid "Benutzer nicht gefunden."
+msgstr "Benutzer nicht gefunden."
+
+msgid "Altes Passwort ist nicht korrekt."
+msgstr "Altes Passwort ist nicht korrekt."
+
+msgid "Neues Passwort muss mindestens 8 Zeichen lang sein."
+msgstr "Neues Passwort muss mindestens 8 Zeichen lang sein."
+
+msgid "Neues Passwort darf nicht dem alten Passwort entsprechen."
+msgstr "Neues Passwort darf nicht dem alten Passwort entsprechen."
+
+msgid "Passwort geändert."
+msgstr "Passwort geändert."

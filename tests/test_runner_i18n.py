@@ -877,9 +877,10 @@ GEWICHTSZEILE = {
 }
 
 
-def _capture_prompt(monkeypatch, tmp_path, task_type: str, payload: dict) -> str:
-    """Faengt den an die LLM-API gesendeten Prompt (`requests.post` gemockt).
+def _capture_prompt_and_result(monkeypatch, tmp_path, task_type: str, payload: dict) -> dict:
+    """Wie `_capture_prompt`, liefert zusaetzlich den `run_llm_task`-Rueckgabewert.
 
+    Faengt den an die LLM-API gesendeten Prompt (`requests.post` gemockt).
     Kein Netz, kein LLM: der Fake liefert 200 + >100 Zeichen Text, damit
     `run_llm_task` den Bericht nach `tmp_path` schreibt und regulaer zurueckkehrt.
     """
@@ -902,7 +903,13 @@ def _capture_prompt(monkeypatch, tmp_path, task_type: str, payload: dict) -> str
         return _Resp()
 
     monkeypatch.setattr(mod.requests, "post", _fake_post)
-    mod.run_llm_task(task_type, payload)
+    gefangen["result"] = mod.run_llm_task(task_type, payload)
+    return gefangen
+
+
+def _capture_prompt(monkeypatch, tmp_path, task_type: str, payload: dict) -> str:
+    """Wie `_capture_prompt_and_result`, liefert aber nur den Prompt-String."""
+    gefangen = _capture_prompt_and_result(monkeypatch, tmp_path, task_type, payload)
     assert gefangen.get("prompt"), "kein requests.post-Aufruf gefangen (Prompt leer)"
     return gefangen["prompt"]
 
@@ -960,7 +967,7 @@ def test_o1_de_prompt_byteidentisch_altbestand(monkeypatch, tmp_path):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# F2 (12.10.2026): Sprach-Bypass-Fix — die drei direkten `INSERT INTO
+# F1 (12.10.2026): Sprach-Bypass-Fix — die drei direkten `INSERT INTO
 # agent_tasks` tragen jetzt die Payload-Sprache (`language`).
 # Spec: knowledge/system/i18n-runner-chain.md §7.1.
 #   * Auto-Refresh match_candidate (`_c_ar.execute(...)`)
@@ -981,7 +988,7 @@ def _fenster(src: str, marker: str, n: int = 400) -> str:
     return src[i:i + n]
 
 
-def test_f2_auto_refresh_match_candidate_insert_traegt_language():
+def test_f1_auto_refresh_match_candidate_insert_traegt_language():
     """Auto-Refresh-Match: `_c_ar.execute("INSERT INTO agent_tasks...` mit language."""
     fenster = _fenster(_runner_src(), '_c_ar.execute("INSERT INTO agent_tasks')
     assert '"language"' in fenster, \
@@ -990,7 +997,7 @@ def test_f2_auto_refresh_match_candidate_insert_traegt_language():
         "Auto-Refresh match_candidate-Insert ohne Payload-Sprachwert"
 
 
-def test_f2_gatekeeper_eval_insert_traegt_language():
+def test_f1_gatekeeper_eval_insert_traegt_language():
     """gatekeeper_eval-Marker-Insert traegt `language` / `_lang(`."""
     fenster = _fenster(_runner_src(), "VALUES ('gatekeeper_eval', 'done', ?)")
     assert '"language"' in fenster, \
@@ -999,13 +1006,28 @@ def test_f2_gatekeeper_eval_insert_traegt_language():
         "gatekeeper_eval-Insert ohne _lang(payload)-Aufruf"
 
 
-def test_f2_notify_hr_insert_traegt_language():
+def test_f1_notify_hr_insert_traegt_language():
     """notify_hr-Insert traegt `language` / `_lang(`."""
     fenster = _fenster(_runner_src(), "VALUES ('notify_hr', ?)")
     assert '"language"' in fenster, \
         "notify_hr-Insert ohne language (Sprach-Bypass)"
     assert "_lang(" in fenster, \
         "notify_hr-Insert ohne _lang(payload)-Aufruf"
+
+
+# ─── S4a (12.10.2026): `run_llm_task` gibt die Bericht-Sprache mit zurueck ───
+
+@pytest.mark.parametrize("lang", LANGS)
+def test_s4a_run_llm_task_result_traegt_language(monkeypatch, tmp_path, lang):
+    """`run_llm_task`-Rueckgabe traegt `language` (`_langval`), damit der Aufrufer
+    sie ueber `finish_task` in `result_json` persistieren kann (keine Schema-Aenderung)."""
+    gefangen = _capture_prompt_and_result(
+        monkeypatch, tmp_path, "extract_profile",
+        {"candidate_id": None, "language": lang})
+    result = gefangen["result"]
+    assert isinstance(result, dict), f"S4a: kein result-Dict: {result!r}"
+    assert result.get("language") == lang, \
+        f"S4a: result ohne/mit falscher language: {result.get('language')!r}"
 
 
 # ─── F2: _body_sprache_ok() — Heuristik, Default True bei Unsicherheit ───────

@@ -75,7 +75,8 @@ Jeder Leerzustand in Pre-Screen/Onboarding enthält **mindestens einen klickbare
 ### 4. ICS-Datei erstellen (optional)
 - **Connector:** `meeting-tools`
 - **Tool:** `generate_ics_file`
-- **Parameter:** topic, date, time, duration_minutes, meet_url (VDO.Ninja-Link), description
+- **Parameter:** topic, date, time, duration_minutes, meet_url (VDO.Ninja-Link), description, `language`
+- **`language` (seit 12.10.2026):** Zielsprache der **Default-Beschreibung** im ICS (`DESCRIPTION:`) — `de`/`en`/`fr`/`ar`; Default `de` (Altverhalten, fehlende/ungültige Werte → `de`). Die Texte laufen über `tr(..., language)` aus `webui/i18n_core`. Wird `description` explizit übergeben (wie im Runner), bleibt diese unverändert.
 
 ### 5. Ergebnis speichern
 - **Connector:** `filesystem`

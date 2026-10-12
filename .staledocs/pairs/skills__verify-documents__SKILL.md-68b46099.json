@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-12T14:54:37+00:00",
+    "at": "2026-10-12T19:15:04+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "7f8b1884fdc4e8a2ffbc9c8069bb93da892d53ba",
-      "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
+      "scripts/agent-runner.py": "216b6c133e349731e9e35ca8075b40ef7e045d78",
+      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
     "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
-    "note": "code moved: scripts/agent-runner.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
+    "note": "code moved: scripts/agent-runner.py, webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1
