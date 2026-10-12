@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # KM-HR-Agent – NiceGUI Web-UI Starter
 # Start:  ./start-webui.sh          → http://localhost:8080
-# Stop:   pkill -f "python3 -m webui.main"
+# Stop:   pkill -f "python3 -m webui.main"   (oder das systemd-Unit)
 #
 # R6-2.2 (30.09.2026, Nutzer-GO "Ja: .env statt KMHR_DEV-Default"):
 #   * KMHR_DEV wird NICHT mehr automatisch gesetzt (frueher: KMHR_DEV=1 als
@@ -38,5 +38,16 @@ if [ -z "$_dev" ]; then
     echo "  Details: knowledge/system/configuration-secrets.md" >&2
     exit 1
   fi
+fi
+# PID-Datei (data/webui.pid): nur der Live-Start pflegt sie — isolierte
+# Test-/E2E-Instanzen setzen KMHR_DB_PATH und schreiben NICHT (kein Clobbern
+# der Live-PID). Die PID wird beim Start geschrieben; ein Waechter entfernt sie,
+# sobald der App-Prozess endet (exec erhaelt die PID → MAIN == App-PID) — auch
+# nach SIGKILL. Stop: pkill -f "python3 -m webui.main".
+if [ -z "${KMHR_DB_PATH:-}" ]; then
+  mkdir -p data
+  MAIN=$$
+  echo "$MAIN" > data/webui.pid
+  ( while kill -0 "$MAIN" 2>/dev/null; do sleep 1; done; rm -f data/webui.pid ) &
 fi
 exec python3 -m webui.main

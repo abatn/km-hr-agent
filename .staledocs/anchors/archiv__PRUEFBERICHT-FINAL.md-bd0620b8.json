@@ -1,6 +1,8 @@
 {
   "anchors": [
     "ergebnisse/v6-1-typed-live-run.md",
+    "knowledge/portal/employer-portal-fields.md",
+    "knowledge/system/mcp-connector-config.md",
     "scripts/agent-runner.py",
     "skills/assess-culture-fit/SKILL.md",
     "skills/candidate-portal/SKILL.md",
@@ -20,7 +22,7 @@
     "skills/store-feedback/SKILL.md",
     "skills/verify-documents/SKILL.md"
   ],
-  "at": "2026-10-10T12:46:22+00:00",
+  "at": "2026-10-12T12:19:06+00:00",
   "doc": "archiv/PRUEFBERICHT-FINAL.md",
   "note": "",
   "schema": 1

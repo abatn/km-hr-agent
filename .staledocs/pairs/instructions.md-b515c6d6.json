@@ -50,9 +50,9 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-11T18:31:06+00:00",
+    "at": "2026-10-12T14:54:26+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "006b51f4326a352d10d4e52af6fc4abd942ae116",
+      "scripts/agent-runner.py": "7f8b1884fdc4e8a2ffbc9c8069bb93da892d53ba",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -95,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "instructions.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
+    "note": "code moved: scripts/agent-runner.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
   },
   "doc": "instructions.md",
   "schema": 1

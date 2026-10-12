@@ -9,15 +9,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-11T18:31:30+00:00",
+    "at": "2026-10-12T12:26:54+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a",
       "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "8ebf516dcb76fe73f9c0f1335b16b25706b20e27",
-    "note": "skills/job-application/SKILL.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `knowledge/lifecycle/application-status.md`, `knowledge/portal/employer-portal-fields.md`, `webui/pages/candidate.py`"
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

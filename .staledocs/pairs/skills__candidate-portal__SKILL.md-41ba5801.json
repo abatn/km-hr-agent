@@ -13,13 +13,13 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-11T18:31:25+00:00",
+    "at": "2026-10-12T12:26:51+00:00",
     "code_blobs": {
       "webui/pages/candidate.py": "6e8ed88b6bbc4b09b98d54c4a8b372ceef00cf0a"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
-    "note": ""
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `knowledge/portal/cv-pflicht.md`, `knowledge/system/access-control.md`, `webui/logic.py`"
   },
   "doc": "skills/candidate-portal/SKILL.md",
   "schema": 1

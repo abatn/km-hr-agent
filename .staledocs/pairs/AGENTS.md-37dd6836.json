@@ -17,6 +17,7 @@
       ".venv-streamlit/bin/python3",
       "Datei:Zeile",
       "KMHR_ADMIN_SEED_PASSWORD",
+      "KMHR_DB_PATH",
       "KMHR_E2E_BASE",
       "KMHR_E2E_SEED=1",
       "KMHR_RUNNER_AUTOSTART=0",
@@ -29,6 +30,7 @@
       "connectors/hr-api-connectors.md",
       "data/",
       "data/agent-runner.pid",
+      "data/feedback.db",
       "db.py",
       "deploy-contabo.yml",
       "docs/sphinxats-github-app.py",
@@ -91,10 +93,11 @@
       "ui.run",
       "websocket.connect",
       "webui/asgi_guard.py::SocketioAbortGuard",
+      "webui/db.py",
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-11T21:21:34+00:00",
+    "at": "2026-10-12T14:54:25+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
@@ -103,7 +106,7 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1",
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3",
-      "scripts/agent-runner.py": "006b51f4326a352d10d4e52af6fc4abd942ae116",
+      "scripts/agent-runner.py": "7f8b1884fdc4e8a2ffbc9c8069bb93da892d53ba",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -211,7 +214,7 @@
       "tests/test_r35_status_notify.py": "554a12ac6e0374a3f28ce1081c6eb13a3f8be179",
       "tests/test_reapply_after_withdraw.py": "502f35d0c7d5a8e449ab98901d1c845cfe04347e",
       "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
-      "tests/test_runner_i18n.py": "f6275309245d668888a32d171bc7c4f6586be20d",
+      "tests/test_runner_i18n.py": "c140816d03ba71904143a039edf070387004e89e",
       "tests/test_secrets_from_env.py": "f89a3b42d13e93697928ee9541339d5f240e0c90",
       "tests/test_send_onboarding_guard.py": "406de816d32c7ad0328b22ccfaf2efb9b8e989c5",
       "tests/test_send_rejection_guard.py": "22901adf0e5c481c927b2bcb1a74b902b0f163c5",
@@ -252,9 +255,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "d6091ad797f06dbfd374c8b946051e03f0354bd6",
-    "doc_blob": "dfac7332c14af60e9dec27f0647444a33df5fb43",
-    "note": "AGENTS.md: Doc-Gates-Bullet um en CI-Job 'Doku\u2194Code (staledocs)' (ci.yml, staledocs==2.1.0, fetch-depth 0) ergaenzt \u2014 Job in ci.yml verifiziert, YAML valide"
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "doc_blob": "b51496933e5b5212a6eb54a334bb1d8f56045636",
+    "note": "code moved: scripts/agent-runner.py, tests/test_runner_i18n.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
   },
   "doc": "AGENTS.md",
   "schema": 1

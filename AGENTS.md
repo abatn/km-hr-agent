@@ -59,6 +59,7 @@ Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-
 ## Setup & Betrieb
 
 - **Venv:** `source .venv-streamlit/bin/activate` (in Automatismen `.venv-streamlit/bin/python3`).
+- **DB:** SQLite `data/feedback.db` (Pfad-Override `KMHR_DB_PATH`, z. B. E2E-Isolation) — `webui/db.py` liest **nur** `KMHR_DB_PATH`; `KMHR_DB_BACKEND`/`KMHR_DATABASE_URL` werden **nicht** verwendet (inert).
 - **Dev (NiceGUI, einzige UI):** `./start-webui.sh` → http://localhost:8080. Der Starter liest `./.env` (Vorlage `.env.example`) und **verweigert den Start ohne `KMHR_STORAGE_SECRET` + `KMHR_ADMIN_SEED_PASSWORD`** (rc=1); bewusst ohne Secrets: `KMHR_DEV=1 ./start-webui.sh`. Direktstart `python3 -m webui.main` braucht dieselben Secrets. Spec: `knowledge/system/configuration-secrets.md`.
 - **Streamlit = abgeschaltet (23.09.2026):** `app.py` bleibt als Paritäts-Referenz, `start.sh` verweigert den Start.
 - **Agent-Runner:** startet mit der App (PID-Datei `data/agent-runner.pid`); Opt-out `KMHR_RUNNER_AUTOSTART=0`; Dry-Run `python3 scripts/agent-runner.py --once --dry-run`.
@@ -67,8 +68,8 @@ Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-
 
 ## Tests
 
-- **Unit-Tests:** `.venv-streamlit/bin/python3 -m pytest -q` → **434 passed, 0 failed** (Messung 10.10.2026; `tests/conftest.py` spiegelt `tests/fixtures/seed.db` → deterministisch). Ohne Netz: 398 passed + 5 skipped (netzabhängige `test_language_scoring`).
-- **CI-Parität:** mit `--ignore=` für `tests/test_r33_compliance_reports.py` + `--deselect` für `tests/test_ui_fixes_p0.py` (Test `test_profile_display_name_kein_dateiname`) = 425 passed, 1 deselected (Differenz 9 = im CI aus DSGVO-Gründen nicht lauffähige Tests). Spec: `knowledge/system/e2e-ci-seed.md`.
+- **Unit-Tests:** `.venv-streamlit/bin/python3 -m pytest -q` → **450 passed, 0 failed** (Messung 12.10.2026; `tests/conftest.py` spiegelt `tests/fixtures/seed.db` → deterministisch). Netz-/LLM-abhängig: einzelne `test_language_scoring`-Kombinationen **skippen** (Language-Test-Server liefert 0 Fragen), wenn Server/LLM nicht erreichbar — kein Regressionssignal.
+- **CI-Parität:** mit `--ignore=` für `tests/test_r33_compliance_reports.py` + `--deselect` für `tests/test_ui_fixes_p0.py` (Test `test_profile_display_name_kein_dateiname`) = 441 passed, 1 deselected (Messung 12.10.2026; Differenz 9 = 8 DSGVO-Tests + 1 Deselect). Spec: `knowledge/system/e2e-ci-seed.md`.
 - **E2E (Playwright):** immer **isoliert** via `tests/e2e_isolation.py <port>` — `tests/e2e_harness.py` bricht ohne `KMHR_E2E_BASE` ab (R6-0), **nie** gegen die Live-App :8080. Konten: lokal Originale-Mails (Spiegel der Live-DB), in CI anonymisierte Seed-Konten (`KMHR_E2E_SEED=1`) — Voll-Mapping in `knowledge/system/e2e-ci-seed.md`. Bestand 10.10.2026 (Messung): 50 Dateien `tests/e2e_*.py`, davon 48 lauffähig; letzter dokumentierter Volllauf 07.10.2026: 47/47 `rc=0` (datierte Messung).
 
 ## CI-Gates (verbindlich)
@@ -109,7 +110,7 @@ Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-
 - **Changelog-Pflicht:** datierte Änderungsnarrative gehören nach `ergebnisse/entscheidungen.md` (Lab-Schritt 4) — **nicht** in diese Datei. `git log --oneline -10` liefert den Commit-Verlauf.
 - **Doku-Authority:** ein Fakt steht an genau einem Ort; normativ/deskriptiv/historisch/tot + Konflikt-Hierarchie → `knowledge/system/doku-authority.md`.
 - **Patterns:** NiceGUI-App (frameworkfreie Layer `db.py`/`logic.py`), deutsche UI, MCP-Connectoren für externe Dienste, Lab-Prinzip (Skill + Knowledge + Connector, keine separate Codebasis). **Tool-Namen-Pflicht:** nur MCP-Server-Namen aus `opencode.json` (kein websearch/webfetch) — `knowledge/system/mcp-connector-config.md`.
-- **Nicht tun:** Session-State-Auth nicht produktionsfähig; venv vor Tests aktivieren; `contract-check-filesystem` nie anfassen (gehört zu einem anderen Projekt).
+- **Nicht tun / Pflicht:** Tests immer über den venv-Interpreter (`.venv-streamlit/bin/python3`); Live-DB `data/feedback.db` nie direkt schreiben (Tests nutzen den Spiegel aus `tests/conftest.py`); Session-State-Auth ist nicht produktionsfähig.
 
 ## Zeiger auf die Specs (Quelle-der-Wahrheit je Gebiet)
 

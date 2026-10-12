@@ -1,6 +1,66 @@
 # KM-HR-Agent – Wissensübersicht (Index)
 
-> **Doku-Authority v1.0 (`knowledge/system/doku-authority.md`):** Diese Datei ist der **deskriptive Wissens-Index** — Verweise + eine datierte Inventar-Messung. Fakten stehen in den Specs (`knowledge/**`), operative Regeln in `AGENTS.md`, Rollen/Zugriff in `knowledge/system/access-control.md`, Einstieg in `README.md`.
+> **Doku-Authority v1.0 (`knowledge/system/doku-authority.md`):** Diese Datei ist der **deskriptive Wissens-Index** — Verweise + eine datierte Inventar-Messung. Fakten stehen in den Specs (`knowledge/**`), operative Regeln in `AGENTS.md`, Rollen/Zugriff in `knowledge/system/access-control.md`, Einstieg in `README.md`. **Ein Fakt steht an genau einem Ort** — hier stehen Zeiger, keine Duplikate.
+
+## Überblick
+
+Minimal-Prototyp für 23 HR-Recruiting-Skills: Profil-Extraktion aus PDF/TXT, Matching (Score 0–100), Compliance (DE/FR/CH + DSGVO), E-Mails, Kultur-Fit, Pre-Screening, Onboarding, Feedback in SQLite; Arbeitgeber-Portal mit Stellen und anonymisiertem Kandidaten-Ranking. **Mensch-in-der-Schleife:** der Agent lädt/lehnt nie selbst ein oder ab. UI und Doku primär auf Deutsch.
+
+## Wo liegt was (Key Code)
+
+| Ort | Inhalt |
+|---|---|
+| `webui/` | NiceGUI-App (einzige UI, Port 8080): `main.py`, `db.py` (SQLite-Layer), `logic.py` (frameworkfrei), `theme.py`, `components.py`, `pages/`, `i18n.py`, `locales/` |
+| `scripts/agent-runner.py` | Hybrid-Hintergrund-Runner (Queue `agent_tasks`): deterministische Tasks über MCP-Connectoren, LLM-Tasks über NVIDIA-API |
+| `connectors/` | HR-System-Connectoren (Personio/SAP/Workday) + `hr-api-connectors.md` |
+| `mcp-*-server.py` | MCP-Server (u. a. email, pdf, meeting) — Konfiguration in `opencode.json` (14 Server) |
+| `skills/` | 23 Skill-Definitionen (`skills/*/SKILL.md`, Übersicht `skills/README.md`) |
+| `knowledge/` | Wissensbasis (Specs) — siehe Wissens-Index unten |
+| `tests/` | pytest (Unit/Integration) + E2E (Playwright, `tests/e2e_*.py`) |
+| `ergebnisse/` | Berichte + Entscheidungslog (`entscheidungen.md`, Lab-Schritt 4) |
+| `data/feedback.db` | SQLite (16 Tabellen) — **Live-DB nie direkt beschreiben** |
+| `app.py` | Streamlit-Archiv (Paritäts-Referenz, seit 23.09.2026 abgeschaltet) |
+
+## Befehle (Auszug — maßgeblich: `AGENTS.md`)
+
+```bash
+# Setup
+python3 -m venv .venv-streamlit && source .venv-streamlit/bin/activate
+pip install -r requirements.txt
+cp .env.example .env        # KMHR_STORAGE_SECRET + KMHR_ADMIN_SEED_PASSWORD setzen
+
+# Dev (einzige UI → http://localhost:8080)
+./start-webui.sh            # verweigert Start ohne Secrets (rc=1)
+KMHR_DEV=1 ./start-webui.sh # Entwicklung ohne Secrets (nur lokal)
+
+# Tests
+.venv-streamlit/bin/python3 -m pytest -q          # Unit — Testzahlen maßgeblich: AGENTS.md
+python3 tests/e2e_isolation.py <port>             # E2E isoliert — NIE gegen Live-App :8080
+
+# Lint / Syntax (CI-Parität)
+.venv-streamlit/bin/python3 -m pyflakes webui/ scripts/ connectors/ tests/
+.venv-streamlit/bin/python3 -m compileall -q webui/ scripts/ connectors/
+
+# Doku-Gates (Pflicht vor Commit)
+./.venv-streamlit/bin/staledocs check --gate strict   # rc=0, Doku↔Code
+npx -y docrot-cli --fail-on=error                    # A+, rc=0
+
+# i18n
+.venv-streamlit/bin/pybabel compile -d webui/locales
+```
+
+Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindlich. Deploy: `git push` → CI → `deploy-contabo.yml` (Spec `knowledge/system/deploy-pipeline.md`).
+
+## Konventionen, Constraints & Gotchas (Zeiger — maßgeblich: `AGENTS.md`)
+
+- **Lab-Prinzipien (Gesetz):** Quelle finden → MD-first → Konsistenz → Transparenz (`ergebnisse/entscheidungen.md`) → Iteration → Pflicht-Prüfkette (6 Punkte, alle rc=0) vor jedem Commit.
+- **i18n:** kein f-String in `_()`; Modul-Konstanten mit UI-Strings erst zur Renderzeit übersetzen (Ruff INT001).
+- **Zitate:** `Datei:Zeile` ist kein stabiler Verweis → Codemarke (`PAGE_MAP`, `_TAB_MAP`, …) und/oder Messdatum.
+- **`.bak`-Retention:** nur die letzten 2 Kalendertage behalten (`run_bak_retention_once`, `webui/logic.py`).
+- **staledocs-Ack-Falle (10.10.2026):** Claims nur bei UNACKED-Paaren — vor Re-Ack `.staledocs/pairs/` leeren und frisch analysieren.
+- **E2E-Sleep-Falle (WSL):** `goto` auf `/employer/stellen` hängt den Playwright-Driver — Einladen über den Match-Seiten-Dialog.
+- **ASGI-Socket.IO-Guard (10.10.2026):** `webui/asgi_guard.py::SocketioAbortGuard` antwortet 400 statt 500 bei Client-Abbruch/Probe (`knowledge/system/asgi-guard.md`).
+- **Nicht tun:** Session-State-Auth nicht produktionsfähig; keine Secrets/Personendaten ins Repo (`.gitignore` deckt `.env*`, `data/`, `ergebnisse/`, `testdaten/`).
 
 ## Inventar (Messung 10.10.2026)
 
@@ -9,20 +69,16 @@
 | Skills | 23 | `ls skills/*/SKILL.md \| wc -l` |
 | Knowledge-MD | 73 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (Verlauf: 72 am 10.10.2026 früh, 47 am 01.10.2026) |
 | DB-Tabellen | 16 | `data/feedback.db` |
-| MCP-Server | 14 | `opencode.json` (`mcpServers`) |
+| MCP-Server | 14 | `opencode.json` (Key `mcp`) |
 | i18n-msgid je Sprache | 993 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` |
-| Unit-Tests | 434 passed | `.venv-streamlit/bin/python3 -m pytest -q` |
+| Unit-Tests | siehe `AGENTS.md` | `.venv-streamlit/bin/python3 -m pytest -q` |
 | E2E-Dateien | 50 (48 lauffähig) | `ls tests/e2e_*.py \| wc -l` |
-
-## Überblick
-
-Minimal-Prototyp für 23 HR-Recruiting-Skills: Profil-Extraktion aus PDF/TXT, Matching (Score 0–100), Compliance (DE/FR/CH + DSGVO), E-Mails, Kultur-Fit, Pre-Screening, Onboarding, Feedback in SQLite; Arbeitgeber-Portal mit Stellen und anonymisiertem Kandidaten-Ranking. UI und Doku primär auf Deutsch.
 
 ## Wissens-Index (`knowledge/**`)
 
 | Bereich | Specs |
 |---|---|
-| `system/` | `access-control.md` (Rollen/Zugriff, Source of Truth) · `agent-automation.md` (Runner, Mails, Trigger) · `configuration-secrets.md` · `deploy-pipeline.md` · `doku-authority.md` (Doku-Regeln) · `e2e-ci-seed.md` (Test-Konten) · `i18n.md` + `i18n-runner-chain.md` · `mcp-connector-config.md` · `mcp-agent-backlog.md` · `mcp-tool-lazy-gating.md` · `vdo-ninja-migration.md` · `mvp.md` · `c2-service.md` · `event-loop-blockieren.md` · `p8-cloud-datenquellen.md` |
+| `system/` | `access-control.md` (Rollen/Zugriff, Source of Truth) · `agent-automation.md` (Runner, Mails, Trigger) · `configuration-secrets.md` · `deploy-pipeline.md` · `doku-authority.md` (Doku-Regeln) · `e2e-ci-seed.md` (Test-Konten) · `i18n.md` + `i18n-runner-chain.md` · `mcp-connector-config.md` · `mcp-agent-backlog.md` · `mcp-tool-lazy-gating.md` · `vdo-ninja-migration.md` · `mvp.md` · `c2-service.md` · `event-loop-blockieren.md` · `p8-cloud-datenquellen.md` · `asgi-guard.md` |
 | `legal/` | `dsgvo-gate.md` · `gdpr-policy.md` · `recording-consent.md` · `compliance-rules.md` · `contract-management.md` · `contract-sources.md` · `visa-rules.md` · `document-types.md` · `datenschutz.md`/`impressum.md`/`agb.md`/`kontakt.md` (je + `.en`/`.fr`/`.ar`) |
 | `lifecycle/` | `matching-criteria.md` (Scoring) · `feedback-schema.md` · `application-status.md` · `status-automation.md` · `cultural-fit-criteria.md` · `explanation-templates.md` · `relocation.md` · `mentoring.md` · `referenz-sphinxats.md` |
 | `portal/` | `candidate-portal-fields.md` · `employer-portal-fields.md` · `matching-filter.md` · `cv-pflicht.md` · `applicants-first.md` · `housing-search.md` |

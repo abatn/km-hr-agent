@@ -1,13 +1,13 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-11T18:31:14+00:00",
+    "at": "2026-10-12T14:54:28+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "006b51f4326a352d10d4e52af6fc4abd942ae116"
+      "scripts/agent-runner.py": "7f8b1884fdc4e8a2ffbc9c8069bb93da892d53ba"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "3ce6e37a5ecced6eb7d9314979a1dab80e304658",
-    "note": ""
+    "note": "code moved: scripts/agent-runner.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/onboarding-default.md",
   "schema": 1

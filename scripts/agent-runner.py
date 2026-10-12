@@ -64,6 +64,43 @@ def _lang(payload: dict) -> str:
     return lang if lang in SUPPORTED else "de"
 
 
+def _body_sprache_ok(text: str, lang: str) -> bool:
+    """Billiger Sprach-Heuristik-Check des LLM-Berichtstexts (F2, 12.10.2026).
+
+    Dependency-free (nur `re`). Default IMMER True bei Unsicherheit, damit
+    keine falschen Retries ausgeloest werden. Prueft nur den Body, NICHT die
+    Status-Tokens/Header-Marker. Spec: knowledge/system/i18n-runner-chain.md §7.1.
+    """
+    if not text or len(text.strip()) < 40:
+        return True
+    norm = re.sub(r"https?://\S+", " ", text)
+    norm = re.sub(r"[^\w\s]", " ", norm, flags=re.UNICODE)
+    norm = re.sub(r"\d+", " ", norm)
+    low = norm.lower()
+    words = set(low.split())
+    de_stops = {"und", "der", "die", "das", "nicht", "mit", "ist",
+                "ein", "eine", "für", "den"}
+    if lang == "ar":
+        alpha = [ch for ch in norm if ch.isalpha()]
+        if not alpha:
+            return True
+        arabic = sum(1 for ch in alpha if "\u0600" <= ch <= "\u06ff")
+        return (arabic / len(alpha)) >= 0.05
+    if lang == "de":
+        if re.search(r"[äöüß]", low):
+            return True
+        return len(words & de_stops) >= (len(de_stops) + 1) // 2
+    if lang == "en":
+        en_stops = {"the", "and", "of", "to", "is", "with", "for", "in", "that"}
+        return len(words & en_stops) > len(words & de_stops)
+    if lang == "fr":
+        fr_stops = {"le", "la", "les", "des", "et", "une", "pour", "est", "avec", "dans"}
+        if words & fr_stops:
+            return True
+        return bool(re.search(r"[éèêàç]", low))
+    return True
+
+
 def _ki_hinweis(lang: str) -> str:
     """Signatur-Fußzeile aller Kandidaten-/HR-Mails (EU AI Act Art. 50)."""
     return "\n\n--\n" + tr(
@@ -159,6 +196,74 @@ MAX_TASKS_PER_LOOP = 5
 MCP_TIMEOUT = 60          # Sekunden pro MCP-Tool-Aufruf
 LLM_TIMEOUT = 600         # 10 min pro LLM-Task (Spec §4)
 MAX_ATTEMPTS = 3
+
+
+def _llm_complete(prompt: str) -> str:
+    """Prompt -> Agent-Text via NVIDIA-NIM mit Modell-Fallback (F2 extrahiert).
+
+    Verhalten identisch zur frueheren Inline-Schleife in run_llm_task:
+    Modellkette nemotron-120b -> lightning-30b -> kimi-k3, 3 Versuche/Modell,
+    Exponential Backoff (5/10/20s), Timeout-Handling. Wirft RuntimeError, wenn
+    alle Modelle fehlschlagen oder keine Text-Antwort kommt.
+    """
+    api_url = "https://integrate.api.nvidia.com/v1/chat/completions"
+    api_key = os.environ.get("NVIDIA_API_KEY")
+    if not api_key:
+        raise RuntimeError("NVIDIA_API_KEY nicht gesetzt – prüfe .env-runner oder Umgebungsvariable")
+    api_headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    # Fallback-Modellkette: nemotron-120b → lightning-30b → kimi-k3
+    model_chain = [
+        (LLM_MODEL, LLM_TIMEOUT),                              # nemotron-120b, 600s
+        ("nvidia/nemotron-3.5-lightning-30b-a3b", LLM_TIMEOUT), # lightning-30b, 600s
+        ("moonshotai/kimi-k3", 120),                             # kimi-k3, 120s (Timeout)
+    ]
+    last_error = None
+    agent_text = ""
+    for model_name, model_timeout in model_chain:
+        api_payload = {
+            "messages": [{"role": "user", "content": prompt}],
+            "model": model_name,
+            "max_tokens": 4096,
+            "stream": False,
+            "temperature": 1,
+        }
+        for attempt in range(3):  # 3 Versuche pro Modell mit Backoff
+            try:
+                wait = [5, 10, 20][attempt]  # Exponential Backoff: 5s → 10s → 20s
+                if attempt > 0:
+                    log(f"   Backoff: {wait}s vor Versuch {attempt+1}/3 ({model_name})")
+                    time.sleep(wait)
+                resp = requests.post(api_url, headers=api_headers, json=api_payload, timeout=model_timeout)
+                if resp.status_code == 200:
+                    agent_text = resp.json()["choices"][0]["message"].get("content") or ""
+                    if agent_text.strip():
+                        log(f"   ✅ Erfolg mit {model_name} (Versuch {attempt+1}/3)")
+                        break
+                    else:
+                        last_error = f"Agent ohne Text-Antwort ({model_name}, HTTP 200, content leer)"
+                elif resp.status_code == 503:
+                    last_error = f"HTTP 503 ({model_name}, Versuch {attempt+1}/3)"
+                    log(f"   ⚠️ 503 von {model_name} (Versuch {attempt+1}/3)")
+                else:
+                    last_error = f"HTTP {resp.status_code} ({model_name}): {resp.text[:100]}"
+                    break  # Bei anderen Fehlern: nächstes Modell
+            except requests.Timeout:
+                last_error = f"Timeout nach {model_timeout}s ({model_name})"
+                log(f"   ⚠️ Timeout bei {model_name} (Versuch {attempt+1}/3)")
+            except Exception as e:
+                last_error = f"{type(e).__name__}: {e}"
+                break
+        else:
+            log(f"   ❌ Alle 3 Versuche für {model_name} fehlgeschlagen")
+            continue  # Nächstes Modell in der Kette
+        if agent_text.strip():
+            break  # Erfolg – Schleife verlassen
+    else:
+        raise RuntimeError(f"Alle Modelle fehlgeschlagen. Letzter Fehler: {last_error}")
+    if not agent_text.strip():
+        raise RuntimeError(f"Agent ohne Text-Antwort: {last_error}")
+    return agent_text
+
 
 DRY_RUN = "--dry-run" in sys.argv
 RUN_ONCE = "--once" in sys.argv
@@ -1167,61 +1272,25 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
         log(f"[DRY-RUN] NVIDIA API direct :: {task_type} (Kontext eingebettet, {len(prompt)} Zeichen)")
         return {"result_path": result_path}
     # Direkter API-Aufruf mit Exponential Backoff + Fallback-Modellen
-    api_url = "https://integrate.api.nvidia.com/v1/chat/completions"
-    api_key = os.environ.get("NVIDIA_API_KEY")
-    if not api_key:
-        raise RuntimeError("NVIDIA_API_KEY nicht gesetzt – prüfe .env-runner oder Umgebungsvariable")
-    api_headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-    # Fallback-Modellkette: nemotron-120b → lightning-30b → kimi-k3
-    model_chain = [
-        (LLM_MODEL, LLM_TIMEOUT),                              # nemotron-120b, 600s
-        ("nvidia/nemotron-3.5-lightning-30b-a3b", LLM_TIMEOUT), # lightning-30b, 600s
-        ("moonshotai/kimi-k3", 120),                             # kimi-k3, 120s (Timeout)
-    ]
-    last_error = None
-    for model_name, model_timeout in model_chain:
-        api_payload = {
-            "messages": [{"role": "user", "content": prompt}],
-            "model": model_name,
-            "max_tokens": 4096,
-            "stream": False,
-            "temperature": 1,
-        }
-        for attempt in range(3):  # 3 Versuche pro Modell mit Backoff
-            try:
-                wait = [5, 10, 20][attempt]  # Exponential Backoff: 5s → 10s → 20s
-                if attempt > 0:
-                    log(f"   Backoff: {wait}s vor Versuch {attempt+1}/3 ({model_name})")
-                    time.sleep(wait)
-                resp = requests.post(api_url, headers=api_headers, json=api_payload, timeout=model_timeout)
-                if resp.status_code == 200:
-                    agent_text = resp.json()["choices"][0]["message"].get("content") or ""
-                    if agent_text.strip():
-                        log(f"   ✅ Erfolg mit {model_name} (Versuch {attempt+1}/3)")
-                        break
-                    else:
-                        last_error = f"Agent ohne Text-Antwort ({model_name}, HTTP 200, content leer)"
-                elif resp.status_code == 503:
-                    last_error = f"HTTP 503 ({model_name}, Versuch {attempt+1}/3)"
-                    log(f"   ⚠️ 503 von {model_name} (Versuch {attempt+1}/3)")
-                else:
-                    last_error = f"HTTP {resp.status_code} ({model_name}): {resp.text[:100]}"
-                    break  # Bei anderen Fehlern: nächstes Modell
-            except requests.Timeout:
-                last_error = f"Timeout nach {model_timeout}s ({model_name})"
-                log(f"   ⚠️ Timeout bei {model_name} (Versuch {attempt+1}/3)")
-            except Exception as e:
-                last_error = f"{type(e).__name__}: {e}"
-                break
+    # (F2, 12.10.2026: Netzwerk-Logik in _llm_complete extrahiert, damit der
+    #  Sprach-Retry denselben Aufruf ein zweites Mal nutzen kann.)
+    agent_text = _llm_complete(prompt)
+    # ─── F2 (12.10.2026): billiger Body-Sprach-Check + genau 1 gehaerteter Retry ─
+    # Nie wegen Sprache werfen; Status-Tokens/Header bleiben unangetastet.
+    # DRY_RUN kehrt bereits oben zurueck → hier kein Retry im Dry-Run.
+    if _langval in ("de", "en", "fr", "ar") and not _body_sprache_ok(agent_text, _langval):
+        hardened = (prompt + "\n\nWICHTIG: Antworte ausschliesslich in "
+                    + LANG_NAMES.get(_langval, "Deutsch")
+                    + ". Uebersetze auch alle Fachbegriffe.")
+        try:
+            _agent_text2 = _llm_complete(hardened)
+        except Exception as _e:
+            log(f"   ⚠️ Sprach-Retry fehlgeschlagen ({_langval}): {type(_e).__name__}: {_e}")
+            _agent_text2 = ""
+        if _body_sprache_ok(_agent_text2, _langval):
+            agent_text = _agent_text2
         else:
-            log(f"   ❌ Alle 3 Versuche für {model_name} fehlgeschlagen")
-            continue  # Nächstes Modell in der Kette
-        if agent_text.strip():
-            break  # Erfolg – Schleife verlassen
-    else:
-        raise RuntimeError(f"Alle Modelle fehlgeschlagen. Letzter Fehler: {last_error}")
-    if not agent_text.strip():
-        raise RuntimeError(f"Agent ohne Text-Antwort: {last_error}")
+            log(f"   ⚠️ Sprache {_langval} nicht erkannt – Originaltext behalten")
     # Runner persistiert (Permission-frei): Bericht selbst schreiben
     header = llm_report_header(task_type, cid, jid, datum, _langval)
     report_text = header + agent_text + "\n"
@@ -1254,7 +1323,8 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
                     ("match_candidate", _json.dumps({
                         "application_id": _app_id,
                         "candidate_id": cid,
-                        "job_id": _job_id
+                        "job_id": _job_id,
+                        "language": _langval
                     })))
                 log(f"   Auto-Refresh: match_candidate für Bewerbung #{_app_id} (Job #{_job_id}) ausgelöst")
             _conn_ar.commit()
@@ -1385,7 +1455,8 @@ def _maybe_gatekeeper(conn, app_id, payload: dict) -> None:
     c.execute("INSERT INTO agent_tasks (task_type, status, payload) VALUES ('gatekeeper_eval', 'done', ?)",
               (json.dumps({"application_id": app_id, "gen": current_gen,
                            "signature": sig, "ja": bool(ja), "score": score,
-                           "kategorie": kategorie}, ensure_ascii=False),))
+                           "kategorie": kategorie, "language": _lang(payload)},
+                          ensure_ascii=False),))
     log(f"   Pförtner-Regel Bewerbung #{app_id} (Gen {current_gen}): Score {score} ({kategorie}), "
         f"Compliance {'OK' if 'check_compliance' in states else '?'} → {'JA' if ja else 'NEIN'}")
     if ja:
@@ -1399,7 +1470,7 @@ def _maybe_gatekeeper(conn, app_id, payload: dict) -> None:
         if c.fetchone()[0] == 0:
             c.execute("INSERT INTO agent_tasks (task_type, payload) VALUES ('notify_hr', ?)",
                       (json.dumps({**payload, "score": score, "kategorie": kategorie,
-                                   "gen": current_gen},
+                                   "gen": current_gen, "language": _lang(payload)},
                                   ensure_ascii=False, sort_keys=True),))
             log(f"   → notify_hr-Task #{c.lastrowid} gequeued (HR-Mail mit Score)")
         else:

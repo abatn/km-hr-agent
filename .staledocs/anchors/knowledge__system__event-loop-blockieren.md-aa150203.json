@@ -5,15 +5,14 @@
     "tests/test_mcp_official_client.py",
     "tests/test_secrets_from_env.py",
     "webui/logic.py",
-    "webui/logic.py::_mcp_connector_call",
     "webui/pages/*",
     "webui/pages/admin.py",
     "webui/pages/candidate.py",
     "webui/pages/employer.py",
     "webui/pages/login.py"
   ],
-  "at": "2026-10-10T10:13:24+00:00",
+  "at": "2026-10-12T12:19:07+00:00",
   "doc": "knowledge/system/event-loop-blockieren.md",
-  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "note": "",
   "schema": 1
 }

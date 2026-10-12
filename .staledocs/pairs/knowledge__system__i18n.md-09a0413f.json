@@ -76,6 +76,7 @@
       "mcp-email-server.py",
       "mcp-meeting-server.py",
       "messages.pot",
+      "notify_hr",
       "q-page-container",
       "rc=0",
       "scripts/agent-runner.py",
@@ -110,10 +111,10 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T18:31:22+00:00",
+    "at": "2026-10-12T14:54:31+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "6ae26f044241df7f3dff3d78feccc941659902e7",
-      "tests/test_runner_i18n.py": "f6275309245d668888a32d171bc7c4f6586be20d",
+      "tests/test_runner_i18n.py": "c140816d03ba71904143a039edf070387004e89e",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
       "webui/locales/ar/LC_MESSAGES/messages.mo": "7725efefb668b8690447ef22a86ee7d905ea77a2",
@@ -125,9 +126,9 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "660c5d2ce6ae7145c1b5d2dd975bb3c2cb892454",
       "webui/locales/fr/LC_MESSAGES/messages.po": "f8cb1ee6644bb3bcfc2a096430d8ce27248a9492"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "7dbfe82cb500363fb0f055b796e0827b0ad81e6f",
-    "note": ""
+    "note": "code moved: tests/test_runner_i18n.py \u2014 F1/F2 Sprach-Fix (language an INSERTs + Body-Sprachcheck); Doku selbst unveraendert, Pair neu bestaetigt."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

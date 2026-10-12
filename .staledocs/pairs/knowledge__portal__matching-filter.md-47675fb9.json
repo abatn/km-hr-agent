@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-11T18:31:17+00:00",
+    "at": "2026-10-12T12:26:44+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "51506ba8a98d478f80dcdc146b84b06e95839152",
-    "note": "knowledge/portal/matching-filter.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge/lifecycle/matching-criteria.md`, `knowledge/portal/employer-portal-fields.md`"
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1

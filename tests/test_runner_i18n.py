@@ -957,3 +957,103 @@ def test_o1_de_prompt_byteidentisch_altbestand(monkeypatch, tmp_path):
                          {"candidate_id": None, "job_id": None, "language": "de"})
     assert GEWICHTSZEILE["de"] in mc
     assert KATEGORIE["de"] in mc
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# F2 (12.10.2026): Sprach-Bypass-Fix — die drei direkten `INSERT INTO
+# agent_tasks` tragen jetzt die Payload-Sprache (`language`).
+# Spec: knowledge/system/i18n-runner-chain.md §7.1.
+#   * Auto-Refresh match_candidate (`_c_ar.execute(...)`)
+#   * gatekeeper_eval-Marker (`VALUES ('gatekeeper_eval', 'done', ?)`)
+#   * notify_hr (`VALUES ('notify_hr', ?)`)
+# Quelltext-Regression (Muster test_p2b_runner_create_invitation_traegt_language):
+# Marker-Substring + 400-Zeichen-Fenster gegen Format-Drift gepuffert.
+# ═══════════════════════════════════════════════════════════════════════════
+
+def _runner_src() -> str:
+    return RUNNER.read_text(encoding="utf-8")
+
+
+def _fenster(src: str, marker: str, n: int = 400) -> str:
+    """400-Zeichen-Fenster ab dem Marker; fail-closed, wenn der Marker fehlt."""
+    assert marker in src, f"Marker fehlt im Runner-Quelltext: {marker!r}"
+    i = src.index(marker)
+    return src[i:i + n]
+
+
+def test_f2_auto_refresh_match_candidate_insert_traegt_language():
+    """Auto-Refresh-Match: `_c_ar.execute("INSERT INTO agent_tasks...` mit language."""
+    fenster = _fenster(_runner_src(), '_c_ar.execute("INSERT INTO agent_tasks')
+    assert '"language"' in fenster, \
+        "Auto-Refresh match_candidate-Insert ohne language (Sprach-Bypass)"
+    assert "_langval" in fenster, \
+        "Auto-Refresh match_candidate-Insert ohne Payload-Sprachwert"
+
+
+def test_f2_gatekeeper_eval_insert_traegt_language():
+    """gatekeeper_eval-Marker-Insert traegt `language` / `_lang(`."""
+    fenster = _fenster(_runner_src(), "VALUES ('gatekeeper_eval', 'done', ?)")
+    assert '"language"' in fenster, \
+        "gatekeeper_eval-Insert ohne language (Sprach-Bypass)"
+    assert "_lang(" in fenster, \
+        "gatekeeper_eval-Insert ohne _lang(payload)-Aufruf"
+
+
+def test_f2_notify_hr_insert_traegt_language():
+    """notify_hr-Insert traegt `language` / `_lang(`."""
+    fenster = _fenster(_runner_src(), "VALUES ('notify_hr', ?)")
+    assert '"language"' in fenster, \
+        "notify_hr-Insert ohne language (Sprach-Bypass)"
+    assert "_lang(" in fenster, \
+        "notify_hr-Insert ohne _lang(payload)-Aufruf"
+
+
+# ─── F2: _body_sprache_ok() — Heuristik, Default True bei Unsicherheit ───────
+
+def test_f2_body_sprache_ok_de():
+    """Umlaute/Stopwoerter -> True; klar englischer Body -> False."""
+    ok = _load_runner()._body_sprache_ok
+    de = ("Dieses Profil enthält eine ausführliche Übersicht über die Erfahrung "
+          "und die Qualifikation. Die Kenntnisse wurden geprüft und bestätigt.")
+    en = ("This profile contains a detailed overview of the experience and "
+          "qualifications. The skills were reviewed and verified by the team.")
+    assert ok(de, "de") is True
+    assert ok(en, "de") is False
+
+
+def test_f2_body_sprache_ok_ar():
+    """Arabische Zeichen -> True; reiner Latin-Body (lang genug) -> False."""
+    ok = _load_runner()._body_sprache_ok
+    ar = ("مرحبا بكم في هذه الشركة، نتمنى لكم يوما سعيدا وموفقا في العمل معنا. "
+          "نتطلع إلى رؤية إنجازاتكم قريبا في الفريق.")
+    la = "This is a plain Latin body without any Arabic characters at all."
+    assert ok(ar, "ar") is True
+    assert ok(la, "ar") is False
+
+
+def test_f2_body_sprache_ok_fr():
+    """Akzente/Stopwoerter -> True; klar deutscher Body -> False."""
+    ok = _load_runner()._body_sprache_ok
+    fr = ("Nous vous remercions pour votre candidature et nous vous contacterons "
+          "dans les plus brefs délais concernant votre dossier.")
+    de = ("Wir danken Ihnen für Ihre Bewerbung und melden uns in Kürze mit "
+          "einem Ergebnis bei Ihnen zurück.")
+    assert ok(fr, "fr") is True
+    assert ok(de, "fr") is False
+
+
+def test_f2_body_sprache_ok_en():
+    """Englischer Body -> True fuer 'en'."""
+    ok = _load_runner()._body_sprache_ok
+    en = ("Thank you for your application. We will review the documents and "
+          "contact you with the results in that process.")
+    assert ok(en, "en") is True
+
+
+@pytest.mark.parametrize("lang", LANGS + ("xx",))
+def test_f2_body_sprache_ok_kurz_default_true(lang):
+    """Sehr kurzer/mehrdeutiger Text (<40 Zeichen) -> True (Unsicherheit)."""
+    ok = _load_runner()._body_sprache_ok
+    assert ok("Kurz und knapp", lang) is True
+    assert ok("", lang) is True
+    assert ok(None, lang) is True

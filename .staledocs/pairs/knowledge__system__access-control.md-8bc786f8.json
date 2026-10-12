@@ -26,7 +26,7 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T18:31:18+00:00",
+    "at": "2026-10-12T12:26:44+00:00",
     "code_blobs": {
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -38,9 +38,9 @@
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "b74345b427f343382d2e65ca29a2c6bdaf954227",
-    "note": "knowledge/system/access-control.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `AGENTS.md`, `README.md`, `app.py`"
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

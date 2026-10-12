@@ -53,13 +53,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T18:31:16+00:00",
+    "at": "2026-10-12T12:26:44+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "9db11002b1ffe813f5bf67d57228f0c3ea30e725"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "14353716df60b594421fdbfe202cb603af336122",
-    "note": "knowledge/portal/employer-portal-fields.md: Doppel-Submit-Fix (create_job Button-Sperre+Reset, insert_job 60s-Dedupe) verifiziert"
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge/lifecycle/application-status.md`, `knowledge/portal/candidate-portal-fields.md`"
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

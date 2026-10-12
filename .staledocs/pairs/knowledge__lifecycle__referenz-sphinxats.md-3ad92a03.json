@@ -8,13 +8,13 @@
       "skills/assess-culture-fit/SKILL.md",
       "skills/explain-match/SKILL.md"
     ],
-    "at": "2026-10-11T18:31:12+00:00",
+    "at": "2026-10-12T12:26:42+00:00",
     "code_blobs": {
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "0b37491b8760a9ff40d57095ba28183f42df1178",
-    "note": ""
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `docs/sphinxats-github-app.py`, `knowledge/lifecycle/matching-criteria.md`"
   },
   "doc": "knowledge/lifecycle/referenz-sphinxats.md",
   "schema": 1

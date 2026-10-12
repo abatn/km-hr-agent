@@ -60,7 +60,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-11T18:31:24+00:00",
+    "at": "2026-10-12T12:26:51+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -86,9 +86,9 @@
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "74ef3b442764c9dcae7e810e9bd3208d124cbb47",
-    "note": ""
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge.md`, `knowledge/legal/document-types.md`"
   },
   "doc": "skills/README.md",
   "schema": 1

@@ -1,14 +1,14 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-11T18:31:09+00:00",
+    "at": "2026-10-12T12:24:42+00:00",
     "code_blobs": {
       "scripts/language-test-server.py": "55a455395c71df3288b6870446e8b0764e222937",
       "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "8da400a0f2c053fbf0ab0d4d33e4b5b5f4098e0c",
-    "note": ""
+    "note": "Manueller Beleg 12.10.2026: knowledge/language-tests.md gelesen (CEFR-Statistik-Tabellen A1-C2, Quellen Sprachschule Aktiv/Goethe-Institut); Parser-Verweis language-test-server.py existiert; keine Code-Verpflichtung, kein Widerspruch"
   },
   "doc": "knowledge/language-tests.md",
   "schema": 1

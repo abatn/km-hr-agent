@@ -1,13 +1,13 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-11T18:31:26+00:00",
+    "at": "2026-10-12T12:26:52+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "567eaca3d635a667a2cc5cc0994aee5abf508e24",
-    "note": ""
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `read_text_file`, `write_file`"
   },
   "doc": "skills/check-gdpr/SKILL.md",
   "schema": 1

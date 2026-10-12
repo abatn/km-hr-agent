@@ -7,7 +7,11 @@
 ## 1. Ziel
 Nachweis, dass die nutzersichtbare Agent-Kette (Runner + MCP) in **jeder Sprache** (DE/EN/FR/AR)
 korrekt bedient wird — mit E2E-Beweis je Sprache und ohne externe Nebenwirkung (kein echter
-Mail-Versand, kein LLM-/Netz-Call).
+Mail-Versand, kein LLM-/Netz-Call). **Präzisierung (12.10.2026, Abgleich mit den Grenzen aus §7.1):**
+garantiert ist die Sprache für die **deterministischen `tr()`-Pfade** (Mails #1–#6, die
+deterministischen Reports, die `>`-Header-Prosa) — **je Sprache**; für die
+**LLM-Berichts-Bodies** gilt **best-effort**: Prompt-Anweisung + Sprach-Nachkontrolle mit **max. 1
+Retry**, Warn-Log (§7.1 Punkt 5) — **keine** harte Garantie.
 
 ## 2. Was ist sprachabhängig? (Ist-Analyse, Codemarken ⓘ07.10.2026)
 | Artefakt | Sprache | Quelle |
@@ -140,6 +144,11 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
    einzeln zu ändern. **Dedupe-Schutz:** im Zweig ohne `application_id` wird `language` aus dem
    Payload-Vergleich ausgenommen (sonst würde ein altes Task-Payload ohne `language` das neue mit
    `language` nicht matchen → Duplikat). Der `application_id`-Zweig nutzt `json_extract` → unberührt.
+   **Pflicht für Runner-interne Direkt-INSERTs (F1, 12.10.2026):** schreibt `scripts/agent-runner.py`
+   selbst `agent_tasks`-Zeilen (**nicht** über `queue_agent_task` — Auto-Refresh `match_candidate`,
+   `gatekeeper_eval`, `notify_hr`), MUSS das Payload `"language": _lang(payload)` tragen
+   (Codemarke `_lang(payload)` in `scripts/agent-runner.py`); sonst greift kein Resolver und die
+   Folge-Task fällt **still** auf `de` zurück.
 3. **Runner:** `_lang(payload) = payload["language"] if in SUPPORTED else "de"`; alle **6 Mails**
    (`send_confirmation`, `notify_hr`, `visa_confirmation`, `send_onboarding_mail`, `send_rejection`,
    `create_invitation` inkl. ICS-Titel) und die **4 deterministischen Reports** (`einladung-*`,
@@ -182,6 +191,13 @@ Kandidaten. Fix dafür wäre Variante A (später möglich, additiv).
    (**993 → 1000** je Sprache); die Sektions-/`Kategorie`-Labels waren bereits katalogisiert.
    Quelle: **Design-Entscheidung** (keine externe Quelle); die EN/FR/AR-Erstfassungen der 7 Labels
    sind eigene Übersetzung (Native-Review offen, Muster Punkt 6).
+   **Sprach-Nachkontrolle des LLM-Bodys (F2, 12.10.2026):** nach dem LLM-Call prüft
+   `_body_sprache_ok(text, lang)` (billige Heuristik; Default `True` bei Unsicherheit) den Body
+   (Codemarke `_body_sprache_ok(text, lang)` in `scripts/agent-runner.py`); bei Abweichung **genau
+   ein** Retry mit gehärteter Instruktion („Antworte ausschliesslich in <Klarname>. Uebersetze auch
+   alle Fachbegriffe."); schlägt auch dieser fehl, **Warn-Log** und Originaltext beibehalten —
+   **nie blockierend**; die Status-Tokens (`COMPLIANT`/`NICHT_COMPLIANT`/… s. o.) und die Marker
+   `Kandidat #`/`Stelle #` bleiben unverändert.
 6. **MCP-Server-Texte (P2b, 07.10.2026):** `mcp-email-server.py` (Codemarke `def send_pre_screen_invitation`, gemessen 10.10.2026)
    und `mcp-meeting-server.py` (Codemarke `def generate_screening_questions`, gemessen 10.10.2026) erhalten den Parameter
    `language: str = "de"` und bauen `subject`/`body` bzw. Kategorien/Fragetemplates/Kopf+Fuß

@@ -1,20 +1,23 @@
 {
   "anchors": [
     "ergebnisse/bipperz-konkurrenz-analyse.md",
-    "ergebnisse/bipperz-konkurrenz-analyse.md:204",
-    "ergebnisse/bipperz-konkurrenz-analyse.md:234",
     "ergebnisse/entscheidungen.md",
-    "ergebnisse/entscheidungen.md:915",
     "ergebnisse/onboarding-freigabe-bewerbung-{app_id}.md",
     "ergebnisse/phase-d-p6-wohnungssuche.md",
+    "knowledge/language-tests.md",
+    "knowledge/legal/document-types.md",
+    "knowledge/legal/gdpr-policy.md",
+    "knowledge/onboarding-default.md",
     "knowledge/portal/candidate-portal-fields.md",
     "knowledge/system/agent-automation.md",
     "knowledge/templates/onboarding-templates/",
+    "knowledge/templates/onboarding-templates/onboarding-de.md",
+    "scripts/agent-runner.py",
     "webui/pages/candidate.py",
     "webui/pages/employer.py"
   ],
-  "at": "2026-10-10T10:13:24+00:00",
+  "at": "2026-10-12T12:19:06+00:00",
   "doc": "knowledge/portal/housing-search.md",
-  "note": "Baseline 10.10.2026: Paare gesetzt (C1), Rohwerte C0 in ergebnisse/entscheidungen.md",
+  "note": "",
   "schema": 1
 }

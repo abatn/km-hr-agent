@@ -15,13 +15,13 @@
       "webui/components.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-11T18:31:11+00:00",
+    "at": "2026-10-12T12:26:42+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
     },
-    "commit": "783bcee9236697ccb67817af7f5b7a66c5479b12",
+    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
     "doc_blob": "7ab0edf7736ab4dae86df13a417c01009aaea965",
-    "note": ""
+    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge/lifecycle/matching-criteria.md`, `webui/components.py`"
   },
   "doc": "knowledge/lifecycle/feedback-schema.md",
   "schema": 1
