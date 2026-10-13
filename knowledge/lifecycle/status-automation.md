@@ -82,7 +82,7 @@ Vorschlag zur Spezifikation (Ziel: `changed_by = 'system'`, Einmaligkeit, kein E
 |---|---|
 | Whitelist-Inhalt `eingegangen:{angesehen,abgelehnt}` / `angesehen:{eingeladen,abgelehnt}` / `eingeladen:{eingestellt,abgelehnt}` | `knowledge/lifecycle/application-status.md` („Erlaubte Übergänge") + **Parität** `app.py` (gemessen 10.10.2026) / `app.py` (gemessen 10.10.2026) |
 | Endstatus `abgelehnt` / `eingestellt` / `zurückgezogen` (kein Übergang) | `knowledge/lifecycle/application-status.md` |
-| Jede Statusänderung wird in `application_status_history` protokolliert | `knowledge/lifecycle/application-status.md` |
+| Jede Statusänderung wird in `application_status_history` protokolliert | `knowledge/lifecycle/application-status.md` — Fußnote (13.10.2026): Bewerber-Status (`candidates.status`) wird NICHT historisiert (Lesetabelle `candidate_status_history`, 0 Schreibstellen, Stand 13.10.2026) |
 | Agent-Hooks je Übergang (`create_invitation` / `send_rejection` / `onboarding_release`) | `knowledge/lifecycle/application-status.md` + `knowledge/system/agent-automation.md` · Umsetzung `webui/pages/employer.py` (gemessen 10.10.2026) |
 | Variante A: Agent lädt nie von selbst ein/ab, nur nach HR-Klick | `knowledge/system/agent-automation.md` (user-approved 12.09.2026) |
 | **(a)** Guard gegen den Ausgangsstatus in den Modals | **Parität** `app.py` (gemessen 10.10.2026) – daher **kein** neues Konzept; die Entscheidung, *welche* NiceGUI-Stelle den Guard bekommt ((c)1 vs. (c)5), ist **Design-Entscheidung** |

@@ -246,7 +246,7 @@ Ergebnis-Datei
 
 - **Einwilligung:** Kandidaten müssen der Datenübermittlung zugestimmt haben
 - **Speicherort:** API-Aufrufe nur an EU/CH-Server
-- **Protokollierung:** Jeder API-Aufruf wird in `logs/agent-errors.log` protokolliert
+- **Protokollierung:** Fehlgeschlagene HR-REST-Connectoren landen in `logs/agent-errors.log`. Der Runner-MCP-Call (`mcp_call`) schreibt **live** seit 13.10.2026 eine redigierte Zeile nach `logs/mcp-calls.log` (Regel: `knowledge/system/agent-automation.md`, Abschnitt Protokollierung).
 - **Löschung:** Kandidaten können Löschung in allen Systemen verlangen
 
 ---

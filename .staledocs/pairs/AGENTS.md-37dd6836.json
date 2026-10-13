@@ -123,16 +123,16 @@
       "webui/main.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T12:28:47+00:00",
+    "at": "2026-10-13T14:19:43+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
-      "connectors/hr-api-connectors.md": "29f067ceb53a353a683d8a45eb03b80ffcbb8eed",
+      "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
       "connectors/hr-benchmark-server.py": "512c72ccdca38def81157574054e68f7371cbf85",
       "connectors/prescreen-config-server.py": "3d7f8d4b7961db34dbbb76392b021400c8638c80",
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1",
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3",
-      "scripts/agent-runner.py": "216b6c133e349731e9e35ca8075b40ef7e045d78",
+      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -273,7 +273,7 @@
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59",
-      "webui/pages/employer.py": "6473965eecbc0cbad851d87c58c747e7a660006c",
+      "webui/pages/employer.py": "645abba27332e15e14e8d398aa40f5c24bab5752",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
@@ -283,9 +283,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
     "doc_blob": "102632b86f4d0e60b3113af48121692cf677d8a2",
-    "note": "AGENTS.md DOC_STALE (2. Runde, Rebuild-Falle): Evidence zeigt nur POT-Creation-Date-Header-Stempel 2026-10-13 14:18+0200 in webui/locales/{de,en,fr,ar}/LC_MESSAGES/messages.mo \u2014 babel stempelt beim pybabel-compile (rc=0, Pruefkette a) die Laufzeit, keine Inhaltsaenderung; Anker weiterhin in .mo-Inhalten: POT-Creation-Date x1 je Sprache, ergebnisse/ x2, testdaten/ x2, knowledge/ x12, echte x8-16 (grep-messung), msgid-Menge 1141x4"
+    "note": "AGENTS.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "AGENTS.md",
   "schema": 1

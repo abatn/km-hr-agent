@@ -3,12 +3,18 @@
     "anchors": [
       "**Datum:**",
       ".po",
+      "Compliance-Status:",
       "DB_PATH",
       "DRY_RUN",
       "DRY_RUN=True",
+      "Erfahrung:",
+      "Gesamtstatus:",
       "KMHR_RUNNER_AUTOSTART=0",
+      "Kultur-Fit:",
+      "Match-Score:",
       "NICHT_COMPLIANT",
       "NICHT_KONFORM",
+      "Visum-Bedarf:",
       "_BERICHT_STELLE",
       "_badge_icon",
       "_body_sprache_ok",
@@ -17,6 +23,7 @@
       "_lang()",
       "_lang(payload)",
       "_pdf_forensic_pre_scan",
+      "_visum_auswertung_from_ergebnisse",
       "agent_tasks",
       "ansvar_search",
       "app.storage.user[\"language\"]",
@@ -102,14 +109,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T19:14:55+00:00",
+    "at": "2026-10-13T14:19:50+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "216b6c133e349731e9e35ca8075b40ef7e045d78",
+      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
-    "doc_blob": "fc99c39a328ca25d3a8d9a6df4f4859f2cf8c7f5",
-    "note": "code moved: scripts/agent-runner.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "doc_blob": "454e94d39cd133d8432aeb520ce16de402a05d0d",
+    "note": "knowledge/system/i18n-runner-chain.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "knowledge/system/i18n-runner-chain.md",
   "schema": 1

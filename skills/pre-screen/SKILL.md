@@ -71,6 +71,7 @@ Jeder Leerzustand in Pre-Screen/Onboarding enthält **mindestens einen klickbare
   - `cultural_fit_score`: Kultur-Fit-Score
   - `strengths`: Stärken (kommasepariert)
   - `gaps`: Lücken (kommasepariert)
+  - language: Zielsprache (de/en/fr/ar; Default de – Altverhalten, seit 12.10.2026 über tr(..., language); Spec: knowledge/system/i18n.md Klasse F P2b)
 
 ### 4. ICS-Datei erstellen (optional)
 - **Connector:** `meeting-tools`

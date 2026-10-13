@@ -11,6 +11,8 @@
 
 **Ingestion-Pfad (seit v6.1):** Kandidaten-Dokumente werden im 👤 Candidate Portal → **Tab „🗂️ Dokumente"** hochgeladen (Typ-Auswahl pro Datei, session-gebunden, kein Profil-Overwrite). Ablage: `testdaten/kandidat-{id}-{typ}-{name}`, Registrierung in Tabelle `candidate_documents`. Quelle für Runner-Task `verify_documents` (typed). Visa-/Aufenthaltsdokumente werden von HR beschafft (Arbeitgeberpflicht) — scanned und dem Agenten zur Prüfung vorgelegt.
 
+**Abgrenzung (13.10.2026):** `candidate_documents` enthält **nur Zusatzdokumente**; der Bewerbungs-CV lebt in `candidates.lebenslauf_datei`/`lebenslauf_text` und wird beim Bewerbungs-/Upload-Flow **nicht** in `candidate_documents` registriert (Stichprobe 13.10.2026: cids 1/2/21/23 = 0 Zeilen).
+
 | Typ | Herkunft | Häufige Formate | Pflichtfelder (Signatur) | Typische Prüfpunkte | Rechtsrahmen |
 |---|---|---|---|---|---|
 | **Arbeitszeugnis** (Zwischen-/Endzeugnis) | 🧑 **KANDIDAT** | PDF | Aussteller (Firma), Position, Beschäftigungszeitraum, Ausstellungsdatum, Unterschriftszeile | Datumslogik, Konsistenz zum CV, Zeugnissprache-Plausibilität (Geheimcode-Indizien), vollständiger Schlusspartikel | 🇩🇪 BGB § 630, AGG · 🇫🇷 Code du travail · 🇨🇭 OR Art. 319 |

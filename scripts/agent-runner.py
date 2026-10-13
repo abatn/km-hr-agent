@@ -72,6 +72,8 @@ def _body_sprache_ok(text: str, lang: str) -> bool:
     Status-Tokens/Header-Marker. Spec: knowledge/system/i18n-runner-chain.md §7.1.
     """
     if not text or len(text.strip()) < 40:
+        log(f"   ⚠️ Body zu kurz ({0 if not text else len(text.strip())} Zeichen) – "
+            f"Sprachpruefung ({lang}) uebersprungen")
         return True
     norm = re.sub(r"https?://\S+", " ", text)
     norm = re.sub(r"[^\w\s]", " ", norm, flags=re.UNICODE)
@@ -295,61 +297,106 @@ def log(msg: str) -> None:
 
 # ─── MCP-Connector-Aufrufe (stdio JSON-RPC, Muster: Handshake-Test) ─────
 
+# DSGVO-Whitelist (13.10.2026): NUR diese Keys duerfen im Live-Nachweislog
+# stehen. body/description/cc/bcc etc. werden NIEMALS geschrieben.
+_MCP_LOG_ALLOWED_KEYS = frozenset({
+    "to", "subject", "language", "file_path", "candidate_name", "position",
+    "match_score", "cultural_fit_score", "date", "time", "topic",
+    "duration_minutes", "meet_url",
+})
+
+
+def _mcp_log_live(server_name: str, tool: str, args: dict, ok: bool,
+                  fehler: str = "") -> None:
+    """Eine rote-freie Nachweiszeile je Live-MCP-Aufruf nach logs/mcp-calls.log.
+
+    Format: `<ISO-Zeitstempel> | <server>::<tool> | ok|FEHLER | {redigiertes JSON}`.
+    Redaktion per Whitelist (_MCP_LOG_ALLOWED_KEYS), Strings auf 120 Zeichen
+    gekappt. Fehlertolerant: ein Logfehler darf einen MCP-Aufruf nie sprengen.
+    """
+    try:
+        redigiert = {}
+        for k, v in (args or {}).items():
+            if k not in _MCP_LOG_ALLOWED_KEYS:
+                continue
+            if isinstance(v, str) and len(v) > 120:
+                v = v[:120]
+            redigiert[k] = v
+        zeile = (f"{datetime.now().isoformat(timespec='seconds')} | "
+                 f"{server_name}::{tool} | {'ok' if ok else 'FEHLER'} | "
+                 f"{json.dumps(redigiert, ensure_ascii=False)}")
+        if fehler:
+            zeile += f" | {fehler}"
+        log_pfad = PROJECT_ROOT / "logs" / "mcp-calls.log"
+        log_pfad.parent.mkdir(exist_ok=True)
+        with open(log_pfad, "a", encoding="utf-8") as f:
+            f.write(zeile + "\n")
+    except Exception:
+        pass
+
+
 def mcp_call(server_py: Path, tool: str, args: dict) -> str:
     """Ruft ein Tool eines lokalen FastMCP-Servers auf (initialize + call + exit)."""
     if DRY_RUN:
         log(f"[DRY-RUN] MCP {server_py.name}::{tool} args={json.dumps(args, ensure_ascii=False)[:120]}")
         return "DRY-RUN"
-    if not server_py.exists():
-        raise FileNotFoundError(f"MCP-Server fehlt: {server_py}")
-    py = str(VENV_PY) if VENV_PY.exists() else "python3"
-    init_req = {"jsonrpc": "2.0", "id": 1, "method": "initialize",
-                "params": {"protocolVersion": "2024-11-05",
-                           "capabilities": {},
-                           "clientInfo": {"name": "km-hr-agent-runner", "version": "1.0"}}}
-    # MCP-Protokoll: initialized-Notification ist PFLICHT nach initialize,
-    # sonst schließt FastMCP die Verbindung ("Connection closed", Live-Befund 12.09.2026)
-    initialized_note = {"jsonrpc": "2.0", "method": "notifications/initialized"}
-    call_req = {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
-                "params": {"name": tool, "arguments": args}}
-    # stdin offen halten bis Antwort da (FastMCP bricht bei EOF ab – Live-Befund 12.09.2026)
-    proc = subprocess.Popen([py, str(server_py)], stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=str(PROJECT_ROOT))
-    for r in (init_req, initialized_note, call_req):
-        proc.stdin.write((json.dumps(r) + "\n").encode("utf-8"))
-    proc.stdin.flush()
-    import threading as _th
-    _buf = {"lines": [], "resp": None}
-    def _read():
-        for line in proc.stdout:
-            line = line.decode("utf-8", errors="replace").strip()
-            if line.startswith("{"):
-                _buf["lines"].append(line)
-                try:
-                    e = json.loads(line)
-                    if e.get("id") == 2:
-                        _buf["resp"] = e; return
-                except json.JSONDecodeError:
-                    pass
-    _t = _th.Thread(target=_read, daemon=True)
-    _t.start(); _t.join(timeout=MCP_TIMEOUT)
     try:
-        proc.stdin.close(); proc.terminate(); proc.wait(timeout=5)
-    except Exception:
-        pass
-    if _t.is_alive():
-        raise RuntimeError(f"MCP-Timeout nach {MCP_TIMEOUT}s: {server_py.name}::{tool}")
-    if not _buf.get("resp"):
+        if not server_py.exists():
+            raise FileNotFoundError(f"MCP-Server fehlt: {server_py}")
+        py = str(VENV_PY) if VENV_PY.exists() else "python3"
+        init_req = {"jsonrpc": "2.0", "id": 1, "method": "initialize",
+                    "params": {"protocolVersion": "2024-11-05",
+                               "capabilities": {},
+                               "clientInfo": {"name": "km-hr-agent-runner", "version": "1.0"}}}
+        # MCP-Protokoll: initialized-Notification ist PFLICHT nach initialize,
+        # sonst schließt FastMCP die Verbindung ("Connection closed", Live-Befund 12.09.2026)
+        initialized_note = {"jsonrpc": "2.0", "method": "notifications/initialized"}
+        call_req = {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                    "params": {"name": tool, "arguments": args}}
+        # stdin offen halten bis Antwort da (FastMCP bricht bei EOF ab – Live-Befund 12.09.2026)
+        proc = subprocess.Popen([py, str(server_py)], stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=str(PROJECT_ROOT))
+        for r in (init_req, initialized_note, call_req):
+            proc.stdin.write((json.dumps(r) + "\n").encode("utf-8"))
+        proc.stdin.flush()
+        import threading as _th
+        _buf = {"lines": [], "resp": None}
+        def _read():
+            for line in proc.stdout:
+                line = line.decode("utf-8", errors="replace").strip()
+                if line.startswith("{"):
+                    _buf["lines"].append(line)
+                    try:
+                        e = json.loads(line)
+                        if e.get("id") == 2:
+                            _buf["resp"] = e; return
+                    except json.JSONDecodeError:
+                        pass
+        _t = _th.Thread(target=_read, daemon=True)
+        _t.start(); _t.join(timeout=MCP_TIMEOUT)
         try:
-            _err = proc.stderr.read().decode("utf-8", errors="replace")[:200]
+            proc.stdin.close(); proc.terminate(); proc.wait(timeout=5)
         except Exception:
-            _err = ""
-        raise RuntimeError(f"Keine Antwort von {server_py.name}::{tool}: {_err}")
-    resp = _buf["resp"]
-    if "error" in resp:
-        raise RuntimeError(f"MCP-Fehler {tool}: {json.dumps(resp['error'], ensure_ascii=False)[:300]}")
-    content = resp.get("result", {}).get("content", [])
-    return "\n".join(c.get("text", "") for c in content)
+            pass
+        if _t.is_alive():
+            raise RuntimeError(f"MCP-Timeout nach {MCP_TIMEOUT}s: {server_py.name}::{tool}")
+        if not _buf.get("resp"):
+            try:
+                _err = proc.stderr.read().decode("utf-8", errors="replace")[:200]
+            except Exception:
+                _err = ""
+            raise RuntimeError(f"Keine Antwort von {server_py.name}::{tool}: {_err}")
+        resp = _buf["resp"]
+        if "error" in resp:
+            raise RuntimeError(f"MCP-Fehler {tool}: {json.dumps(resp['error'], ensure_ascii=False)[:300]}")
+        content = resp.get("result", {}).get("content", [])
+        result = "\n".join(c.get("text", "") for c in content)
+    except Exception as _e:
+        _mcp_log_live(server_py.name, tool, args, ok=False,
+                      fehler=f"{type(_e).__name__}: {_e}"[:120])
+        raise
+    _mcp_log_live(server_py.name, tool, args, ok=True)
+    return result
 
 
 def extract_meet_url(meeting_text: str) -> str | None:
@@ -1298,6 +1345,9 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
     # Runner persistiert (Permission-frei): Bericht selbst schreiben
     header = llm_report_header(task_type, cid, jid, datum, _langval)
     report_text = header + agent_text + "\n"
+    if os.path.exists(result_path):
+        log(f"   ⚠️ Bericht {os.path.basename(result_path)} wird ueberschrieben "
+            f"(zweiter Lauf am selben Tag; Altstand in agent_tasks.result_json)")
     Path(result_path).write_text(report_text, encoding="utf-8")
     size = Path(result_path).stat().st_size
     if size < 100:
@@ -1461,6 +1511,23 @@ def _maybe_gatekeeper(conn, app_id, payload: dict) -> None:
                            "signature": sig, "ja": bool(ja), "score": score,
                            "kategorie": kategorie, "language": _lang(payload)},
                           ensure_ascii=False),))
+    # Nachweis (13.10.2026): Inline-Ausführung belegen — started_at/finished_at
+    # = CURRENT_TIMESTAMP, result_json minimal; attempts bleibt 0 (Default,
+    # kein Runner-Versuch). Marker-SQL oben unverändert (Quelltext-Regression
+    # tests/test_runner_i18n.py: `VALUES ('gatekeeper_eval', 'done', ?)`).
+    # Fehlertolerant: Minimalschemas (tests/test_r32_gatekeeper_gen.py, :memory:
+    # ohne diese Spalten) duerfen den Marker-Insert NICHT sprengen.
+    try:
+        c.execute("""UPDATE agent_tasks SET started_at = CURRENT_TIMESTAMP,
+                     finished_at = CURRENT_TIMESTAMP, result_json = ?
+                     WHERE id = ? AND task_type = 'gatekeeper_eval'""",
+                  (json.dumps({"inline": True,
+                               "entscheidung": "JA" if ja else "NEIN",
+                               "score": score, "kategorie": kategorie,
+                               "signature": sig},
+                              ensure_ascii=False), c.lastrowid))
+    except sqlite3.Error as _e:
+        log(f"   ⚠️ gatekeeper_eval-Nachweis-UPDATE fehlgeschlagen (Schema ohne Spalten?): {_e}")
     log(f"   Pförtner-Regel Bewerbung #{app_id} (Gen {current_gen}): Score {score} ({kategorie}), "
         f"Compliance {'OK' if 'check_compliance' in states else '?'} → {'JA' if ja else 'NEIN'}")
     if ja:

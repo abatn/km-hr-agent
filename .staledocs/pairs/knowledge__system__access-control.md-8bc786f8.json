@@ -26,21 +26,21 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T12:13:11+00:00",
+    "at": "2026-10-13T14:19:49+00:00",
     "code_blobs": {
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59",
-      "webui/pages/employer.py": "6473965eecbc0cbad851d87c58c747e7a660006c",
+      "webui/pages/employer.py": "645abba27332e15e14e8d398aa40f5c24bab5752",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
     "doc_blob": "b74345b427f343382d2e65ca29a2c6bdaf954227",
-    "note": "knowledge/system/access-control.md DOC_STALE: geaenderte Datei webui/pages/employer.py (msgid-Fix \"50 Prozent\" 13.10.2026); Anker aus Evidence L39/L114 per grep verifiziert: Codemark PAGE_MAP vorhanden mit 11 Eintraegen (dashboard..feedback) \u2014 Zitat \"PAGE_MAP, 11 Eintraege\" trifft weiterhin"
+    "note": "knowledge/system/access-control.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

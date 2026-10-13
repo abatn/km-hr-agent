@@ -52,15 +52,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T19:14:56+00:00",
+    "at": "2026-10-13T14:19:52+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "216b6c133e349731e9e35ca8075b40ef7e045d78",
+      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
       "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
     "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
-    "note": "code moved: scripts/agent-runner.py, webui/pages/candidate.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "knowledge/system/vdo-ninja-migration.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

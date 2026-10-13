@@ -4,6 +4,8 @@
 > **Quellen:** Sprachschule Aktiv München (DE), OpenExamPrep (EN), Goethe-Institut (DE), CEFR Grid (FR)
 > **Parser:** language-test-server.py (Regex: ^##\s+(Deutsch|Englisch|Französisch)\s+(A1|A2|B1|B2|C1|C2))
 
+**Abgrenzung (13.10.2026):** Sprachtests gehören bewusst **nicht** zum Bewerbungsflow — kein Agent-Task, kein Status-Trigger; getrennte Kandidaten-Aktion (Tab „Sprachtest", Codemark `insert_language_test`). Eine Bewerbung erzeugt daher keine `language_tests`-Zeile.
+
 ---
 
 ## Statistik

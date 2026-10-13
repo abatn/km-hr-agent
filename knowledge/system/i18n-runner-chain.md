@@ -17,6 +17,16 @@ Sprache bedient — ohne externe Nebenwirkung (kein echter Mail-Versand, kein LL
 - **(b) Gespeicherte Artefakte/Altbestand werden NICHT rückübersetzt:** es gilt die
   **Erzeugungssprache** (§7.1 Punkt 4). Garantiert ist die Sprache für die **deterministischen
   `tr()`-Pfade** (Mails #1–#6, die deterministischen Reports, die `>`-Header-Prosa) — **je Sprache**.
+- **(c) Struktur-Labels im LLM-Körper = best-effort in der Payload-Sprache:** die
+  Prompt-Ausgabe-Struktur (Sektionsüberschriften wie `Gesamtstatus:`, `Typ | Pflichtfelder | Indizien`,
+  `Visum-Bedarf:`, `Prüfpunkt`, `Nächste Schritte — Kandidat`, `Erfahrung:`/`Kultur-Fit:`/`Gehalt:`)
+  wird dem LLM auf Deutsch vorgegeben; die Ausgabe folgt der Payload-Sprache nur best-effort und kann
+  deutsch durchrutschen (Beleg Real-E2E 13.10.2026, FR-Body mit deutschen Struktur-Labels).
+  **Garantiert deutsch** (parse-/persistenzkritisch) sind ausschließlich die harte Token-Liste + die
+  Label-Präfixe `Compliance-Status:`/`Match-Score:` + die Marker `Kandidat #<id>`/`Stelle #<id>`
+  (§7.1 Punkt 5). Bewusste Grenze, Design-Entscheidung 13.10.2026 — insbesondere `Visum-Bedarf:`
+  darf NICHT übersetzt werden, da es maschinell geparst wird (Codemark
+  `_visum_auswertung_from_ergebnisse`)
 
 ## 2. Was ist sprachabhängig? (Ist-Analyse, Codemarken ⓘ07.10.2026)
 | Artefakt | Sprache | Quelle | Abweichung zum Soll |
@@ -175,7 +185,10 @@ zu werten.
    Praxis-Fall 07.10.2026: Agent-Details zeigt Alt-Dateien vom 24.09.2026 → deutsch = **Abweichung
    zum Soll, GO Liegenlassen 07.10.2026**).
 5. **LLM-Tasks:** Prompt erhält die Anweisung, in der Payload-Sprache zu antworten (HR-Sichtbar);
-   als Design-Entscheidung dokumentiert. **Berichts-Header seit P9.5b (07.10.2026, Nutzer-GO
+   als Design-Entscheidung dokumentiert. **Verweis:** die Ausgabe-Struktur (Sektions-/Körper-Labels)
+   folgt nur best-effort — **Ausnahme (c), §1**; garantiert deutsch bleiben die harte Token-Liste,
+   `Compliance-Status:`/`Match-Score:` und `Kandidat #<id>`/`Stelle #<id>` (Marker-Scope unten).
+   **Berichts-Header seit P9.5b (07.10.2026, Nutzer-GO
    „Mitübersetzen"):** `llm_report_header(task_type, cid, jid, datum, lang)` baut den Header über
    `tr()` in der Payload-Sprache (Prosa-Zeile „Agent-Task (Phase 5, live …), Modell: …"); der
    **Task-Titel bleibt englisch** (`task_type.title()` = Identifier, entspricht Dateiname-Prefix und
@@ -215,7 +228,16 @@ zu werten.
    ein** Retry mit gehärteter Instruktion („Antworte ausschliesslich in <Klarname>. Uebersetze auch
    alle Fachbegriffe."); schlägt auch dieser fehl, **Warn-Log** und Originaltext beibehalten —
    **nie blockierend**; die Status-Tokens (`COMPLIANT`/`NICHT_COMPLIANT`/… s. o.) und die Marker
-   `Kandidat #`/`Stelle #` bleiben unverändert.
+   `Kandidat #`/`Stelle #` bleiben unverändert. Kurztexte (<40 Zeichen) überspringen die Prüfung
+   weiterhin, werden aber seit 13.10.2026 mit einer Warnzeile im Runner-Log protokolliert (Codemark
+   `def _body_sprache_ok`) — kein stiller Durchgang mehr.
+
+   **Marker-Scope (13.10.2026, Klarstellung):** Parse- und Persistenz-Marker — Status-Tokens,
+   `Compliance-Status:`, `Match-Score:`, `Visum-Bedarf:`, `Kandidat #<id>`/`Stelle #<id>` — sind
+   **immer deutsch**. Deterministische Report-Titel/-Labels **ohne** Parser (z. B. `export_report`-Titel,
+   Codemark `tr("# Match-Export – Kandidat #{0} / Stelle #{1}", lang)`) laufen über `tr()` in der
+   Payload-Sprache (i18n.md Klasse F P4c). Beides ist kein Widerspruch, sondern die Aufteilung:
+   **deutsch = was ein Regex liest; übersetzt = reine Anzeige**.
 6. **MCP-Server-Texte (P2b, 07.10.2026):** `mcp-email-server.py` (Codemarke `def send_pre_screen_invitation`, gemessen 10.10.2026)
    und `mcp-meeting-server.py` (Codemarke `def generate_screening_questions`, gemessen 10.10.2026) erhalten den Parameter
    `language: str = "de"` und bauen `subject`/`body` bzw. Kategorien/Fragetemplates/Kopf+Fuß

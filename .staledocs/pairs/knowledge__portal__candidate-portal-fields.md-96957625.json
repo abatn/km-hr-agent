@@ -6,8 +6,10 @@
       "_tab_profil()",
       "aktuelle_position",
       "app.py",
+      "application_status_history",
       "berufserfahrung_jahre",
       "candidate-portal",
+      "candidate_status_history",
       "cv-pflicht.md",
       "hard_skills",
       "info_row",
@@ -28,14 +30,14 @@
       "visum_status",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-12T19:14:51+00:00",
+    "at": "2026-10-13T14:19:48+00:00",
     "code_blobs": {
       "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
       "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
-    "doc_blob": "83c62985c170af195f23fc3fbba9b898656013eb",
-    "note": "code moved: webui/pages/candidate.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "doc_blob": "6def6158b03ac453e9818840699fae5b99efbc03",
+    "note": "knowledge/portal/candidate-portal-fields.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

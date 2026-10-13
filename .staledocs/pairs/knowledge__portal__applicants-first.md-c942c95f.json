@@ -22,13 +22,13 @@
       "webui/db.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T12:10:21+00:00",
+    "at": "2026-10-13T14:19:48+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "6473965eecbc0cbad851d87c58c747e7a660006c"
+      "webui/pages/employer.py": "645abba27332e15e14e8d398aa40f5c24bab5752"
     },
-    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
     "doc_blob": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
-    "note": "knowledge/portal/applicants-first.md DOC_STALE: geaenderte Datei webui/pages/employer.py (msgid-Fix \"50 Prozent\" 13.10.2026); Anker aus Evidence L6/L15/L16 per grep verifiziert: Codemark \"def refresh_cands\" und Kommentar \"# Bewerber dieser Stelle\" weiterhin vorhanden"
+    "note": "knowledge/portal/applicants-first.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "knowledge/portal/applicants-first.md",
   "schema": 1

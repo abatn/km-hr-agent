@@ -1047,7 +1047,8 @@ def _notify_statuswechsel(conn, app_id: int, status: str) -> None:
 
     DESIGN-ENTSCHEIDUNG (Text, keine externe Quelle noetig — Verhalten):
       Titel "Bewerbungsstatus", Nachricht
-      "Deine Bewerbung bei <Firma> für <Titel>: <Status>" — deutsch, nennt
+      "Deine Bewerbung bei <Firma> für <Titel>: <Status>" — in der Erzeugungs-/Session-Sprache
+      des auslösenden HR-Nutzers (E2, knowledge/system/i18n.md), nennt
       Firma und Stelle, kein Grund/Ablehnungsdetail (AGG-neutral, Paritaet zur
       neutralen Ablehnungs-Mail des Runners).
     Fehler im Helfer duerfen den Handler NICHT sprengen: alles in try/except

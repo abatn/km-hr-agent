@@ -337,7 +337,7 @@ Nicht existierende Stellen bzw. fremde Arbeitgeber werden **gezählt, nicht vers
 | Nachricht | `Deine Bewerbung bei <Firma> für <Titel>: <Status>` |
 | Anzeige | Kandidaten-Portal-Drawer (`components.py::notifications_drawer`, role `candidate`, N-D2) |
 
-**Design-Entscheidung (Text/Quelle):** kein externes Vorbild nötig — der Text ist Verhalten, nicht ein Wert. Er nennt Firma und Stelle, aber **keinen Grund/Ablehnungsdetail** (AGG-neutral, Parität zur neutralen Ablehnungs-Mail des Runners) und bleibt deutsch.
+**Design-Entscheidung (Text/Quelle):** kein externes Vorbild nötig — der Text ist Verhalten, nicht ein Wert. Er nennt Firma und Stelle, aber **keinen Grund/Ablehnungsdetail** (AGG-neutral, Parität zur neutralen Ablehnungs-Mail des Runners) und läuft in der **Erzeugungs-/Session-Sprache** des auslösenden HR-Nutzers (E2, `knowledge/system/i18n.md`; Code nutzt `_()`, Codemark `def _notify_statuswechsel`). Der Status-Slug `{2}` selbst bleibt als DB-Rohwert deutsch (Negativregel).
 
 **Defensiv:** andere Status (`angsehen` usw.), unbekannte `application_id`, leere/fremde Rows → **keine** Zeile; jeder Fehler im Helper wird abgefangen (`try/except` + `print`, db-Konvention) und blockiert den Handler nie.
 

@@ -121,6 +121,8 @@
 | `abgelehnt` | Nicht passend | ✅ |
 | `eingestellt` | Vertrag unterschrieben | ✅ |
 
+**History-Lücke (dokumentiert 13.10.2026):** `candidate_status_history` ist reine Lesetabelle — im gesamten Code gibt es 0 Schreibstellen; auch der CV-Upload (Statuswechsel auf `lebenslauf_hochgeladen`) erzeugt **keine** History-Zeile. Historisiert wird ausschließlich `application_status_history` (siehe `knowledge/lifecycle/application-status.md`).
+
 ---
 
 ## SQLite-Schema

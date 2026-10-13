@@ -10,13 +10,13 @@
       "scripts/agent-runner.py",
       "webui/components.py"
     ],
-    "at": "2026-10-12T19:14:59+00:00",
+    "at": "2026-10-13T14:19:55+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "216b6c133e349731e9e35ca8075b40ef7e045d78"
+      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
     "doc_blob": "d4def615f1b1ff09f90114929204bdb6753695eb",
-    "note": "code moved: scripts/agent-runner.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "skills/export-report/SKILL.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "skills/export-report/SKILL.md",
   "schema": 1

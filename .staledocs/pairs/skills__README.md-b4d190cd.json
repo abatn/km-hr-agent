@@ -60,7 +60,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-12T19:14:56+00:00",
+    "at": "2026-10-13T14:19:52+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -82,13 +82,13 @@
       "skills/mentoring/SKILL.md": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
       "skills/nicegui-migration/SKILL.md": "878afb292a044e3e1d3ed4fe6d80b69b9f5c6dba",
       "skills/notify-user/SKILL.md": "ff04f1dee74617c5a3c9af2049369a6974252d88",
-      "skills/pre-screen/SKILL.md": "b2134b73ba5f238d346273dc60322e3f10185b22",
+      "skills/pre-screen/SKILL.md": "97fa40ff230048e7d68e00da9714dad93d4907c0",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
     "doc_blob": "74ef3b442764c9dcae7e810e9bd3208d124cbb47",
-    "note": "code moved: skills/pre-screen/SKILL.md \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "skills/README.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "skills/README.md",
   "schema": 1

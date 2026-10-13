@@ -112,7 +112,7 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T12:30:04+00:00",
+    "at": "2026-10-13T14:19:51+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "d94d68c4e55d8a7a1bb8e7cfe0c4a82655e55285",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
@@ -127,9 +127,9 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "cdc72799209dd527404a047eb2c93126e56a7d40",
       "webui/locales/fr/LC_MESSAGES/messages.po": "829d39a1afec3a19d1ff861b3f3e35a6b19b72c0"
     },
-    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
-    "doc_blob": "a22f41021b06df2ca02fefe405cab979cd0684c8",
-    "note": "knowledge/system/i18n.md DOC_STALE (2. Runde, Rebuild-Falle): Evidence zeigt POT-Creation-Date-Header 2026-10-13 14:18+0200 in webui/locales/{de,en,fr,ar}/LC_MESSAGES/messages.mo \u2014 babel stempelt beim pybabel-compile (rc=0) die Laufzeit, kein Inhaltsverlust (msgid-Menge 1141x4); alle zitierten Anker per grep weiterhin in .mo-Inhalten: EU-Buerger, KM-HR-Agent, Luecken-Fragen, Motivations-Fragen, PhD, Sprach-Check, ergebnisse/"
+    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "doc_blob": "a46a4ad3beaea7da686a42db7a9bd9fc52e55d84",
+    "note": "knowledge/system/i18n.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1
