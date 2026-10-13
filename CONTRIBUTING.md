@@ -63,7 +63,7 @@ Direkter Start `python3 -m webui.main` braucht dieselben Secrets, sonst Abbruch 
 ## 3. Tests
 
 ```bash
-pytest -q                       # Unit/Integration (Stand 10.10.2026: 434 passed; CI-Parität mit --ignore/--deselect: 425 passed)
+pytest -q                       # Unit/Integration (Zahlen + CI-Parität: siehe AGENTS.md, Abschnitt „Tests" — hier keine eigenen Zahlen, „ein Fakt ein Ort")
 python3 tests/e2e_isolation.py  # E2E (Playwright) — ISOLIERT, nie gegen die Live-App
 ```
 

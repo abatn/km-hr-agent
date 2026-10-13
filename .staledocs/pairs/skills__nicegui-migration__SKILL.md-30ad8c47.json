@@ -153,21 +153,21 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-12T19:15:04+00:00",
+    "at": "2026-10-13T12:16:16+00:00",
     "code_blobs": {
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59",
-      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb",
+      "webui/pages/employer.py": "6473965eecbc0cbad851d87c58c747e7a660006c",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
     "doc_blob": "878afb292a044e3e1d3ed4fe6d80b69b9f5c6dba",
-    "note": "code moved: webui/pages/admin.py, webui/pages/candidate.py, webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "skills/nicegui-migration/SKILL.md DOC_STALE: geaenderte Datei webui/pages/employer.py (msgid-Fix \"50 Prozent\" 13.10.2026); Anker aus Evidence L90 per grep verifiziert: Codemark def skeleton_loader in webui/components.py vorhanden (Zeile 503); PAGE_MAP in employer.py weiterhin vorhanden (11 Eintraege)"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

@@ -18,6 +18,7 @@
       "NICHT_COMPLIANT",
       "NICHT_KONFORM",
       "P9_4_NEUE_KEYS",
+      "POT-Creation-Date",
       "PhD",
       "Quasar.lang.set({\u2026rtl:true})",
       "STATUS_LABELS",
@@ -111,24 +112,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T19:14:55+00:00",
+    "at": "2026-10-13T12:30:04+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "d94d68c4e55d8a7a1bb8e7cfe0c4a82655e55285",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "c4b9960e1326ed4ab63b30a041edc6fed3776d03",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "f513172357df2031d4b715e678d75f708a13e01a",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "be5747c69cadeb8925eae65839f4003ddc0ffb6d",
-      "webui/locales/de/LC_MESSAGES/messages.po": "af13f45a7ce9cf0fe51957d0f0cc244ee15ec56d",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "399fac8b0a3e24e8a1a70d33cebd12f9579ff705",
-      "webui/locales/en/LC_MESSAGES/messages.po": "165efcaaa002f3c6f1aa4721a1ebbad60b10c8dd",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "0d1f78cb54c6372120a8fbcf39483c92bb2cd7de",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "65fa79dae3a285c822f2e9e233b6258f10c40c40"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "c8c04808abc5a9bb4b861eaea5d2566f60f8a4c1",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "c5dc378318179c06adb67e07ed0ba3c74fa6ba38",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "7959dfba8c1f2eac3a0f48e1be2de620a194e3e0",
+      "webui/locales/de/LC_MESSAGES/messages.po": "4fd3ad1f7901c6327a8d1223905a7ed331f4a42e",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "7a723ee5a3d7486c712a167ddf16b0fc5dcd9ed0",
+      "webui/locales/en/LC_MESSAGES/messages.po": "21820b1f73fd6b85b1483c618adda8743f037ab2",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "cdc72799209dd527404a047eb2c93126e56a7d40",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "829d39a1afec3a19d1ff861b3f3e35a6b19b72c0"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
-    "doc_blob": "857db631dd6214cc8df25397692f0489f22e6d61",
-    "note": "code moved: tests/test_i18n.py, tests/test_runner_i18n.py, webui/locales/ar/LC_MESSAGES/messages.mo, webui/locales/ar/LC_MESSAGES/messages.po, webui/locales/de/LC_MESSAGES/messages.mo, webui/locales/de/LC_MESSAGES/messages.po, webui/locales/en/LC_MESSAGES/messages.mo, webui/locales/en/LC_MESSAGES/messages.po, webui/locales/fr/LC_MESSAGES/messages.mo, webui/locales/fr/LC_MESSAGES/messages.po \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
+    "doc_blob": "a22f41021b06df2ca02fefe405cab979cd0684c8",
+    "note": "knowledge/system/i18n.md DOC_STALE (2. Runde, Rebuild-Falle): Evidence zeigt POT-Creation-Date-Header 2026-10-13 14:18+0200 in webui/locales/{de,en,fr,ar}/LC_MESSAGES/messages.mo \u2014 babel stempelt beim pybabel-compile (rc=0) die Laufzeit, kein Inhaltsverlust (msgid-Menge 1141x4); alle zitierten Anker per grep weiterhin in .mo-Inhalten: EU-Buerger, KM-HR-Agent, Luecken-Fragen, Motivations-Fragen, PhD, Sprach-Check, ergebnisse/"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

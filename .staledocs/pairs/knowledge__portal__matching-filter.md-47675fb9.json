@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-12T19:14:52+00:00",
+    "at": "2026-10-13T12:12:11+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb"
+      "webui/pages/employer.py": "6473965eecbc0cbad851d87c58c747e7a660006c"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
     "doc_blob": "51506ba8a98d478f80dcdc146b84b06e95839152",
-    "note": "code moved: webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "knowledge/portal/matching-filter.md DOC_STALE: geaenderte Datei webui/pages/employer.py (msgid-Fix \"50 Prozent\" 13.10.2026); Anker aus Evidence L14-L16 per grep verifiziert: def _page_kandidaten und WHERE c.status IN (\"lebenslauf_hochgeladen\",\"zugeordnet\",\"aktiv\") vorhanden; Codemark filter_candidates vorhanden, aktuelle Signatur(status_filter, query=\"\") weicht vom datierten Doc-Zitat ab (Messung 10.10.2026)"
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1

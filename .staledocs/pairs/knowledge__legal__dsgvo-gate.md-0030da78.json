@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T19:14:50+00:00",
+    "at": "2026-10-13T12:08:05+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "bc18a901522cf91b20c63064ee6c6c7f9b7b87cb"
+      "webui/pages/employer.py": "6473965eecbc0cbad851d87c58c747e7a660006c"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "code moved: webui/pages/employer.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "knowledge/legal/dsgvo-gate.md DOC_STALE: geaendert ist webui/pages/employer.py (pybabel-msgid-Fix 13.10.2026, Codemark \"Kandidat #{0} ist kein Bewerber\" Zeile mit \"50 Prozent\"); Anker aus Evidence verifiziert: grep \"def _page_dokumente\" trifft weiterhin (Codemark def _page_dokumente vorhanden)"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

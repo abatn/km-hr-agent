@@ -145,7 +145,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-12T19:14:49+00:00",
+    "at": "2026-10-13T12:07:42+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -204,7 +204,7 @@
       "knowledge/system/e2e-ci-seed.md": "e97275a92d649884611f6e7134210f012a21f63a",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
       "knowledge/system/i18n-runner-chain.md": "fc99c39a328ca25d3a8d9a6df4f4859f2cf8c7f5",
-      "knowledge/system/i18n.md": "857db631dd6214cc8df25397692f0489f22e6d61",
+      "knowledge/system/i18n.md": "a22f41021b06df2ca02fefe405cab979cd0684c8",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -222,9 +222,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "0ec1258399639cea8613c86bb226e39e6329c1f9"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
     "doc_blob": "27f3f90dcc84395dabe2bbaa75e55f585aba1034",
-    "note": "code moved: knowledge/system/i18n-runner-chain.md, knowledge/system/i18n.md, knowledge/templates/email-templates/interview-invitation.md \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "knowledge.md DOC_STALE: Evidence doc L3/L77 nennen knowledge/system/i18n.md \u2014 diese Datei ist lokal modifiziert (git diff: 24 insertions/16 deletions, rc=0-Widerspruch aufgeloest nach pybabel-Fix 13.10.2026); Index-Text selbst unveraendert"
   },
   "doc": "knowledge.md",
   "schema": 1

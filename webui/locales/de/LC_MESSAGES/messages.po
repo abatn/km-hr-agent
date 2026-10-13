@@ -1109,8 +1109,8 @@ msgstr "Ja, ablehnen"
 msgid "Kandidat"
 msgstr "Kandidat"
 
-msgid "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle)."
-msgstr "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle)."
+msgid "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 Prozent der geforderten Erfahrung bei einer aktiven Stelle)."
+msgstr "Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 Prozent der geforderten Erfahrung bei einer aktiven Stelle)."
 
 msgid "Kandidat ablehnen"
 msgstr "Kandidat ablehnen"

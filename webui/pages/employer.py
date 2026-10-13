@@ -1706,7 +1706,7 @@ def _page_match(s: dict) -> None:
                     ui.button(_('Alle anzeigen'), icon="filter_alt_off", on_click=_clear_focus).props(
                         "flat no-caps color=primary")
                 if _treffer == 0 and not _passive:
-                    ui.label(_('Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 % der geforderten Erfahrung bei einer aktiven Stelle).').format(_focus['cid'])).classes(C.BODY + " text-amber-600")
+                    ui.label(_('Kandidat #{0} ist kein Bewerber dieses Arbeitgebers und erreicht kein passives Match (mind. 1 Must-Have-Skill und >= 50 Prozent der geforderten Erfahrung bei einer aktiven Stelle).').format(_focus['cid'])).classes(C.BODY + " text-amber-600")
             elif _treffer == 0 and not _passive:
                 ui.label(_('⚠️ Keine passenden Kandidaten (mindestens 1 Must-Have-Skill nötig).')).classes(
                     C.BODY + " text-amber-600")

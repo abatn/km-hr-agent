@@ -26,13 +26,13 @@
       "tests/e2e_isolation.py",
       "webui/"
     ],
-    "at": "2026-10-12T12:26:39+00:00",
+    "at": "2026-10-13T11:15:59+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
-    "doc_blob": "6ef1203f4fe298ad64447d91b86eb6f563e30a4c",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `.gitignore`, `AGENTS.md`, `instructions.md`"
+    "commit": "516d80ad9313f928a7dfc3c18ef67ee2054d106c",
+    "doc_blob": "c189b6060ebaa0252acaf0d0ea280865659bb46c",
+    "note": "CONTRIBUTING.md: CODE_LAG 'doc moved since last ack' geprueft gegen HEAD 516d80a; geaenderte Stelle: \u00a73 Test-Codeblock ohne eigene Zahlen (Verweis auf AGENTS.md Abschnitt Tests statt '434 passed', Regel 'ein Fakt ein Ort'); zitierte Pair-Anker der Nachbarn aus dem Ledger: pytest, tests/e2e_isolation.py, AGENTS.md"
   },
   "doc": "CONTRIBUTING.md",
   "schema": 1
