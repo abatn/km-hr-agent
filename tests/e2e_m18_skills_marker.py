@@ -2,12 +2,12 @@
 
 Befund: `employer.py` schnitt die Hard-Skills hart bei 4 ab
 (`str(h_skills).split(",")[:4]`) → Skills unvollständig. Fix: erste 4 Chips +
-`+N weitere`-Chip (Tooltip listet die übrigen). Regel: `ui-design-system.md` §11.2.
+`Alle N anzeigen`-Chip (klappt die übrigen auf). Regel: `ui-design-system.md` §11.2.
 
 Prüft am ECHT gerenderten Match-Tab (Playwright, isolierte Instanz, Spiegel-DB):
   1. Datenvorbedingung: es gibt Kandidaten mit >4 Hard-Skills,
-  2. auf der Seite erscheint mindestens ein `+N weitere`-Marker,
-  3. kein Marker `+0 weitere` (Kürzung nur wenn wirklich nötig),
+  2. auf der Seite erscheint mindestens ein `Alle N anzeigen`-Marker,
+  3. kein Marker `Alle 0 anzeigen` (Kürzung nur wenn wirklich nötig),
   4. Screenshot `ergebnisse/screenshots/m18-skills-marker.png`.
 
 Read-only: nur Login/Navigation/Auslesen — keine Writes.
@@ -96,12 +96,12 @@ def main() -> int:
         finally:
             browser.close()
 
-    marker = [c for c in chips if re.fullmatch(r"\+\d+ weitere", c)]
-    print(f"  Chips gesamt: {len(chips)}; Marker '+N weitere': {len(marker)} -> {marker}")
+    marker = [c for c in chips if re.fullmatch(r"Alle \d+ anzeigen", c)]
+    print(f"  Chips gesamt: {len(chips)}; Marker 'Alle N anzeigen': {len(marker)} -> {marker}")
     if not marker:
-        fail("kein '+N weitere'-Marker auf der Seite (Kürzung weiter still)")
-    if any(re.fullmatch(r"\+0 weitere", m) for m in marker):
-        fail("Marker '+0 weitere' vorhanden (Kürzung ohne Grund)")
+        fail("kein 'Alle N anzeigen'-Marker auf der Seite (Kürzung weiter still)")
+    if any(re.fullmatch(r"Alle 0 anzeigen", m) for m in marker):
+        fail("Marker 'Alle 0 anzeigen' vorhanden (Kürzung ohne Grund)")
     # Die Zahl im Marker muss >0 sein
     for m in marker:
         if int(re.findall(r"\d+", m)[0]) <= 0:
@@ -112,7 +112,7 @@ def main() -> int:
         for f in _fails:
             print(" -", f)
         return 1
-    print(f"PASS: M-18 — Kürzung markiert ({len(marker)}× '+N weitere', "
+    print(f"PASS: M-18 — Kürzung markiert ({len(marker)}× 'Alle N anzeigen', "
           f"{n_multi} Kandidaten mit >4 Skills); Screenshot {SHOT.relative_to(ROOT)}")
     return 0
 

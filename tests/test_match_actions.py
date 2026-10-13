@@ -193,7 +193,11 @@ def test_m13_score_bar_ohne_eigenes_label_und_eine_kategorie_zeile():
 # ─── M-18 (01.10.2026): Skills nicht mehr still auf 4 kürzen ──────────────
 
 def test_m18_skills_kuerzung_markiert():
+    # Prompt 2 (13.10.2026): Top 3 + klappbarer Marker "Alle {n} anzeigen" statt Tooltip-Chip.
     assert 'str(h_skills).split(",")[:4]' not in SRC
     assert 'split(",") if s.strip()]' in SRC
-    assert "_('+{0} weitere').format(len(_skills) - 4)" in SRC
-    assert ".tooltip(" in SRC
+    assert "_top, _rest = _skills[:3], _skills[3:]" in SRC
+    assert "_('Alle {0} anzeigen').format(len(_rest))" in SRC
+    assert "_rest_row.set_visibility(False)" in SRC
+    assert "_('Passung')" in SRC
+    assert "_('Live-Score aus DB')" not in SRC

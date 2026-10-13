@@ -896,8 +896,8 @@ msgstr "(Job #{0} · Candidate #{1})"
 msgid "**📅 Einladungs-Termin:**"
 msgstr "**📅 Invitation date:**"
 
-msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
-msgstr "+ {0} more application(s) not shown (active first) – complete under Jobs."
+msgid "Alle {0} Bewerbungen anzeigen"
+msgstr "Show all {0} applications"
 
 msgid "+{0} weitere"
 msgstr "+{0} more"
@@ -941,8 +941,8 @@ msgstr "Reason"
 msgid "Beschreibung (min. 50 Zeichen)"
 msgstr "Description (min. 50 characters)"
 
-msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
-msgstr "Applicant hired. Please set the job status to 'filled' (Portal tab)."
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."
+msgstr "Applicant hired. Please set the job status to 'filled' (Post a job page)."
 
 msgid "Bewerber-Status verwalten"
 msgstr "Manage applicant status"
@@ -1196,8 +1196,8 @@ msgstr "Country"
 msgid "Land: {0}"
 msgstr "Country: {0}"
 
-msgid "Live-Score aus DB"
-msgstr "Live score from DB"
+msgid "Passung"
+msgstr "Fit"
 
 msgid "Match-Ergebnis"
 msgstr "Match result"
@@ -3427,3 +3427,9 @@ msgstr "New password must not be the same as the old password."
 
 msgid "Passwort geändert."
 msgstr "Password changed."
+
+msgid "Alle {0} anzeigen"
+msgstr "Show all {0}"
+
+msgid "Weniger anzeigen"
+msgstr "Show less"

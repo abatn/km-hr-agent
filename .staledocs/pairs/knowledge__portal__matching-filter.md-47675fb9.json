@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-13T14:19:49+00:00",
+    "at": "2026-10-13T18:14:42+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "645abba27332e15e14e8d398aa40f5c24bab5752"
+      "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
     "doc_blob": "51506ba8a98d478f80dcdc146b84b06e95839152",
-    "note": "knowledge/portal/matching-filter.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1

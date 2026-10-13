@@ -34,9 +34,9 @@ Konsequenz: Die Agent-Ausgaben (`ergebnisse/*.md`, DB-Scores, E-Mail-Entwürfe) 
 
 ## 2. Portal-Ebene: Seiten-Sichtbarkeit pro Rolle
 
-### 2.1 EMPLOYER (HR) – 11 Seiten (NiceGUI, Stand 20.09.2026 Phase 2; Phase 1: 10, vorher 9)
+### 2.1 EMPLOYER (HR) – 12 Seiten (NiceGUI, Stand 13.10.2026: Firmenprofil-Split; vorher 11 seit 20.09.2026 Phase 2; Phase 1: 10, vorher 9)
 
-> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 11 Einträge; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Portal (**NEU 20.09.2026, P1.2**: Firmenprofil-Bearbeitung + Stellen ausschreiben/pausieren/besetzen) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber über alle eigenen Stellen + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung + einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger — **P1.3 portiert 20.09.2026**) · 📄 Match · ✅ Compliance · 🔎 Agent-Details (17.09.2026) · 🗂️ Dokumente (18.09.2026) · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll: Formular + Phase-4-Loop, GAP-2 20.09.2026).
+> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 12 Einträge seit 13.10.2026; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Firmenprofil (**eigene Seite seit 13.10.2026**, Design-Entscheidung) · 🏢 Stelle ausschreiben (`portal`, **NEU 20.09.2026, P1.2**: Stellen ausschreiben/pausieren/besetzen) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber über alle eigenen Stellen + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung + einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger — **P1.3 portiert 20.09.2026**) · 📄 Match · ✅ Compliance · 🔎 Agent-Details (17.09.2026) · 🗂️ Dokumente (18.09.2026) · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll: Formular + Phase-4-Loop, GAP-2 20.09.2026).
 
 | # | Seite | Modus | Regel |
 |---|---|---|---|
@@ -111,7 +111,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 
 | Bereich | Regel |
 |---|---|
-| Sidebar | Genau 11 Seiten (PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Stand 28.09.2026; Korrektur: war „Genau 9 Seiten", widersprach §2.1 — 📊 Dashboard und 🔍 Kandidaten-Suche fehlten): 📊 Dashboard · 🔍 Kandidaten-Suche · 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen · 7️⃣ Onboarding · 8️⃣ Feedback · 💼 Stellenangebote · 🏢 Portal. **Kein 📤 Upload, kein 1️⃣ Extract, keine Tool-Seiten 4️⃣/5️⃣.** |
+| Sidebar | Genau 12 Seiten seit 13.10.2026 (vorher 11; +Firmenprofil, Portal-Split). Früher: 11 Seiten (PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Stand 28.09.2026; Korrektur: war „Genau 9 Seiten", widersprach §2.1 — 📊 Dashboard und 🔍 Kandidaten-Suche fehlten): 📊 Dashboard · 🔍 Kandidaten-Suche · 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen · 7️⃣ Onboarding · 8️⃣ Feedback · 💼 Stellenangebote · 🏢 Portal. **Kein 📤 Upload, kein 1️⃣ Extract, keine Tool-Seiten 4️⃣/5️⃣.** |
 | Kandidat-Selector (HR) | HR wählt den Matching-Kandidaten für die Ergebnis-Sichten und Skills 6/7/8. Selector nur auf diesen Seiten, nur in HR-Sessions, Population: Status ≥ `lebenslauf_hochgeladen`. |
 | 2️⃣ Match-Ergebnis | Read-only: zeigt den agent-generierten Match-Bericht (Kategorien-Scores, Begründung) des gewählten Kandidaten. Quelle: `ergebnisse/` + DB. Kein Rerun, keine Dateiauswahl, kein Speichern. |
 | 3️⃣ Compliance-Ergebnis | Read-only: agent-generierter Compliance-Bericht zum gewählten Kandidaten. Kein Auslösen von Prüfungen. |
@@ -173,7 +173,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 
 | # | Szenario | Erwartung |
 |---|---|---|
-| 1 | EMPLOYER-Login | Sidebar: genau 11 Seiten (Dashboard, Portal, Stellenangebote HR-write, Kandidaten-Suche, Match-Ergebnis, Compliance-Ergebnis, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback – `webui/pages/employer.py` (gemessen 10.10.2026), Zeilenstand 28.09.2026`) – **kein Upload, kein Extract, kein 4️⃣/5️⃣** |
+| 1 | EMPLOYER-Login | Sidebar: genau 12 Seiten seit 13.10.2026 (Dashboard, Firmenprofil, Stelle ausschreiben, Stellenangebote HR-write, Kandidaten-Suche, Match-Ergebnis, Compliance-Ergebnis, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback – `webui/pages/employer.py` (gemessen 10.10.2026), Zeilenstand 28.09.2026`) – **kein Upload, kein Extract, kein 4️⃣/5️⃣** |
 | 2 | EMPLOYER öffnet 2️⃣ Match-Ergebnis | Read-only Ansicht des agent-Berichts; kein Ausführ-Button |
 | 3 | EMPLOYER öffnet 3️⃣ Compliance-Ergebnis | Read-only Ansicht; keine Prüf-Aktion |
 | 4 | EMPLOYER-Vollflow | Bewerber verwalten (💼) → Pre-Screen (Recruiting) → Onboarding freigeben → Feedback speichern – ohne Skills 1–5 erreichbar |

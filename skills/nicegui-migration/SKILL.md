@@ -26,7 +26,7 @@ webui/
 ├── pages/
 │   ├── login.py         # Login/Registrierung (5 Tabs)
 │   ├── candidate.py     # Candidate-Portal (7 Tabs, _TAB_MAP Stand 02.10.2026)
-│   ├── employer.py      # Employer-Portal (11 Pages)
+│   ├── employer.py      # Employer-Portal (12 Pages seit 13.10.2026)
 │   └── admin.py         # Admin-Portal (12 Pages)
 ```
 
@@ -60,7 +60,7 @@ webui/
 - Quelle: `app.py` (gemessen 10.10.2026), `knowledge/system/access-control.md`
 - Features: status_badge, timeline (Status-Historie), withdraw-Funktion, VDO.Ninja-Link bei "eingeladen"
 
-### Skill 2: Employer-Portal ✅ (11 Pages, `PAGE_MAP` `webui/pages/employer.py`, gemessen 2791–2803 ⓘ09.10.2026)
+### Skill 2: Employer-Portal ✅ (12 Pages seit 13.10.2026, `PAGE_MAP` `webui/pages/employer.py`, gemessen 2791–2803 ⓘ09.10.2026)
 - Dashboard, Kandidaten-Suche, Match-Ergebnis, Compliance, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback
 - Quelle: `app.py` (gemessen 10.10.2026), `knowledge/system/access-control.md`
 
@@ -109,7 +109,7 @@ Quelle: `knowledge/ui-design-system.md` (425 Zeilen)
 |---|-------|-------|-----------|------------------|---------|
 | 1 | AGENTS.md | 63 | "5 tabs" + argon2id (korrekt) | 5 Tabs (login.py) | ✅ behoben 20.09.2026 |
 | 2 | AGENTS.md | 73 | "6 pages" (Candidate) | ~~6 Tabs~~ ~~7 Tabs~~ ~~8 Tabs~~ ~~9 Tabs~~ **7 Tabs** (_TAB_MAP `webui/pages/candidate.py`, Stand 02.10.2026 – 📊 Dashboard als 1. Tab, Upload/Dokumente in 👤 Mein Profil; 8 seit P2.1/P2.2) | ✅ behoben (3×: 20.09.2026); Tab-Zahl 8→9 am 01.10.2026, 9→7 am 02.10.2026 |
-| 3 | AGENTS.md | 75 | "9 portal pages" | ~~9~~ ~~10~~ **11 portal pages** (`webui/pages/employer.py` (gemessen 10.10.2026), seit P1.2; 10→11 durch HR-write-Stellen-View 20.09.2026) | ✅ behoben (3×: 20.09.2026) |
+| 3 | AGENTS.md | 75 | "9 portal pages" | ~~9~~ ~~10~~ **11 portal pages** (`webui/pages/employer.py` (gemessen 10.10.2026), seit P1.2; 10→11 durch HR-write-Stellen-View 20.09.2026); **seit 13.10.2026: 12 Pages** (Firmenprofil-Split, `firmenprofil`) | ✅ behoben (3×: 20.09.2026) |
 | 4 | AGENTS.md | 46 | NiceGUI-Start vorhanden | NiceGUI-Start | ✅ behoben 20.09.2026 |
 | 5 | ui-design-system.md | 459 | "Login (5 Tabs)" (korrekt) | 5 Tabs (login.py) | ✅ behoben 20.09.2026 |
 | 6 | ui-design-system.md | 372 | "5 Candidate-Seiten" | 5 Tabs (korrekt) | ✅ OK |

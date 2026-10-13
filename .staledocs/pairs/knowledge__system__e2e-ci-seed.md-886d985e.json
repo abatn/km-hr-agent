@@ -68,7 +68,7 @@
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py"
     ],
-    "at": "2026-10-12T19:14:54+00:00",
+    "at": "2026-10-13T17:50:35+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -104,7 +104,7 @@
       "tests/e2e_m07_row_click.py": "699c1cd5e87cc9eb6778ff4ecd0a0bd4a557ea7b",
       "tests/e2e_m13_score_once.py": "70e6170fd987f02942416aba3945df1278278aa3",
       "tests/e2e_m17_pushstate.py": "97a5dd68d7b71d501ab2d0dbadf55d7fb34780c6",
-      "tests/e2e_m18_skills_marker.py": "ffbbb2eb7696f1bf9adedb08c7fa045ff90c0ff1",
+      "tests/e2e_m18_skills_marker.py": "01e8995afa41cd1a49a09f37a68761409b123f55",
       "tests/e2e_match_actions.py": "6ab439421880a8d600b87a9861320e2eef655fc7",
       "tests/e2e_mentoring.py": "51a00261054eff3f97993fe421f09089cde5ca00",
       "tests/e2e_na1_queue_filter.py": "bcdee7c957e2c6b16b17effa77b9650f4045d037",
@@ -122,7 +122,7 @@
       "tests/e2e_sprachtest_feedback.py": "0a718d640b5b970e3c3f7b71c56413c7c3e70c2b",
       "tests/e2e_sprachtest_flow.py": "b1b7108701a4a46ca0b36ef8ddd877629783225d",
       "tests/e2e_transition_guard.py": "2562e10dd8e29fe201ee4e3c49cbc7e921e9a3b6",
-      "tests/e2e_ui_p0_p1.py": "10ce890ddcf71a5d0ec4afc3cdb58a91b08cc04d",
+      "tests/e2e_ui_p0_p1.py": "58789ad3d4c4c57ee6bc6354641c16c01db255e7",
       "tests/e2e_video_prescreen.py": "8172ec601d005e9ebc1829aa21de2538a6038c38",
       "tests/e2e_vorgemerkt.py": "55e0b713730d4fae9288460430518cc591379ef6",
       "tests/fixtures/seed.db": "b1f2fab70f0e78a4ad064601500da9f482c97e6b",
@@ -150,11 +150,11 @@
       "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a",
       "tests/test_logic_i18n.py": "f1b57af835765385f99d5cce44e51caea45b0813",
       "tests/test_m02_m14_closure.py": "942c1156f8b2210a80fd987b88ef776e6ed54d5b",
-      "tests/test_match_actions.py": "7ced73e8ebf03b744700080fa885dcf87fa657c1",
+      "tests/test_match_actions.py": "b48cdafe6d1a55f08d719756b93c99b9f0dfe80b",
       "tests/test_mcp_official_client.py": "c804c270140e520bc4a94334065dd5f3c35c2b5a",
       "tests/test_mcp_session.py": "ee5d2e0f051df45f772a44869ac49c214ebdaa2a",
       "tests/test_mcp_warmup.py": "0616faa668be24917879c012ecb1ae411a9458b2",
-      "tests/test_na1_nd3.py": "d2a662ca887e348e9b2ce765dd26042712810539",
+      "tests/test_na1_nd3.py": "60407298af2d51fc261ad8741be626f2afafc3e7",
       "tests/test_nf2_score_cache.py": "e3325c3111402472c5dfacecde41bc15ebf36cfe",
       "tests/test_nm1_nm2.py": "61af662e945c5af5a21597e4bd077af4ee7fe8bb",
       "tests/test_no_undefined_names.py": "059bd0e5eb35f3ea5b52265a179fe0136c911e29",
@@ -181,9 +181,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
     "doc_blob": "e97275a92d649884611f6e7134210f012a21f63a",
-    "note": "code moved: tests/test_admin_i18n.py, tests/test_i18n.py, tests/test_logic_i18n.py, tests/test_p8_2_agent_details.py, tests/test_runner_i18n.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "Geprueft: Evidence-Diff der Dateien webui/pages/employer.py (Untertitel Passung, Skill-Chips Top 3 mit Alle-N-anzeigen), tests/test_match_actions.py, tests/e2e_ui_p0_p1.py, tests/e2e_m18_skills_marker.py, webui/locales/*/messages.po und .mo (neue msgids, POT-Creation-Date-Stempel), knowledge/ui-design-system.md. Die zitierten Befehle, Pfade und Regeln des Dokuments sind unveraendert zutreffend."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

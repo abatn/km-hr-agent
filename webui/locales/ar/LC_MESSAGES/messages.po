@@ -896,8 +896,8 @@ msgstr "(وظيفة #{0} · مرشح #{1})"
 msgid "**📅 Einladungs-Termin:**"
 msgstr "**📅 موعد الدعوة:**"
 
-msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
-msgstr "+ {0} طلب/طلبات إضافية غير معروضة (النشطة أولًا) – الكل تحت الوظائف."
+msgid "Alle {0} Bewerbungen anzeigen"
+msgstr "عرض كل الطلبات ({0})"
 
 msgid "+{0} weitere"
 msgstr "+{0} المزيد"
@@ -941,8 +941,8 @@ msgstr "السبب"
 msgid "Beschreibung (min. 50 Zeichen)"
 msgstr "الوصف (50 حرفًا على الأقل)"
 
-msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
-msgstr "تم توظيف المتقدم. يرجى تعيين حالة الوظيفة إلى 'مشغولة' (تبويب البوابة)."
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."
+msgstr "تم توظيف المتقدم. يرجى تعيين حالة الوظيفة إلى 'مشغولة' (صفحة نشر الوظيفة)."
 
 msgid "Bewerber-Status verwalten"
 msgstr "إدارة حالة المتقدمين"
@@ -1196,8 +1196,8 @@ msgstr "البلد"
 msgid "Land: {0}"
 msgstr "البلد: {0}"
 
-msgid "Live-Score aus DB"
-msgstr "النتيجة المباشرة من قاعدة البيانات"
+msgid "Passung"
+msgstr "التوافق"
 
 msgid "Match-Ergebnis"
 msgstr "نتيجة المطابقة"
@@ -3427,3 +3427,9 @@ msgstr "يجب ألا تكون كلمة المرور الجديدة مطابقة
 
 msgid "Passwort geändert."
 msgstr "تم تغيير كلمة المرور."
+
+msgid "Alle {0} anzeigen"
+msgstr "عرض الكل ({0})"
+
+msgid "Weniger anzeigen"
+msgstr "عرض أقل"

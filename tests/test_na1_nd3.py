@@ -43,13 +43,13 @@ def test_na1_labels_sind_klartext():
 
 def test_nd3_kein_9_pages_mehr():
     assert "9 pages" not in SRC
-    assert "11 pages (PAGE_MAP)" in SRC
+    assert "12 pages (PAGE_MAP)" in SRC
 
 
 def test_nd3_docstring_entspricht_page_map():
-    assert len(emp.PAGE_MAP) == 11
+    assert len(emp.PAGE_MAP) == 12  # 13.10.2026: +firmenprofil (Portal-Split)
     # jede Seite des PAGE_MAP wird im Docstring genannt (Klartext-Paritaet grob)
     for key in emp.PAGE_MAP:
-        assert key in {"dashboard", "portal", "stellen", "kandidaten", "match",
+        assert key in {"dashboard", "firmenprofil", "portal", "stellen", "kandidaten", "match",
                        "compliance", "agent_details", "dokumente", "prescreen",
                        "onboarding", "feedback"}

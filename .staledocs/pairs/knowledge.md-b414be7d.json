@@ -145,7 +145,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-13T14:19:45+00:00",
+    "at": "2026-10-13T17:54:49+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -189,11 +189,11 @@
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "6def6158b03ac453e9818840699fae5b99efbc03",
       "knowledge/portal/cv-pflicht.md": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-      "knowledge/portal/employer-portal-fields.md": "6255c4968d938f88fae1733e0e64bbf364f7adec",
-      "knowledge/portal/housing-search.md": "1a5c4e815fce15138231ed39c3efa4ae63a6c74c",
+      "knowledge/portal/employer-portal-fields.md": "6280c2dc86da535b64b46b09779a044fbcbf4e21",
+      "knowledge/portal/housing-search.md": "b66f7fb4123cd7875724b8db11b3fc3d2a62589f",
       "knowledge/portal/matching-filter.md": "51506ba8a98d478f80dcdc146b84b06e95839152",
       "knowledge/profiles/README.md": "5578fd70feefdd6b50e07944ade5a65cd7f4745e",
-      "knowledge/system/access-control.md": "b74345b427f343382d2e65ca29a2c6bdaf954227",
+      "knowledge/system/access-control.md": "fe072955d8b9ad2ce198246d04093bb93012469e",
       "knowledge/system/agent-automation.md": "988965483a7a1be94b7ebcc6ed4dbc3485589e67",
       "knowledge/system/asgi-guard.md": "3966b6fb918be26f75767f818444e97b5a6a85e2",
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
@@ -208,7 +208,7 @@
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
-      "knowledge/system/mvp.md": "7401288fa01cea42529f4f25d1cc055b9428ab89",
+      "knowledge/system/mvp.md": "a49337639dcb955025c8dd63eaafd9f99fed7717",
       "knowledge/system/p8-cloud-datenquellen.md": "6d6b91e3a295dd81d9e6595bab242701dbcc06b0",
       "knowledge/system/vdo-ninja-migration.md": "da1432a45551bc7252632d4ca9d25c93182848e7",
       "knowledge/team-profile.md": "31626b6e650f69f8c4df53db401e32a236d25da5",
@@ -220,11 +220,11 @@
       "knowledge/templates/onboarding-templates/onboarding-ch.md": "5f45dfaf368b742250b6595abb03e28084ff695c",
       "knowledge/templates/onboarding-templates/onboarding-de.md": "b9fd8a2baf005af93401c547390d5fcee473d7cc",
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
-      "knowledge/ui-design-system.md": "0ec1258399639cea8613c86bb226e39e6329c1f9"
+      "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
     "doc_blob": "27f3f90dcc84395dabe2bbaa75e55f585aba1034",
-    "note": "knowledge.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "note": "Geprueft: Diff der Dateien knowledge/portal/housing-search.md und knowledge/system/mvp.md; Seitenzahl Employer ist 12 (PAGE_MAP in webui/pages/employer.py), Verlauf 11 datiert markiert."
   },
   "doc": "knowledge.md",
   "schema": 1

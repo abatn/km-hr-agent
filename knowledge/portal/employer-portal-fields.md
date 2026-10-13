@@ -247,7 +247,7 @@ Ein Kandidat erscheint in der Kandidaten-Liste einer Stelle, wenn:
 
 ## Employer-Portal Sidebar (Streamlit-Ära: 8 Seiten, 17.09.2026; NiceGUI: 10 Seiten, 20.09.2026 Phase 1)
 
-> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 11 Einträge; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Portal (Firmenprofil + Stellen, **P1.2 portiert 20.09.2026**) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber-Status-Verwaltung + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung: einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger, **P1.3 portiert 20.09.2026**) · 📄 Match (read-only + Visum-Klick, GAP-3) · ✅ Compliance · 🔎 Agent-Details · 🗂️ Dokumente · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll, GAP-2). Die folgende Tabelle dokumentiert die Streamlit-Sidebar (inkl. 4-Tab-Portal) als historische Referenz.
+> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 12 Einträge, Stand 13.10.2026): 📊 Dashboard · 🏢 Firmenprofil (**eigene Seite seit 13.10.2026**, `firmenprofil`) · 🏢 Stelle ausschreiben (`portal`, vormals „Portal = Firmenprofil + Stellen“, P1.2 20.09.2026; Firmenprofil entfernt 13.10.2026) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber-Status-Verwaltung + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung: einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger, **P1.3 portiert 20.09.2026**) · 📄 Match (read-only + Visum-Klick, GAP-3) · ✅ Compliance · 🔎 Agent-Details · 🗂️ Dokumente · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll, GAP-2). Die folgende Tabelle dokumentiert die Streamlit-Sidebar (inkl. 4-Tab-Portal) als historische Referenz.
 
 | Seite | Beschreibung | Nur lesen? |
 |---|---|---|

@@ -103,7 +103,7 @@ Bestehende Muster (unverändert, nur um einen Abschnitt ergänzt):
 | Muster | Beweis (Datei:Zeile) | Bezug |
 |---|---|---|
 | Candidate-Portal `_TAB_MAP` (7 Tabs, Stand 02.10.2026; `dashboard` erster, `onboarding` letzter Eintrag; Upload/Dokumente in 👤 Mein Profil) | `_TAB_MAP` (`webui/pages/candidate.py`, Stand 02.10.2026) | Anzeige-Ort ohne neuen Tab |
-| Employer `PAGE_MAP` (11 Seiten, `onboarding`) | `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (onboarding) | HR-Lesicht |
+| Employer `PAGE_MAP` (12 Seiten seit 13.10.2026, `onboarding`) | `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (onboarding) | HR-Lesicht |
 | Candidate-Portal-Fielder-Doku (NiceGUI-Referenz) | `knowledge/portal/candidate-portal-fields.md` | Parität-Nachweis der 7 Tabs |
 | Onboarding-Checkliste (DE) | `knowledge/templates/onboarding-templates/onboarding-de.md` | einzufügender Checklistenpunkt |
 | Freigabe-Report + Visum-Abschnitt | `scripts/agent-runner.py` (gemessen 10.10.2026) | Muster für Wohnungs-Abschnitt |

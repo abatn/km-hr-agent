@@ -239,9 +239,9 @@ Zeigt alle eigenen Bewerbungen eines Kandidaten mit Status-Tracking.
 # Spezial: Bei "eingeladen" → VDO.Ninja-Link + ICS aus Agent-Task (get_invitation_artifacts)
 ```
 
-### 6.9 Match-Ergebnis (Live-Score)
+### 6.9 Match-Ergebnis (Passung)
 
-Berechnet den Match-Score live aus der DB für einen gewählten Kandidaten.
+Berechnet den Match-Score live aus der DB für einen gewählten Kandidaten. Untertitel seit 13.10.2026: **„Passung“** (vorher „Live-Score aus DB“, Design-Entscheidung Nutzer-Go: nutzernah, ohne DB-Jargon).
 
 ```python
 # Quelle: app.py:1837-1906 (Streamlit, „2️⃣ Match-Ergebnis"), logic.py:berechne_match_score (Zeile 338-399)
@@ -349,11 +349,12 @@ ui.switch("Dark Mode", value=dark.value, on_change=lambda e: dark.set_value(e.va
 📊 Dashboard (NEU 01.10.2026, 1. Tab) · 👤 Mein Profil (inkl. Lebenslauf-Upload + Dokumente, 02.10.2026) · 💼 Stellen · 📨 Bewerbungen · 🗣️ Sprachtest · 📹 Pre-Screen · 📋 Onboarding
 ```
 
-### 8.2 Employer (shell()-Drawer, 11 Seiten – PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Zeilenstand 28.09.2026)
+### 8.2 Employer (shell()-Drawer, 12 Seiten – PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Zeilenstand 28.09.2026)
 
 ```
 📊 Dashboard
-🏢 Portal (Firmenprofil + Stellen, P1.2)
+🏢 Stelle ausschreiben (Portal, Firmenprofil ausgelagert 13.10.2026)
+🏢 Firmenprofil (eigene Seite, 13.10.2026)
 💼 Stellenangebote (HR-write: Bewerber + Archiv, 20.09.2026)
 🔍 Kandidaten-Suche
 📄 Match-Ergebnis
@@ -486,17 +487,18 @@ Treffer).
 | Regel | Umsetzung |
 |---|---|
 | **Keine stille Kürzung** | Eine Liste, die aus Platzgründen nicht vollständig gerendert wird, MUSS die Kürzung sichtbar machen |
-| **Marke „+N weitere“** | Erste N Elemente + ein Marker `+{Rest} weitere`; der Marker trägt die übrigen Werte als **Tooltip** (nichts bleibt verborgen) |
+| **Marke „Alle {n} anzeigen“** | Erste **3** Elemente sichtbar; der Marker `Alle {n} anzeigen` klappt die übrigen per Klick auf/zu (nichts bleibt verborgen, keine Tooltip-only-Information) |
 | **Leere Werte raus** | Beim Splitten kommaseparierter Felder leere Einträge verwerfen (`if s.strip()`) |
 
 **Umsetzung M-18:** `webui/pages/employer.py` (Codemarke `def _page_match`, gemessen 10.10.2026) (Kandidatenkarte) —
-`_skills = [s.strip() for s in str(h_skills).split(",") if s.strip()]`; erste 4 als
-`skill_chip`, bei mehr `ui.chip(f"+{n} weitere", color="grey").props("dense").tooltip(...)`.
+`_skills = [s.strip() for s in str(h_skills).split(",") if s.strip()]`; erste 3 als
+`skill_chip`, bei mehr ein klickbarer Chip `Alle {n} anzeigen` (Toggle der restlichen Chips).
+Änderung 13.10.2026 (Prompt 2): vorher N=4 + Tooltip-Chip `+{n} weitere`.
 Datenprobe (read-only): bis zu **21** Skills/Kandidat → „alle zeigen“ würde die Karte
 sprengen, deshalb Kürzung **markiert** statt still.
 
-**Design-Entscheidungen (keine externe Quelle):** N = 4 (bestehender Wert beibehalten),
-Marke als Chip mit Tooltip statt Aufklapp-Liste.
+**Design-Entscheidungen (keine externe Quelle):** N = 3 (Nutzer-Auftrag 13.10.2026, vorher 4),
+Marke als Aufklapp-Chip statt Tooltip (Tooltip ist auf Touch nicht nutzbar).
 **Quelle des Verhaltens:** Nutzer-Auftrag M-18 (01.10.2026), AK „Skills vollständig
 oder Kürzung markiert“.
 
@@ -516,6 +518,20 @@ oder Kürzung markiert“.
  Ablehnen=`negative` Einstellen=`positive`), Visum/ICS ,
 Onboarding . **Beweis:** `tests/test_nm1_nm2.py` (kein Button
 mit `bg-`). **Design-Entscheidung:** Farbzuordnung (primary/negative/positive/warning/flat).
+
+### 11.4 Titel-Kürzung in festen Zeilen (Regel, Redesign P0 13.10.2026)
+
+> **Stand:** 13.10.2026 (Befund S4 — Redesign-Analyse, Codemarke `def _page_match`, `def _page_stellen`).
+
+| Regel | Umsetzung |
+|---|---|
+| **Kein Layout-Bruch** | Stellentitel in einer festen Zeile wird einzeilig mit Ellipse gekürzt: `truncate max-w-md` (Tailwind `overflow:hidden; text-overflow:ellipsis; white-space:nowrap`) |
+| **Volltext bleibt erreichbar** | Der gekürzte Label trägt `.tooltip(<voller Titel>)` — nichts geht verloren |
+| **Geltungsbereich** | Labels in festen Zeilen. Expansion-Header und Dialogtexte bleiben ungekürzt (sie umbrechen von selbst) |
+
+**Umsetzung 13.10.2026:** `webui/pages/employer.py` Codemarke `def _page_stellen` (Zeile „Aktive Bewerber“, `j_titel`) und `def _page_match` (Bewerbungszeile, `titel`).
+
+**Design-Entscheidung (keine externe Quelle):** Kürzung über CSS-Ellipse mit `max-w-md` (28 rem) statt Zeichen-Schwelle; Volltext per Tooltip. Auf Touch-Geräten ist der Tooltip nicht sichtbar — offene Frage (siehe Redesign-Backlog).
 
 ---
 
@@ -659,7 +675,7 @@ webui/
 │   ├── __init__.py
 │   ├── login.py         # Login/Registrierung (Glassmorphism Design)
 │   ├── candidate.py     # 7 Candidate-Tabs (_TAB_MAP, Stand 02.10.2026; Upload/Dokumente in 👤 Mein Profil)
-│   ├── employer.py      # 11 Employer-Seiten (PAGE_MAP Z.1649-1660, Zeilenstand 28.09.2026, inkl. HR-write-Stellen-View)
+│   ├── employer.py      # 12 Employer-Seiten (PAGE_MAP Z.1649-1660, Zeilenstand 28.09.2026, inkl. HR-write-Stellen-View)
 │   └── admin.py         # 12 Admin-Seiten (PAGE_MAP Z.753-766)
 ```
 

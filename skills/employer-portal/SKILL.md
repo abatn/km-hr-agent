@@ -13,7 +13,7 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 
 **Connector für die UI:** SQLite (lokal, kostenlos) – Tabellen `employers`, `jobs`, `job_status_history` in `data/feedback.db`. Siehe `knowledge/portal/employer-portal-fields.md` für das vollständige Schema.
 
-**Ist-Umsetzung (NiceGUI, verifiziert 09.10.2026):** Der Skill ist als Skill #10 im **NiceGUI**-Employer-Portal umgesetzt (`webui/pages/employer.py`), nicht mehr in Streamlit. **11 Seiten** (`PAGE_MAP`, Codemarke; `grep -n "^PAGE_MAP = {" webui/pages/employer.py` → `2791`): 📊 Dashboard, 🏢 Portal (Firmenprofil + Stellen ausschreiben), 💼 Stellenangebote, 🔍 Kandidaten-Suche, 📄 Match-Ergebnis, ✅ Compliance, 🔎 Agent-Details, 🗂️ Dokumente, 📞 Pre-Screen, 📋 Onboarding, 💬 Feedback.
+**Ist-Umsetzung (NiceGUI, verifiziert 09.10.2026):** Der Skill ist als Skill #10 im **NiceGUI**-Employer-Portal umgesetzt (`webui/pages/employer.py`), nicht mehr in Streamlit. **12 Seiten** seit 13.10.2026 (`PAGE_MAP`, Codemarke; `grep -n "^PAGE_MAP = {" webui/pages/employer.py`): 📊 Dashboard, 📝 Firmenprofil (eigene Seite `firmenprofil`), 🏢 Portal (Stelle ausschreiben), 💼 Stellenangebote, 🔍 Kandidaten-Suche, 📄 Match-Ergebnis, ✅ Compliance, 🔎 Agent-Details, 🗂️ Dokumente, 📞 Pre-Screen, 📋 Onboarding, 💬 Feedback.
 
 **Hinweis:** Lab-Prinzip – kein eigener Code. Der Skill definiert NUR Workflow, Regeln und Felder. Die Umsetzung erfolgt als NiceGUI-Seitenerweiterung analog zum Candidate Portal (Login-Schutz, Tabs, SQLite).
 
@@ -163,7 +163,7 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 1. **Login:** Eigene Tabs "🔑 Arbeitgeber-Login" / "📝 Arbeitgeber-Registrieren" auf dem bestehenden Login-Bildschirm (Trennung von Kandidaten-Accounts durch `employers`-Tabelle)
 2. **Session State:** `employer_logged_in`, `employer_email`, `employer_firma`, `employer_id` *(NiceGUI: `app.storage.user`)*
 3. **Sidebar-Eintrag:** Neuer Punkt "🏢 Arbeitgeber-Portal" in der Skills-Navigation
-4. **Tabs im Portal:** `📝 Firmenprofil` | `📢 Stellen` | `👥 Kandidaten` | `💬 Feedback` *(NiceGUI-Ist: 11 Seiten, siehe oben)*
+4. **Tabs im Portal:** `📝 Firmenprofil` | `📢 Stellen` | `👥 Kandidaten` | `💬 Feedback` *(NiceGUI-Ist: 12 Seiten, siehe oben)*
 5. **Zugriffsregel:** Kandidaten-Liste nur wenn mindestens 1 Stelle mit Status `aktiv`
 
 **Test-Szenario (E2E):**

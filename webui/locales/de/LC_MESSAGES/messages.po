@@ -896,8 +896,8 @@ msgstr "(Stelle #{0} · Kandidat #{1})"
 msgid "**📅 Einladungs-Termin:**"
 msgstr "**📅 Einladungs-Termin:**"
 
-msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
-msgstr "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
+msgid "Alle {0} Bewerbungen anzeigen"
+msgstr "Alle {0} Bewerbungen anzeigen"
 
 msgid "+{0} weitere"
 msgstr "+{0} weitere"
@@ -941,8 +941,8 @@ msgstr "Begründung"
 msgid "Beschreibung (min. 50 Zeichen)"
 msgstr "Beschreibung (min. 50 Zeichen)"
 
-msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
-msgstr "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."
+msgstr "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."
 
 msgid "Bewerber-Status verwalten"
 msgstr "Bewerber-Status verwalten"
@@ -1196,8 +1196,8 @@ msgstr "Land"
 msgid "Land: {0}"
 msgstr "Land: {0}"
 
-msgid "Live-Score aus DB"
-msgstr "Live-Score aus DB"
+msgid "Passung"
+msgstr "Passung"
 
 msgid "Match-Ergebnis"
 msgstr "Match-Ergebnis"
@@ -3431,3 +3431,9 @@ msgstr "Neues Passwort darf nicht dem alten Passwort entsprechen."
 
 msgid "Passwort geändert."
 msgstr "Passwort geändert."
+
+msgid "Alle {0} anzeigen"
+msgstr "Alle {0} anzeigen"
+
+msgid "Weniger anzeigen"
+msgstr "Weniger anzeigen"

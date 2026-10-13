@@ -382,12 +382,12 @@ with sync_playwright() as p:
             check("P1-1", "Recruiter", "URL wechselt auf /employer/match", False, str(ex)[:80])
         page.wait_for_timeout(3000)
         body2 = page.inner_text("body")
-        # Positiv-Assertion: der Subtitel "Live-Score aus DB" steht NUR auf der
+        # Positiv-Assertion: der Subtitel "Passung" steht NUR auf der
         # Match-Seite. Das fruehere Negativ-Kriterium "Kandidaten-Suche" not in
         # body traf die Sidebar (PAGE_TITLES["kandidaten"]) und war damit
         # auf JEDE Employer-Seite falsch.
         check("P1-1", "Recruiter", "Klick fuehrt zum Match-Ergebnis",
-              "Live-Score aus DB" in body2, f"Subtitel={'Live-Score aus DB' in body2}")
+              "Passung" in body2, f"Subtitel={'Passung' in body2}")
         check("P1-1", "Recruiter", "URL wechselt auf /employer/match",
               page.url.startswith(f"{BASE}/employer/match"), f"URL={page.url}")
     page.close()

@@ -60,7 +60,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-13T14:19:52+00:00",
+    "at": "2026-10-13T17:54:55+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -69,26 +69,26 @@
       "skills/check-visa/SKILL.md": "f6fee1c23868beea0897af4d4fdbce082a79cbcb",
       "skills/contact-candidate/SKILL.md": "a74aaadaa78720e9ede5d129462cd417faa2a97a",
       "skills/contract-management/SKILL.md": "8dddaf9aadea1cf6d0448e18f243357c7416e2e6",
-      "skills/employer-portal/SKILL.md": "cdce8303352e3c50b68113cf6bfb686b3f8d2c39",
+      "skills/employer-portal/SKILL.md": "705964507c846a0fb12d454eb356258b2f56ca00",
       "skills/explain-match/SKILL.md": "7cb5aab4147181e8e528f829676bbef664ee1d56",
       "skills/export-report/SKILL.md": "d4def615f1b1ff09f90114929204bdb6753695eb",
       "skills/extract-profile/SKILL.md": "50f95c7d4161ae020d90a5e18ea55257e7e3a5df",
       "skills/generate-onboarding/SKILL.md": "207cb55483f5fd2e1468a38cb10450f45ce1ab53",
       "skills/handle-errors/SKILL.md": "25bd9aa94f9804a6833bd64fdacaf9d2b5522c1e",
-      "skills/housing-search/SKILL.md": "b50a87a65cf40d6d034159c8b20484e247373a9f",
+      "skills/housing-search/SKILL.md": "492beb73cfc470c0ef89acfb653a5e4a053ee91a",
       "skills/job-application/SKILL.md": "8ebf516dcb76fe73f9c0f1335b16b25706b20e27",
       "skills/language-course/SKILL.md": "872156c64e0bfdf6073afbf6a23fd3acf97bc416",
       "skills/match-candidate/SKILL.md": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
       "skills/mentoring/SKILL.md": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-      "skills/nicegui-migration/SKILL.md": "878afb292a044e3e1d3ed4fe6d80b69b9f5c6dba",
+      "skills/nicegui-migration/SKILL.md": "823066ce58462a3868aa73ca094c85b7d040f0cc",
       "skills/notify-user/SKILL.md": "ff04f1dee74617c5a3c9af2049369a6974252d88",
       "skills/pre-screen/SKILL.md": "97fa40ff230048e7d68e00da9714dad93d4907c0",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
-    "doc_blob": "74ef3b442764c9dcae7e810e9bd3208d124cbb47",
-    "note": "skills/README.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "doc_blob": "66f79f2ee7ab240da14e1345ead973929dc0a97c",
+    "note": "Geprueft: Diff skills/README.md; EMPLOYER-Zeile nennt 12 Seiten (PAGE_MAP webui/pages/employer.py, Firmenprofil-Split)."
   },
   "doc": "skills/README.md",
   "schema": 1

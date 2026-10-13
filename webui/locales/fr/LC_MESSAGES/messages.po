@@ -896,8 +896,8 @@ msgstr "(Offre #{0} · Candidat #{1})"
 msgid "**📅 Einladungs-Termin:**"
 msgstr "**📅 Date d'invitation :**"
 
-msgid "+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote."
-msgstr "+ {0} candidature(s) supplémentaire(s) non affichée(s) (actives d'abord) – complet sous Offres d'emploi."
+msgid "Alle {0} Bewerbungen anzeigen"
+msgstr "Afficher les {0} candidatures"
 
 msgid "+{0} weitere"
 msgstr "+{0} de plus"
@@ -941,8 +941,8 @@ msgstr "Motif"
 msgid "Beschreibung (min. 50 Zeichen)"
 msgstr "Description (min. 50 caractères)"
 
-msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."
-msgstr "Candidat recruté. Veuillez définir le statut de l'offre sur « pourvue » (onglet Portail)."
+msgid "Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."
+msgstr "Candidat recruté. Veuillez définir le statut de l'offre sur « pourvue » (page Publier une offre)."
 
 msgid "Bewerber-Status verwalten"
 msgstr "Gérer le statut des candidats"
@@ -1196,8 +1196,8 @@ msgstr "Pays"
 msgid "Land: {0}"
 msgstr "Pays : {0}"
 
-msgid "Live-Score aus DB"
-msgstr "Score en direct depuis la BD"
+msgid "Passung"
+msgstr "Adéquation"
 
 msgid "Match-Ergebnis"
 msgstr "Résultat du match"
@@ -3427,3 +3427,9 @@ msgstr "Le nouveau mot de passe ne doit pas être identique à l'ancien."
 
 msgid "Passwort geändert."
 msgstr "Mot de passe modifié."
+
+msgid "Alle {0} anzeigen"
+msgstr "Afficher les {0}"
+
+msgid "Weniger anzeigen"
+msgstr "Afficher moins"

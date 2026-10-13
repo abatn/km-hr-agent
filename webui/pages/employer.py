@@ -1,11 +1,12 @@
 """
 Employer pages for KM-HR-Agent NiceGUI App.
-11 pages (PAGE_MAP): Dashboard, Portal (Firmenprofil + Stellen ausschreiben),
+12 pages (PAGE_MAP): Dashboard, Firmenprofil, Stelle ausschreiben (Portal),
 Stellenangebote, Kandidaten-Suche, Match-Ergebnis, Compliance, Agent-Details,
 Dokumente, Pre-Screen, Onboarding, Feedback.
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import io
 import json
@@ -31,7 +32,8 @@ _log = logging.getLogger("kmhr.employer")
 
 PAGE_TITLES = {
     "dashboard": "Dashboard",
-    "portal": "Portal",
+    "firmenprofil": "Firmenprofil",
+    "portal": "Stelle ausschreiben",
     "stellen": "Stellenangebote",
     "kandidaten": "Kandidaten-Suche",
     "match": "Match-Ergebnis",
@@ -459,26 +461,19 @@ def _page_dashboard(s: dict) -> None:
 
 # ─── 2. Portal (Firmenprofil + Stellen) ──────────────────────────────
 
-def _page_portal(s: dict) -> None:
-    section_header(title=_('Portal'), subtitle=_('Firmenprofil & Stellen'), icon="business")
+def _page_firmenprofil(s: dict) -> None:
+    section_header(title=_('Firmenprofil'), icon="business")
 
     employer_id = s.get("employer_id")
     conn = db.get_conn()
 
-    # Firmenprofil
+    # Firmenprofil (13.10.2026: eigene Seite, vormals Tab in „Portal“)
     emp = conn.execute(
         "SELECT firma, kontaktperson, branche, groesse, standort, website, beschreibung, telefon FROM employers WHERE id = ?",
         (employer_id,),
     ).fetchone()
 
-    with ui.tabs().classes("w-full") as tabs:
-        tab_profil = ui.tab(_('Firmenprofil'), icon="business")
-        tab_stellen = ui.tab(_('Stellen'), icon="work")
-
-    with ui.tab_panels(tabs, value=tab_profil).classes("w-full"):
-        with ui.tab_panel(tab_profil):
-            ui.label(_('Firmenprofil')).classes(C.CARD_TITLE + " mb-4")
-
+    with ui.column().classes("w-full"):
             branchen = ["IT", "Consulting", "Industrie", "Handel", "Gesundheit", "Finanzen", "Sonstiges"]
             grossen = ["1-10", "11-50", "51-200", "201-1000", "1000+"]
 
@@ -562,8 +557,16 @@ def _page_portal(s: dict) -> None:
 
                 ui.button(_('Passwort aendern'), on_click=do_change_pw_emp).classes(C.BTN_PRIMARY + " mt-2")
 
-        with ui.tab_panel(tab_stellen):
-            ui.label(_('Stelle ausschreiben')).classes(C.CARD_TITLE + " mb-4")
+    conn.close()
+
+
+def _page_portal(s: dict) -> None:
+    section_header(title=_('Stelle ausschreiben'), icon="work")
+
+    employer_id = s.get("employer_id")
+    conn = db.get_conn()
+
+    with ui.column().classes("w-full"):
 
             titel_input = ui.input(label=_('Titel'), placeholder=_('z.B. Senior Python Developer')).classes("w-full")
             beschreibung_input = ui.textarea(label=_('Beschreibung (min. 50 Zeichen)')).classes("w-full")
@@ -744,7 +747,7 @@ def _page_stellen(s: dict) -> None:
                             # bleibt: nie rohes `#id`, sondern "Kandidat #N"
                             # (vorher P1 28.09.2026: Klarname statt "Kandidat #22")
                             ui.label(anzeige_name(k_name, k_id, a_status)).classes("font-medium")
-                            ui.label(j_titel).classes(C.SMALL)
+                            ui.label(j_titel).classes(C.SMALL + " truncate max-w-md").tooltip(j_titel)
                             ui.label(_('Eingegangen: {0}').format(str(a_dat)[:10])).classes(C.SMALL)
                     with ui.row().classes("items-center gap-2"):
                         status_badge(a_status)
@@ -1133,7 +1136,7 @@ def _kandidat_query_param():
 
 
 def _page_match(s: dict) -> None:
-    section_header(title=_('Match-Ergebnis'), subtitle=_('Live-Score aus DB'), icon="compare_arrows")
+    section_header(title=_('Match-Ergebnis'), subtitle=_('Passung'), icon="compare_arrows")
 
     employer_id = s.get("employer_id")
 
@@ -1345,7 +1348,7 @@ def _page_match(s: dict) -> None:
                 conn.close()
                 db.queue_agent_task("onboarding_release", {"application_id": app_id, "candidate_id": cid,
                                                            "job_id": job_id, "trigger": "hr_klick_portal"})
-                ui.notify(_("Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Tab Portal)."), type="positive")
+                ui.notify(_("Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."), type="positive")
                 hire_dialog.close()
                 _refresh_now()
             ui.button(_('Einstellen'), on_click=do_hire).props("color=positive")
@@ -1435,7 +1438,7 @@ def _page_match(s: dict) -> None:
                 # verschwand samt Einladen/Einstellen-Buttons). _matched = Ergebnis-Cache
                 # für alle Jobs[:3] des Bewerbers (ungefiltert).
                 _matched = []
-                for _job in jobs[:3]:
+                for _job in jobs:
                     (_a_id, _a_status, _j_id, _titel, _j_hard, _j_soft, _j_exp,
                      _j_de, _j_en, _j_stand, _j_typ, _branche, _min_g, _max_g) = _job
                     _k_data = {"hard_skills": h_skills, "soft_skills": s_skills,
@@ -1462,163 +1465,191 @@ def _page_match(s: dict) -> None:
                         with ui.column().classes("flex-1"):
                             ui.label(name or _("Unbekannt")).classes("font-medium")
                             if h_skills:
-                                # M-18 (01.10.2026): NICHT mehr still bei 4 abschneiden.
-                                # Erste 4 Chips + "+N weitere" (Tooltip listet die uebrigen) —
-                                # Layout bleibt erhalten (Datenprobe: bis zu 21 Skills/Kandidat),
-                                # Kuerzung ist aber sichtbar. Design-Entscheidung (keine Quelle).
+                                # M-18 (01.10.2026) / Prompt 2 (13.10.2026): nicht still kuerzen.
+                                # Top 3 sichtbar; "Alle {n} anzeigen" klappt die restlichen per
+                                # Klick auf/zu (kein Tooltip-only). Design-Entscheidung (keine Quelle).
                                 _skills = [s.strip() for s in str(h_skills).split(",") if s.strip()]
-                                with ui.row().classes("gap-2 mt-1"):
-                                    for skill in _skills[:4]:
-                                        skill_chip(skill)
-                                    if len(_skills) > 4:
-                                        ui.chip(_('+{0} weitere').format(len(_skills) - 4),
-                                                color="grey").props("dense").tooltip(
-                                            ", ".join(_skills[4:]))
+                                _top, _rest = _skills[:3], _skills[3:]
+                                with ui.column().classes("gap-1 mt-1"):
+                                    with ui.row().classes("gap-2"):
+                                        for skill in _top:
+                                            skill_chip(skill)
+                                        if _rest:
+                                            _toggle = ui.chip(_('Alle {0} anzeigen').format(len(_rest)),
+                                                              color="grey").props("dense clickable")
+                                    if _rest:
+                                        _rest_row = ui.row().classes("gap-2")
+                                        _rest_row.set_visibility(False)
+                                        with _rest_row:
+                                            for skill in _rest:
+                                                skill_chip(skill)
+
+                                        def _on_toggle(_e=None, row=_rest_row, btn=_toggle, n=len(_rest)):
+                                            offen = not row.visible
+                                            row.set_visibility(offen)
+                                            btn.set_text(_('Weniger anzeigen') if offen
+                                                         else _('Alle {0} anzeigen').format(n))
+
+                                        _toggle.on("click", _on_toggle)
                     # P0-3 (29.09.2026, Design-Entscheidung): KEINE globalen Karten-Buttons mehr.
                     # Die Aktionen haengen an der einzelnen Bewerbung (Aktionszeile je Stelle
                     # unten) und zeigen nur die laut ALLOWED_TRANSITIONS legalen Uebergaenge.
                     # Auch bei genau einer aktiven Bewerbung keine zweite Platzierung: ein
                     # einheitlicher Ort, keine doppelten Buttons/Labels.
                     cand_name = name or _('Unbekannt')
-                    if len(jobs) > 3:
-                        ui.label(_('+ {0} weitere Bewerbung(en) nicht angezeigt (aktive zuerst) - vollstaendig unter Stellenangebote.').format(len(jobs) - 3)).classes("text-xs text-gray-500")
+                    # Top 3 Bewerbungen sichtbar; alle weiteren hinter "Alle {n} Bewerbungen anzeigen"
+                    # (aufklappbar, wie Skills in M-18/Prompt 2). Keine stille Kuerzung.
+                    _more_col = None
+                    if len(_matched) > 3:
+                        _more_toggle = ui.chip(_('Alle {0} Bewerbungen anzeigen').format(len(_matched) - 3),
+                                               color="grey").props("dense clickable")
+                        _more_col = ui.column().classes("w-full")
+                        _more_col.set_visibility(False)
 
+                        def _on_more(_e=None, col=_more_col, btn=_more_toggle, n=len(_matched) - 3):
+                            offen = not col.visible
+                            col.set_visibility(offen)
+                            btn.set_text(_('Weniger anzeigen') if offen
+                                         else _('Alle {0} Bewerbungen anzeigen').format(n))
+
+                        _more_toggle.on("click", _on_more)
                     # Pro Job: Live-Score + Visa-Confirmation
-                    # (Vorpräfung-Cache: _matched enthaelt alle Jobs[:3] des Bewerbers,
-                    #  ungefiltert — Parität app.py:3640 Abschnitt 1)
-                    for job, result in _matched:
-                        app_id, app_status, j_id, titel, j_hard, j_soft, j_exp, j_de, j_en, j_stand, j_typ, branche, min_g, max_g = job
+                    # (Vorpraefung-Cache: _matched enthaelt alle Jobs des Bewerbers,
+                    #  ungefiltert — Paritaet app.py:3640 Abschnitt 1)
+                    for _i, (job, result) in enumerate(_matched):
+                        with (_more_col if _i >= 3 else contextlib.nullcontext()):
+                            app_id, app_status, j_id, titel, j_hard, j_soft, j_exp, j_de, j_en, j_stand, j_typ, branche, min_g, max_g = job
 
-                        total = result["total"]
-                        kategorie = result["kategorie"]
-                        erklaerung = result.get("erklaerung", {})
+                            total = result["total"]
+                            kategorie = result["kategorie"]
+                            erklaerung = result.get("erklaerung", {})
 
-                        # P0-3: Aktionszeile je Bewerbung = Stellentitel + Statusbadge + NUR die
-                        # legalen Aktionen dieser Bewerbung (finale Status: nur Badge).
-                        # Alle Loop-Variablen als Default-Argumente gebunden (Late-Binding-Falle).
-                        with ui.row().classes("items-center justify-between w-full mt-2"):
-                            with ui.row().classes("items-center gap-2"):
-                                ui.label(titel).classes("font-medium text-sm")
-                                status_badge(app_status)
-                            with ui.row().classes("gap-2"):
-                                # Button-Hierarchie (UI-Regel 28.09.2026): primaer (EINLADEN,
-                                # gefuellt), destruktiv (ABLEHNEN, negativ flat), tertiaer
-                                # (EINSTELLEN, flat); "Als angesehen markieren" outline.
-                                for _ns in _legal_actions(app_status):
-                                    if _ns == "angesehen":
-                                        ui.button(
-                                            _(_MATCH_ACTION_LABEL[_ns]), icon="visibility",
-                                            on_click=lambda _a=app_id: do_seen(_a),
-                                        ).props("color=primary outline no-caps")
-                                    elif _ns == "eingeladen":
-                                        ui.button(
-                                            _(_MATCH_ACTION_LABEL[_ns]), icon="person_add",
-                                            on_click=lambda _a=app_id, _n=cand_name, _t=titel: _open_invite(_a, _n, _t),
-                                        ).props("color=primary")
-                                    elif _ns == "eingestellt":
-                                        ui.button(
-                                            _(_MATCH_ACTION_LABEL[_ns]), icon="how_to_reg",
-                                            on_click=lambda _a=app_id, _n=cand_name, _t=titel: _open_hire(_a, _n, _t),
-                                        ).props("color=positive flat no-caps")
-                                    elif _ns == "abgelehnt":
-                                        ui.button(
-                                            _(_MATCH_ACTION_LABEL[_ns]), icon="person_remove",
-                                            on_click=lambda _a=app_id, _n=cand_name, _t=titel: _open_reject(_a, _n, _t),
-                                        ).props("color=negative flat no-caps")
+                            # P0-3: Aktionszeile je Bewerbung = Stellentitel + Statusbadge + NUR die
+                            # legalen Aktionen dieser Bewerbung (finale Status: nur Badge).
+                            # Alle Loop-Variablen als Default-Argumente gebunden (Late-Binding-Falle).
+                            with ui.row().classes("items-center justify-between w-full mt-2"):
+                                with ui.row().classes("items-center gap-2"):
+                                    ui.label(titel).classes("font-medium text-sm truncate max-w-md").tooltip(titel)
+                                    status_badge(app_status)
+                                with ui.row().classes("gap-2"):
+                                    # Button-Hierarchie (UI-Regel 28.09.2026): primaer (EINLADEN,
+                                    # gefuellt), destruktiv (ABLEHNEN, negativ flat), tertiaer
+                                    # (EINSTELLEN, flat); "Als angesehen markieren" outline.
+                                    for _ns in _legal_actions(app_status):
+                                        if _ns == "angesehen":
+                                            ui.button(
+                                                _(_MATCH_ACTION_LABEL[_ns]), icon="visibility",
+                                                on_click=lambda _a=app_id: do_seen(_a),
+                                            ).props("color=primary outline no-caps")
+                                        elif _ns == "eingeladen":
+                                            ui.button(
+                                                _(_MATCH_ACTION_LABEL[_ns]), icon="person_add",
+                                                on_click=lambda _a=app_id, _n=cand_name, _t=titel: _open_invite(_a, _n, _t),
+                                            ).props("color=primary")
+                                        elif _ns == "eingestellt":
+                                            ui.button(
+                                                _(_MATCH_ACTION_LABEL[_ns]), icon="how_to_reg",
+                                                on_click=lambda _a=app_id, _n=cand_name, _t=titel: _open_hire(_a, _n, _t),
+                                            ).props("color=positive flat no-caps")
+                                        elif _ns == "abgelehnt":
+                                            ui.button(
+                                                _(_MATCH_ACTION_LABEL[_ns]), icon="person_remove",
+                                                on_click=lambda _a=app_id, _n=cand_name, _t=titel: _open_reject(_a, _n, _t),
+                                            ).props("color=negative flat no-caps")
 
-                        # Fix 1 (23.09.2026): pro Kandidat×Job eine Klappe (default zu),
-                        # Parität app.py:3857 st.expander(f"{rank}. Kandidat … – {total}/100 …").
-                        # Score-Zeile = Header (immer sichtbar), Details klappt auf.
-                        # Doku: nicegui.io/documentation/expansion (add_slot("header")).
-                        # ACHTUNG: ui.timer(15s) match_content.refresh setzt Klappen auf zu (wie Streamlit-Rerun).
-                        _job_exp = ui.expansion(icon="query_stats").classes("w-full mt-1")
-                        with _job_exp:
-                            with _job_exp.add_slot("header"):
-                                with ui.row().classes("items-center justify-between w-full pr-2"):
-                                    ui.label(_('Match-Score')).classes("font-medium text-sm")
-                                    with ui.row().classes("items-center gap-2"):
-                                        score_bar(total, show_label=False)
-                                        ui.label(_('{0}/100 ({1})').format(total, _(kategorie))).classes("font-bold text-sm")
+                            # Fix 1 (23.09.2026): pro Kandidat×Job eine Klappe (default zu),
+                            # Parität app.py:3857 st.expander(f"{rank}. Kandidat … – {total}/100 …").
+                            # Score-Zeile = Header (immer sichtbar), Details klappt auf.
+                            # Doku: nicegui.io/documentation/expansion (add_slot("header")).
+                            # ACHTUNG: ui.timer(15s) match_content.refresh setzt Klappen auf zu (wie Streamlit-Rerun).
+                            _job_exp = ui.expansion(icon="query_stats").classes("w-full mt-1")
+                            with _job_exp:
+                                with _job_exp.add_slot("header"):
+                                    with ui.row().classes("items-center justify-between w-full pr-2"):
+                                        ui.label(_('Match-Score')).classes("font-medium text-sm")
+                                        with ui.row().classes("items-center gap-2"):
+                                            score_bar(total, show_label=False)
+                                            ui.label(_('{0}/100 ({1})').format(total, _(kategorie))).classes("font-bold text-sm")
 
-                            # C3 (22.09.2026): Gehalts-Kompatibilität — bisher dead code
-                            # (logic.py:248 ohne Aufruf). Quelle: app.py:3848/3867
-                            # (st.metric "Gehalt"), Spec: skills/employer-portal/SKILL.md:91
-                            ui.label(_('Gehalt: {0}').format(logic.gehalt_check(gevh, min_g, max_g))).classes(
-                                "text-sm text-gray-500")
+                                # C3 (22.09.2026): Gehalts-Kompatibilität — bisher dead code
+                                # (logic.py:248 ohne Aufruf). Quelle: app.py:3848/3867
+                                # (st.metric "Gehalt"), Spec: skills/employer-portal/SKILL.md:91
+                                ui.label(_('Gehalt: {0}').format(logic.gehalt_check(gevh, min_g, max_g))).classes(
+                                    "text-sm text-gray-500")
 
-                            # Explainability: 7 Kategorien
-                            with ui.column().classes("mt-2"):
-                                kategorien = [
-                                    ("Kern", result.get("kern", 0), "kern"),
-                                    ("Erfahrung", result.get("erfahrung", 0), "erfahrung"),
-                                    ("Bildung", result.get("bildung", 0), "bildung"),
-                                    ("Standort", result.get("standort", 0), "standort"),
-                                    ("Branche", result.get("branche", 0), "branche"),
-                                    ("Soft", result.get("soft", 0), "soft"),
-                                    ("Sprache", result.get("sprache", 0), "sprache"),
-                                ]
-                                with ui.column().classes("w-full"):
-                                    for kat_name, kat_score, kat_key in kategorien:
-                                        with ui.row().classes("items-center gap-2 w-full"):
-                                            ui.label(_(kat_name)).classes("w-20 text-xs text-gray-500")
-                                            # P0-3 (e): Prozent = Punkte / KATEGORIE_MAX[key] (logic.py), Beschriftung x/max
-                                            pct = _bar_pct(kat_key, kat_score)
-                                            with ui.element("div").classes("flex-1 bg-gray-100 rounded-full h-2"):
-                                                ui.element("div").classes(f"h-2 rounded-full {'bg-green-500' if pct >= 70 else 'bg-yellow-500' if pct >= 40 else 'bg-red-500'}").style(f"width:{pct}%")
-                                            ui.label(_('{0}/{1}').format(kat_score, logic.KATEGORIE_MAX.get(kat_key, '?'))).classes("text-xs w-12 text-right")
+                                # Explainability: 7 Kategorien
+                                with ui.column().classes("mt-2"):
+                                    kategorien = [
+                                        ("Kern", result.get("kern", 0), "kern"),
+                                        ("Erfahrung", result.get("erfahrung", 0), "erfahrung"),
+                                        ("Bildung", result.get("bildung", 0), "bildung"),
+                                        ("Standort", result.get("standort", 0), "standort"),
+                                        ("Branche", result.get("branche", 0), "branche"),
+                                        ("Soft", result.get("soft", 0), "soft"),
+                                        ("Sprache", result.get("sprache", 0), "sprache"),
+                                    ]
+                                    with ui.column().classes("w-full"):
+                                        for kat_name, kat_score, kat_key in kategorien:
+                                            with ui.row().classes("items-center gap-2 w-full"):
+                                                ui.label(_(kat_name)).classes("w-20 text-xs text-gray-500")
+                                                # P0-3 (e): Prozent = Punkte / KATEGORIE_MAX[key] (logic.py), Beschriftung x/max
+                                                pct = _bar_pct(kat_key, kat_score)
+                                                with ui.element("div").classes("flex-1 bg-gray-100 rounded-full h-2"):
+                                                    ui.element("div").classes(f"h-2 rounded-full {'bg-green-500' if pct >= 70 else 'bg-yellow-500' if pct >= 40 else 'bg-red-500'}").style(f"width:{pct}%")
+                                                ui.label(_('{0}/{1}').format(kat_score, logic.KATEGORIE_MAX.get(kat_key, '?'))).classes("text-xs w-12 text-right")
 
-                            # Erklaerung
-                            if erklaerung:
-                                with ui.expansion(_('Erklaerung'), icon="info").classes("w-full mt-1"):
-                                    for key, text in erklaerung.items():
-                                        ui.label(_('- {0}: {1}').format(key, text)).classes("text-xs text-gray-600")
+                                # Erklaerung
+                                if erklaerung:
+                                    with ui.expansion(_('Erklaerung'), icon="info").classes("w-full mt-1"):
+                                        for key, text in erklaerung.items():
+                                            ui.label(_('- {0}: {1}').format(key, text)).classes("text-xs text-gray-600")
 
-                            # Visum-Antrag-Bestaetigung (Spec v6, Quelle: app.py:3740-3757)
-                            if app_status == "eingeladen":
-                                # Guard: exakter application_id-Vergleich via json_extract
-                                # (agent_tasks hat keine application_id-Spalte; P1-7 30.09.2026)
-                                # Quelle: app.py:3177-3179 + db.py:64
-                                _visa_rows = conn.execute(
-                                    "SELECT COUNT(*) FROM agent_tasks WHERE task_type='visa_confirmation' "
-                                    "AND status IN ('pending','running','done') "
-                                    "AND json_extract(payload, '$.application_id') = ?",
-                                    (app_id,),
-                                ).fetchone()
-                                _visa_done = _visa_rows[0] > 0 if _visa_rows else False
-                                if not _visa_done:
-                                    def send_visa(_a_id=app_id, _c_id=c_id, _j_id=j_id):
-                                        db.queue_agent_task("visa_confirmation", {
-                                            "application_id": _a_id,
-                                            "candidate_id": _c_id,
-                                            "job_id": _j_id,
-                                            "trigger": "hr_klick_portal",
-                                        })
-                                        ui.notify(_('Visum-Schritte-Mail an Kandidaten ausgeloest.'), type="positive")
-                                        _refresh_now()
-                                    ui.button(_('Visum-Antrag bestaetigen'), icon="mail",
-                                              on_click=send_visa).classes("mt-2").props("color=warning")
+                                # Visum-Antrag-Bestaetigung (Spec v6, Quelle: app.py:3740-3757)
+                                if app_status == "eingeladen":
+                                    # Guard: exakter application_id-Vergleich via json_extract
+                                    # (agent_tasks hat keine application_id-Spalte; P1-7 30.09.2026)
+                                    # Quelle: app.py:3177-3179 + db.py:64
+                                    _visa_rows = conn.execute(
+                                        "SELECT COUNT(*) FROM agent_tasks WHERE task_type='visa_confirmation' "
+                                        "AND status IN ('pending','running','done') "
+                                        "AND json_extract(payload, '$.application_id') = ?",
+                                        (app_id,),
+                                    ).fetchone()
+                                    _visa_done = _visa_rows[0] > 0 if _visa_rows else False
+                                    if not _visa_done:
+                                        def send_visa(_a_id=app_id, _c_id=c_id, _j_id=j_id):
+                                            db.queue_agent_task("visa_confirmation", {
+                                                "application_id": _a_id,
+                                                "candidate_id": _c_id,
+                                                "job_id": _j_id,
+                                                "trigger": "hr_klick_portal",
+                                            })
+                                            ui.notify(_('Visum-Schritte-Mail an Kandidaten ausgeloest.'), type="positive")
+                                            _refresh_now()
+                                        ui.button(_('Visum-Antrag bestaetigen'), icon="mail",
+                                                  on_click=send_visa).classes("mt-2").props("color=warning")
 
-                                # HR-Sicht der Einladung: Meeting-Link + Termin + ICS-Download
-                                # (N1-Port: app.py:502-520 render_hr_ics_download)
-                                # `jitsi_url` = Legacy-Schluessel fuer Alt-Einladungen (vor 27.09.2026).
-                                _art = db.get_invitation_artifacts(app_id)
-                                if _art:
-                                    _jitsi = (_art.get("vdo_ninja_url") or _art.get("jitsi_url")
-                                              or _art.get("meet_url"))
-                                    _ics = _art.get("ics_path_hr") or _art.get("ics_path")  # HR-ICS = Director-Link (seit 28.09.2026)
-                                    _termin = _art.get("termin", "")
-                                    with ui.card().classes("bg-blue-50 border border-blue-200 p-3 mt-2 w-full"):
-                                        ui.label(_('📹 Einladung (Kandidat wurde benachrichtigt){0}').format(f" – {_termin}" if _termin else "")).classes("text-sm font-medium text-blue-800")
-                                        if _jitsi:
-                                            ui.link(_('🔗 {0}').format(_jitsi), _jitsi, new_tab=True).classes("text-xs text-blue-700 underline hover:text-blue-900")
-                                            ui.label(_('⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)')).classes("text-xs text-amber-700")
-                                        if _ics and logic.Path(str(_ics)).exists():
-                                            def _dl_ics(_p=str(_ics), _n=logic.Path(str(_ics)).name):
-                                                ui.download(_p, _n, "text/calendar")
-                                            ui.button(_('📅 Termin in Kalender speichern (.ics) – HR'),
-                                                      icon="event", on_click=_dl_ics).classes("mt-1").props("color=primary flat")
-                                        else:
-                                            ui.label(_('ℹ️ ICS-Datei noch nicht vorhanden.')).classes("text-xs text-gray-500")
+                                    # HR-Sicht der Einladung: Meeting-Link + Termin + ICS-Download
+                                    # (N1-Port: app.py:502-520 render_hr_ics_download)
+                                    # `jitsi_url` = Legacy-Schluessel fuer Alt-Einladungen (vor 27.09.2026).
+                                    _art = db.get_invitation_artifacts(app_id)
+                                    if _art:
+                                        _jitsi = (_art.get("vdo_ninja_url") or _art.get("jitsi_url")
+                                                  or _art.get("meet_url"))
+                                        _ics = _art.get("ics_path_hr") or _art.get("ics_path")  # HR-ICS = Director-Link (seit 28.09.2026)
+                                        _termin = _art.get("termin", "")
+                                        with ui.card().classes("bg-blue-50 border border-blue-200 p-3 mt-2 w-full"):
+                                            ui.label(_('📹 Einladung (Kandidat wurde benachrichtigt){0}').format(f" – {_termin}" if _termin else "")).classes("text-sm font-medium text-blue-800")
+                                            if _jitsi:
+                                                ui.link(_('🔗 {0}').format(_jitsi), _jitsi, new_tab=True).classes("text-xs text-blue-700 underline hover:text-blue-900")
+                                                ui.label(_('⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)')).classes("text-xs text-amber-700")
+                                            if _ics and logic.Path(str(_ics)).exists():
+                                                def _dl_ics(_p=str(_ics), _n=logic.Path(str(_ics)).name):
+                                                    ui.download(_p, _n, "text/calendar")
+                                                ui.button(_('📅 Termin in Kalender speichern (.ics) – HR'),
+                                                          icon="event", on_click=_dl_ics).classes("mt-1").props("color=primary flat")
+                                            else:
+                                                ui.label(_('ℹ️ ICS-Datei noch nicht vorhanden.')).classes("text-xs text-gray-500")
 
             # ── Sprachtests (S3d) ──────────────────────────────────────────────
             _lang_tests = db.get_language_tests(c_id)
@@ -2833,6 +2864,7 @@ def _page_feedback(s: dict) -> None:
 
 PAGE_MAP = {
     "dashboard": _page_dashboard,
+    "firmenprofil": _page_firmenprofil,
     "portal": _page_portal,
     "stellen": _page_stellen,
     "kandidaten": _page_kandidaten,
@@ -2845,7 +2877,7 @@ PAGE_MAP = {
     "feedback": _page_feedback,
 }# Menu-Items auf Modulebene (fuer Sub-Route-Registrierung)
 _ICON_MAP = {
-    "dashboard": "dashboard", "portal": "business",
+    "dashboard": "dashboard", "firmenprofil": "business", "portal": "work",
     "stellen": "work", "kandidaten": "search", "match": "compare_arrows",
     "compliance": "verified", "agent_details": "smart_toy", "dokumente": "folder",
     "prescreen": "record_voice_over", "onboarding": "assignment", "feedback": "feedback",

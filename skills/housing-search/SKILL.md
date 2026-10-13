@@ -28,7 +28,7 @@ description: Wohnungssuche-Checkliste + freie Quellen für Zuzug (Onboarding-Rep
 | **ADMIN** | ✅ alle Funktionen |
 | **Agent-Ebene** | ✅ Abschnitt in Freigabe-Report schreiben (deterministisch, nach `onboarding_release`), freie Quellen verifizieren/linken – **niemals** Angebote scrapen, nie selbst Mietverträge/-anfragen stellen (Variante A) |
 
-**Anzeige-Ort (Spec §5):** Kein eigener Tab für Housing. Candidate `_TAB_MAP` hat Stand 02.10.2026 **7 Tabs** (📊 Dashboard als 1. Tab; Upload/Dokumente in 👤 Mein Profil, Codemarke `_TAB_MAP`), Employer `PAGE_MAP` bleibt 11 Seiten (Codemarke `PAGE_MAP`, Stand 01.10.2026).
+**Anzeige-Ort (Spec §5):** Kein eigener Tab für Housing. Candidate `_TAB_MAP` hat Stand 02.10.2026 **7 Tabs** (📊 Dashboard als 1. Tab; Upload/Dokumente in 👤 Mein Profil, Codemarke `_TAB_MAP`), Employer `PAGE_MAP` hat seit 13.10.2026 12 Seiten (Firmenprofil-Split; Codemarke `PAGE_MAP`).
 
 ---
 
