@@ -68,7 +68,7 @@
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py"
     ],
-    "at": "2026-10-13T17:50:35+00:00",
+    "at": "2026-10-13T20:27:19+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -91,11 +91,11 @@
       "tests/e2e_cv_upload.py": "21b8d5199e1e67886b7da6c93f017df014806b1d",
       "tests/e2e_dsgvo_gate.py": "31c6ad7b8dc85d19bf64d584b20458087181bb37",
       "tests/e2e_feedback_filter.py": "1ae88a18d82028157b54bef8bc51f0b0626f63bc",
-      "tests/e2e_feedback_jobswitch.py": "707c2fd897e0d8dfef69b53ddbad5e5f9139fab6",
+      "tests/e2e_feedback_jobswitch.py": "dfb9a9dea5f66530c874cbd5737b1a3e28173aa6",
       "tests/e2e_gehalt_match.py": "d58e63fad9ef7c5bfdc9b7db113dc5115af960c5",
       "tests/e2e_harness.py": "193444d66c8cd6472fb1911f955b0bf61bfd7099",
-      "tests/e2e_housing.py": "2f756dfe63a878053b0107db99b8313c6c52089e",
-      "tests/e2e_i18n_full_chain.py": "a019b628d0e27d2230efda99786dbf01e2f281d0",
+      "tests/e2e_housing.py": "3e83084b99a006edd2730889e1287df5a7238b5d",
+      "tests/e2e_i18n_full_chain.py": "96eea0abffc3896382528fc2a6f687d7765f1234",
       "tests/e2e_i18n_runner_chain.py": "83a1b3cd3246822e1015c1f035e3c2f151469c33",
       "tests/e2e_invitation_termin.py": "370fd5a0d9b52ee614e6b3856395b43b83fd27c2",
       "tests/e2e_invitation_termin_admin.py": "68e47c19fc32f6af2d1ac26967abe5bbdb461690",
@@ -122,9 +122,9 @@
       "tests/e2e_sprachtest_feedback.py": "0a718d640b5b970e3c3f7b71c56413c7c3e70c2b",
       "tests/e2e_sprachtest_flow.py": "b1b7108701a4a46ca0b36ef8ddd877629783225d",
       "tests/e2e_transition_guard.py": "2562e10dd8e29fe201ee4e3c49cbc7e921e9a3b6",
-      "tests/e2e_ui_p0_p1.py": "58789ad3d4c4c57ee6bc6354641c16c01db255e7",
+      "tests/e2e_ui_p0_p1.py": "d944f51fa3cd441d267ea36de8814fe9694ac50d",
       "tests/e2e_video_prescreen.py": "8172ec601d005e9ebc1829aa21de2538a6038c38",
-      "tests/e2e_vorgemerkt.py": "55e0b713730d4fae9288460430518cc591379ef6",
+      "tests/e2e_vorgemerkt.py": "ba073d74da8ca4c7b6ce33b2ae5b3f9b5505dedf",
       "tests/fixtures/seed.db": "b1f2fab70f0e78a4ad064601500da9f482c97e6b",
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
@@ -181,9 +181,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
     "doc_blob": "e97275a92d649884611f6e7134210f012a21f63a",
-    "note": "Geprueft: Evidence-Diff der Dateien webui/pages/employer.py (Untertitel Passung, Skill-Chips Top 3 mit Alle-N-anzeigen), tests/test_match_actions.py, tests/e2e_ui_p0_p1.py, tests/e2e_m18_skills_marker.py, webui/locales/*/messages.po und .mo (neue msgids, POT-Creation-Date-Stempel), knowledge/ui-design-system.md. Die zitierten Befehle, Pfade und Regeln des Dokuments sind unveraendert zutreffend."
+    "note": "code moved: tests/e2e_feedback_jobswitch.py, tests/e2e_housing.py, tests/e2e_i18n_full_chain.py, tests/e2e_ui_p0_p1.py, tests/e2e_vorgemerkt.py \u2014 E2E-Test-Hygiene 13.10.2026 (daten-gekoppelte Skripte: Skip statt FAIL; kein Codefehler); Doku-Anker unveraendert."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

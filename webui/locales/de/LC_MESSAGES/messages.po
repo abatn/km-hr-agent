@@ -899,9 +899,6 @@ msgstr "**📅 Einladungs-Termin:**"
 msgid "Alle {0} Bewerbungen anzeigen"
 msgstr "Alle {0} Bewerbungen anzeigen"
 
-msgid "+{0} weitere"
-msgstr "+{0} weitere"
-
 msgid "Ablehnen"
 msgstr "Ablehnen"
 
@@ -3437,3 +3434,12 @@ msgstr "Alle {0} anzeigen"
 
 msgid "Weniger anzeigen"
 msgstr "Weniger anzeigen"
+
+msgid "Nächster Schritt"
+msgstr "Nächster Schritt"
+
+msgid "Ohne Lebenslauf kann kein Matching laufen. Lade ihn zuerst hoch."
+msgstr "Ohne Lebenslauf kann kein Matching laufen. Lade ihn zuerst hoch."
+
+msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
+msgstr "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."

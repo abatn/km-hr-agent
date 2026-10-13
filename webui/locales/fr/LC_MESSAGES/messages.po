@@ -899,9 +899,6 @@ msgstr "**📅 Date d'invitation :**"
 msgid "Alle {0} Bewerbungen anzeigen"
 msgstr "Afficher les {0} candidatures"
 
-msgid "+{0} weitere"
-msgstr "+{0} de plus"
-
 msgid "Ablehnen"
 msgstr "Refuser"
 
@@ -3433,3 +3430,12 @@ msgstr "Afficher les {0}"
 
 msgid "Weniger anzeigen"
 msgstr "Afficher moins"
+
+msgid "Nächster Schritt"
+msgstr "Prochaine étape"
+
+msgid "Ohne Lebenslauf kann kein Matching laufen. Lade ihn zuerst hoch."
+msgstr "Le matching nécessite un CV. Téléversez le vôtre d'abord."
+
+msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
+msgstr "Votre CV est enregistré. Découvrez les offres correspondantes."

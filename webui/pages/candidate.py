@@ -1636,12 +1636,30 @@ def _tab_dashboard(s: dict) -> None:
                     "WHERE candidate_id = ? ORDER BY id DESC LIMIT 1",
                     (cand_id,),
                 ).fetchone()
+                cv = conn.execute(
+                    "SELECT lebenslauf_datei FROM candidates WHERE id = ?",
+                    (cand_id,),
+                ).fetchone()
             finally:
                 conn.close()
 
             cefr = "—"
             if lt and lt[0] is not None:
                 cefr = logic.cefr_from_avg(float(lt[0]))["level"]
+
+            # Startseite „Nächster Schritt" (Prompt 4, Spec: knowledge/portal/candidate-portal-fields.md):
+            # ohne Lebenslauf → hochladen (Matching braucht CV, cv-pflicht.md); sonst Stellen ansehen.
+            if not (cv and cv[0]):
+                ziel, label = "/candidate/profil", _('Lebenslauf hochladen')
+                text = _('Ohne Lebenslauf kann kein Matching laufen. Lade ihn zuerst hoch.')
+            else:
+                ziel, label = "/candidate/stellen", _('Stellen entdecken')
+                text = _('Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an.')
+            with ui.card().classes(C.CARD + " w-full mb-6"):
+                ui.label(_('Nächster Schritt')).classes(C.CARD_TITLE + " mb-1")
+                with ui.row().classes("items-center justify-between w-full"):
+                    ui.label(text).classes("text-sm")
+                    ui.button(label, on_click=lambda z=ziel: ui.navigate.to(z)).props("unelevated color=primary")
 
             with ui.grid(columns=4).classes(C.GRID_4 + " mb-6"):
                 stat_card(_('Profil-Vollständigkeit'), _('{0} %').format(vollstaendig), "person",

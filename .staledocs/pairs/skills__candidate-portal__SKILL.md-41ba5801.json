@@ -13,13 +13,13 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-12T19:14:57+00:00",
+    "at": "2026-10-13T18:51:14+00:00",
     "code_blobs": {
-      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
+      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "304aa91bb9e426c46600ae34a285d22128bbcdb8",
+    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
     "doc_blob": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
-    "note": "code moved: webui/pages/candidate.py \u2014 i18n-Rollout 12.10.2026 (S1-S7: Admin-i18n, Kataloge +141 msgids, Sprach-Badge, Logic-msgids, MCP-Legacy language-Param); Doku-Anker unveraendert, Pair neu bestaetigt."
+    "note": "Geprueft: Evidence candidate.py; zitierte Tab-Zugriffsregel (L15) unveraendert, Aenderung nur _tab_dashboard."
   },
   "doc": "skills/candidate-portal/SKILL.md",
   "schema": 1

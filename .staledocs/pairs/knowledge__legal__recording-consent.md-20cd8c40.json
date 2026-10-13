@@ -27,14 +27,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T14:19:47+00:00",
+    "at": "2026-10-13T18:51:11+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
+      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
     "doc_blob": "1af7a67f13a2afdbcd2ada676dc22c18beb9dede",
-    "note": "knowledge/legal/recording-consent.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "note": "Geprueft: Evidence candidate.py; zitierte meet_url/video_url-Stellen (L6, L15, L24) durch Dashboard-Aenderung nicht betroffen."
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1

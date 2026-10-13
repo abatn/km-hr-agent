@@ -899,9 +899,6 @@ msgstr "**📅 موعد الدعوة:**"
 msgid "Alle {0} Bewerbungen anzeigen"
 msgstr "عرض كل الطلبات ({0})"
 
-msgid "+{0} weitere"
-msgstr "+{0} المزيد"
-
 msgid "Ablehnen"
 msgstr "رفض"
 
@@ -3433,3 +3430,12 @@ msgstr "عرض الكل ({0})"
 
 msgid "Weniger anzeigen"
 msgstr "عرض أقل"
+
+msgid "Nächster Schritt"
+msgstr "الخطوة التالية"
+
+msgid "Ohne Lebenslauf kann kein Matching laufen. Lade ihn zuerst hoch."
+msgstr "تتطلب المطابقة سيرة ذاتية. ارفع سيرتك الذاتية أولاً."
+
+msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
+msgstr "سيرتك الذاتية محفوظة. تصفح الوظائف المناسبة."

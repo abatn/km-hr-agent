@@ -3,6 +3,7 @@
     "anchors": [
       "_PROFIL_SPALTEN",
       "_TAB_MAP",
+      "_tab_dashboard()",
       "_tab_profil()",
       "aktuelle_position",
       "app.py",
@@ -30,14 +31,14 @@
       "visum_status",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-13T14:19:48+00:00",
+    "at": "2026-10-13T18:51:07+00:00",
     "code_blobs": {
       "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
-      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59"
+      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
-    "doc_blob": "6def6158b03ac453e9818840699fae5b99efbc03",
-    "note": "knowledge/portal/candidate-portal-fields.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "doc_blob": "749082a7b16a1dd36ee0d048869fa79c4505c8e6",
+    "note": "Geprueft: Evidence candidate.py; Aenderung nur _tab_dashboard (neue Karte Naechster Schritt, cv-Abfrage); Doku-Abschnitt Startseite Naechster Schritt beschreibt den Stand."
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

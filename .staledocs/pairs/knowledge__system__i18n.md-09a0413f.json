@@ -112,24 +112,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T18:14:55+00:00",
+    "at": "2026-10-13T18:51:50+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "d94d68c4e55d8a7a1bb8e7cfe0c4a82655e55285",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "4bee83ce2253caaf0d07d781c1bde4029c153f76",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "3a0cdb1837f3c73ac2f7000942694393bba744e4",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "5101088647cf0376140c3b7fc63268b41e4b45d0",
-      "webui/locales/de/LC_MESSAGES/messages.po": "5deccb02d1dbf20fbcc6119d6f16354d15bf0e8f",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "218f818e2bbc5671f96924f96d4bd2bd4cae0224",
-      "webui/locales/en/LC_MESSAGES/messages.po": "d329ba446e2b422f451a61af37a0a066bdc0ad33",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "2a4f32c449c16ae7d46cada56a4d1a5db95208b0",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "4e01d572e88cf4c4da5554b2e67c973fea6e0eea"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "7bfe9defa95508ff636211869d3f05358fb94418",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "7de654961ed3dcd6d0f60d2137d754106d64c960",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "14e4f0b256f4cc02093d6030fb2e651cb6bb8788",
+      "webui/locales/de/LC_MESSAGES/messages.po": "326230b39925d1cf91184131e3fd71dac38a480d",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "3220db202cdfefb2a4839d9944e1cdbc8c6536d7",
+      "webui/locales/en/LC_MESSAGES/messages.po": "f607b41e653a9a70aaf354334438a622628f138e",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "2d3290ecde25f5d5fb70919337a60b9c994a9dd0",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "7273d5efe06c0b1b969fccefe83ca2200c089028"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
     "doc_blob": "a46a4ad3beaea7da686a42db7a9bd9fc52e55d84",
-    "note": "Geprueft: knowledge/system/i18n.md; geaendert webui/locales/*/messages.po und webui/pages/employer.py (neue Keys Passung, Alle {0} anzeigen, Alle {0} Bewerbungen anzeigen); Katalog-Keys je Sprache gleich (DE==EN==FR==AR)."
+    "note": "Geprueft: webui/locales/fr/LC_MESSAGES/messages.mo (Evidence) nur durch pybabel-Rebuild neu; zitierte Options-Tabelle (L203) unveraendert; neue Keys Naechster Schritt in DE/EN/FR/AR."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

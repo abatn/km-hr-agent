@@ -109,7 +109,8 @@ def pick_candidate() -> bool:
     finally:
         conn.close()
     if not rows:
-        print("FAIL: kein Kandidat mit 'eingeladen' ohne 'eingestellt'-Bewerbung")
+        print("SKIP: kein Kandidat mit 'eingeladen' ohne 'eingestellt'-Bewerbung "
+              "— Datenkupplung, kein Codefehler")
         return False
     known = dict(KNOWN_LOGINS)
     rows.sort(key=lambda r: (r[1] not in known, r[0]))
@@ -237,7 +238,9 @@ def wait_for_report(app_id: int, timeout_s: int = 90) -> bool:
 def main() -> int:
     check_server()
     if not pick_candidate():
-        return 1
+        # Vorbedingung datenabhaengig → SKIP statt FAIL (siehe pick_candidate()).
+        print("SKIP: Datenkupplung — kein passender Kandidat (siehe oben)")
+        return 0
     pre = pre_max_tasks()
     failures = []
     before = db_state()

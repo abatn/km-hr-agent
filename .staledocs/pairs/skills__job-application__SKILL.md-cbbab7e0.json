@@ -9,15 +9,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-13T18:14:43+00:00",
+    "at": "2026-10-13T18:51:15+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/candidate.py": "91b14bae3335ea443467afd9f717554b7c0a7f59",
+      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
       "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
     "doc_blob": "8ebf516dcb76fe73f9c0f1335b16b25706b20e27",
-    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
+    "note": "Geprueft: Evidence candidate.py; zitierte Connector-Stellen (L13, L15) unveraendert, Aenderung nur Dashboard."
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

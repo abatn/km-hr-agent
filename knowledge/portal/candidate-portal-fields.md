@@ -17,6 +17,16 @@
 
 ---
 
+## Startseite „Nächster Schritt“ (Dashboard, Stand 13.10.2026)
+
+> **Design-Entscheidung** (Nutzer-Auftrag Prompt 4, keine externe Quelle): Das Dashboard zeigt oben eine Karte „Nächster Schritt“ mit genau einer Handlung.
+> - **Kein Lebenslauf** (`lebenslauf_datei` leer): Button „Lebenslauf hochladen“ → `/candidate/profil`. Begründung: Matching setzt Lebenslauf voraus (Regel oben, `cv-pflicht.md`).
+> - **Lebenslauf vorhanden:** Button „Stellen entdecken“ → `/candidate/stellen`.
+> - **Sprachtest, Pre-Screen, Onboarding** werden auf der Startseite **nicht** als Schritt angeboten; sie bleiben über die Seitenleiste erreichbar. Begründung: keine Bedarfs-Regel im Projekt vorhanden (offen, siehe Entscheidungslog).
+> - Umsetzung: `webui/pages/candidate.py` `_tab_dashboard()` (Codemarke „Nächster Schritt“). Die Karte steht im refreshable Block und aktualisiert sich mit den Kacheln.
+
+---
+
 ## Registrierung (Pflichtfelder)
 
 | Feld | Typ | Beschreibung | Validierung |
