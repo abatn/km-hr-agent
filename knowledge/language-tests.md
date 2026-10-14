@@ -6,6 +6,11 @@
 
 **Abgrenzung (13.10.2026):** Sprachtests gehören bewusst **nicht** zum Bewerbungsflow — kein Agent-Task, kein Status-Trigger; getrennte Kandidaten-Aktion (Tab „Sprachtest", Codemark `insert_language_test`). Eine Bewerbung erzeugt daher keine `language_tests`-Zeile.
 
+**Lücken & Latenz (Fakten, Messung 14.10.2026):**
+- **Englisch A1 hat keine Seed-Sektion** (Quellenstand seit Initial-Commit 04.10.2026; OpenExamPrep beginnt bei A2) — `generate_test("Englisch","A1",20)` hängt daher voll am LLM-Pfad.
+- **Latenzgrenze:** nemotron-3-super (Reasoning) braucht für 20 Fragen mit `max_tokens=4000` regelmäßig >30 s; Baseline 14.10.2026: anzahl=20 in 3/3 Läufen ReadTimeout bei `timeout=30`, anzahl=5 in 3/3 Läufen 6,2–8,8 s grün.
+- **Fix (14.10.2026, `language-test-server.py::_call_nvidia`):** try/except **pro Modell** (FALLBACK_MODEL wird auch bei ReadTimeout/Netzfehlern versucht, vorher nur bei HTTP ≠ 200) + HTTP-Timeout 30→45 s (15 s Headroom unter dem 60-s-Budget aus `agent-runner.py` pdf-verify-mcp; der Language-Test selbst läuft in-process via `webui/pages/candidate.py::load_questions`, ohne Subprocess-Cap) + ehrliche Seed-Buchhaltung im Fehlerfall (`seed=0` statt `-20`). Nachher-Messung 14.10.2026: anzahl=20 in 3/3 Läufen grün (21,2–26,5 s), anzahl=5 in 3/3 grün (12,4–26,1 s).
+
 ---
 
 ## Statistik

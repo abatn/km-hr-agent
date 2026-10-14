@@ -123,7 +123,7 @@
       "webui/main.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-14T11:58:29+00:00",
+    "at": "2026-10-14T16:12:25+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -141,7 +141,7 @@
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
-      "scripts/language-test-server.py": "55a455395c71df3288b6870446e8b0764e222937",
+      "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -221,7 +221,7 @@
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
-      "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a",
+      "tests/test_language_scoring.py": "2976286c9c93d7cb037ed9a6fedae79e4a9873c3",
       "tests/test_logic_i18n.py": "f1b57af835765385f99d5cce44e51caea45b0813",
       "tests/test_m02_m14_closure.py": "942c1156f8b2210a80fd987b88ef776e6ed54d5b",
       "tests/test_match_actions.py": "b48cdafe6d1a55f08d719756b93c99b9f0dfe80b",
@@ -283,9 +283,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "acd1aaef0ff4494e425cdf93af91ddf66b0a7d80",
+    "commit": "a8b11f0e40b6b005804c1003a52f71feb3e85337",
     "doc_blob": "102632b86f4d0e60b3113af48121692cf677d8a2",
-    "note": "AGENTS.md L74 (E2E-Playwright-Zeile) geprueft: nennt tests/e2e_isolation.py + e2e_harness.py weiterhin korrekt als Isolations-Aufruf; die 'code moved'-Dateien (e2e_apply_dialog_multi, e2e_candidate_detail/2, e2e_candidate_ux, e2e_sprachtest_flow, e2e_ui_p0_p1) sind weiterhin tests/e2e_*.py im Isolationslauf (Codemark SKIP = {harness, isolation}), 48-Skript-Zahl unveraendert. Messung 14.10.2026"
+    "note": "Geprueft 14.10.2026: language-test-server.py und test_language_scoring.py gezielt geaendert (Latenz-Fix: try/except pro Modell, timeout 30->45, seed-Buchhaltung, Skip-Meldung); AGENTS.md L64 (Drei Env-Dateien, Codemark je Loader) bleibt korrekt \u2014 der Server laesst den .env-runner-Loader unveraendert; keine Doku-Anpassung noetig"
   },
   "doc": "AGENTS.md",
   "schema": 1

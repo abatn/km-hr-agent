@@ -145,12 +145,12 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-14T09:39:01+00:00",
+    "at": "2026-10-14T16:13:27+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
       "knowledge/language-courses.md": "3d419eb25c803c0565fadcf7432ab2c0ee5b4ab6",
-      "knowledge/language-tests.md": "e7d4ba2b4a5950e7b3c4fde5898cec1ac859f291",
+      "knowledge/language-tests.md": "4b907df38795d83a62ef1783a0698943531b7af7",
       "knowledge/legal/agb.ar.md": "247cd8ba396ff135247d668850d76f0eefbd1f09",
       "knowledge/legal/agb.en.md": "ff1139464e78c6d266817bf29c5f89be240589ae",
       "knowledge/legal/agb.fr.md": "8cb37de067899c7def8b5ea0678f7711480e687e",
@@ -222,9 +222,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "acd1aaef0ff4494e425cdf93af91ddf66b0a7d80",
+    "commit": "a8b11f0e40b6b005804c1003a52f71feb3e85337",
     "doc_blob": "27f3f90dcc84395dabe2bbaa75e55f585aba1034",
-    "note": "e2e-ci-seed.md aktualisiert (14.10.2026): Klasse a/d/b Fixes in Tabelle erg\u00e4nzt (apply_dialog, apply_dialog_multi, candidate_ux, match_actions, smoke_all_pages, sprachtest_flow, isolation). Pfad unver\u00e4ndert, nur Inhalt erweitert. knowledge.md L81 Referenz bleibt korrekt."
+    "note": "Geprueft 14.10.2026: knowledge.md L3/L77 verweisen deskriptiv auf knowledge/language-tests.md als Wissens-Index \u2014 die Aenderung war nur eine Fakten-Ergaenzung (EN-A1-Seed-Luecke, Latenzgrenze 30s, Fix 45s pro Modell) am Dateianfang; der Index-Verweis bleibt korrekt"
   },
   "doc": "knowledge.md",
   "schema": 1

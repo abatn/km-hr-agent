@@ -93,10 +93,18 @@ def _call_nvidia(prompt: str, model: str = None) -> str:
         "stream": False,
         "temperature": 0,
     }
-    try:
-        for m in (model or LLM_MODEL, FALLBACK_MODEL):
-            payload["model"] = m
-            r = requests.post(API_URL, headers=headers, json=payload, timeout=30)
+    # Latenz-Fix (14.10.2026): try/except PRO Modell — vorher umschloss EIN try die
+    # ganze Schleife, ein ReadTimeout auf Modell 1 verliess den Block sofort und
+    # FALLBACK_MODEL wurde nur bei HTTP != 200 via continue erreicht, nie bei
+    # Netzfehlern (belegt: je 1 stderr-Meldung bei 2 gescheiterten EN-A1/20-Runs).
+    # timeout 30->45: Baseline 14.10.2026 brauchte EN-A1/20 bei 30 s in 3/3 Laeufen
+    # >33 s (ReadTimeout), anzahl=5 in 3/3 Laeufen nur 6,2-8,8 s; 45 s bleibt mit
+    # 15 s Headroom unter dem 60-s-Budget aus agent-runner.py:147 (pdf-verify-mcp;
+    # der Language-Test laeuft in-process via webui/pages/candidate.py, ohne Cap).
+    for m in (model or LLM_MODEL, FALLBACK_MODEL):
+        payload["model"] = m
+        try:
+            r = requests.post(API_URL, headers=headers, json=payload, timeout=45)
             if r.status_code != 200:
                 continue
             # .get("content", "") wuerde None zurueckgeben, wenn der Key existiert,
@@ -104,8 +112,9 @@ def _call_nvidia(prompt: str, model: str = None) -> str:
             content = r.json()["choices"][0]["message"].get("content") or ""
             if content.strip():
                 return content
-    except Exception as ex:  # kein stilles pass (Regel): Fehler wird sichtbar gemacht
-        print(f"[language-test] NVIDIA-Aufruf fehlgeschlagen: {type(ex).__name__}: {ex}", file=sys.stderr)
+        except Exception as ex:  # kein stilles pass (Regel): Fehler pro Modell sichtbar, Schleife faehrt fort
+            print(f"[language-test] NVIDIA-Aufruf fehlgeschlagen ({m}): {type(ex).__name__}: {ex}",
+                  file=sys.stderr)
     return '{"punkte": 0, "korrekt": false, "feedback": "API-Fehler"}'
 
 
@@ -176,8 +185,10 @@ def generate_test(sprache: str, niv: str, anzahl: int = 10) -> str:
         "sprache": sprache,
         "niveau": niv,
         "anzahl": len(auswahl),
-        "seed": len(auswahl) - llm_bedarf,
-        "llm": llm_bedarf,
+        # ehrliche Buchhaltung (14.10.2026): vorher "len(auswahl) - llm_bedarf" =>
+        # -20 im Fehlerfall (0 Fragen, llm_bedarf=20); jetzt echte Seed-Treffer
+        "seed": len(auswahl) - len(llm_fragen) if llm_bedarf > 0 else len(auswahl),
+        "llm": len(llm_fragen) if llm_bedarf > 0 else 0,
         "fragen": auswahl
     }, ensure_ascii=False, indent=2)
 

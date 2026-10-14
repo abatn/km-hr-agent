@@ -53,7 +53,9 @@ def fragen(request):
     f = filter_valid_questions(_lade_fragen(sprache, niv))
     if not f:
         pytest.skip(f"Server liefert 0 Fragen für {sprache} {niv} "
-                    "(Seed-Pool leer, LLM nicht erreichbar)")
+                    "(Seed-Pool leer UND LLM lieferte trotz45-s-Timeout keine "
+                    "verwertbaren Fragen — z. B. Englisch A1 hat keine Seed-Sektion "
+                    "in knowledge/language-tests.md)")
     return f
 
 

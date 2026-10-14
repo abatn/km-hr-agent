@@ -50,7 +50,7 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-13T18:51:33+00:00",
+    "at": "2026-10-14T16:12:50+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
@@ -61,7 +61,7 @@
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
-      "scripts/language-test-server.py": "55a455395c71df3288b6870446e8b0764e222937",
+      "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -95,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "commit": "a8b11f0e40b6b005804c1003a52f71feb3e85337",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "Geprueft: Evidence messages.mo/.po und candidate.py; zitierte Zeile ergebnisse/ (L119) unveraendert, Aenderung nur Dashboard."
+    "note": "Geprueft 14.10.2026: Diff zeigt nur die stderr-Meldung '_call_nvidia' mit Modell-Name ({m}) ergaenzt \u2014 die in instructions.md L15 gelisteten Tools generate_test/score_answer/get_cefr_level und die 732-Fragen-Zahl (DE 120, EN 522, FR 90) bleiben unveraendert korrekt"
   },
   "doc": "instructions.md",
   "schema": 1

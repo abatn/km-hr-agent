@@ -92,7 +92,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-14T11:59:44+00:00",
+    "at": "2026-10-14T16:13:59+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -171,7 +171,7 @@
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
-      "tests/test_language_scoring.py": "ff49c28c68f9a34a62b3675929641a56f74e140a",
+      "tests/test_language_scoring.py": "2976286c9c93d7cb037ed9a6fedae79e4a9873c3",
       "tests/test_logic_i18n.py": "f1b57af835765385f99d5cce44e51caea45b0813",
       "tests/test_m02_m14_closure.py": "942c1156f8b2210a80fd987b88ef776e6ed54d5b",
       "tests/test_match_actions.py": "b48cdafe6d1a55f08d719756b93c99b9f0dfe80b",
@@ -205,9 +205,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "acd1aaef0ff4494e425cdf93af91ddf66b0a7d80",
+    "commit": "a8b11f0e40b6b005804c1003a52f71feb3e85337",
     "doc_blob": "bd90ddd4ecc27d87f6501573a01ee6173ad72da7",
-    "note": "Evidence geprueft: L137/L143 nennen tests/e2e_isolation.py korrekt weiterhin als Isolations-Lauf; L116/L117 Tabellenzeilen zu cleanup_test_job/cleanup_test_jobs stimmen mit e2e_apply_dialog(_multi).py ueberein (Codemark cleanup_test_jobs, finally-Restore); L99/L133 Skip-Mechanismus + Validierung beschreiben den aktuellen e2e_isolation.py-Code (Codemark KMHR_E2E_SKIP); seed_email-Zitate L19/L25 passen zu e2e_harness.py. Messung 14.10.2026"
+    "note": "Geprueft 14.10.2026: Evidence '1 file(s) moved, none referenced by this doc' \u2014 tests/test_language_scoring.py ist in e2e-ci-seed.md nicht referenziert (Spec behandelt E2E-Konten/Seed, nicht den Unit-Test); Bewegung = Skip-Meldungs-Praezisierung im Test, ohne Seed-/Kontenbezug"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1
