@@ -1,7 +1,11 @@
 """P4 Candidate UX Review — 8 Schritte, NiceGUI :8080.
 Read-only: kein Upload, kein Zurückziehen.
+
+KLASSE d (14.10.2026): S2/S3/S5/S7/S8 Findings werden jetzt in `fails` gewertet
+(vorher nur Report-Liste). S4/S6 bleiben konditional (nicht testbar ohne
+jeweilige Vorbedingung).
 """
-import sys, re
+import sys
 from playwright.sync_api import sync_playwright
 from e2e_harness import check_server, BASE, seed_email
 
@@ -51,6 +55,9 @@ def main():
         found = [kw for kw in ["Cloud", "DevOps", "AWS", "Senior"] if kw in body]
         print(f"Stellen-Keywords gefunden: {found}")
         F.append({"step": "S2 Stellen", "klicks": "Tab Stellen", "was": f"{len(found)}/4 Keywords", "druck": "Stellen sichtbar" if found else "Keine Stellen"})
+        # Klasse d (14.10.2026): S2-Finding in fails (vorher nur Report)
+        if not found:
+            fails.append("S2: Keine Stellen-Keywords gefunden")
 
         # ── STEP 3: Bewerbungen ──
         print("\n=== S3 Bewerbungen ===")
@@ -60,6 +67,9 @@ def main():
         statuses = [s for s in ["eingegangen", "eingeladen", "abgelehnt", "eingestellt", "zurückgezogen"] if s in body.lower()]
         print(f"Statuses sichtbar: {statuses}")
         F.append({"step": "S3 Bewerbungen", "klicks": "Tab Bewerbungen", "was": f"Status: {','.join(statuses) or 'keine'}", "druck": "Status OK" if statuses else "Kein Status"})
+        # Klasse d (14.10.2026): S3-Finding in fails
+        if not statuses:
+            fails.append("S3: Keine Bewerbungs-Status sichtbar")
 
         # ── STEP 4: Einladung ──
         print("\n=== S4 Einladung ===")
@@ -70,6 +80,7 @@ def main():
         else:
             print("  Kein eingeladen-Status → nicht testbar")
         F.append({"step": "S4 Einladung", "klicks": "Bewerbungen → Einladung", "was": "Einladung sichtbar" if has_invite else "Nicht eingeladen", "druck": "Testbar" if has_invite else "Nicht testbar"})
+        # Klasse d: S4 ist konditional (nur bei eingeladen) — kein Fail bei Nicht-Einladung
 
         # ── STEP 5: Dokumente ──
         print("\n=== S5 Dokumente ===")
@@ -79,6 +90,9 @@ def main():
         docs = [d for d in ["Lebenslauf", "PDF", "Dokument", "hochgeladen"] if d in body]
         print(f"Dokumente sichtbar: {docs}")
         F.append({"step": "S5 Dokumente", "klicks": "Tab Dokumente", "was": f"{len(docs)} Typen", "druck": "Dokumente sichtbar" if docs else "Keine"})
+        # Klasse d (14.10.2026): S5-Finding in fails
+        if not docs:
+            fails.append("S5: Keine Dokumente/Keywords sichtbar")
 
         # ── STEP 6: Zurückziehen ──
         print("\n=== S6 Zurückziehen ===")
@@ -90,6 +104,7 @@ def main():
         withdraw = [b.inner_text().strip() for b in btns if any(w in b.inner_text().lower() for w in ["zurück", "withdraw", "abbrechen"])]
         print(f"Zurückziehen-Buttons: {withdraw}")
         F.append({"step": "S6 Zurückziehen", "klicks": "Tab Bewerbungen → Zurückziehen", "was": f"{len(withdraw)} Buttons", "druck": "Möglich" if withdraw else "Nicht möglich"})
+        # Klasse d: S6 ist konditional (nur bei aktiver Bewerbung) — kein Fail bei 0 Buttons
 
         # ── STEP 7: Sprachtest ──
         print("\n=== S7 Sprachtest ===")
@@ -99,6 +114,10 @@ def main():
         langs = [l for l in ["Deutsch", "Englisch", "Französisch"] if l in body]
         print(f"Sprachen sichtbar: {langs}")
         F.append({"step": "S7 Sprachtest", "klicks": "Tab Sprachtest", "was": f"{len(langs)}/3 Sprachen", "druck": "Verständlich" if langs else "Leer/unverständlich"})
+        # Klasse d (14.10.2026): S7-Finding in fails — mind. 1 Sprache muss sichtbar sein
+        # (3/3 ist zu streng: Seed-DB zeigt evtl. nur verfügbare Sprachen)
+        if not langs:
+            fails.append("S7: Keine Sprachen sichtbar")
 
         # ── STEP 8: Onboarding ──
         print("\n=== S8 Onboarding ===")
@@ -108,6 +127,9 @@ def main():
         ob = [k for k in ["Onboarding", "Willkommen", "Vertrag", "Release"] if k in body]
         print(f"Onboarding Keywords: {ob}")
         F.append({"step": "S8 Onboarding", "klicks": "Tab Onboarding", "was": f"{len(ob)} Keywords", "druck": "Sichtbar" if ob else "Leer"})
+        # Klasse d (14.10.2026): S8-Finding in fails
+        if not ob:
+            fails.append("S8: Keine Onboarding-Keywords sichtbar")
 
         browser.close()
 

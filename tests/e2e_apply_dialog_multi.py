@@ -30,6 +30,7 @@ LIVE_DB = (ROOT / "data" / "feedback.db").resolve()
 CAND_ID = 1
 EMAIL = seed_email("batniniabdelkader@yahoo.com")
 PASSWORD = "Abdel15121978!"
+TEST_JOB_IDS: list[int] = []  # Klasse a: gesäte TEST-Jobs (14.10.2026)
 
 
 def login(page):
@@ -43,14 +44,38 @@ def login(page):
 
 
 def prepare() -> list:
-    """Räumt in der SPIEGEL-DB Bewerbungen von cand 1 frei; liefert Ziel-Jobs [(id, titel, firma)]."""
+    """Klasse a (14.10.2026): Räumt Bewerbungen von cand 1 frei UND säht
+    mindestens 3 TEST-Jobs wenn nötig; liefert Ziel-Jobs [(id, titel, firma)].
+    Kein Skip bei fehlenden Daten — Fixture stellt die Vorbedingung selbst her.
+    """
     conn = sqlite3.connect(str(DB))
     try:
         jobs = conn.execute(
             "SELECT j.id, j.titel, e.firma FROM jobs j JOIN employers e ON e.id=j.employer_id "
             "WHERE j.status='aktiv' ORDER BY j.id DESC").fetchall()
+        # Klasse a: Selbst-saend — TEST-Jobs anlegen wenn <3 aktive Stellen
         if len(jobs) < 3:
-            return []
+            emp = conn.execute(
+                "SELECT id FROM employers ORDER BY id LIMIT 1").fetchone()
+            if not emp:
+                conn.close()
+                return []  # FAIL (kein Employer — Fixture unmöglich)
+            fehlt = 3 - len(jobs)
+            for i in range(fehlt):
+                cur = conn.execute(
+                    "INSERT INTO jobs (employer_id, titel, beschreibung, status) "
+                    "VALUES (?, ?, ?, 'aktiv')",
+                    (emp[0], f"E2E-TEST Multi {i+1}",
+                     "Selbst-gesäter TEST-Job (Klasse a, 14.10.2026)"))
+                TEST_JOB_IDS.append(cur.lastrowid)
+            conn.commit()
+            print(f"OK Fixture: {len(TEST_JOB_IDS)} TEST-Jobs gesät (Klasse a)")
+            jobs = conn.execute(
+                "SELECT j.id, j.titel, e.firma FROM jobs j JOIN employers e ON e.id=j.employer_id "
+                "WHERE j.status='aktiv' ORDER BY j.id DESC").fetchall()
+        if len(jobs) < 3:
+            conn.close()
+            return []  # FAIL (nach Säen immer noch <3)
         letzte = jobs[-1][0]  # niedrigste ID = letzte Karte (ORDER BY id DESC, ohne Score)
         ziele = [j for j in jobs if j[0] != letzte][:2]
         for jid, _, _ in ziele:
@@ -61,6 +86,32 @@ def prepare() -> list:
                 conn.execute("DELETE FROM applications WHERE id=?", (aid,))
         conn.commit()
         return ziele
+    except sqlite3.Error as ex:
+        print(f"FAIL: Fixture fehlgeschlagen: {ex!r}")
+        return []
+    finally:
+        conn.close()
+
+
+def cleanup_test_jobs() -> None:
+    """Klasse a (14.10.2026): finally-Restore — gesäte TEST-Jobs entfernen."""
+    global TEST_JOB_IDS
+    if not TEST_JOB_IDS:
+        return
+    conn = sqlite3.connect(str(DB))
+    try:
+        for jid in TEST_JOB_IDS:
+            apps = [r[0] for r in conn.execute(
+                "SELECT id FROM applications WHERE job_id=?", (jid,))]
+            for aid in apps:
+                conn.execute("DELETE FROM application_status_history WHERE application_id=?", (aid,))
+                conn.execute("DELETE FROM applications WHERE id=?", (aid,))
+            conn.execute("DELETE FROM jobs WHERE id=?", (jid,))
+        conn.commit()
+        print(f"OK Fixture-Cleanup: {len(TEST_JOB_IDS)} TEST-Jobs entfernt")
+        TEST_JOB_IDS = []
+    except sqlite3.Error as ex:
+        print(f"WARN: Fixture-Cleanup fehlgeschlagen: {ex!r}")
     finally:
         conn.close()
 
@@ -82,42 +133,47 @@ def main() -> int:
     check_server()
     ziele = prepare()
     if not ziele:
-        print("SKIP: weniger als 3 aktive Stellen in der Spiegel-DB")
-        return 0
+        # Klasse a (14.10.2026): FAIL statt Skip — Fixture konnte Vorbedingung nicht herstellen
+        print("FAIL: Fixture konnte <3 aktive Stellen nicht herstellen (kein Employer?)")
+        return 1
     print(f"Ziel-Stellen: {ziele}")
     fehler = []
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.set_default_timeout(60000)
-        try:
-            login(page)
-            for jid, titel, firma in ziele:
-                page.goto(f"{BASE}/candidate/stellen", wait_until="load", timeout=90000)
-                card = page.locator(".q-card").filter(has_text=re.compile(rf"#{jid} ")).first
-                card.wait_for(timeout=30000)
-                card.get_by_role("button", name="Bewerben").click()
-                dlg = page.locator(".q-dialog")
-                dlg.wait_for(timeout=10000)
-                text = dlg.inner_text()
-                erwartet = f"Bewerbung: {titel}"
-                if erwartet in text and firma in text:
-                    print(f"job {jid}: Dialogtitel OK ({erwartet!r}, Firma {firma!r})")
-                else:
-                    fehler.append(f"job {jid}: Dialog zeigt {text[:120]!r}, erwartet {erwartet!r}")
-                vorher = apps_for(jid)
-                page.get_by_role("button", name="Jetzt bewerben").click()
-                page.get_by_text("Bewerbung gesendet!").wait_for(timeout=8000)
-                page.wait_for_timeout(1500)
-                nachher = apps_for(jid)
-                print(f"job {jid}: Bewerbungen vorher={len(vorher)} nachher={len(nachher)}")
-                if len(vorher) != 0 or len(nachher) != 1:
-                    fehler.append(f"job {jid}: Bewerbung nicht auf dieser job_id "
-                                  f"(vorher={len(vorher)}, nachher={len(nachher)})")
-        except Exception as ex:  # noqa: BLE001
-            fehler.append(f"Exception: {ex!r}")
-        finally:
-            browser.close()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.set_default_timeout(60000)
+            try:
+                login(page)
+                for jid, titel, firma in ziele:
+                    page.goto(f"{BASE}/candidate/stellen", wait_until="load", timeout=90000)
+                    card = page.locator(".q-card").filter(has_text=re.compile(rf"#{jid} ")).first
+                    card.wait_for(timeout=30000)
+                    card.get_by_role("button", name="Bewerben").click()
+                    dlg = page.locator(".q-dialog")
+                    dlg.wait_for(timeout=10000)
+                    text = dlg.inner_text()
+                    erwartet = f"Bewerbung: {titel}"
+                    if erwartet in text and firma in text:
+                        print(f"job {jid}: Dialogtitel OK ({erwartet!r}, Firma {firma!r})")
+                    else:
+                        fehler.append(f"job {jid}: Dialog zeigt {text[:120]!r}, erwartet {erwartet!r}")
+                    vorher = apps_for(jid)
+                    page.get_by_role("button", name="Jetzt bewerben").click()
+                    page.get_by_text("Bewerbung gesendet!").wait_for(timeout=8000)
+                    page.wait_for_timeout(1500)
+                    nachher = apps_for(jid)
+                    print(f"job {jid}: Bewerbungen vorher={len(vorher)} nachher={len(nachher)}")
+                    if len(vorher) != 0 or len(nachher) != 1:
+                        fehler.append(f"job {jid}: Bewerbung nicht auf dieser job_id "
+                                      f"(vorher={len(vorher)}, nachher={len(nachher)})")
+            except Exception as ex:  # noqa: BLE001
+                fehler.append(f"Exception: {ex!r}")
+            finally:
+                browser.close()
+    finally:
+        # Klasse a (14.10.2026): finally-Restore — gesäte TEST-Jobs entfernen
+        cleanup_test_jobs()
     if fehler:
         print("FAIL:")
         for f in fehler:

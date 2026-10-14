@@ -98,6 +98,46 @@ Zwei Skripte scheiterten **nicht** an der Anmeldung, sondern an Seed-/Umgebungs-
 
 Der Skip-Mechanismus: `e2e_isolation.py` liest `KMHR_E2E_SKIP` (kommagetrennte Skriptnamen) und lässt sie im Standardlauf aus.
 
+## Selbst-säende Fixtures statt SKIP (13.10.2026)
+
+**Regel (AGENTS.md Schritt 3):** Datengekoppelte E2E-Skripte dürfen eine fehlende
+Vorbedingung nicht per SKIP/Fail-Abschwächung aufgeben — sie legen sie selbst in der
+isolierten Spiegel-DB an (Klasse a) und rollen sie im `finally` bzw. per `atexit`
+zurück (Muster `tests/e2e_cv_upload.py` Passwort-Fixture, `tests/e2e_housing.py`
+`pre_flip`/Restore). FAIL-Semantik bleibt FAIL.
+
+| Skript | Fixture (angelegt, falls Vorbedingung fehlt) | Restore |
+|---|---|---|
+| `e2e_ui_p0_p1.py` | 'eingeladen'-Bewerbung auf einer employer-1-Stelle, wenn im Spiegel keine Bewerbung mit ≥2 sichtbaren Recruiter-Buttons existiert (Codemark `_MATCH_ACTION_LABEL`, Messung 13.10.2026: 'angesehen'/'eingeladen' als einzige Status mit ≥2 Regex-Treffern) | `atexit` (wie PW_FIXTURES) |
+| `e2e_feedback_jobswitch.py` | 'eingegangen'-Bewerbungen auf Job 1 (≥1) und Job 6 (≥2, Kandidaten ≠ Job-1-Bewerber), falls vorhandene Bewerber nicht reichen | `finally` (DELETE inkl. History) |
+| `e2e_housing.py` | 'eingeladen'-Bewerbung für einen Kandidaten mit Klarnamen auf aktiver employer-1-Stelle, wenn die dynamische Pick-Query leer ist | `finally` (DELETE, nach `pre_flip`-Restore) |
+| `e2e_i18n_full_chain.py` | offene Alt-Bewerbungen von Kandidat #13 werden auf 'zurückgezogen' (final) geparkt — `validate_target` verlangt nur finale Alt-Bewerbungen | `finally` in `restore()` (Status + Zeitstempel zurück) |
+| `e2e_vorgemerkt.py` | kein Fixture nötig — der Select-Readback wird per Polling (24×250 ms) verifiziert statt mit festem 400-ms-Wait; Abweichung bleibt FAIL (Sondenbeweis 13.10.2026: Readback zeigt 'Vorgemerkt', Codemark `eingeladen_select`) | – |
+| `e2e_apply_dialog.py` (14.10.2026) | TEST-Job 'E2E-TEST Dialog' wenn kein freier Job; Status auf 'lebenslauf_hochgeladen' falls CV-Gate blockiert | `finally` `cleanup_test_job()` |
+| `e2e_apply_dialog_multi.py` (14.10.2026) | 3 TEST-Jobs 'E2E-TEST Multi N' wenn <3 aktive Stellen | `finally` `cleanup_test_jobs()` |
+
+### Klasse d: Prüfung nie registriert → FAIL werten (14.10.2026)
+
+| Skript | Fund | Fix |
+|---|---|---|
+| `e2e_candidate_ux.py` | S2–S8 Findings nur in Report-Liste, nicht in `fails` | S2/S3/S5/S7/S8 → `fails.append()`; S4/S6 bleiben konditional |
+| `e2e_match_actions.py` | Button-/Expander-Counts verworfen (`_ = ...`) | `assert total_btns >= 1` (mind. 1 Aktions-Button) |
+| `e2e_smoke_all_pages.py` | Log-Check optional; Admin-Fails „informativ" | Fehlendes Log → `fails.append()`; Admin-Fails werten |
+| `e2e_candidate_detail*.py` | Keine Assertions, keine Exit-Logik | Als DEBUG-TOOL markiert (Docstring), kein E2E-Test |
+
+### Klasse b: Skip härten (14.10.2026)
+
+| Skript | Fund | Fix |
+|---|---|---|
+| `e2e_sprachtest_flow.py` | Skip nicht zählbar; PASS-Text hardcoded | `skipped_parts`-Liste; PASS-Text dynamisch `(n/4 Teile)` |
+| `e2e_isolation.py` | Skip-Namen nicht validiert; nicht im Summary; `--no-run` ohne Live-Diff | Warnung bei unbekannten Namen; Skip-Liste im Summary; Live-Diff wird ausgewertet |
+
+**CI-Parität:** Im Seed (`tests/fixtures/seed.db`) sind die Vorbedingungen erfüllt —
+die Fixtures greifen dort als No-Op; lokal (Spiegel der Live-DB, gedriftet) stellen sie
+die Vorbedingung her. Der Isolations-Lauf (`tests/e2e_isolation.py`) verwirft die
+Spiegel-DB nach dem Lauf; die Skripte löschen ihre eigenen Zeilen zusätzlich, damit
+`db_residue_report` und der Live-DB-Byte-Abgleich grün bleiben.
+
 ## Konsistenz / Iteration
 
 - Abgleich Spec ↔ `tests/e2e_harness.py` (`seed_email`) ↔ `.github/workflows/e2e.yml` (`KMHR_E2E_SEED: "1"`, `KMHR_E2E_SKIP`) ↔ `tests/e2e_isolation.py` (Skip-Logik).

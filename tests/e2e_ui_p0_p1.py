@@ -148,6 +148,65 @@ def restore_fixtures() -> None:
 
 atexit.register(restore_fixtures)
 
+# P1-2 Fixture (AGENTS.md Klasse a, 13.10.2026): die Button-Hierarchie braucht
+# >=2 Recruiter-Buttons auf der Match-Seite; im Live-Spiegel rendert nur 'eingegangen'
+# (1 Regex-Treffer: "Ablehnen") + finale Status. Die Fixture legt eine
+# 'eingeladen'-Bewerbung an (-> EINSTELLEN + ABLEHNEN, Codemark
+# _MATCH_ACTION_LABEL, Messung 13.10.2026) und entfernt sie per atexit.
+FIXTURE_APP: int | None = None
+
+
+def ensure_recruiter_buttons() -> None:
+    global FIXTURE_APP
+    emp = employer_id()
+    n = _q("SELECT COUNT(*) FROM applications a JOIN jobs j ON j.id=a.job_id "
+           "WHERE j.employer_id=? AND a.status IN ('angesehen','eingeladen')", emp)[0][0]
+    if n:
+        print(f"OK P1-2 Vorbedingung: {n} Bewerbung(en) mit >=2 Recruiter-Buttons")
+        return
+    job = _q("SELECT id FROM jobs WHERE employer_id=? AND status='aktiv' "
+             "ORDER BY id LIMIT 1", emp)
+    # P0-1-Fix (14.10.2026, Messung Isolations-Einzellauf): der fruehere Filter
+    # liess Kandidaten mit 'abgelehnt'/'zurueckgezogen' zu — wenn genau DIESE
+    # Bewerbung auf demselben Job lag, feuerte der UNIQUE-Constraint
+    # (candidate_id, job_id) und das Skript crashte. Jetzt: kein Antrag auf
+    # den gewaehlten Job (any status) — dann ist der INSERT garantiert frei.
+    cand = _q("SELECT c.id FROM candidates c WHERE COALESCE(c.name,'') != '' "
+              "AND NOT EXISTS (SELECT 1 FROM applications a "
+              "                WHERE a.candidate_id=c.id AND a.job_id=?) "
+              "ORDER BY c.id LIMIT 1", job[0][0] if job else -1)
+    if not job or not cand:
+        print("HINWEIS P1-2: keine Fixture moeglich (keine aktive Stelle / kein freier "
+              "benannter Kandidat) — Hierarchie-Check bleibt unveraendert")
+        return
+    conn = sqlite3.connect(str(DB))
+    try:
+        cur = conn.execute("INSERT INTO applications (candidate_id, job_id, status) "
+                           "VALUES (?, ?, 'eingeladen')", (cand[0][0], job[0][0]))
+        FIXTURE_APP = cur.lastrowid
+        conn.commit()
+    finally:
+        conn.close()
+    print(f"OK P1-2 Fixture: Bewerbung #{FIXTURE_APP} ('eingeladen') cand{cand[0][0]} "
+          f"-> job{job[0][0]} (atexit entfernt)")
+
+
+def remove_fixture_app() -> None:
+    if FIXTURE_APP is None:
+        return
+    conn = sqlite3.connect(str(DB))
+    try:
+        conn.execute("DELETE FROM application_status_history WHERE application_id=?",
+                     (FIXTURE_APP,))
+        conn.execute("DELETE FROM applications WHERE id=?", (FIXTURE_APP,))
+        conn.commit()
+    finally:
+        conn.close()
+    print(f"OK P1-2 Fixture entfernt: #{FIXTURE_APP}")
+
+
+atexit.register(remove_fixture_app)
+
 
 def check(tid, rolle, desc, ok, detail=""):
     results.append((tid, rolle, desc, bool(ok), detail))
@@ -231,6 +290,7 @@ if INVITE is None:
     print("FAIL: kein Kandidat mit 'eingeladen'-Bewerbung + erzeugter Einladung")
     sys.exit(1)
 print(f"OK P0-2 Kandidat dynamisch: {INVITE[0]}")
+ensure_recruiter_buttons()
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
@@ -243,15 +303,28 @@ with sync_playwright() as p:
     page = ctx.new_page()
     page.goto(f"{BASE}/candidate/profil", wait_until="domcontentloaded", timeout=90000)
     page.wait_for_timeout(2500)
+    # P0-1 (14.10.2026): der fruehere `try/except: pass` um den Klick auf die
+    # Dokumente-Expansion verschluckte Timing-Fehler — bei langsamem Server
+    # blieb die Expansion zu und beide P0-1-Assertions faelten ohne Diagnose
+    # (Volllauf-Flake 14.10.2026; Datenlage war korrekt: Doc-ID 8 + Datei
+    # testdaten/kandidat-22-...txt vorhanden, Recruiter-Gate 'freigegeben=4'
+    # bestand im selben Lauf). Jetzt: Klick + Warten auf den Expansion-Content
+    # (Liste ODER Empty-State); Scheitern landet in der Assertion-Detailzeile.
+    exp_detail = ""
     try:
         page.get_by_text("Dokumente", exact=True).first.click(timeout=8000)
-        page.wait_for_timeout(800)
-    except Exception:
-        pass
+        page.wait_for_function(
+            "() => { const t = document.body.innerText;"
+            " return t.includes('Meine Dokumente')"
+            " || t.includes('Noch keine Dokumente hochgeladen'); }",
+            timeout=15000)
+    except Exception as ex:
+        exp_detail = f" [Expansion: {str(ex)[:60]}]"
     body = page.inner_text("body")
     doc_names = docs_of(CAND[0])
     check("P0-1", "Kandidat", "Dokumentliste sichtbar nach bestaetigtem Upload",
-          "Meine Dokumente" in body, f"'Meine Dokumente' vorhanden={'Meine Dokumente' in body}")
+          "Meine Dokumente" in body,
+          f"'Meine Dokumente' vorhanden={'Meine Dokumente' in body}{exp_detail}")
     check("P0-1", "Kandidat", "Dateiname des Dokuments sichtbar",
           bool(doc_names) and all(n in body for n in doc_names),
           f"erwartet={doc_names}")
@@ -417,16 +490,12 @@ with sync_playwright() as p:
             }
         });
         return o; }""")
-    if len(colors) < 2:
-        # Datenkupplung (06.10.2026): bei nur einem gerenderten Recruiter-Button
-        # (Datenstand z. B. nur 'Ablehnen' aktiv) ist die Hierarchie nicht
-        # vergleichbar → SKIP statt FAIL, kein Codefehler.
-        print(f"  [SKIP] P1-2 Recruiter Button-Hierarchie: nur {len(colors)} Recruiter-Button(s) "
-              f"gerendert (Datenstand) — Hierarchie nicht vergleichbar")
-    else:
-        distinct = len(set(colors.values()))
-        check("P1-2", "Recruiter", "Button-Hierarchie: Einladen/Ablehnen/Einstellen unterscheiden sich",
-              distinct >= 2, f"Farben={colors}")
+    distinct = len(set(colors.values()))
+    # P1-2 (Klasse a, 13.10.2026): ensure_recruiter_buttons() sorgt fuer >=2
+    # Recruiter-Buttons (sonst waere distinct>=2 datenabhaengig — der fruehere
+    # SKIP-Weichspuelen aus acd1aae ist zurueckgenommen).
+    check("P1-2", "Recruiter", "Button-Hierarchie: Einladen/Ablehnen/Einstellen unterscheiden sich",
+          distinct >= 2, f"Farben={colors}")
     page.close()
 
     page = ctx.new_page()

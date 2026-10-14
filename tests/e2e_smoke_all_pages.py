@@ -149,6 +149,7 @@ def main() -> int:
 
     # Serverlog des isolierten Servers finden (e2e_isolation legt server.log an).
     # KMHR_E2E_SERVER_LOG erzwingt eine Quelle (z.B. Live-Log nach App-Neustart).
+    # Klasse d (14.10.2026): fehlendes Log = FAIL (vorher stiller Skip)
     import os
     forced = os.environ.get("KMHR_E2E_SERVER_LOG")
     if forced and Path(forced).exists():
@@ -159,6 +160,9 @@ def main() -> int:
     if watcher:
         print(f"Serverlog-Quelle: {watcher.log_path}")
         watcher.start()
+    else:
+        # Klasse d: Ohne Log-Datei kann der Serverlog-Check nicht ausgeführt werden
+        fails.append("Serverlog nicht gefunden (weder KMHR_E2E_SERVER_LOG noch e2e-iso-*/server.log)")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -194,9 +198,8 @@ def main() -> int:
                 status = f"Fehler: {ex}"
             results.append((f"admin/{pg}", status))
             if status != "ok":
-                # Admin-Seiten sind nicht Teil der Vorgabe; nur melden
-                console_errors and None
-                print(f"  [i] admin/{pg}: {status} (informativ, kein FAIL)")
+                # Klasse d (14.10.2026): Admin-Fails werten (vorher "informativ")
+                fails.append(f"admin/{pg}: {status}")
 
         browser.close()
 

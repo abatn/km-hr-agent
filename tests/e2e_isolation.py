@@ -154,6 +154,7 @@ def main() -> int:
         return 3
 
     # ── 4) Skripte gegen die isolierte Instanz ─────────────────────────
+    skip_env: set[str] = set()  # Klasse b: initialisiert für Summary-Zugriff
     if args.only:
         scripts = [ROOT / "tests" / f"{n.strip()}.py" for n in args.only.split(",") if n.strip()]
         missing = [str(s) for s in scripts if not s.exists()]
@@ -163,6 +164,11 @@ def main() -> int:
             return 3
     else:
         skip_env = {s.strip() for s in os.environ.get("KMHR_E2E_SKIP", "").split(",") if s.strip()}
+        # Klasse b (14.10.2026): Skip-Namen validieren (Tippfehler = stilles Ausführen)
+        all_scripts = {p.stem for p in (ROOT / "tests").glob("e2e_*.py")}
+        unknown_skips = skip_env - all_scripts
+        if unknown_skips:
+            print(f"[iso] WARNUNG: Unbekannte KMHR_E2E_SKIP-Namen: {', '.join(sorted(unknown_skips))}")
         scripts = sorted(p for p in (ROOT / "tests").glob("e2e_*.py")
                          if p.name not in SKIP and p.stem not in skip_env)
         if skip_env:
@@ -207,6 +213,9 @@ def main() -> int:
     lines.append(f"Log-Verzeichnis : {logdir}")
     lines.append(f"Isolierte Instanz: {base} (PID {server.pid}, Spiegel {mirror.name})")
     lines.append(f"Skripte          : {len(results)} (Gesamtdauer {suite_dur:.1f}s)")
+    # Klasse b (14.10.2026): Skip-Liste ins Summary (vorher unsichtbar)
+    if skip_env:
+        lines.append(f"CI-Skip          : {', '.join(sorted(skip_env))}")
     for name, rc, dur in results:
         lines.append(f"  {name:34s} rc={rc} {dur:6.1f}s")
     lines.append(f"Live-Diff (dump) : rc={diff_rc}  <- Sollwert 0")
@@ -219,13 +228,16 @@ def main() -> int:
     print(f"[iso] Summary: {logdir / 'summary.txt'}")
 
     if args.no_run:
-        return 0
-    # Fehlerweitergabe (CI-Fix 04.10.2026): Ein fehlgeschlagenes E2E-Skript MUSS den
-    # Gesamtlauf fehlschlagen lassen — vorher wurde nur DB-Diff/-Hash ausgewertet.
-    fehler = [n for n, rc, _ in results if rc != 0]
-    if fehler:
-        print(f"[iso] FEHLGESCHLAGENE Skripte ({len(fehler)}): {', '.join(fehler)}")
-    return 0 if (diff_rc == 0 and sha_rc == 0 and not fehler) else 1
+        # Klasse b (14.10.2026): Live-Diff trotzdem auswerten (vorher still rc=0)
+        print("[iso] --no-run: keine Skripte ausgeführt, aber Live-Diff wird ausgewertet")
+        fehler_no_run = []  # Keine Kind-Skripte → keine Fehler
+    else:
+        # Fehlerweitergabe (CI-Fix 04.10.2026): Ein fehlgeschlagenes E2E-Skript MUSS den
+        # Gesamtlauf fehlschlagen lassen — vorher wurde nur DB-Diff/-Hash ausgewertet.
+        fehler_no_run = [n for n, rc, _ in results if rc != 0]
+        if fehler_no_run:
+            print(f"[iso] FEHLGESCHLAGENE Skripte ({len(fehler_no_run)}): {', '.join(fehler_no_run)}")
+    return 0 if (diff_rc == 0 and sha_rc == 0 and not fehler_no_run) else 1
 
 
 if __name__ == "__main__":

@@ -80,10 +80,15 @@ def main():
             assert len(score_texts) > 0, "Keine Score-Texte (/100) sichtbar"
 
             # Aktions-Buttons je Status vorhanden
+            # Klasse d (14.10.2026): Counts asserten statt verwerfen —
+            # mind. 1 Aktions-Button muss sichtbar sein (sonst Match-Seite kaputt)
+            btn_counts = {}
             for label in ("Einladen", "Ablehnen", "Einstellen"):
-                _ = page.locator(f"button:has-text('{label}')").count()
+                btn_counts[label] = page.locator(f"button:has-text('{label}')").count()
+            total_btns = sum(btn_counts.values())
+            assert total_btns >= 1, f"Keine Aktions-Buttons sichtbar: {btn_counts}"
 
-            # Sprachtests-Expander (S3d): sichtbar oder 0 ist ok
+            # Sprachtests-Expander (S3d): sichtbar oder 0 ist ok (nur informativ)
             expanders = page.locator("text=Sprachtests").all()
 
             # Statusuebergang nur lesen: 'angesehen' klicken falls vorhanden

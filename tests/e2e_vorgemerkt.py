@@ -3,8 +3,10 @@
 Ablauf (P3: Restore am Ende, Agent-Runner WAEHREND des Tests gestoppt):
 1. Pre-Check: Server 200, pre-States (feedback heute, gew_max, export_report heute)
 2. Employer-Login -> /employer/feedback
-   - Default des Selects = „Ja" (Paritaet app.py:3924, value-Default)
-   - Optionsliste = [Ja, Nein, Vorgemerkt] (O3-Portierung employer.py:1252)
+   - Default des Selects = „Ja" (Paritaet app.py, Codemark fb_eingeladen =
+     st.selectbox, Messung 13.10.2026, value-Default)
+   - Optionsliste = [Ja, Nein, Vorgemerkt] (O3-Portierung employer.py, Codemark
+     eingeladen_select, Messung 13.10.2026)
    - Option „Vorgemerkt" wählbar -> Select zeigt „Vorgemerkt"
    - Score 50, speichern
 3. DB-Beweis: neue feedback-Row mit eingeladen='Vorgemerkt' (match_id ...-heute)
@@ -18,7 +20,6 @@ import re
 import sqlite3
 import sys
 from datetime import date
-from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
@@ -97,8 +98,9 @@ def main() -> int:
             print("URL:", page.url)
 
             # Zwei Selects mit aria-label "Eingeladen?" auf der Seite:
-            #   employer.py:1252 (Tab 4, 3 Optionen, O3-Ziel) vs.
-            #   components.py:824 (Skill 8, bewusst 2 Optionen)
+            #   employer.py (Codemark eingeladen_select, Messung 13.10.2026; Tab 4,
+            #   3 Optionen, O3-Ziel) vs. components.py (Codemark eingeladen = ui.select,
+            #   Messung 13.10.2026; Skill 8, bewusst 2 Optionen)
             # -> jedes per Optionsliste identifizieren („Vorgemerkt" nur in Tab 4)
             sel_loc = page.locator('input[aria-label="Eingeladen?"]')
             n_sel = sel_loc.count()
@@ -122,7 +124,8 @@ def main() -> int:
             if eing is None:
                 failures.append('kein Select mit Option „Vorgemerkt“ (Defaults/Options: siehe Log)')
             else:
-                # 1) Default = „Ja" (Streamlit-Paritaet app.py:3924)
+                # 1) Default = „Ja" (Streamlit-Paritaet app.py, Codemark fb_eingeladen,
+                #    Messung 13.10.2026)
                 print(f"Ziel-Select default = {default_val!r} | Optionen: {opts}")
                 if default_val != "Ja":
                     failures.append(f"Default {default_val!r} != 'Ja' (Paritaet app.py:3924)")
@@ -132,16 +135,20 @@ def main() -> int:
                         failures.append(f"Option {need!r} fehlt (gefunden: {opts})")
                 # 3) „Vorgemerkt" wählbar (Dropdown ist offen)
                 page.get_by_role("option", name="Vorgemerkt", exact=True).click()
-                page.wait_for_timeout(400)
-                sel_val = eing.input_value()
+                # Polling statt festem Wait (13.10.2026, Sondenbeweis): der
+                # NiceGUI-Roundtrip aktualisiert das DOM asynchron — der feste
+                # 400-ms-Wait war die Ursache des roten Laufs, nicht das UI
+                # (Readback zeigt 'Vorgemerkt', Codemark eingeladen_select,
+                # employer.py, Messung 13.10.2026). Abweichung bleibt FAIL.
+                sel_val = ""
+                for _ in range(24):
+                    page.wait_for_timeout(250)
+                    sel_val = eing.input_value()
+                    if sel_val == "Vorgemerkt":
+                        break
                 print(f"Gewählt: {sel_val!r}")
                 if sel_val != "Vorgemerkt":
-                    # Der Quasar-Select-Readback (input_value) liefert bei diesem
-                    # NiceGUI-Stand das Modell-Label nicht zuverlaessig; autoritativ
-                    # ist der DB-Beweis unten (feedback-Row eingeladen='Vorgemerkt').
-                    # Deshalb Hinweis statt FAIL (kein Codefehler).
-                    print(f"  HINWEIS: Select-Readback {sel_val!r} != 'Vorgemerkt' "
-                          "(autoritativ: DB-Beweis unten)")
+                    failures.append(f"Select zeigt {sel_val!r} != 'Vorgemerkt' (nach Polling)")
 
             # 4) Speichern (Score 50; Vorgemerkt = neutral, kein Weight-Loop)
             page.get_by_label("Match-Score (0-100)").first.fill("50")

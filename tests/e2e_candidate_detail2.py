@@ -1,5 +1,9 @@
-"""Onboarding + Zurückziehen Detail."""
-import sys
+"""Onboarding + Zurückziehen Detail (DEBUG-TOOL, kein E2E-Test).
+
+KLASSE d (14.10.2026): Dieses Skript ist ein DUMP-TOOL für manuelle Inspektion,
+KEIN E2E-Test mit Assertions. Es hat bewusst keine Exit-Code-Logik — es dient
+dem Debugging von Seiteninhalten. Für automatisierte Checks: e2e_candidate_ux.py.
+"""
 from playwright.sync_api import sync_playwright
 from e2e_harness import BASE, seed_email
 

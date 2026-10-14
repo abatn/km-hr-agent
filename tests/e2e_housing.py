@@ -59,6 +59,9 @@ CAND_EMAIL = ""
 CAND_PASSWORD = ""
 CAND_NAME = ""
 PW_FIXTURE: tuple[int, str | None] | None = None
+# Fixture (AGENTS.md Klasse a, 13.10.2026): angelegte 'eingeladen'-Bewerbung,
+# finally-Restore loescht sie wieder.
+FIXTURE_APP: int | None = None
 
 TEMPLATES = [
     ROOT / "knowledge" / "templates" / "onboarding-templates" / "onboarding-de.md",
@@ -89,28 +92,74 @@ def db_state() -> dict:
         conn.close()
 
 
+def seed_invited_candidate() -> bool:
+    """Fixture (AGENTS.md Klasse a, 13.10.2026): waehlt einen benannten Kandidaten
+    OHNE Bewerbung auf der Zielstelle und legt eine 'eingeladen'-Bewerbung auf einer
+    aktiven employer-1-Stelle im Spiegel an (FIXTURE_APP). Finally-Restore loescht
+    die Zeile wieder. Liefert False, wenn keine Wahl moeglich (-> echter FAIL)."""
+    global CAND_ID, CAND_EMAIL, CAND_NAME, FIXTURE_APP
+    conn = sqlite3.connect(str(DB))
+    try:
+        job = conn.execute(
+            "SELECT id FROM jobs WHERE employer_id=1 AND status='aktiv' "
+            "ORDER BY id LIMIT 1").fetchone()
+        if not job:
+            return False
+        cand = conn.execute(
+            "SELECT c.id, c.email, c.name FROM candidates c "
+            "WHERE COALESCE(c.name,'') != '' "
+            "  AND NOT EXISTS (SELECT 1 FROM applications a "
+            "                  WHERE a.candidate_id=c.id AND a.job_id=?) "
+            "  AND NOT EXISTS (SELECT 1 FROM applications a2 "
+            "                  WHERE a2.candidate_id=c.id AND a2.status='eingestellt') "
+            "  AND NOT EXISTS (SELECT 1 FROM applications a3 "
+            "                  WHERE a3.candidate_id=c.id AND a3.status='eingeladen') "
+            "ORDER BY c.id LIMIT 1", (job[0],)).fetchone()
+        if not cand:
+            return False
+        cur = conn.execute(
+            "INSERT INTO applications (candidate_id, job_id, status) "
+            "VALUES (?, ?, 'eingeladen')", (cand[0], job[0]))
+        FIXTURE_APP = cur.lastrowid
+        conn.commit()
+    except sqlite3.Error:
+        return False
+    finally:
+        conn.close()
+    CAND_ID, CAND_EMAIL, CAND_NAME = cand[0], cand[1], cand[2]
+    print(f"OK Fixture: 'eingeladen'-Bewerbung #{FIXTURE_APP} cand{CAND_ID} "
+          f"({CAND_NAME!r}) auf job{job[0]} (wird entfernt)")
+    return True
+
+
 def pick_candidate() -> bool:
     """Waehlt dynamisch den Hire-Kandidaten (Datenkupplung06.10.2026).
 
     Kriterien: >=1 Bewerbung 'eingeladen' (Klick 'Einstellen' ist legal, ALLOWED_TRANSITIONS)
-    UND 0 'eingestellt' (Vorbedingung hired==1). Bekanntes Test-Login wird
-    bevorzugt, sonst Passwort-Fixture (in restore() rueckgaengig).
+    UND 0 'eingestellt' (Vorbedingung hired==1) UND Klarnamen (Card-Scoping).
+    Fehlt ein passender Kandidat, stellt die Fixture (Klasse a, 13.10.2026) die
+    Vorbedingung selbst her. Bekanntes Test-Login wird bevorzugt, sonst
+    Passwort-Fixture (in restore() rueckgaengig).
     """
     global CAND_ID, CAND_EMAIL, CAND_PASSWORD, CAND_NAME, PW_FIXTURE
     conn = sqlite3.connect(str(DB))
     try:
         rows = conn.execute(
             "SELECT c.id, c.email, COALESCE(c.name,'') FROM candidates c "
-            "WHERE EXISTS (SELECT 1 FROM applications a WHERE a.candidate_id=c.id "
+            "WHERE COALESCE(c.name,'') != '' "
+            "  AND EXISTS (SELECT 1 FROM applications a WHERE a.candidate_id=c.id "
             "              AND a.status='eingeladen') "
             "  AND NOT EXISTS (SELECT 1 FROM applications a2 WHERE a2.candidate_id=c.id "
             "                  AND a2.status='eingestellt') ORDER BY c.id"
         ).fetchall()
     finally:
         conn.close()
+    if not rows and seed_invited_candidate():
+        rows = [(CAND_ID, CAND_EMAIL, CAND_NAME)]
     if not rows:
-        print("SKIP: kein Kandidat mit 'eingeladen' ohne 'eingestellt'-Bewerbung "
-              "— Datenkupplung, kein Codefehler")
+        print("FAIL: kein Kandidat mit 'eingeladen' ohne 'eingestellt'-Bewerbung "
+              "und Fixture nicht anlegbar (kein benannter Kandidat ohne Zielstellen-"
+              "Bewerbung / keine aktive employer-1-Stelle)")
         return False
     known = dict(KNOWN_LOGINS)
     rows.sort(key=lambda r: (r[1] not in known, r[0]))
@@ -238,9 +287,9 @@ def wait_for_report(app_id: int, timeout_s: int = 90) -> bool:
 def main() -> int:
     check_server()
     if not pick_candidate():
-        # Vorbedingung datenabhaengig → SKIP statt FAIL (siehe pick_candidate()).
-        print("SKIP: Datenkupplung — kein passender Kandidat (siehe oben)")
-        return 0
+        # Klasse a (13.10.2026): die Fixture stellt die Vorbedingung her; scheitert
+        # das, ist das ein echter FAIL (kein SKIP-Weichspuelen, AGENTS.md Schritt 3).
+        return 1
     pre = pre_max_tasks()
     failures = []
     before = db_state()
@@ -407,6 +456,9 @@ def main() -> int:
                 _conn9.execute(
                     "DELETE FROM agent_tasks WHERE task_type='onboarding_release' "
                     "AND json_extract(payload,'$.application_id')=?", (hired_app_id,))
+            if FIXTURE_APP:
+                # Fixture (Klasse a): angelegte Bewerbung wieder entfernen.
+                _conn9.execute("DELETE FROM applications WHERE id=?", (FIXTURE_APP,))
             _conn9.commit()
             _conn9.close()
             if created_report is not None:
@@ -426,11 +478,18 @@ def main() -> int:
             print(f"Final (nach Restore): {_final}")
             if _final["hired"]:
                 failures.append(f"Restore hired: {_final['hired']} nicht leer")
-            if _final["active"] != before["active"]:
+            # Vor dem Restore angelegte Fixture-Bewerbung zaehlt nicht als Diff.
+            _exp_active = ([r for r in before["active"] if r[0] != FIXTURE_APP]
+                           if FIXTURE_APP else before["active"])
+            if _final["active"] != _exp_active:
                 failures.append(
-                    f"Restore active: {_final['active']} != {before['active']}")
+                    f"Restore active: {_final['active']} != {_exp_active}")
 
-    db_residue_report(pre)
+    # Klasse a (14.10.2026): db_residue_report Rückgabe an failures anbinden
+    # (alle Schwester-Skripte machen das; diese Datei hat es verworfen)
+    _residue = db_residue_report(pre)
+    if _residue:
+        failures.append(f"DB-Residue nach Restore: {_residue}")
     if failures:
         print("E2E HOUSING FAIL:")
         for f in failures:

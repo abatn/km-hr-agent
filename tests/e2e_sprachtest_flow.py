@@ -114,6 +114,7 @@ def main() -> int:
     lookup = seed_lookup()
     print(f"Seed-Pool Deutsch A1: {len(lookup)} Fragen")
     fehler: list = []
+    skipped_parts: list = []  # Klasse b (14.10.2026): übersprungene Teile zählbar
     rows0 = db_rows()
     print(f"DB vorher: {len(rows0)} language_tests-Zeilen für cand{CAND_ID}")
 
@@ -170,6 +171,8 @@ def main() -> int:
                                    timeout=60000)
             body = page.locator("body").inner_text()
             if "Frage 1/" in body:
+                # Klasse b (14.10.2026): Skip zählbar machen (vorher still)
+                skipped_parts.append("C (LLM lieferte Fragen für Englisch A1)")
                 print("C: SKIP — LLM lieferte Fragen für Englisch A1 (0-Fragen-Pfad nicht auslösbar)")
             else:
                 print("C: Fehlerkarte sichtbar")
@@ -223,7 +226,12 @@ def main() -> int:
         for f in fehler:
             print("  -", f)
         return 1
-    print("PASS: Sprachtest-Flow (richtig 100%, falsch 0%, 0 Fragen, Speicherfehler+Retry, Liste aktuell)")
+    # Klasse b (14.10.2026): PASS-Text dynamisch (vorher hardcoded, log bei Skip)
+    if skipped_parts:
+        print(f"PASS ({4 - len(skipped_parts)}/4 Teile): Sprachtest-Flow "
+              f"(übersprungen: {', '.join(skipped_parts)})")
+    else:
+        print("PASS: Sprachtest-Flow (richtig 100%, falsch 0%, 0 Fragen, Speicherfehler+Retry, Liste aktuell)")
     return 0
 
 

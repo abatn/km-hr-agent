@@ -914,12 +914,39 @@ def check_kandidaten_karte(browser, lang: str, po: dict, app_id: int, datum: str
 
 # ─── Restore ───────────────────────────────────────────────────────────────
 
-def restore(base: dict, pre: int) -> None:
+def park_open_apps() -> dict:
+    """Parkt offene Alt-Bewerbungen von #13 im Spiegel auf 'zurückgezogen' (final).
+
+    Fixture (AGENTS.md Klasse a, 13.10.2026): validate_target verlangt nur finale
+    Alt-Bewerbungen (Reset-/Kartenschaetze des Laufs waeren sonst ungueltig) — die
+    Vorbedingung wird hier selbst hergestellt statt per SKIP aufzugeben; restore()
+    rollt Status + Zeitstempel zurueck."""
+    rows = _q("SELECT id, status, aktualisiert_am FROM applications WHERE candidate_id=? "
+              "AND status NOT IN ('abgelehnt','eingestellt','zurückgezogen')", (CAND_ID,))
+    if not rows:
+        return {}
+    conn = sqlite3.connect(str(DB))
+    try:
+        for aid, _st, _ts in rows:
+            conn.execute("UPDATE applications SET status='zurückgezogen' WHERE id=?", (aid,))
+        conn.commit()
+    finally:
+        conn.close()
+    backup = {aid: (st, ts) for aid, st, ts in rows}
+    print(f"OK Fixture: {len(backup)} offene Alt-Bewerbung(en) von #{CAND_ID} geparkt "
+          f"(restore rollt zurueck)")
+    return backup
+
+
+def restore(base: dict, pre: int, flip_backup: dict | None = None) -> None:
     conn = sqlite3.connect(str(DB))
     try:
         st = base["cand"]
         conn.execute("UPDATE candidates SET status=?, lebenslauf_datei=?, lebenslauf_text=? "
                      "WHERE id=?", (st[0], st[1], st[2], CAND_ID))
+        for _aid, (_st, _ts) in (flip_backup or {}).items():
+            conn.execute("UPDATE applications SET status=?, aktualisiert_am=? WHERE id=?",
+                         (_st, _ts, _aid))
         conn.execute("DELETE FROM application_status_history WHERE id>?", (base["hist_max"],))
         conn.execute("DELETE FROM applications WHERE id>?", (base["app_max"],))
         conn.execute("DELETE FROM candidate_documents WHERE id>?", (base["doc_max"],))
@@ -942,17 +969,19 @@ def main() -> int:
     check_server()
     pre = pre_max_tasks()
     base = baseline()
+    flip_backup = park_open_apps()
     job = validate_target()
     print(f"Baseline: cand={base['cand']} app_max={base['app_max']} "
           f"notif_max={base['notif_max']} pre={pre}")
     if job is None:
-        # Datenkupplung: die Vorbedingung (Stelle #7 aktiv+frei fuer #13, alle
-        # Alt-Bewerbungen final, cand13-Mails stimmen) ist datenabhaengig und im
-        # Live-Spiegel nicht immer erfuellt → SKIP statt FAIL, kein Codefehler.
-        print("SKIP: Datensatz/Spiegel-DB erfuellt die Vorbedingung nicht "
-              "(Stelle #7 aktiv+frei fuer #13, alle Alt-Bewerbungen final, cand13-Mails) "
-              "— Datenkupplung, kein Codefehler")
-        return 0
+        # Klasse a (13.10.2026): park_open_apps() stellt die Vorbedingung "alle
+        # Alt-Bewerbungen final" her — bleibt die Zielstelle trotzdem ungueltig
+        # (nicht aktiv / anderer employer / Bestands-Bewerbung auf #7 / cand13-
+        # Datensatz), ist das ein echter FAIL (kein SKIP-Weichspuelen, AGENTS.md
+        # Schritt 3).
+        print("FAIL: Datensatz/Spiegel-DB ungueltig (Stelle #7 aktiv+frei fuer #13, "
+              "alle Alt-Bewerbungen final, cand13-Mails stimmen)")
+        return 1
     print(f"Datensatz: Kandidat #{CAND_ID} / Stelle #{JOB_ID} {job[0]!r} / "
           f"Name {job[1]!r} / Employer #{EMPLOYER_ID}")
 
@@ -996,7 +1025,7 @@ def main() -> int:
         log_text = read_log(mod.LOG_FILE, log_offset)
         check_betreffe(failures, log_text)
     finally:
-        restore(base, pre)
+        restore(base, pre, flip_backup)
         # Auch bei Abbruch: frisch geschriebene Einladungs-Berichte entfernen.
         for p in ERGEBNISSE.glob("einladung-bewerbung-*.md"):
             if p.name not in rep_before:
