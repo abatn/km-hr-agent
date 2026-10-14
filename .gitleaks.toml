@@ -1,0 +1,22 @@
+# gitleaks-Konfiguration (Repo-Root, wird automatisch von gitleaks geladen –
+# belegt durch CI-Log 14.10.2026: "no gitleaks config found in path
+# .gitleaks.toml, using default gitleaks config").
+#
+# Quelle / Messgrundlage (eigene Messung 14.10.2026, gitleaks 8.24.3):
+# Secret-Scan meldete im Push-Range 75d7716^..0f4d76d genau EINEN Fund:
+# den 32-Hex-String "fe072955d8b9ad2c…" in
+# .staledocs/pairs/knowledge.md-b414be7d.json:196 (RuleID generic-api-key,
+# Entropy 3.81). Es handelt sich um den von staledocs erzeugten
+# Doku-Content-Hash (Ack-Anker des Paares knowledge.md), nicht um ein Secret.
+# Die ganzen Ledger-Dateien bestehen ausschliesslich aus Pfaden, Hashes und
+# Ack-Notes (Schema: ack/doc/schema), das hat der Quellencheck am 14.10.2026 belegt.
+#
+# Aufweichungsbewusstsein (AGENTS.md: Aufweichungen sind begruendungspflichtig):
+# NUR diese eine Pfad-Ausnahme. Keine globalen Regex-Ausnahmen, keine
+# Wortlisten – echte Secrets weiterhin blockierend.
+
+title = "km-hr-agent"
+
+[allowlist]
+description = "staledocs-Ledger: generierte Ack-Eintraege aus Doku-/Code-Content-Hashes und Pfaden, keine Secrets (Messung 14.10.2026)"
+paths = ['''^\.staledocs/.*''']
