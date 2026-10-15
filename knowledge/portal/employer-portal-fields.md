@@ -247,7 +247,7 @@ Ein Kandidat erscheint in der Kandidaten-Liste einer Stelle, wenn:
 
 ## Employer-Portal Sidebar (Streamlit-Ära: 8 Seiten, 17.09.2026; NiceGUI: 10 Seiten, 20.09.2026 Phase 1)
 
-> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 12 Einträge, Stand 13.10.2026): 📊 Dashboard · 🏢 Firmenprofil (**eigene Seite seit 13.10.2026**, `firmenprofil`) · 🏢 Stelle ausschreiben (`portal`, vormals „Portal = Firmenprofil + Stellen“, P1.2 20.09.2026; Firmenprofil entfernt 13.10.2026) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber-Status-Verwaltung + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung: einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger, **P1.3 portiert 20.09.2026**) · 📄 Match (read-only + Visum-Klick, GAP-3) · ✅ Compliance · 🔎 Agent-Details · 🗂️ Dokumente · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll, GAP-2). Die folgende Tabelle dokumentiert die Streamlit-Sidebar (inkl. 4-Tab-Portal) als historische Referenz.
+> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, 14 Einträge seit 15.10.2026, vorher 12 seit 13.10.2026; Sidebar seit 15.10.2026 nur 4 Punkte — Übersicht, Stellen, Board, Mehr; alle übrigen Seiten unter „Mehr“, Spec `knowledge/portal/employer-board.md` §6). Stand der Seitenliste: 📊 Dashboard · 🏢 Firmenprofil (**eigene Seite seit 13.10.2026**, `firmenprofil`) · 🏢 Stelle ausschreiben (`portal`, vormals „Portal = Firmenprofil + Stellen“, P1.2 20.09.2026; Firmenprofil entfernt 13.10.2026) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber-Status-Verwaltung + Archiv)** · 🔍 Kandidaten-Suche (Liste + Suche, **keine Schreibaktion**; Zeilenauswahl springt auf Match — Codemarke `_page_kandidaten`, gemessen 15.10.2026) · 📄 Match (Status-Dialoge `do_invite` / `do_reject` / `do_hire` + Visum-Klick, GAP-3; Codemarke `_page_match`) · ✅ Compliance · 🔎 Agent-Details · 🗂️ Dokumente · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll, GAP-2). Die folgende Tabelle dokumentiert die Streamlit-Sidebar (inkl. 4-Tab-Portal) als historische Referenz.
 
 | Seite | Beschreibung | Nur lesen? |
 |---|---|---|
@@ -378,11 +378,12 @@ Nicht existierende Stellen bzw. fremde Arbeitgeber werden **gezählt, nicht vers
 
 ## Match-Dialog-Semantik (NB1+NB4, 23.09.2026)
 
-- **Ablehnen (Match-Dialog):** schließt ALLE aktiven Bewerbungen des Kandidaten bei diesem Employer (Aktiv-IN-Liste `eingegangen`/`angesehen`/`eingeladen`) — UPDATE + History je Bewerbung, GENAU EIN `send_rejection`-Task mit `{application_id: neueste aktive, candidate_id, trigger: hr_klick_portal}`.
-- **Einladen / Einstellen:** handeln ausschließlich die neueste aktive Bewerbung (`LIMIT 1`, dieselbe Aktiv-IN-Liste); beide Payloads (`create_invitation`, `onboarding_release`) tragen zusätzlich `candidate_id`.
-- **Kein aktiver Treffer** (z. B. nur Terminal-Status): Fehler-`ui.notify` „Keine aktive Bewerbung", kein DB-Write, kein Task.
-- **Terminal-Status unantastbar:** `eingestellt`, `abgelehnt`, `zurückgezogen` werden von keinem der 3 Dialoge geändert (erl-Matrix `webui/pages/employer.py` (gemessen 10.10.2026)).
-- **Identity-Regel:** Dialog-States speichern die Candidate-ID (`_reject_cid`/`_invite_cid`/`_hire_cid`); die echte `application_id` wird am Queue-Punkt per SELECT (employer-JOIN, id DESC) aufgelöst — Spec: `knowledge/system/agent-automation.md` §4, Identity-Regel.
+- **Ist-Stand (Codemarke `_page_match`, gemessen 15.10.2026):** Jeder der 3 Dialoge wirkt nur auf **die gewählte Bewerbung** (`application_id` aus `_invite_ctx` / `_reject_ctx` / `_hire_ctx`). Die frühere Regel „alle aktiven Bewerbungen“ und „neueste aktive, LIMIT 1“ ist **nicht** mehr Code-Stand.
+- **Ablehnen (`do_reject`):** Guard `_legal("abgelehnt")`, UPDATE + History (mit interner Notiz), GENAU EIN `send_rejection`-Task mit `{application_id, candidate_id, job_id, trigger: hr_klick_portal}`.
+- **Einladen (`do_invite`) / Einstellen (`do_hire`):** Guard `_legal` gegen `ALLOWED_TRANSITIONS`; `create_invitation` (mit Termin) bzw. `onboarding_release`; beide Payloads tragen `candidate_id` und `job_id`.
+- **Nicht erlaubt oder unbekannt:** `ui.notify` „Bewerbung nicht gefunden.“ bzw. „Ungueltiger Statusuebergang …“, kein DB-Write, kein Task.
+- **Terminal-Status unantastbar:** `eingestellt`, `abgelehnt`, `zurückgezogen` sind in `ALLOWED_TRANSITIONS` nicht als Ausgangsstatus erlaubt; der Guard `_legal` blockiert sie.
+- **Identity-Regel:** Der Kandidat wird aus der DB abgeleitet, nicht aus dem UI-Zustand. `_app_info` prüft per JOIN auf `jobs.employer_id`, ob die Bewerbung zu diesem Arbeitgeber gehört (Test: `tests/test_dialog_identity.py`). Die frühere Auflösung über Candidate-ID und SELECT am Queue-Punkt ist überholt. Der Abschnitt `knowledge/system/agent-automation.md` §4 beschreibt noch den alten Stand (eigener Befund, nicht Teil dieses Acks).
 - **NB5 (behoben, 23.09.2026):** alle `'zurueckgezogen'`-Filter (ASCII) auf `'zurückgezogen'` (UTF-8-ü, DB-Sollwert) umgestellt: `webui/pages/employer.py` (gemessen 10.10.2026) + Label, `webui/pages/candidate.py` (gemessen 10.10.2026), `webui/pages/admin.py` (gemessen 10.10.2026), `scripts/agent-runner.py` (gemessen 10.10.2026), `app.py` (gemessen 10.10.2026) (Parität). Sweep 0, App 22-Verifikation bestanden.
 
 ---

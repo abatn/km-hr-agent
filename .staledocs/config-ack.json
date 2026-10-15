@@ -64,6 +64,7 @@
       "knowledge/portal/applicants-first.md",
       "knowledge/portal/candidate-portal-fields.md",
       "knowledge/portal/cv-pflicht.md",
+      "knowledge/portal/employer-board.md",
       "knowledge/portal/employer-portal-fields.md",
       "knowledge/portal/matching-filter.md",
       "knowledge/system/access-control.md",
@@ -108,7 +109,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-14T16:13:59+00:00",
+  "at": "2026-10-15T18:29:04+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

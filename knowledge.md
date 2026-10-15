@@ -81,7 +81,7 @@ Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindl
 | `system/` | `access-control.md` (Rollen/Zugriff, Source of Truth) · `agent-automation.md` (Runner, Mails, Trigger) · `configuration-secrets.md` · `deploy-pipeline.md` · `doku-authority.md` (Doku-Regeln) · `e2e-ci-seed.md` (Test-Konten) · `i18n.md` + `i18n-runner-chain.md` · `mcp-connector-config.md` · `mcp-agent-backlog.md` · `mcp-tool-lazy-gating.md` · `vdo-ninja-migration.md` · `mvp.md` · `c2-service.md` · `event-loop-blockieren.md` · `p8-cloud-datenquellen.md` · `asgi-guard.md` |
 | `legal/` | `dsgvo-gate.md` · `gdpr-policy.md` · `recording-consent.md` · `compliance-rules.md` · `contract-management.md` · `contract-sources.md` · `visa-rules.md` · `document-types.md` · `datenschutz.md`/`impressum.md`/`agb.md`/`kontakt.md` (je + `.en`/`.fr`/`.ar`) |
 | `lifecycle/` | `matching-criteria.md` (Scoring) · `feedback-schema.md` · `application-status.md` · `status-automation.md` · `cultural-fit-criteria.md` · `explanation-templates.md` · `relocation.md` · `mentoring.md` · `referenz-sphinxats.md` |
-| `portal/` | `candidate-portal-fields.md` · `employer-portal-fields.md` · `matching-filter.md` · `cv-pflicht.md` · `applicants-first.md` · `housing-search.md` |
+| `portal/` | `candidate-portal-fields.md` · `employer-portal-fields.md` · `employer-board.md` (Hiring-Board, Phase 1) · `matching-filter.md` · `cv-pflicht.md` · `applicants-first.md` · `housing-search.md` |
 | `templates/` | contract- · email- · language- · onboarding-Templates (Vorlagen, kein Code) |
 | `profiles/` | `README.md` |
 | top-level | `language-tests.md` · `language-courses.md` · `error-statistics.md` · `notification-log.md` · `onboarding-default.md` · `ui-design-system.md` · `team-profile.md` |

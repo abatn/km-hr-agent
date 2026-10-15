@@ -13,7 +13,7 @@
 |---|---|
 | `webui/pages/employer.py` (Codemarke `def _page_kandidaten`, gemessen 10.10.2026) | `def _page_kandidaten(s: dict) -> None:` – Seite „Kandidaten-Suche" |
 | `webui/pages/employer.py` (Codemarke `def filter_candidates`, gemessen 10.10.2026) | `def filter_candidates(status_filter: str) -> None:` |
-| `webui/pages/employer.py` (gemessen 10.10.2026) | `WHERE c.status IN ('lebenslauf_hochgeladen', 'zugeordnet', 'aktiv')` + `ORDER BY c.id DESC LIMIT 50` – **nur Status-Filter, kein Must-Have, kein Erfahrungs-Filter, kein Score** |
+| `webui/pages/employer.py` (Codemarke `def _list_candidates`, Messung 15.10.2026) | `WHERE c.status IN (CAND_CV_STATUS)` mit `CAND_CV_STATUS = ("lebenslauf_hochgeladen", "profil_geprueft", "match_berechnet", "eingeladen")` + `ORDER BY c.id DESC` – **kein LIMIT** (Code: „Kein LIMIT (Tabelle paginiert)“), **nur Status-Filter, kein Must-Have, kein Erfahrungs-Filter, kein Score** |
 | `webui/pages/employer.py` (Codemarke `def _page_match`, gemessen 10.10.2026) | `def _page_match(s: dict) -> None:` – Seite „Match-Ergebnis" |
 | `webui/pages/employer.py` (gemessen 10.10.2026) | Kandidaten-Query mit `JOIN applications ... WHERE j.employer_id = ? AND a.status != 'zurückgezogen'` – **kein Must-Have/Erfahrungs-Predikat** |
 | `webui/pages/employer.py` (gemessen 10.10.2026) | `result = logic.berechne_match_score(k_data, j_data)` |

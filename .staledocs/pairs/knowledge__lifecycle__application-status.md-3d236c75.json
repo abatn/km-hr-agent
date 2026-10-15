@@ -26,14 +26,14 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-13T18:14:41+00:00",
+    "at": "2026-10-15T18:08:20+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
+      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
     "doc_blob": "14c928d0207b48a2c8faa285ec5ac7d014bf612e",
-    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
+    "note": "Claims 28 gelesen 15.10.2026: Pfad-Claims 8/8 vorhanden; Codemark-Treffer 12/15 in Code (u.a. _maybe_gatekeeper, agent_tasks, aktualisiert_am); staledocs 2.1.0"
   },
   "doc": "knowledge/lifecycle/application-status.md",
   "schema": 1

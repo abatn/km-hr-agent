@@ -3439,3 +3439,30 @@ msgstr "تتطلب المطابقة سيرة ذاتية. ارفع سيرتك ا�
 
 msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
 msgstr "سيرتك الذاتية محفوظة. تصفح الوظائف المناسبة."
+
+msgid "Hiring-Board"
+msgstr "لوحة التوظيف"
+
+msgid "Passiv"
+msgstr "سلبي"
+
+msgid "Im Match öffnen"
+msgstr "فتح في المطابقة"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
+msgstr "تظهر الطلبات هنا بمجرد تقديم مرشح على وظيفة."
+
+msgid "Keine passiven Kandidaten"
+msgstr "لا يوجد مرشحون سلبيون"
+
+msgid "Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier."
+msgstr "يظهر هنا المرشحون الذين لديهم سيرة ذاتية دون طلب."
+
+msgid "Im Kandidaten-Profil öffnen"
+msgstr "فتح ملف المرشح"
+
+msgid "Mehr"
+msgstr "المزيد"
+
+msgid "Alle weiteren Bereiche"
+msgstr "جميع الأقسام الأخرى"

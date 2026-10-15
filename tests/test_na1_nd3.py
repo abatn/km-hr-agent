@@ -47,9 +47,11 @@ def test_nd3_kein_9_pages_mehr():
 
 
 def test_nd3_docstring_entspricht_page_map():
-    assert len(emp.PAGE_MAP) == 12  # 13.10.2026: +firmenprofil (Portal-Split)
+    # 15.10.2026: 12 -> 14 (+board = Hiring-Board, +mehr = Auffangseite). Die alten 12 Routen
+    # bleiben erhalten (employer-board.md §6), damit Deep-Links aus E2E/Notifications gehen.
+    assert len(emp.PAGE_MAP) == 14
     # jede Seite des PAGE_MAP wird im Docstring genannt (Klartext-Paritaet grob)
     for key in emp.PAGE_MAP:
         assert key in {"dashboard", "firmenprofil", "portal", "stellen", "kandidaten", "match",
                        "compliance", "agent_details", "dokumente", "prescreen",
-                       "onboarding", "feedback"}
+                       "onboarding", "feedback", "board", "mehr"}

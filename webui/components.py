@@ -1243,7 +1243,7 @@ def notifications_drawer(user_id: int, role: str,
 
 def shell(role: str, user_id: int, user_name: str, menu_items: list[dict],
           logout_fn: Callable, content_fn: Callable, s: dict,
-          initial_tab: str = "") -> None:
+          initial_tab: str = "", extra_tabs: tuple = ()) -> None:
     """Einheitliche Layout-Komponente fuer alle 3 Rollen.
     
     Args:
@@ -1270,7 +1270,7 @@ def shell(role: str, user_id: int, user_name: str, menu_items: list[dict],
     # der aktive Button beim Direkteinstieg über /candidate/<tab> bzw.
     # /employer/<tab> NICHT hervorgehoben war (font-bold/primary fehlten).
     # Fund: tests/test_p2_block.py::test_sidebar_aktiver_button_hervorgehoben.
-    _initial = initial_tab if initial_tab and any(m["key"] == initial_tab for m in menu_items) else (menu_items[0]["key"] if menu_items else "")
+    _initial = initial_tab if initial_tab and initial_tab in ({m["key"] for m in menu_items} | set(extra_tabs)) else (menu_items[0]["key"] if menu_items else "")
     current_page = {"value": _initial}
 
     # Notifications Drawer

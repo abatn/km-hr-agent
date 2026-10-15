@@ -109,7 +109,7 @@ description: Job-Application – Aktive Stellen ansehen, sich bewerben, Bewerbun
 3. Aktive Stelle sichtbar (Titel, Firma, Skills, Gehalt) – KEINE Arbeitgeber-Kontaktdaten
 4. Kandidat bewirbt sich → `applications`-Eintrag mit Status `eingegangen`
 5. Doppelbewerbung abgefangen → Hinweis mit bestehendem Status
-6. Arbeitgeber (employer-portal Schritt 7) sieht Bewerber zuerst in seiner Kandidaten-Liste
+6. Arbeitgeber (employer-portal Schritt 7) sieht Bewerber zuerst im Hiring-Board (Reiter Aktiv, Spalte „Eingegangen“, Codemarke `_BOARD_COLUMNS`, Spec `knowledge/portal/employer-board.md`)
 7. Arbeitgeber lädt ein → Status `eingeladen`, Kandidat sieht Statuswechsel in "Meine Bewerbungen"
 8. Kandidat zieht zurück → Status `zurückgezogen`, Eintrag verschwindet aus Arbeitgeber-Sicht
 

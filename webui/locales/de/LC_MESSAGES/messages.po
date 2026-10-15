@@ -3443,3 +3443,30 @@ msgstr "Ohne Lebenslauf kann kein Matching laufen. Lade ihn zuerst hoch."
 
 msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
 msgstr "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
+
+msgid "Hiring-Board"
+msgstr "Hiring-Board"
+
+msgid "Passiv"
+msgstr "Passiv"
+
+msgid "Im Match öffnen"
+msgstr "Im Match öffnen"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
+msgstr "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
+
+msgid "Keine passiven Kandidaten"
+msgstr "Keine passiven Kandidaten"
+
+msgid "Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier."
+msgstr "Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier."
+
+msgid "Im Kandidaten-Profil öffnen"
+msgstr "Im Kandidaten-Profil öffnen"
+
+msgid "Mehr"
+msgstr "Mehr"
+
+msgid "Alle weiteren Bereiche"
+msgstr "Alle weiteren Bereiche"

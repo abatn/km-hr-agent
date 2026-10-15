@@ -3439,3 +3439,30 @@ msgstr "Le matching nécessite un CV. Téléversez le vôtre d'abord."
 
 msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
 msgstr "Votre CV est enregistré. Découvrez les offres correspondantes."
+
+msgid "Hiring-Board"
+msgstr "Tableau de recrutement"
+
+msgid "Passiv"
+msgstr "Passifs"
+
+msgid "Im Match öffnen"
+msgstr "Ouvrir dans le match"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
+msgstr "Les candidatures apparaissent ici dès qu'un candidat postule."
+
+msgid "Keine passiven Kandidaten"
+msgstr "Aucun candidat passif"
+
+msgid "Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier."
+msgstr "Les candidats avec CV sans candidature apparaissent ici."
+
+msgid "Im Kandidaten-Profil öffnen"
+msgstr "Ouvrir le profil du candidat"
+
+msgid "Mehr"
+msgstr "Plus"
+
+msgid "Alle weiteren Bereiche"
+msgstr "Autres espaces"

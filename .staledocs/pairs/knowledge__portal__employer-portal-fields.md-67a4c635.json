@@ -1,11 +1,20 @@
 {
   "ack": {
     "anchors": [
+      "ALLOWED_TRANSITIONS",
       "Begr\u00fcndung:",
       "NICHT_COMPLIANT",
       "PAGE_MAP",
       "_()",
+      "_app_info",
       "_compliance_rows",
+      "_hire_ctx",
+      "_invite_ctx",
+      "_legal",
+      "_legal(\"abgelehnt\")",
+      "_page_kandidaten",
+      "_page_match",
+      "_reject_ctx",
       "app.py",
       "application-status.md",
       "application_id",
@@ -33,6 +42,7 @@
       "jobs.employer_id",
       "knowledge/lifecycle/application-status.md",
       "knowledge/portal/candidate-portal-fields.md",
+      "knowledge/portal/employer-board.md",
       "knowledge/system/agent-automation.md",
       "knowledge/system/i18n.md",
       "lebenslauf_hochgeladen",
@@ -47,6 +57,7 @@
       "tests/conftest.py",
       "tests/e2e_compliance_reports.py",
       "tests/e2e_transition_guard.py",
+      "tests/test_dialog_identity.py",
       "tests/test_r33_compliance_reports.py",
       "tests/test_r35_status_notify.py",
       "ui.expansion(\"Begr\u00fcndung\")",
@@ -55,13 +66,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T18:14:42+00:00",
+    "at": "2026-10-15T17:53:13+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
+      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
-    "doc_blob": "6280c2dc86da535b64b46b09779a044fbcbf4e21",
-    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "doc_blob": "c12fb244a088b380f6971cf74e1ae535164e42a7",
+    "note": "geprueft 15.10.2026: Match-Dialog-Semantik auf Ist-Stand (_page_match: do_invite/do_reject/do_hire je application_id aus _invite_ctx/_reject_ctx/_hire_ctx, _legal/ALLOWED_TRANSITIONS, _app_info employer-JOIN, tests/test_dialog_identity.py); Sidebar-Zeile Kandidaten-Suche ohne Schreibaktion (_page_kandidaten), Match mit Dialogen; Compliance-Parser (_compliance_berichte, _compliance_status, _compliance_rows) und _notify_statuswechsel vorhanden; cand_container.clear in _page_feedback; Zeilen-Verweise im Text nicht mehr genutzt"
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

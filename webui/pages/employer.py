@@ -43,7 +43,15 @@ PAGE_TITLES = {
     "prescreen": "Pre-Screen",
     "onboarding": "Onboarding",
     "feedback": "Feedback",
+    "board": "Hiring-Board",
+    "mehr": "Mehr",
 }
+
+# Sidebar: 4 sichtbare Punkte (employer-board.md §6). Alle übrigen Seiten liegen unter „Mehr“.
+SIDEBAR_KEYS = ("dashboard", "stellen", "board", "mehr")
+# Unterseiten unter „Mehr“: Direktlinks (/employer/<key>) muessen gerendert werden,
+# auch wenn sie nicht in der Sidebar stehen (sonst Fallback auf Dashboard, shell R5-5).
+_NON_SIDEBAR_KEYS = tuple(k for k in PAGE_TITLES if k not in SIDEBAR_KEYS)
 
 
 def _session() -> dict:
@@ -320,20 +328,25 @@ def _list_candidates(conn, employer_id, status_filter: str = "alle", query: str 
             f"SELECT {cols} FROM candidates c WHERE {cand_cond} ORDER BY c.id DESC", cand_args
         ).fetchall() if r[0] not in app_ids
     ]
+    # Klarname nur fuer die Suche (Name/Skills); angezeigt wird ausschliesslich das Pseudonym
+    # (anzeige_name): Bewerber erst ab Status `eingeladen`, passive Kandidaten nie
+    # (employer-portal-fields.md „Kandidaten-Sichtbarkeit“, DSGVO Art. 6(1)(b)).
     rows = [
-        {"id": r[0], "name": r[1] or _("Unbekannt"), "skills": r[2] or "",
+        {"id": r[0], "_real": r[1] or "", "skills": r[2] or "",
          "exp": r[3] if r[3] is not None else "", "status": r[4] or _("unbekannt"),
-         "bewerber": r[6] or ""}
+         "bewerber": r[6] or "", "_app": r[6] or None}
         for r in applicants
     ] + [
-        {"id": r[0], "name": r[1] or _("Unbekannt"), "skills": r[2] or "",
+        {"id": r[0], "_real": r[1] or "", "skills": r[2] or "",
          "exp": r[3] if r[3] is not None else "", "status": r[4] or _("unbekannt"),
-         "bewerber": ""}
+         "bewerber": "", "_app": None}
         for r in passive
     ]
     q = (query or "").strip().lower()
     if q:
-        rows = [r for r in rows if q in r["name"].lower() or q in str(r["skills"]).lower()]
+        rows = [r for r in rows if q in r["_real"].lower() or q in str(r["skills"]).lower()]
+    for r in rows:
+        r["name"] = anzeige_name(r.pop("_real"), r["id"], r.pop("_app"))
     return rows
 
 
@@ -2860,6 +2873,82 @@ def _page_feedback(s: dict) -> None:
     # Lebensdauer = Page-Instance; CPython sqlite3 schließt beim GC.
 
 
+# ─── Hiring-Board (knowledge/portal/employer-board.md, Phase 1) ───────────
+_BOARD_COLUMNS = (
+    ("eingegangen", ("eingegangen",), "Eingegangen"),
+    ("angesehen", ("angesehen",), "Angesehen"),
+    ("eingeladen", ("eingeladen",), "Eingeladen"),
+    ("abschluss", ("eingestellt", "abgelehnt"), "Abschluss"),
+)
+
+
+def _board_rows(conn, employer_id) -> list[dict]:
+    """Bewerbungen dieses Arbeitgebers mit Status der Board-Spalten (Quelle: ALLOWED_TRANSITIONS)."""
+    rows = conn.execute(
+        """SELECT a.id, a.candidate_id, a.status, j.titel, c.name
+           FROM applications a
+           JOIN jobs j ON j.id = a.job_id
+           JOIN candidates c ON c.id = a.candidate_id
+           WHERE j.employer_id = ?
+             AND a.status IN ('eingegangen','angesehen','eingeladen','eingestellt','abgelehnt')
+           ORDER BY a.erstellungsdatum ASC, a.id ASC""",
+        (employer_id,),
+    ).fetchall()
+    return [{"app_id": r[0], "cid": r[1], "status": r[2], "titel": r[3] or "", "name": r[4] or ""}
+            for r in rows]
+
+
+def _page_board(s: dict) -> None:
+    section_header(title=_('Hiring-Board'), subtitle=_('Bewerbungen nach Status'), icon="view_kanban")
+    employer_id = s.get("employer_id")
+    conn = db.get_conn()
+    try:
+        rows = _board_rows(conn, employer_id)
+        passive = [r for r in _list_candidates(conn, employer_id) if not r["bewerber"]]
+    finally:
+        conn.close()
+
+    with ui.tabs().classes("w-full") as tabs:
+        tab_aktiv = ui.tab(_('Aktiv'))
+        tab_passiv = ui.tab(_('Passiv'))
+    with ui.tab_panels(tabs, value=tab_aktiv).classes("w-full"):
+        with ui.tab_panel(tab_aktiv):
+            if not rows:
+                empty_state(icon="view_kanban", title=_('Noch keine Bewerbungen'),
+                            description=_('Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben.'))
+            # Karten-Aktionen = erlaubte Folgeschritte (_legal_actions); ausgeführt wird auf der Match-Seite
+            with ui.row().classes("w-full gap-3 items-start no-wrap"):
+                for _col_key, statuses, col_label in _BOARD_COLUMNS:
+                    col_rows = [r for r in rows if r["status"] in statuses]
+                    with ui.column().classes("flex-1 min-w-[200px] gap-2"):
+                        ui.label(f"{_(col_label)} ({len(col_rows)})").classes("font-bold")
+                        for r in col_rows:
+                            with ui.card().classes(C.CARD_HOVER + " w-full py-2 px-3"):
+                                ui.label(anzeige_name(r["name"], r["cid"], r["status"])).classes("font-medium")
+                                ui.label(r["titel"]).classes(C.SMALL + " truncate")
+                                ui.label(" · ".join(_(_MATCH_ACTION_LABEL[ns]) for ns in _legal_actions(r["status"]))).classes(C.MUTED + " text-xs")
+                                ui.button(_('Im Match öffnen'), on_click=lambda c=r["cid"]: ui.navigate.to(f"/employer/match?kandidat={c}")).props("flat dense")
+        with ui.tab_panel(tab_passiv):
+            if not passive:
+                empty_state(icon="person_search", title=_('Keine passiven Kandidaten'),
+                            description=_('Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier.'))
+            for r in passive:
+                with ui.card().classes(C.CARD_HOVER + " w-full py-2 px-3"):
+                    # Passiv = kein Bewerbungsstatus -> nur Pseudonym (employer-portal-fields.md „Kandidaten-Sichtbarkeit“)
+                    ui.label(anzeige_name(r["name"], r["id"], None)).classes("font-medium")
+                    ui.label(r["skills"] or "").classes(C.SMALL + " truncate")
+                    ui.button(_('Im Kandidaten-Profil öffnen'), on_click=lambda c=r["id"]: ui.navigate.to(f"/employer/kandidaten?kandidat={c}")).props("flat dense")
+
+
+def _page_mehr(s: dict) -> None:
+    """Auffangbehälter fuer alle Seiten, die nicht in der Sidebar stehen (employer-board.md §6)."""
+    section_header(title=_('Mehr'), subtitle=_('Alle weiteren Bereiche'), icon="more_horiz")
+    for key, title in PAGE_TITLES.items():
+        if key in SIDEBAR_KEYS:
+            continue
+        ui.button(_(title), on_click=lambda k=key: ui.navigate.to(f"/employer/{k}")).props("flat align=left").classes("w-full justify-start")
+
+
 # ─── Page Router ─────────────────────────────────────────────────────
 
 PAGE_MAP = {
@@ -2875,12 +2964,15 @@ PAGE_MAP = {
     "prescreen": _page_prescreen,
     "onboarding": _page_onboarding,
     "feedback": _page_feedback,
+    "board": _page_board,
+    "mehr": _page_mehr,
 }# Menu-Items auf Modulebene (fuer Sub-Route-Registrierung)
 _ICON_MAP = {
     "dashboard": "dashboard", "firmenprofil": "business", "portal": "work",
     "stellen": "work", "kandidaten": "search", "match": "compare_arrows",
     "compliance": "verified", "agent_details": "smart_toy", "dokumente": "folder",
     "prescreen": "record_voice_over", "onboarding": "assignment", "feedback": "feedback",
+    "board": "view_kanban", "mehr": "more_horiz",
 }
 
 def _menu_items_emp() -> list[dict]:
@@ -2889,6 +2981,7 @@ def _menu_items_emp() -> list[dict]:
     return [
         {"key": key, "label": _(title), "icon": _ICON_MAP.get(key, "circle")}
         for key, title in PAGE_TITLES.items()
+        if key in SIDEBAR_KEYS
     ]
 
 
@@ -2915,8 +3008,9 @@ def create() -> None:
             menu_items=_menu_items_emp(),
             logout_fn=lambda: logic.logout_employer(s),
             content_fn=render_page,
-            s=s,
-            initial_tab=initial_tab,
+            s=s,            initial_tab=initial_tab,
+            extra_tabs=_NON_SIDEBAR_KEYS,
+            
         )
 
     @ui.page("/employer")

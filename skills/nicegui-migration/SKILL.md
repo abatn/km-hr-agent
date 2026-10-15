@@ -60,7 +60,7 @@ webui/
 - Quelle: `app.py` (gemessen 10.10.2026), `knowledge/system/access-control.md`
 - Features: status_badge, timeline (Status-Historie), withdraw-Funktion, VDO.Ninja-Link bei "eingeladen"
 
-### Skill 2: Employer-Portal ✅ (12 Pages seit 13.10.2026, `PAGE_MAP` `webui/pages/employer.py`, gemessen 2791–2803 ⓘ09.10.2026)
+### Skill 2: Employer-Portal ✅ (`PAGE_MAP` in `webui/pages/employer.py`: 14 Einträge seit 15.10.2026 — 12 seit 13.10.2026, +Board, +Mehr; Sidebar 4 Punkte)
 - Dashboard, Kandidaten-Suche, Match-Ergebnis, Compliance, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback
 - Quelle: `app.py` (gemessen 10.10.2026), `knowledge/system/access-control.md`
 

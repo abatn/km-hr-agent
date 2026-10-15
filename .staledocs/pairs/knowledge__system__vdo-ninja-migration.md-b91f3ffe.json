@@ -52,15 +52,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T18:51:14+00:00",
+    "at": "2026-10-15T18:08:23+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
+      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
     "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
-    "note": "Geprueft: Evidence candidate.py; zitierte Selbstpraesentations-Stellen (L25, L34, L53) durch Dashboard-Aenderung nicht betroffen."
+    "note": "Claims 43 gelesen 15.10.2026: Pfad-Claims 17/18 vorhanden, fehlt: jitsi-mcp-server/; Codemark-Treffer 13/15 in Code (u.a. &record, _dokumente_section, agent_tasks.result_json); staledocs 2.1.0"
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

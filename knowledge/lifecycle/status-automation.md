@@ -13,7 +13,7 @@
 | Datei:Zeile | Befund |
 |---|---|
 | `webui/pages/employer.py` (gemessen 10.10.2026) | `AKTIV = ("eingegangen", "angesehen", "eingeladen")` |
-| `webui/pages/employer.py` (gemessen 10.10.2026) | `erl = {"eingegangen": ["angesehen", "abgelehnt"], "angesehen": ["eingeladen", "abgelehnt"], "eingeladen": ["eingestellt", "abgelehnt"], "eingestellt": [], "abgelehnt": [], "zurückgezogen": []}` |
+| `webui/pages/employer.py` (Codemarke `def _legal_actions`, Messung 15.10.2026) | `_legal_actions(status)` liest `ALLOWED_TRANSITIONS` (Modulebene; das frühere `erl`-Dict ist seit N-S2, 01.10.2026, entfernt). Finale Status -> `[]` |
 | `webui/pages/employer.py` (gemessen 10.10.2026) | `_hook_task = {"eingeladen": "create_invitation", "abgelehnt": "send_rejection", "eingestellt": "onboarding_release"}` |
 | `webui/pages/employer.py` (gemessen 10.10.2026) | `naechste = erl.get(a_status, [])` → **Whitelist-getriebene Button-Darstellung** |
 | `webui/pages/employer.py` (Codemarke `def make_transition`, gemessen 10.10.2026) | `for ns in naechste:` → `def make_transition(...)` → `ui.button(f"→ {ns}", on_click=make_transition())` – Übergang nur über Whitelist-Button |

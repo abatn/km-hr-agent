@@ -18,6 +18,7 @@
       "NICHT_COMPLIANT",
       "NICHT_KONFORM",
       "P9_4_NEUE_KEYS",
+      "PAGE_TITLES",
       "POT-Creation-Date",
       "PhD",
       "Quasar.lang.set({\u2026rtl:true})",
@@ -51,6 +52,7 @@
       "cand_name",
       "candidate.py",
       "candidates.status",
+      "ci.yml",
       "contract_preflight",
       "create_invitation",
       "document.dir",
@@ -112,24 +114,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T18:51:50+00:00",
+    "at": "2026-10-15T14:15:17+00:00",
     "code_blobs": {
-      "tests/test_i18n.py": "d94d68c4e55d8a7a1bb8e7cfe0c4a82655e55285",
+      "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "7bfe9defa95508ff636211869d3f05358fb94418",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "7de654961ed3dcd6d0f60d2137d754106d64c960",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "14e4f0b256f4cc02093d6030fb2e651cb6bb8788",
-      "webui/locales/de/LC_MESSAGES/messages.po": "326230b39925d1cf91184131e3fd71dac38a480d",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "3220db202cdfefb2a4839d9944e1cdbc8c6536d7",
-      "webui/locales/en/LC_MESSAGES/messages.po": "f607b41e653a9a70aaf354334438a622628f138e",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "2d3290ecde25f5d5fb70919337a60b9c994a9dd0",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "7273d5efe06c0b1b969fccefe83ca2200c089028"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "9eb6edb13e31da47f1aaeb2d3502cd8abe1dc5e8",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "b03dbc0e1fd439efe9d73a1d470bf8acbf69f41a",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "ab899e4a69858c04abc7a0322e3b2032e3f31831",
+      "webui/locales/de/LC_MESSAGES/messages.po": "d0e472a8ba1ec923736dddb7d2e7c72fdf7103e2",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "31070b86cd63263932a1fb7c8696e02ea6c6ccd3",
+      "webui/locales/en/LC_MESSAGES/messages.po": "14599e9e19ebcaf97da2798b0af5ba037380d7a6",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "5663a0ffc4f1448085cd249ca3199037bd3e738c",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "fe6bf1668787264189683bddb0800c5ebd439644"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
-    "doc_blob": "a46a4ad3beaea7da686a42db7a9bd9fc52e55d84",
-    "note": "Geprueft: webui/locales/fr/LC_MESSAGES/messages.mo (Evidence) nur durch pybabel-Rebuild neu; zitierte Options-Tabelle (L203) unveraendert; neue Keys Naechster Schritt in DE/EN/FR/AR."
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "doc_blob": "a6f2fba32239e1dab41d65b9a2b30f1eade17ba5",
+    "note": "Geprueft 15.10.2026: Quellen-Zitate EU-B\u00fcrger, KM-HR-Agent, L\u00fccken-Fragen, Motivations-Fragen, PhD existieren in webui/locales/de/LC_MESSAGES/messages.po (je 1 Treffer); Rebuild-Falle POT-Creation-Date mit Babel-Stempel-Verhalten belegt; Testanzahl-Historie unveraendert (Stand-Datum 07.10.2026). Nach dem Umbau: pytest tests/test_i18n.py 37 passed, rc=0."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

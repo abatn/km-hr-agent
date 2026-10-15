@@ -79,6 +79,8 @@ pairs:
     code: ["webui/pages/candidate.py"]
   - doc: knowledge/portal/applicants-first.md
     code: ["webui/pages/employer.py"]
+  - doc: knowledge/portal/employer-board.md
+    code: ["webui/pages/employer.py"]
   - doc: knowledge/lifecycle/matching-criteria.md
     code: ["webui/logic.py"]
   - doc: knowledge/lifecycle/application-status.md

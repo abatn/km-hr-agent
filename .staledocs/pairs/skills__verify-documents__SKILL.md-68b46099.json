@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-13T18:14:44+00:00",
+    "at": "2026-10-15T18:08:27+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
+      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
     "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
-    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
+    "note": "Claims 29 gelesen 15.10.2026: Pfad-Claims 5/5 vorhanden; Codemark-Treffer 6/15 in Code (u.a. agent-automation.md, agent_tasks, candidate_id); staledocs 2.1.0"
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

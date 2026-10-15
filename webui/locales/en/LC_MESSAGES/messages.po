@@ -3439,3 +3439,30 @@ msgstr "Matching needs a CV. Upload yours first."
 
 msgid "Dein Lebenslauf ist hinterlegt. Schau dir passende Stellen an."
 msgstr "Your CV is on file. Take a look at matching jobs."
+
+msgid "Hiring-Board"
+msgstr "Hiring board"
+
+msgid "Passiv"
+msgstr "Passive"
+
+msgid "Im Match öffnen"
+msgstr "Open in match"
+
+msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
+msgstr "Applications appear here as soon as candidates apply to a job."
+
+msgid "Keine passiven Kandidaten"
+msgstr "No passive candidates"
+
+msgid "Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier."
+msgstr "Candidates with a CV but no application appear here."
+
+msgid "Im Kandidaten-Profil öffnen"
+msgstr "Open candidate profile"
+
+msgid "Mehr"
+msgstr "More"
+
+msgid "Alle weiteren Bereiche"
+msgstr "All other areas"

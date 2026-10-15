@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T18:14:41+00:00",
+    "at": "2026-10-15T18:08:20+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
+      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
+    "note": "Claims 28 gelesen 15.10.2026: Pfad-Claims 14/14 vorhanden; Codemark-Treffer 14/14 in Code (u.a. @ui.refreshable, PAGE_MAP, _blocked_candidates); staledocs 2.1.0"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

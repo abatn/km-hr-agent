@@ -1,0 +1,43 @@
+{
+  "ack": {
+    "anchors": [
+      "ALLOWED_TRANSITIONS",
+      "DOC_RELEASE_STATUS",
+      "PAGE_MAP",
+      "SIDEBAR_KEYS",
+      "_BOARD_COLUMNS",
+      "_MATCH_ACTION_ORDER",
+      "_board_rows",
+      "_legal",
+      "_legal_actions",
+      "_list_candidates",
+      "_menu_items_emp",
+      "_notify_statuswechsel",
+      "_open_hire",
+      "_open_invite",
+      "_open_reject",
+      "_page_board",
+      "_page_feedback",
+      "_page_match",
+      "_page_mehr",
+      "_page_stellen",
+      "anzeige_name",
+      "applications.status",
+      "ergebnisse/entscheidungen.md",
+      "knowledge/lifecycle/application-status.md",
+      "knowledge/portal/employer-portal-fields.md",
+      "notifications_drawer",
+      "webui/components.py",
+      "webui/pages/employer.py"
+    ],
+    "at": "2026-10-15T17:53:02+00:00",
+    "code_blobs": {
+      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+    },
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "doc_blob": "558ff19c65d565688f1ee841b2a06b626b183306",
+    "note": "geprueft 15.10.2026: _BOARD_COLUMNS, _board_rows, _page_board (nur ui.navigate.to, kein Drawer), _page_mehr, SIDEBAR_KEYS 4, _menu_items_emp, DOC_RELEASE_STATUS, anzeige_name, _list_candidates Pseudonym; notifications_drawer in components.py vorhanden; Feedback-Picker zeigt Klarnamen ohne Statusfilter (_page_feedback); Klick-Tabelle \u00a76 = Messung 15.10.2026"
+  },
+  "doc": "knowledge/portal/employer-board.md",
+  "schema": 1
+}

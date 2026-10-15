@@ -31,7 +31,6 @@
       "check_visa",
       "choices[0].message.content",
       "cid=None",
-      "cid=c_id",
       "contract_preflight",
       "create_invitation",
       "cultural_fit_score",
@@ -41,7 +40,6 @@
       "email-sender",
       "email-sender.send_email",
       "email-sender.send_pre_screen_invitation",
-      "employer_id",
       "employers.kontakt_email",
       "ergebnisse/",
       "ergebnisse/*.md",
@@ -127,14 +125,14 @@
       "webui/pages/employer.py",
       "{task_type}-kandidat-{cid}-{datum}.md"
     ],
-    "at": "2026-10-13T14:19:50+00:00",
+    "at": "2026-10-15T18:08:22+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
-    "doc_blob": "988965483a7a1be94b7ebcc6ed4dbc3485589e67",
-    "note": "knowledge/system/agent-automation.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "doc_blob": "dbfa401846c9a7e27a14d1de3d66cced9b75b39a",
+    "note": "Claims 131 gelesen 15.10.2026: Pfad-Claims 24/25 vorhanden, fehlt: jitsi-mcp-server/; Codemark-Treffer 6/15 in Code (u.a. COALESCE, KMHR_RUNNER_AUTOSTART, _badge_icon); staledocs 2.1.0"
   },
   "doc": "knowledge/system/agent-automation.md",
   "schema": 1

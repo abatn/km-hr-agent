@@ -238,7 +238,12 @@ def test_employer_sidebar_labels_bei_renderzeit():
     finally:
         employer._ = orig
     assert all(lbl.startswith("X-") for lbl in labels), labels
-    assert keys == set(employer.PAGE_MAP)
+    # 15.10.2026 (employer-board.md §6): Sidebar zeigt nur 4 Punkte; alle übrigen Seiten
+    # liegen unter „Mehr“. Vollständigkeit wird jetzt gegen Sidebar ∪ Mehr geprüft.
+    assert keys == set(employer.SIDEBAR_KEYS)
+    assert set(employer.SIDEBAR_KEYS) <= set(employer.PAGE_MAP)
+    assert (keys | {k for k in employer.PAGE_TITLES if k not in employer.SIDEBAR_KEYS}) \
+        == set(employer.PAGE_MAP)
 
 
 # ─── Phase 6b (03.10.2026): geteilte Komponenten (components.py) ───

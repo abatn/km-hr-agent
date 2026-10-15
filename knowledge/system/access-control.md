@@ -34,15 +34,15 @@ Konsequenz: Die Agent-Ausgaben (`ergebnisse/*.md`, DB-Scores, E-Mail-Entwürfe) 
 
 ## 2. Portal-Ebene: Seiten-Sichtbarkeit pro Rolle
 
-### 2.1 EMPLOYER (HR) – 12 Seiten (NiceGUI, Stand 13.10.2026: Firmenprofil-Split; vorher 11 seit 20.09.2026 Phase 2; Phase 1: 10, vorher 9)
+### 2.1 EMPLOYER (HR) – 14 Seiten (NiceGUI, Stand 15.10.2026: Sidebar 4 Punkte, Rest unter „Mehr“; vorher 12 seit 13.10.2026: Firmenprofil-Split; vorher 11 seit 20.09.2026 Phase 2; Phase 1: 10, vorher 9)
 
-> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 12 Einträge seit 13.10.2026; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Firmenprofil (**eigene Seite seit 13.10.2026**, Design-Entscheidung) · 🏢 Stelle ausschreiben (`portal`, **NEU 20.09.2026, P1.2**: Stellen ausschreiben/pausieren/besetzen) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber über alle eigenen Stellen + Archiv)** · 🔍 Kandidaten-Suche (Bewerber-Verwaltung + einladen/ablehnen/**eingestellt** mit onboarding_release-Trigger — **P1.3 portiert 20.09.2026**) · 📄 Match · ✅ Compliance · 🔎 Agent-Details (17.09.2026) · 🗂️ Dokumente (18.09.2026) · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll: Formular + Phase-4-Loop, GAP-2 20.09.2026).
+> **NiceGUI-Umsetzung** = `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 14 Einträge seit 15.10.2026, vorher 12 seit 13.10.2026; Zeilenstand 28.09.2026 — war 1492-1503): 📊 Dashboard · 🏢 Firmenprofil (**eigene Seite seit 13.10.2026**, Design-Entscheidung) · 🏢 Stelle ausschreiben (`portal`, **NEU 20.09.2026, P1.2**: Stellen ausschreiben/pausieren/besetzen) · 💼 **Stellenangebote (HR-write, 20.09.2026: Bewerber über alle eigenen Stellen + Archiv)** · 🔍 Kandidaten-Suche (Liste + Suche, **ohne Schreibaktion**; Zeilenauswahl springt auf 📄 Match — Codemarke `_page_kandidaten`, gemessen 15.10.2026) · 📄 Match (Status-Dialoge `do_invite` / `do_reject` / `do_hire`, Codemarke `_page_match`) · ✅ Compliance · 🔎 Agent-Details (17.09.2026) · 🗂️ Dokumente (18.09.2026) · 📞 Pre-Screen · 📋 Onboarding · 💬 Feedback (voll: Formular + Phase-4-Loop, GAP-2 20.09.2026).
 
 | # | Seite | Modus | Regel |
 |---|---|---|---|
 | 1 | **📊 Dashboard** | Übersicht | Statistiken + Agent-Task-Status (NEU, NiceGUI). |
-| 2 | **🔍 Kandidaten-Suche** | ⚠️ Lesen + Status | Bewerber + passive Matches + Agent-Badges; Bewerber-Status (angesehen/eingeladen/abgelehnt/eingestellt) hier verwaltet (integrierter Streamlit-Tab „Kandidaten“). |
-| 3 | **📄 Match-Ergebnis** | 🔒 Read-only | Ergebnis-Sicht des Agent-Matchings (Skill 2) für den gewählten Kandidaten: Score-Kategorien, Begründung, gespeicherte Dateien in `ergebnisse/`. **Kein Ausführen von Matching, keine Dateiauswahl, keine Schreibrechte.** |
+| 2 | **🔍 Kandidaten-Suche** | 🔒 Lesen, keine Schreibaktion | Liste aus `_list_candidates` (Bewerber + passive Matches; Pseudonym „Kandidat #N“ bis Status `eingeladen`). Die Zeilenauswahl ruft `ui.navigate.to` auf `/employer/match?kandidat=<id>` (Codemarke `_page_kandidaten`). Im Funktionskörper von `_page_kandidaten` gibt es kein `UPDATE`, kein `INSERT` und kein `queue_agent_task` (gemessen 15.10.2026). Spec: `knowledge/portal/employer-board.md`. |
+| 3 | **📄 Match-Ergebnis** | ✏️ Lesen + Status-Aktionen | Ergebnis-Sicht des Agent-Matchings (Skill 2) für den gewählten Kandidaten: Score-Kategorien, Begründung, gespeicherte Dateien in `ergebnisse/`. Status-Aktionen über Dialoge: `do_invite` (→ `eingeladen`), `do_reject` (→ `abgelehnt`), `do_hire` (→ `eingestellt`), jeweils mit Guard `_legal` gegen `ALLOWED_TRANSITIONS` (Codemarke `_page_match`, gemessen 15.10.2026). Zusätzlich Visum-Bestätigung (`send_visa`). **Kein Ausführen von Matching, keine Dateiauswahl.** |
 | 4 | **✅ Compliance-Ergebnis** | 🔒 Read-only | Ergebnis-Sicht der Compliance-Prüfung (Skill 3) zum Matching-Kandidaten (DE/FR/CH + DSGVO, agent-generiert). **Keine Prüfung auslösbar.** |
 | 5 | **🔎 Agent-Details** | 🔒 Read-only | ALLE 9 Agent-Ergebnisse als Badge-Zeile + Expander (NEU 17.09.2026). |
 | 6 | **🗂️ Dokumente** | 🔒 Read-only | Zeugnisse/Zertifikate/Visa-Dokumente des eingeladenen Kandidaten (NEU 18.09.2026). |
@@ -91,7 +91,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | 📤 Upload (Ingestion) | ❌ | ✅ nur eigener CV | ❌ | ✅ | ✅ (Ingestion) |
 | 1️⃣ Extract Profile | ❌ | ❌ | ❌ | ✅ ausführbar | ✅ |
 | 2️⃣ Match Candidate (Tool) | ❌ | ❌ | ❌ | ✅ ausführbar | ✅ |
-| 2️⃣ Match-Ergebnis (Sicht) | ❌ | ❌ | ✅ read-only | ✅ | – (Ausgabe) |
+| 2️⃣ Match-Ergebnis (Sicht + Status-Dialoge) | ❌ | ❌ | ✅ Lesen + Einladen/Ablehnen/Einstellen | ✅ | – (Ausgabe) |
 | 3️⃣ Check Compliance (Tool) | ❌ | ❌ | ❌ | ✅ ausführbar | ✅ |
 | 3️⃣ Compliance-Ergebnis (Sicht) | ❌ | ❌ | ✅ read-only | ✅ | – (Ausgabe) |
 | 4️⃣ Contact Candidate | ❌ | ❌ | ❌ | ✅ ausführbar | ✅ (E-Mails agent-generiert) |
@@ -111,11 +111,11 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 
 | Bereich | Regel |
 |---|---|
-| Sidebar | Genau 12 Seiten seit 13.10.2026 (vorher 11; +Firmenprofil, Portal-Split). Früher: 11 Seiten (PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Stand 28.09.2026; Korrektur: war „Genau 9 Seiten", widersprach §2.1 — 📊 Dashboard und 🔍 Kandidaten-Suche fehlten): 📊 Dashboard · 🔍 Kandidaten-Suche · 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen · 7️⃣ Onboarding · 8️⃣ Feedback · 💼 Stellenangebote · 🏢 Portal. **Kein 📤 Upload, kein 1️⃣ Extract, keine Tool-Seiten 4️⃣/5️⃣.** |
+| Sidebar | 4 Punkte seit 15.10.2026 (Dashboard, Stellenangebote, Hiring-Board, Mehr; Rest unter „Mehr“, `employer-board.md` §6). Vorher: genau 12 Seiten seit 13.10.2026 (vorher 11; +Firmenprofil, Portal-Split). Früher: 11 Seiten (PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Stand 28.09.2026; Korrektur: war „Genau 9 Seiten", widersprach §2.1 — 📊 Dashboard und 🔍 Kandidaten-Suche fehlten): 📊 Dashboard · 🔍 Kandidaten-Suche · 2️⃣ Match-Ergebnis · 3️⃣ Compliance-Ergebnis · 🔍 Agent-Details · 🗂️ Dokumente (NEU 18.09.2026) · 6️⃣ Pre-Screen · 7️⃣ Onboarding · 8️⃣ Feedback · 💼 Stellenangebote · 🏢 Portal. **Kein 📤 Upload, kein 1️⃣ Extract, keine Tool-Seiten 4️⃣/5️⃣.** |
 | Kandidat-Selector (HR) | HR wählt den Matching-Kandidaten für die Ergebnis-Sichten und Skills 6/7/8. Selector nur auf diesen Seiten, nur in HR-Sessions, Population: Status ≥ `lebenslauf_hochgeladen`. |
-| 2️⃣ Match-Ergebnis | Read-only: zeigt den agent-generierten Match-Bericht (Kategorien-Scores, Begründung) des gewählten Kandidaten. Quelle: `ergebnisse/` + DB. Kein Rerun, keine Dateiauswahl, kein Speichern. |
+| 2️⃣ Match-Ergebnis | Zeigt den agent-generierten Match-Bericht (Kategorien-Scores, Begründung) des gewählten Kandidaten. Quelle: `ergebnisse/` + DB. Kein Rerun, keine Dateiauswahl. Status-Wechsel nur über die Dialoge `do_invite` / `do_reject` / `do_hire` (Codemarke `_page_match`, gemessen 15.10.2026). |
 | 3️⃣ Compliance-Ergebnis | Read-only: agent-generierter Compliance-Bericht zum gewählten Kandidaten. Kein Auslösen von Prüfungen. |
-| 4️⃣ E-Mails (Contact) | Bleiben vollständig agent-generiert (`ergebnisse/email-*.md`). **Kein Einladungs-/Mail-Button auf dieser E-Mails-Seite** (Seitenkontext!) – Statuswechsel laufen über den Einladungs-/Ablehnungs-/Einstellungs-Dialog in 📄 Match (`_page_match`, Dialoge ab Zeile 602) bzw. die Status-Buttons über 💼/Tab 3; der Agent kontaktiert. (Präzisiert 28.09.2026, vorher wortwörtlich „Kein Einladungs-Button im UI" — kollidierte mit dem dokumentierten `_page_match`-Dialog, `knowledge/system/agent-automation.md`.) |
+| 4️⃣ E-Mails (Contact) | Bleiben vollständig agent-generiert (`ergebnisse/email-*.md`). **Kein Einladungs-/Mail-Button auf dieser E-Mails-Seite** (Seitenkontext!) – Statuswechsel laufen über zwei Pfade: (a) die Dialoge `do_invite` / `do_reject` / `do_hire` auf 📄 Match (Codemarke `_page_match`) und (b) die Status-Buttons `make_transition` auf 💼 Stellenangebote (Codemarke `_page_stellen`; gemessen 15.10.2026, in der Sidebar). 🔍 Kandidaten-Suche und das Hiring-Board (Codemarke `_page_board`) schreiben keinen Status. Der Agent kontaktiert. (Präzisiert 28.09.2026, vorher wortwörtlich „Kein Einladungs-Button im UI" — kollidierte mit dem dokumentierten `_page_match`-Dialog, `knowledge/system/agent-automation.md`.) |
 | 6️⃣ Pre-Screen (Recruiting) | Wie v2: Fragen + VDO.Ninja + ICS + Video-Einsicht. |
 | 7️⃣ Onboarding (HR) | Wie v2: erstellen + „Onboarding freigeben". |
 | 💼 Stellenangebote | Wie v2 (aktive Bewerber + Archiv). |
@@ -173,8 +173,8 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 
 | # | Szenario | Erwartung |
 |---|---|---|
-| 1 | EMPLOYER-Login | Sidebar: genau 12 Seiten seit 13.10.2026 (Dashboard, Firmenprofil, Stelle ausschreiben, Stellenangebote HR-write, Kandidaten-Suche, Match-Ergebnis, Compliance-Ergebnis, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback – `webui/pages/employer.py` (gemessen 10.10.2026), Zeilenstand 28.09.2026`) – **kein Upload, kein Extract, kein 4️⃣/5️⃣** |
-| 2 | EMPLOYER öffnet 2️⃣ Match-Ergebnis | Read-only Ansicht des agent-Berichts; kein Ausführ-Button |
+| 1 | EMPLOYER-Login | Sidebar: 4 Punkte seit 15.10.2026 (Dashboard, Stellenangebote, Hiring-Board, Mehr); vorher genau 12 Seiten seit 13.10.2026 (Dashboard, Firmenprofil, Stelle ausschreiben, Stellenangebote HR-write, Kandidaten-Suche, Match-Ergebnis, Compliance-Ergebnis, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback – `webui/pages/employer.py` (gemessen 10.10.2026), Zeilenstand 28.09.2026`) – **kein Upload, kein Extract, kein 4️⃣/5️⃣** |
+| 2 | EMPLOYER öffnet 2️⃣ Match-Ergebnis | Ansicht des agent-Berichts; kein Matching-Ausführ-Button. Status-Aktionen nur über die Dialoge `do_invite` / `do_reject` / `do_hire` |
 | 3 | EMPLOYER öffnet 3️⃣ Compliance-Ergebnis | Read-only Ansicht; keine Prüf-Aktion |
 | 4 | EMPLOYER-Vollflow | Bewerber verwalten (💼) → Pre-Screen (Recruiting) → Onboarding freigeben → Feedback speichern – ohne Skills 1–5 erreichbar |
 | 5 | CANDIDATE-Login | 7 Tabs (NiceGUI, `_TAB_MAP` `webui/pages/candidate.py`, Stand 02.10.2026) — Landing: 📊 Dashboard (Nutzerentscheidung 01.10.2026) |

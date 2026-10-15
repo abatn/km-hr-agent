@@ -241,7 +241,7 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 ## Klappen/Ausklappen (23.09.2026, Playwright 18/18)
 
 - **Match-Ergebnis:** pro Kandidat×Job `ui.expansion` (default zu); Header (`add_slot("header")`) = Titel + score_bar + `total/100 (kategorie)`; Gehalt, 7 Erklaerungs-Balken, „Erklaerung", Visa/Ics nur bei geöffneter Klappe; **Einladen/Ablehnen/Einstellen bleiben immer sichtbar** (Human-in-the-loop Variante A). Parität: `app.py` (gemessen 10.10.2026) `st.expander`. Achtung: `ui.timer(15s)`-Refresh setzt Klappen auf zu.
-- **Agent-Details → Detaillierte Berichte:** 9× `ui.expansion(f"{icon} {label} ({datei})")` (`webui/pages/employer.py` (gemessen 10.10.2026)) = `app.py` (gemessen 10.10.2026) – Toggle geprüft.
+- **Agent-Details → Detaillierte Berichte:** Schleife über `_agent_tasks` (Codemarke, 9 Einträge) mit `ui.expansion(text=…)` in `webui/pages/employer.py` (Messung 15.10.2026). Die frühere Form mit 9 einzelnen f-String-Expansions ist entfallen; die Parität zu `app.py` wurde 10.10.2026 geprüft (historisch).
 - **Agent-Details → Task-Queue (Datenbank):** `ui.expansion("Task-Queue (Datenbank)", icon="database", value=False)` (employer.py:~984) – Design-Entscheidung (Queue = NiceGUI-Eigenbau C5, kein Streamlit-Pendant); Statusfilter + Refresh bleiben innen funktionsfähig.
 - Doku-Quelle: nicegui.io/documentation/expansion (`value` default False, `add_slot("header")`, `.open()/.close()`, aria `Expand/Collapse`).
 - Rollback: `/tmp/opencode/rollback/employer.py.bak` → zurück, `py_compile`, Server-Neustart (Kill/Spawn getrennt).

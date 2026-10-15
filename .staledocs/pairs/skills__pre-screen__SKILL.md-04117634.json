@@ -26,15 +26,15 @@
       "webui/components.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-13T18:51:16+00:00",
+    "at": "2026-10-15T18:08:26+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/components.py": "6a6e274a623b71a0c6837b7dbc6550bcdaf6e1d6",
+      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
     "doc_blob": "97fa40ff230048e7d68e00da9714dad93d4907c0",
-    "note": "Geprueft: Evidence candidate.py; zitierte Stellen (L23, L41, L59) (Onboarding, Selbstpraesentation) durch Dashboard-Aenderung nicht betroffen."
+    "note": "Claims 27 gelesen 15.10.2026: Pfad-Claims 7/7 vorhanden; Codemark-Treffer 12/15 in Code (u.a. &record, _tab_onboarding, candidate_name); staledocs 2.1.0"
   },
   "doc": "skills/pre-screen/SKILL.md",
   "schema": 1

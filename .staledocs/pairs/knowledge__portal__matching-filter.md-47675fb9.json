@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-13T18:14:42+00:00",
+    "at": "2026-10-15T18:08:22+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "48bb1037d16e6dead09ff5082f0bff78ec2b7e53"
+      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
     },
-    "commit": "8b07b8d1ab5c3a41e0b2d25af68a57b0ec41565d",
-    "doc_blob": "51506ba8a98d478f80dcdc146b84b06e95839152",
-    "note": "Geprueft: Evidence-Diff; webui/pages/employer.py geaendert (Firmenprofil-Split, Passung, Skills Top3 + Alle-anzeigen, Bewerbungen-Aufklappen). Doku-Aussagen zu Seiten/Labels/Codemarken gegen Code-Stand abgeglichen."
+    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "doc_blob": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
+    "note": "Claims 47 gelesen 15.10.2026: Pfad-Claims 33/33 vorhanden; Codemark-Treffer 7/14 in Code (u.a. berechne_match_score, employer-portal, gehalt_check); staledocs 2.1.0"
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1
