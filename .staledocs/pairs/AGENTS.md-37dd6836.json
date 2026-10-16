@@ -128,7 +128,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-16T10:51:28+00:00",
+    "at": "2026-10-16T11:40:41+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -169,7 +169,7 @@
       "tests/e2e_cv_pflicht.py": "54b32f162f3f6a1ce697f876be02e308dcbc1fcf",
       "tests/e2e_cv_upload.py": "21b8d5199e1e67886b7da6c93f017df014806b1d",
       "tests/e2e_dsgvo_gate.py": "31c6ad7b8dc85d19bf64d584b20458087181bb37",
-      "tests/e2e_einladen_flow.py": "fcacb91485752ac5c14d68648045a6771491bce2",
+      "tests/e2e_einladen_flow.py": "3d6a54f939e08affd2675ab4bb9f4a40d361d88e",
       "tests/e2e_feedback_filter.py": "1ae88a18d82028157b54bef8bc51f0b0626f63bc",
       "tests/e2e_feedback_jobswitch.py": "4b840ee2398291bb8f324c3c8f1722ddf53f788c",
       "tests/e2e_gehalt_match.py": "d58e63fad9ef7c5bfdc9b7db113dc5115af960c5",
@@ -290,9 +290,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "bb93b81d30a19eb9bb315e7dc4541637a92ddde0",
     "doc_blob": "887b8bf0843af2ac5bd9c17ba6bafb06338a978e",
-    "note": "Claims 306 gelesen 16.10.2026: Pfad-Claims 244/244 vorhanden; Codemark-Treffer 9/15 in Code (u.a. --only, --port, .bak); staledocs 2.1.0"
+    "note": "Claims 306 gelesen 16.10.2026: Drift-Grund tests/e2e_einladen_flow.py (mtime 12:53 nach Ack 12:51) \u2014 Datei existiert, py_compile rc=0, finaler Isolationslauf rc=0 (/tmp/opencode/e2e-iso-20261016-125653/); Bestandszeile L74 \"51 Dateien, davon 49 im Isolationslauf\" gegen Gegenprobe ls=51 + Codemark SKIP={e2e_harness.py, e2e_isolation.py} verifiziert; Token-Hits e2e_einladen_flow.py/tests/e2e_einladen_flow.py = Pfad-Claims 244/244 vorhanden; staledocs 2.1.0"
   },
   "doc": "AGENTS.md",
   "schema": 1

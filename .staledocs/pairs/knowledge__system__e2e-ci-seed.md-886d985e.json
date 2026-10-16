@@ -96,7 +96,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-16T10:51:37+00:00",
+    "at": "2026-10-16T11:40:42+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -118,7 +118,7 @@
       "tests/e2e_cv_pflicht.py": "54b32f162f3f6a1ce697f876be02e308dcbc1fcf",
       "tests/e2e_cv_upload.py": "21b8d5199e1e67886b7da6c93f017df014806b1d",
       "tests/e2e_dsgvo_gate.py": "31c6ad7b8dc85d19bf64d584b20458087181bb37",
-      "tests/e2e_einladen_flow.py": "fcacb91485752ac5c14d68648045a6771491bce2",
+      "tests/e2e_einladen_flow.py": "3d6a54f939e08affd2675ab4bb9f4a40d361d88e",
       "tests/e2e_feedback_filter.py": "1ae88a18d82028157b54bef8bc51f0b0626f63bc",
       "tests/e2e_feedback_jobswitch.py": "4b840ee2398291bb8f324c3c8f1722ddf53f788c",
       "tests/e2e_gehalt_match.py": "d58e63fad9ef7c5bfdc9b7db113dc5115af960c5",
@@ -211,9 +211,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "bb93b81d30a19eb9bb315e7dc4541637a92ddde0",
     "doc_blob": "3c2a6a8b70cead431fe8d260a787e3f479da550c",
-    "note": "Claims 141 gelesen 16.10.2026: Pfad-Claims 64/64 vorhanden; Codemark-Treffer 6/15 in Code (u.a. .backup, .env, .venv-streamlit); staledocs 2.1.0"
+    "note": "Claims 141 gelesen 16.10.2026: changed_code tests/e2e_einladen_flow.py (Einzeiler-Fix import os nach Ack-Zeitachse 12:51\u219212:53); Datei vorhanden + rc=0-Lauf 12:56 (Log \u2026-125653); Bestandszeile \"51 Dateien \u2026 49 im Isolationslauf\" + Skip-Zahlen gegen ls-Gegenprobe und SKIP-Codemark verifiziert; Pfad-Claims 64/64 vorhanden; staledocs 2.1.0"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1
