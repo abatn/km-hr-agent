@@ -23,20 +23,23 @@
       "_page_stellen",
       "anzeige_name",
       "applications.status",
+      "do_invite",
       "ergebnisse/entscheidungen.md",
       "knowledge/lifecycle/application-status.md",
       "knowledge/portal/employer-portal-fields.md",
+      "make_transition",
       "notifications_drawer",
+      "queue_agent_task(\"create_invitation\")",
       "webui/components.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T08:18:47+00:00",
+    "at": "2026-10-16T08:28:06+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
-    "doc_blob": "558ff19c65d565688f1ee841b2a06b626b183306",
-    "note": "L4 Zielcode-Marken in webui/pages/employer.py bestaetigt (grep 16.10.2026): ALLOWED_TRANSITIONS, _legal_actions, _BOARD_COLUMNS, _board_rows, _page_board, _page_mehr; PAGEMAP laeuft unveraendert, len(PAGE_MAP)=14 gemessen."
+    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
+    "doc_blob": "be140e106a767e5ead82edcbf66eaecd46b333cd",
+    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: knowledge/portal/employer-board.md \u00a73 Entscheidungstext 16.10.2026 (Seite Einladungen = dritte Aufrufstelle, ALLOWED_TRANSITIONS + create_invitation) ersetzt den Offen-Durchlauf-2-Satz; \u00a76 Klick-Ziele um Ziel-Bullet 2 Klicks ab Status angesehen ergaenzt; reiner Doku-Wechsel, CODE webui/pages/employer.py unveraendert, Codemarks do_invite, make_transition, PAGE_MAP gemessen 16.10.2026 weiter gueltig."
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

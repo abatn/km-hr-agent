@@ -116,6 +116,8 @@ Skript = Umschalter-Button `DE/EN/FR/AR` + 3 s Reload + Assertion auf `documentE
 Assertion bei `ar` (Muster `e2e_rtl_drawer`). **E2E-Nachweis 07.10.2026:** isolierter Lauf
 Port 8085, `rc=0`, 186,7 s, alle 4 Sprachen `rc=0`, Live-DB-sha256 unverändert.
 
+Seit Entscheidung 16.10.2026 (Iteration „Einladungen") gibt es eine **dritte Aufrufstelle des gleichen Mechanismus**: die Seite **Einladungen** (`/employer/einladen`, Inline-Muster `make_transition`, Guard + History + `create_invitation`-Task wie `do_invite`). Der Match-Dialog bleibt bestehen; eigene Mail-Logik ist auch dort verboten. **Hang-Falle:** die Seite nutzt Inline-Termin-Widgets wie `/employer/stellen` — E2E-Skripte dürfen NICHT per hartem goto darauf fahren (s. o.).
+
 ## 6. Offene Punkte
 - ~~**Klasse F (neu):** Runner-/MCP-erzeugte Artefakte ohne i18n~~ → **geschlossen P2/P3
   (07.10.2026):** Mails #1–#6 + die deterministischen Reports (`einladung-*`,

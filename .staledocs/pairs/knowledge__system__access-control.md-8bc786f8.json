@@ -41,7 +41,7 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T08:18:48+00:00",
+    "at": "2026-10-16T08:28:32+00:00",
     "code_blobs": {
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -53,9 +53,9 @@
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
-    "doc_blob": "a4a997189f6e6cc5c658d3bb2b5dd69a09e81773",
-    "note": "L39/L114/L176 bestaetigt gemessen 16.10.2026: PAGE_MAP 14 Eintraege (len-Check), SIDEBAR_KEYS = (dashboard, stellen, board, mehr); webui/pages/employer.py-Aenderung ist rein der c_id-Guard, keine Registrierungs-/Rollenaenderung."
+    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
+    "doc_blob": "24d29fcabcfba73f68d695a6259042f5453a240e",
+    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: knowledge/system/access-control.md \u2014 neue Tabellenzeile \ud83d\udce7 Einladungen (geplant, Entscheidung 16.10.2026, dritte Aufrufstelle ALLOWED_TRANSITIONS) direkt nach der Match-Ergebnis-Zeile in \u00a72.1 eingefuegt; bestehende Zahlen 14 Seiten und Sidebar 4 Punkte unveraendert (Update folgt S6); CODE webui/pages/employer.py PAGE_MAP unveraendert, Codemark _page_match gemessen 16.10.2026."
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

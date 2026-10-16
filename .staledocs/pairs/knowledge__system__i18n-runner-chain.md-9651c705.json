@@ -109,14 +109,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-13T14:19:50+00:00",
+    "at": "2026-10-16T08:28:42+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
-    "doc_blob": "454e94d39cd133d8432aeb520ce16de402a05d0d",
-    "note": "knowledge/system/i18n-runner-chain.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
+    "doc_blob": "3a0541918a2210a5199479d1ffdb7509d1ef15c4",
+    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: knowledge/system/i18n-runner-chain.md \u00a75 \u2014 neues Ergaenzungs-Absatz nach dem Invite-Weg-Block: dritte Aufrufstelle Seite Einladungen /employer/einladen (Inline-Muster make_transition, Guard + create_invitation-Task wie do_invite) plus Hang-Falle goto; Altbestand unveraendert; CODE webui/pages/employer.py unveraendert, Codemarks _open_invite, do_invite, queue_agent_task gemessen 16.10.2026 weiter gueltig."
   },
   "doc": "knowledge/system/i18n-runner-chain.md",
   "schema": 1

@@ -36,7 +36,7 @@ Regeln:
 
 **Ist-Stand:** Jede Bewerbungskarte zeigt die erlaubten Folgeschritte als Text und einen Button „Im Match öffnen“ (Sprung auf die Match-Seite). Die Schreibaktionen (Einladen, Ablehnen, Einstellen) laufen dort über die bestehenden Dialoge `_open_invite`, `_open_reject`, `_open_hire` samt `_notify_statuswechsel`.
 
-**Offen (Durchlauf 2):** direkte Schnellaktionen auf der Karte. Es wird **kein** neuer Schreibpfad gebaut. Kein DB-Schema-Change.
+**Entscheidung 16.10.2026 (Iteration „Einladungen", Nutzerbefehl):** Die geplante Seite **Einladungen** (`/employer/einladen`) ist die **dritte Aufrufstelle des GLEICHEN Mechanismus** — Whitelist-Guard `ALLOWED_TRANSITIONS`, Status-History (`changed_by 'arbeitgeber'`), `queue_agent_task("create_invitation")`; ein eigener Mail-/Status-Codezweig ist verboten. **Kein DB-Schema-Change.** Kartenschnellaktionen bleiben damit erlaubt, solange sie nur den bestehenden Mechanismus aufrufen (Ist: `do_invite` Match-Dialog, `make_transition` Stellenangebote).
 
 ## 4. Drawer (rechtes Detail-Panel) — offen
 
@@ -79,6 +79,8 @@ Zählt echte Klicks vom Dashboard nach dem Login bis zum Zielzustand. Vorher = `
 | Feedback öffnen | 1 | 2 (Mehr → Feedback) | ≤ 2 | erreicht |
 
 Belege: `ergebnisse/entscheidungen.md` (Eintrag 15.10.2026, Klick-Messung). Die Schnellaktionen auf der Board-Karte (§3) und der Drawer (§4) sind **nicht** umgesetzt; deshalb bleibt das Einladen-Ziel offen. Der Stellenangebote-Pfad mit Status-Buttons (`_page_stellen`) ist **nicht** gemessen.
+
+- **Ziel neu (16.10.2026, Design-Entscheidung, noch NICHT gemessen):** Seite Einladungen — 2 Klicks ab Status `angesehen` (Menü „Einladungen" → Karten-„Einladen" mit Defaults). Status `eingegangen`: erst „Als angesehen markieren" (3. Klick bis eingeladen). Messung folgt in dieser Iteration isoliert (S7); bis dahin gilt der Wert als Ziel, nicht als Messung.
 
 ## 7. Umfang und Stand
 

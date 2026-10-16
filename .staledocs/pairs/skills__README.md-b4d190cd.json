@@ -64,7 +64,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-15T18:08:24+00:00",
+    "at": "2026-10-16T08:28:42+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -90,9 +90,9 @@
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
-    "doc_blob": "b30479a5660b177e79f0d6824fb37c8dd6b92733",
-    "note": "Claims 71 gelesen 15.10.2026: Pfad-Claims 19/19 vorhanden; Codemark-Treffer 11/15 in Code (u.a. PAGE_MAP, _TAB_MAP, _update_candidate_from_extract); staledocs 2.1.0"
+    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
+    "doc_blob": "51619764e0d2a065d91c274f25cfdfd856070bf6",
+    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: skills/README.md \u2014 Einschub im Zwei-Ebenen-Satzgefuege nach make_transition (Status-Buttons Stellenangebote): GEPLANT-Vermerk Entscheidung 16.10.2026 Iteration Einladungen, dritte Aufrufstelle Seite Einladungen /employer/einladen; Zahlen 14 Seiten und Sidebar 4 Punkte bewusst unveraendert (S6); CODE webui/pages/employer.py Codemarks do_invite, make_transition, PAGE_MAP gemessen 16.10.2026 weiter gueltig."
   },
   "doc": "skills/README.md",
   "schema": 1
