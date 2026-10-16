@@ -3449,6 +3449,9 @@ msgstr "سلبي"
 msgid "Im Match öffnen"
 msgstr "فتح في المطابقة"
 
+msgid "Match-Seite öffnen"
+msgstr "فتح صفحة المطابقة"
+
 msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
 msgstr "تظهر الطلبات هنا بمجرد تقديم مرشح على وظيفة."
 

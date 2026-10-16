@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-16T10:51:31+00:00",
+    "at": "2026-10-16T16:51:18+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -190,7 +190,7 @@
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "749082a7b16a1dd36ee0d048869fa79c4505c8e6",
       "knowledge/portal/cv-pflicht.md": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-      "knowledge/portal/employer-board.md": "acd5dd1a9442d14e06b56baf0785026d882498d5",
+      "knowledge/portal/employer-board.md": "aa148c1381bdb23ad8527397bc44f5abfbd5bc35",
       "knowledge/portal/employer-portal-fields.md": "a600ff9457970a5fae738afcfd40e47a7061fe5d",
       "knowledge/portal/housing-search.md": "b66f7fb4123cd7875724b8db11b3fc3d2a62589f",
       "knowledge/portal/matching-filter.md": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
@@ -205,7 +205,7 @@
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
       "knowledge/system/e2e-ci-seed.md": "3c2a6a8b70cead431fe8d260a787e3f479da550c",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
-      "knowledge/system/i18n-runner-chain.md": "3a0541918a2210a5199479d1ffdb7509d1ef15c4",
+      "knowledge/system/i18n-runner-chain.md": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
       "knowledge/system/i18n.md": "a6f2fba32239e1dab41d65b9a2b30f1eade17ba5",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
@@ -224,9 +224,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
     "doc_blob": "f97648e233c7e785141bf4e2b32dc51f8f1fdf63",
-    "note": "Claims 343 gelesen 16.10.2026: Pfad-Claims 225/234 vorhanden, fehlt: contact-candidate/, legal/; Codemark-Treffer 7/15 in Code (u.a. .ar, .en, .env); staledocs 2.1.0"
+    "note": "Claims 343 gelesen 16.10.2026 (staledocs 2.1.0): Drift employer-board.md S3/S6 (Dialog-Mechanismus + Klick-Ziel 3) + i18n-runner-chain.md S5; Codemarks _ein_dialog/_ein_ctx/_ein_open_confirm zutreffend"
   },
   "doc": "knowledge.md",
   "schema": 1

@@ -3453,6 +3453,9 @@ msgstr "Passiv"
 msgid "Im Match öffnen"
 msgstr "Im Match öffnen"
 
+msgid "Match-Seite öffnen"
+msgstr "Match-Seite öffnen"
+
 msgid "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
 msgstr "Bewerbungen erscheinen hier, sobald Kandidaten sich auf eine Stelle bewerben."
 

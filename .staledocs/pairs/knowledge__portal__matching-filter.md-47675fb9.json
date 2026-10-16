@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-16T10:51:35+00:00",
+    "at": "2026-10-16T16:51:21+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619"
+      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
     "doc_blob": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
-    "note": "Claims 47 gelesen 16.10.2026: Pfad-Claims 33/33 vorhanden; Codemark-Treffer 7/14 in Code (u.a. berechne_match_score, employer-portal, gehalt_check); staledocs 2.1.0"
+    "note": "Claims 47 gelesen 16.10.2026 (staledocs 2.1.0): Filter/Scoring unveraendert (berechne_match_score, Passung X/100 + score_bar auf der Einladungen-Karte)"
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1

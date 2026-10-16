@@ -11,15 +11,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-16T10:51:40+00:00",
+    "at": "2026-10-16T16:53:05+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
-      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619"
+      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
     "doc_blob": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
-    "note": "Claims 12 gelesen 16.10.2026: Pfad-Claims 4/4 vorhanden; Codemark-Treffer 2/8 in Code (u.a. application_status_history, lebenslauf_hochgeladen); staledocs 2.1.0"
+    "note": "Claims 12 gelesen 16.10.2026 (staledocs 2.1.0): Bewerbungsstatus-Flow unveraendert; UX-Korrektur nur im Einladungs-Dialog; Beleg-Tokens knowledge/lifecycle/application-status.md + application_status_history"
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

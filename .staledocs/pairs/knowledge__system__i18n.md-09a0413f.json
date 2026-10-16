@@ -114,24 +114,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T10:51:38+00:00",
+    "at": "2026-10-16T16:53:04+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "e2c46ff68e09f91d2726a6e8466fe8bf7b52f2ce",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "24f275f33976606fc653c7b625277b124d8e93d0",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "178a2e24dadcbc4b1e5fb7eeb999e5f524a2e80f",
-      "webui/locales/de/LC_MESSAGES/messages.po": "04d65a1adb21eca82a5dd7a569bbba9142edfef5",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "5703f4cd398584973f49417ee1c0689d65558b2e",
-      "webui/locales/en/LC_MESSAGES/messages.po": "8f4d67ae454e203daee1d14f084d6ae8064c663a",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "f3dee5d72d25fd19eed872aa18e02ab4dbc2e30c",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "ab781bb19f0168b4804caa849a7aad64318c6dc6"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "ebadf825b38cdecc1bc8e2499548ba13f5cd7684",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "6895a83ca92eb1c9ef5085a5b019c060b908416c",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "19a900a4b0d693554d49f8821330b8bfc2936f34",
+      "webui/locales/de/LC_MESSAGES/messages.po": "b1d595ea2b9b9a8e65b8e59099cadfae44293d9e",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "d4118817bfec5995e6007ed6ce3fed97026f9944",
+      "webui/locales/en/LC_MESSAGES/messages.po": "165b59facec2736e40229811be836c8df488c000",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "408f64c5d5d1a30c83e7e6725b5098f4eb4d7328",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "3f76131005b8130d155dab09e8dc06c8712c88d3"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
     "doc_blob": "a6f2fba32239e1dab41d65b9a2b30f1eade17ba5",
-    "note": "Claims 140 gelesen 16.10.2026: Pfad-Claims 16/16 vorhanden; Codemark-Treffer 14/15 in Code (u.a. .format, .mo, .po); staledocs 2.1.0"
+    "note": "Claims 140 gelesen 16.10.2026 (staledocs 2.1.0): msgid Match-Seite offnen x4 in .po + .mo gebaut, pybabel compile rc=0, Kataloggleichheit unveraendert erfuellt; Beleg-Tokens .po + .mo"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

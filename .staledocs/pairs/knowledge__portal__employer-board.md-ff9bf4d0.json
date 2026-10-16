@@ -8,8 +8,13 @@
       "_BOARD_COLUMNS",
       "_MATCH_ACTION_ORDER",
       "_board_rows",
+      "_ein_confirm",
+      "_ein_ctx",
+      "_ein_dialog",
       "_ein_mark_seen",
+      "_ein_open_confirm",
       "_ein_send_invite",
+      "_invite_ctx",
       "_legal",
       "_legal_actions",
       "_list_candidates",
@@ -33,16 +38,20 @@
       "make_transition",
       "notifications_drawer",
       "queue_agent_task(\"create_invitation\")",
+      "ui.date",
+      "ui.dialog",
+      "ui.navigate.to(f\"/employer/match?kandidat={cid}\")",
+      "ui.time",
       "webui/components.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T10:51:34+00:00",
+    "at": "2026-10-16T16:51:20+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619"
+      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
-    "doc_blob": "acd5dd1a9442d14e06b56baf0785026d882498d5",
-    "note": "Claims 35 gelesen 16.10.2026: Pfad-Claims 4/4 vorhanden; Codemark-Treffer 15/15 in Code (u.a. ALLOWED_TRANSITIONS, DOC_RELEASE_STATUS, PAGE_MAP); staledocs 2.1.0"
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "doc_blob": "aa148c1381bdb23ad8527397bc44f5abfbd5bc35",
+    "note": "Claims 46 gelesen 16.10.2026 (staledocs 2.1.0): DOKU = CODE geschrieben: S3 (_ein_ctx/_ein_dialog/_ein_confirm/_ein_open_confirm, Schreibpfad _ein_send_invite) + S6 (Klick-Ziel 3, gemessen 3 Klicks, Logs 172046/172250/183919, LOCATOR-FALLE .q-dialog, Abbrechen-Test ok)"
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

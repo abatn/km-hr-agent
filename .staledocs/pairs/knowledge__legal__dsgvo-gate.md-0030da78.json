@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T10:51:31+00:00",
+    "at": "2026-10-16T16:51:18+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619"
+      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Claims 28 gelesen 16.10.2026: Pfad-Claims 14/14 vorhanden; Codemark-Treffer 14/14 in Code (u.a. @ui.refreshable, PAGE_MAP, _blocked_candidates); staledocs 2.1.0"
+    "note": "Claims 28 gelesen 16.10.2026 (staledocs 2.1.0): DSGVO-Pseudonyme unveraendert: anzeige_name(k_name, k_id, a_status) Literal-Count 3, Dokumenten-Gate unberuehrt; employer.py-Drift = Einladungs-Dialog"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

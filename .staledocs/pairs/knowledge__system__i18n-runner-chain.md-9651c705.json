@@ -3,6 +3,7 @@
     "anchors": [
       "**Datum:**",
       ".po",
+      "AGENTS.md",
       "Compliance-Status:",
       "DB_PATH",
       "DRY_RUN",
@@ -92,6 +93,7 @@
       "task_type.title()",
       "test_i18n.py",
       "testdaten/",
+      "tests/e2e_einladen_flow.py",
       "tests/e2e_i18n_full_chain.py",
       "tests/e2e_i18n_runner_chain.py",
       "tests/test_r33_compliance_reports.py",
@@ -109,14 +111,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T08:28:42+00:00",
+    "at": "2026-10-16T16:51:23+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5"
     },
-    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
-    "doc_blob": "3a0541918a2210a5199479d1ffdb7509d1ef15c4",
-    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: knowledge/system/i18n-runner-chain.md \u00a75 \u2014 neues Ergaenzungs-Absatz nach dem Invite-Weg-Block: dritte Aufrufstelle Seite Einladungen /employer/einladen (Inline-Muster make_transition, Guard + create_invitation-Task wie do_invite) plus Hang-Falle goto; Altbestand unveraendert; CODE webui/pages/employer.py unveraendert, Codemarks _open_invite, do_invite, queue_agent_task gemessen 16.10.2026 weiter gueltig."
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "doc_blob": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
+    "note": "Claims 136 gelesen 16.10.2026 (staledocs 2.1.0): S5 gegengeprueft und geschrieben: Sleep-Falle /employer/stellen; /employer/einladen per Sidebar-Klick, kein Hang; Marker _ein_dialog/_ein_confirm genannt"
   },
   "doc": "knowledge/system/i18n-runner-chain.md",
   "schema": 1

@@ -2030,6 +2030,45 @@ def _page_einladen(s: dict) -> None:
                   type="positive")
         _ein_refresh_now()
 
+    # ─── Modal: Einladung bestätigen (Kopie des C1-Blocks aus _page_match,
+    # ─── „Modal: Bewerber einladen"; Schreibpfad bleibt _ein_send_invite) ──
+    _ein_ctx = {"ap": 0, "cnd": 0, "jid": 0}
+    with ui.dialog() as _ein_dialog, ui.card().classes("w-96"):
+        ui.label(_('Kandidat einladen')).classes("text-lg font-bold mb-4")
+        _ein_name_label = ui.label('').classes("mb-2")
+        # Einladungs-Termin (wird in die Automatik-Mail übernommen)
+        ui.markdown(_('**📅 Einladungs-Termin:**')).classes("mt-2")
+        with ui.row().classes("items-center gap-2 w-full"):
+            _ein_datum = ui.date(value=str((_dt.now() + _timedelta(days=1)).date()), mask="YYYY-MM-DD").classes("w-40")
+            _ein_zeit = ui.time(value="10:00").classes("w-24")
+        _ein_dauer = ui.select([15, 30, 45, 60], value=30, label=_('Dauer (Min.)')).classes("w-32")
+        _ein_error = ui.label('').classes("text-negative text-sm mt-2")
+        _ein_error.set_visibility(False)
+        with ui.row().classes("justify-end gap-2 mt-4"):
+            ui.button(_('Abbrechen'), on_click=_ein_dialog.close).props("flat")
+            def _ein_confirm():
+                _terr = _invite_termin_error(_ein_datum.value, _ein_zeit.value)
+                if _terr:
+                    # Dialog bleibt offen, Meldung sichtbar (Muster aus do_invite)
+                    _ein_error.set_text(_terr)
+                    _ein_error.set_visibility(True)
+                    return
+                _ein_error.set_visibility(False)
+                _ein_dialog.close()
+                _ein_send_invite(_ein_ctx["ap"], _ein_ctx["cnd"], _ein_ctx["jid"],
+                                 _ein_datum, _ein_zeit, _ein_dauer)
+            ui.button(_('Einladen'), on_click=_ein_confirm).props("color=primary")
+
+    def _ein_open_confirm(_ap, _cnd, _jid, _pn, _jt):
+        _ein_ctx["ap"] = _ap
+        _ein_ctx["cnd"] = _cnd
+        _ein_ctx["jid"] = _jid
+        _ein_name_label.set_text(_('Moechtest du {0} zur Stelle \u201e{1}\u201c einladen?').format(_pn, _jt))
+        _ein_datum.set_value(str((_dt.now() + _timedelta(days=1)).date()))
+        _ein_zeit.set_value("10:00")
+        _ein_error.set_visibility(False)
+        _ein_dialog.open()
+
     @ui.refreshable
     def einladen_view():
         conn = db.get_conn()
@@ -2067,7 +2106,8 @@ def _page_einladen(s: dict) -> None:
              _jtyp, _jbr) in _oben:
             with ui.card().classes(C.CARD_HOVER + " w-full mb-3 py-2 px-3"):
                 with ui.row().classes("items-center justify-between w-full"):
-                    ui.label(anzeige_name(_nm, _cnd, _st)).classes("font-medium")
+                    _pn = anzeige_name(_nm, _cnd, _st)
+                    ui.label(_pn).classes("font-medium")
                     status_badge(_st)
                 ui.label(_jtit).classes(C.SMALL + " truncate max-w-md").tooltip(_jtit)
                 _kq = {"hard_skills": _ch, "soft_skills": _cs,
@@ -2093,14 +2133,12 @@ def _page_einladen(s: dict) -> None:
                         ui.button(_('Als angesehen markieren'), icon="visibility",
                                   on_click=lambda _a=_ap: _ein_mark_seen(_a)).props("color=primary outline no-caps")
                     if "eingeladen" in _ziele:
-                        # C1-Muster (_page_stellen, 22.09.2026): Termin-Widgets
-                        # MIT Defaults in der Karte — 2-Klick-Pfad (employer-board §6).
-                        _dat = ui.date_input(_("Datum"), value=str((_dt.now() + _timedelta(days=1)).date())).classes("w-40")
-                        _uhr = ui.time_input(_("Uhrzeit"), value="10:00").classes("w-24")
-                        _dur = ui.select([15, 30, 45, 60], value=30, label=_('Dauer (Min.)')).classes("w-32")
+                        # UX-Korrektur 16.10.2026 — Bestätigungs-Dialog nach C1-Muster
+                        # (employer-board §3), Schreibpfad `_ein_send_invite` unverändert.
                         ui.button(_('Einladen'), icon="person_add",
                                   on_click=lambda _a=_ap, _c=_cnd, _j=_jid,
-                                             _D=_dat, _Z=_uhr, _M=_dur: _ein_send_invite(_a, _c, _j, _D, _Z, _M)).props("color=primary")
+                                             _n=_pn, _t=_jtit: _ein_open_confirm(_a, _c, _j, _n, _t)).props("color=primary")
+                        ui.button(_('Match-Seite öffnen'), on_click=lambda _c=_cnd: ui.navigate.to(f"/employer/match?kandidat={_c}")).props("flat dense")
 
         ui.label(_('Eingeladene ({0})').format(len(_unten))).classes("font-bold mt-4")
         if not _unten:

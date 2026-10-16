@@ -153,21 +153,21 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-16T10:51:41+00:00",
+    "at": "2026-10-16T16:51:26+00:00",
     "code_blobs": {
       "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
-      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619",
+      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
     "doc_blob": "94bfabc66a972094f780f18ff670c8427b75a72f",
-    "note": "Claims 159 gelesen 16.10.2026: Pfad-Claims 29/29 vorhanden; Codemark-Treffer 4/15 in Code (u.a. _a_id, _badge_icon, _inv_); staledocs 2.1.0"
+    "note": "Claims 159 gelesen 16.10.2026 (staledocs 2.1.0): ui.dialog()+ui.card() C1-Muster identisch kopiert (_ein_dialog), ui.date mit mask/ui.time wie Match-Dialog; keine Inline-Widgets mehr in der Karte"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1
