@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-15T18:08:20+00:00",
+    "at": "2026-10-16T08:18:02+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Claims 28 gelesen 15.10.2026: Pfad-Claims 14/14 vorhanden; Codemark-Treffer 14/14 in Code (u.a. @ui.refreshable, PAGE_MAP, _blocked_candidates); staledocs 2.1.0"
+    "note": "L6/L14/L15 zitierte Marken vorhanden wie gemessen 16.10.2026: def _page_dokumente (1 Treffer employer.py) + Sektionskommentar # \u2500\u2500\u2500 6. Dokumente \u2500\u2500\u2500; A4-Guard ohne DSGVO-Wirkung."
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

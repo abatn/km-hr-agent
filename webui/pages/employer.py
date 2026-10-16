@@ -1421,6 +1421,7 @@ def _page_match(s: dict) -> None:
             empty_state(icon="compare_arrows", title=_('Keine Kandidaten mit Bewerbungen'), description=_('Kandidaten erscheinen hier, sobald sie sich beworben haben. Passive Matches stehen darunter.'))
 
         _treffer = 0
+        c_id = None  # A4-Guard (16.10.2026): c_id nur in der Kandidaten-Schleife gebunden
 
         with ui.column().classes("w-full gap-4"):
             for cand in candidates:
@@ -1665,7 +1666,10 @@ def _page_match(s: dict) -> None:
                                                 ui.label(_('ℹ️ ICS-Datei noch nicht vorhanden.')).classes("text-xs text-gray-500")
 
             # ── Sprachtests (S3d) ──────────────────────────────────────────────
-            _lang_tests = db.get_language_tests(c_id)
+            # A4 (16.10.2026): leerer Kandidaten-Pfad (Fokus-Filter ohne Bewerber,
+            # P3-Zweig ohne Return) darf nicht auf ein ungebundenes c_id zugreifen.
+            # Verhalten bei vorhandener Liste unveraendert (Q2: kein Verhaltensfix).
+            _lang_tests = db.get_language_tests(c_id) if c_id is not None else []
             if _lang_tests:
                 with ui.expansion(_('Sprachtests'), icon="translate").classes("w-full mt-1"):
                     for _lt_id, _sprache, _niveau, _punkte, _cefr, _datum in _lang_tests:

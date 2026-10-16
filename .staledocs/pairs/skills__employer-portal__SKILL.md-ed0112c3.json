@@ -24,13 +24,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-15T18:08:25+00:00",
+    "at": "2026-10-16T08:19:13+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "334723bf607967986c66ae895612ebde38334b58",
-    "note": "Claims 32 gelesen 15.10.2026: Pfad-Claims 5/5 vorhanden; Codemark-Treffer 13/15 in Code (u.a. .open, PAGE_MAP, _agent_tasks); staledocs 2.1.0"
+    "note": "L16/L161/L244 Referenzen auf webui/pages/employer.py bestehen weiter (grep 16.10.2026: Codemark _agent_tasks mit ui.expansion vorhanden); Historischer Streamlit-Block unangetastet, A4-Guard ohne Skill-Wirkung."
   },
   "doc": "skills/employer-portal/SKILL.md",
   "schema": 1

@@ -11,15 +11,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-15T18:08:25+00:00",
+    "at": "2026-10-16T08:19:13+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
-    "note": ""
+    "note": "AMBER: webui/pages/employer.py bewegt, vom Doc nicht referenziert; Bewerbungs-/Ingestionslogik unveraendert (nur c_id-Guard in _page_match). 16.10.2026"
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-15T18:08:27+00:00",
+    "at": "2026-10-16T08:19:14+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
-    "note": "Claims 29 gelesen 15.10.2026: Pfad-Claims 5/5 vorhanden; Codemark-Treffer 6/15 in Code (u.a. agent-automation.md, agent_tasks, candidate_id); staledocs 2.1.0"
+    "note": "AMBER: webui/pages/employer.py bewegt, vom Doc nicht referenziert; Dokumenten-Gate-Logik unveraendert (nur c_id-Guard in _page_match). 16.10.2026"
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

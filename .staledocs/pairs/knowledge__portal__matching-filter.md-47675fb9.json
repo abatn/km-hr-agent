@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-15T18:08:22+00:00",
+    "at": "2026-10-16T08:18:47+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
-    "note": "Claims 47 gelesen 15.10.2026: Pfad-Claims 33/33 vorhanden; Codemark-Treffer 7/14 in Code (u.a. berechne_match_score, employer-portal, gehalt_check); staledocs 2.1.0"
+    "note": "L14/L15/L16 Marken in webui/pages/employer.py vorhanden (grep 16.10.2026): def _page_kandidaten, def filter_candidates, CAND_CV_STATUS; Passiv-/Fokus-Logik unveraendert durch A4-Guard."
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1

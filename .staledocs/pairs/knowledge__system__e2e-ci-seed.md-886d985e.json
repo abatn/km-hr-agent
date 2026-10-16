@@ -92,7 +92,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-15T14:17:17+00:00",
+    "at": "2026-10-16T08:19:12+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -153,9 +153,10 @@
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
       "tests/measure_timing.sh": "3e9a83fac12f406f31ceaadc162ad541f4791ef9",
-      "tests/nicegui_main.py": "213e3a3685ec28d066bf909e917c06973b6afb89",
+      "tests/nicegui_main.py": "54ed86146818aadcd88a40539782908bbe77dbf1",
       "tests/run_nachweis.sh": "3cdcc5114047accc5601901af3ffe2fc049b6c3f",
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
+      "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
       "tests/test_application_id_match.py": "7eac7d1ae0e3f3439093a60194b1275713ea4870",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
@@ -205,9 +206,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "bd90ddd4ecc27d87f6501573a01ee6173ad72da7",
-    "note": "knowledge/system/e2e-ci-seed.md geprueft 15.10.2026: Seed-Konten-Mapping (kandidatN/hrN/admin, seed_email) unveraendert; tests/test_i18n.py und tests/test_na1_nd3.py werden in der Spec nicht zitiert, keine Aussage betroffen."
+    "note": "AMBER: tests/nicegui_main.py (nur +Route a4_match_focus) und tests/test_a4_language_block_guard.py (neu) bewegt, vom Doc nicht referenziert; Seed-Konten/Mapping unveraendert, E2E-Bestand 50/48 bleibt. 16.10.2026"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

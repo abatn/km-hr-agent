@@ -136,6 +136,20 @@ def demo_page():  # bewusst NICHT test_* benannt (sonst sammelt pytest sie als T
     )
 
 
+# ── A4 (16.10.2026): Crash-Pfad Sprachtests-Block (Regel R5-1: Route hier) ──
+
+@ui.page('/a4-match-focus')
+def a4_match_focus():
+    """A4-Crashpfad: ?kandidat=<Nicht-Bewerber> leert die Kandidaten-Liste;
+    der Sprachtests-Block (Codemark db.get_language_tests) laeuft trotzdem.
+    Rendert die echte _page_match gegen die Spiegel-DB (conftest) — nie die
+    Live-DB. Vor dem Guard: UnboundLocalError (c_id) als ERROR-Log."""
+    from webui.pages import employer as _ep
+    s = {"employer_id": 1, "employer_logged_in": True,
+         "employer_firma": "TechVision GmbH"}
+    _ep._page_match(s)
+
+
 # user_simulation führt diese Datei via runpy mit run_name='__main__' aus und
 # erwartet ui.run() (NICEGUI_USER_SIMULATION=true verhindert den echten Serverstart).
 if __name__ in {"__main__", "__mp_main__"}:

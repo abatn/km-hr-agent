@@ -39,14 +39,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-15T18:08:21+00:00",
+    "at": "2026-10-16T08:18:20+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2"
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "80ebd898ebdd883dfabc7d20fbe1ed20b5153d75",
-    "note": "Claims 39 gelesen 15.10.2026: Pfad-Claims 15/15 vorhanden; Codemark-Treffer 14/15 in Code (u.a. ALLOWED_TRANSITIONS, _legal, _legal_actions); staledocs 2.1.0"
+    "note": "L15-17 Marken in webui/pages/employer.py bestaetigt (grep 16.10.2026): AKTIV = , def _legal_actions, _hook_task = ; ALLOWED_TRANSITIONS Modulebene unveraendert durch A4-Guard."
   },
   "doc": "knowledge/lifecycle/status-automation.md",
   "schema": 1

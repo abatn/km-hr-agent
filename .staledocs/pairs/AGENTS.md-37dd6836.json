@@ -127,7 +127,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-15T18:29:04+00:00",
+    "at": "2026-10-16T08:18:00+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -207,9 +207,10 @@
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
       "tests/measure_timing.sh": "3e9a83fac12f406f31ceaadc162ad541f4791ef9",
-      "tests/nicegui_main.py": "213e3a3685ec28d066bf909e917c06973b6afb89",
+      "tests/nicegui_main.py": "54ed86146818aadcd88a40539782908bbe77dbf1",
       "tests/run_nachweis.sh": "3cdcc5114047accc5601901af3ffe2fc049b6c3f",
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
+      "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
       "tests/test_application_id_match.py": "7eac7d1ae0e3f3439093a60194b1275713ea4870",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
@@ -277,7 +278,7 @@
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
-      "webui/pages/employer.py": "9195902fc2184249ecae44b1fc03ae0402b91bc2",
+      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
@@ -287,9 +288,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
     "doc_blob": "4cedf3ebd5b091cd2ff1b0f71227d94175a139e8",
-    "note": "Claims 304 gelesen 15.10.2026: neu im Doku-Text und gegen Code geprueft -- '--port' ist Flag in tests/e2e_isolation.py (Codemark add_argument, gemessen 15.10.2026); 'green 56 == Anzahl Paare' stimmt (.staledocs/pairs = 56 Dateien); i18n-Norm/Ruff INT001 belegt in knowledge/system/i18n.md (7 Treffer); claims-Dateien contact-candidate/ + legal/ + jitsi-mcp-server/ = Verzeichnis-Claims wie zuvor ausgewiesen; staledocs 2.1.0"
+    "note": "L52 echte-Claim = ci.yml-Shellvariable (grep echte= in ci.yml, unveraendert); Tool-Treffer tests/nicegui_main.py ist Prosa der neuen Route-Docstrings (echte _page_match / ECHTEN Tab-Funktionen), kein Code-Claim-Konflikt; Bestandszahlen 50/48 bleiben (kein E2E gewechselt). 16.10.2026"
   },
   "doc": "AGENTS.md",
   "schema": 1
