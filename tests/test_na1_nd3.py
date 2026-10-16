@@ -43,15 +43,17 @@ def test_na1_labels_sind_klartext():
 
 def test_nd3_kein_9_pages_mehr():
     assert "9 pages" not in SRC
-    assert "12 pages (PAGE_MAP)" in SRC
+    assert "15 pages (PAGE_MAP)" in SRC
 
 
 def test_nd3_docstring_entspricht_page_map():
     # 15.10.2026: 12 -> 14 (+board = Hiring-Board, +mehr = Auffangseite). Die alten 12 Routen
     # bleiben erhalten (employer-board.md §6), damit Deep-Links aus E2E/Notifications gehen.
-    assert len(emp.PAGE_MAP) == 14
+    # 16.10.2026: 14 -> 15 (+einladen = Seite „Einladungen", dritte Aufrufstelle,
+    # employer-board.md §3 Entscheidung). Key-Set analog.
+    assert len(emp.PAGE_MAP) == 15
     # jede Seite des PAGE_MAP wird im Docstring genannt (Klartext-Paritaet grob)
     for key in emp.PAGE_MAP:
         assert key in {"dashboard", "firmenprofil", "portal", "stellen", "kandidaten", "match",
                        "compliance", "agent_details", "dokumente", "prescreen",
-                       "onboarding", "feedback", "board", "mehr"}
+                       "onboarding", "feedback", "board", "einladen", "mehr"}

@@ -145,14 +145,17 @@ def _calls_mit_scope(src: str) -> list:
 
 
 def test_handler_bindung_ast():
-    """Alle 3 Dialog-Handler + der Stellen-Seiten-Übergang rufen den Helfer."""
+    """Alle 3 Dialog-Handler + der Stellen-Seiten-Übergang + die Einladungen-
+    Seite (dritte Aufrufstelle, 16.10.2026) rufen den Helfer."""
     src = SRC.read_text(encoding="utf-8")
     calls = _calls_mit_scope(src)
-    assert len(calls) == 4, [(c["line"], c["chain"]) for c in calls]
+    assert len(calls) == 5, [(c["line"], c["chain"]) for c in calls]
     innere = {c["inner"] for c in calls}
     assert {"do_invite", "do_reject", "do_hire"} <= innere, innere
     # 4. Call-Site: generischer HR-Klick auf /employer/stellen (make_transition/_do)
     assert any("make_transition" in c["chain"] for c in calls), calls
+    # 5. Call-Site: Seite Einladungen (/employer/einladen, _ein_send_invite)
+    assert "_ein_send_invite" in innere, innere
     for c in calls:
         assert c["update_vorher"], f"Zeile {c['line']} ohne UPDATE im Handler {c['chain']}"
         assert c["commit_vorher"], f"Zeile {c['line']} nicht NACH commit in {c['chain']}"

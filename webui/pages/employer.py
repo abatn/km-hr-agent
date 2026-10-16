@@ -1,8 +1,8 @@
 """
 Employer pages for KM-HR-Agent NiceGUI App.
-12 pages (PAGE_MAP): Dashboard, Firmenprofil, Stelle ausschreiben (Portal),
-Stellenangebote, Kandidaten-Suche, Match-Ergebnis, Compliance, Agent-Details,
-Dokumente, Pre-Screen, Onboarding, Feedback.
+15 pages (PAGE_MAP): Dashboard, Firmenprofil, Stelle ausschreiben (Portal),
+Stellenangebote, Kandidaten-Suche, Match-Ergebnis, Einladungen, Compliance,
+Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback, Hiring-Board, Mehr.
 """
 from __future__ import annotations
 
@@ -44,11 +44,12 @@ PAGE_TITLES = {
     "onboarding": "Onboarding",
     "feedback": "Feedback",
     "board": "Hiring-Board",
+    "einladen": "Einladungen",
     "mehr": "Mehr",
 }
 
-# Sidebar: 4 sichtbare Punkte (employer-board.md §6). Alle übrigen Seiten liegen unter „Mehr“.
-SIDEBAR_KEYS = ("dashboard", "stellen", "board", "mehr")
+# Sidebar: 5 sichtbare Punkte (employer-board.md §6, +Einladungen 16.10.2026). Alle übrigen Seiten liegen unter „Mehr“.
+SIDEBAR_KEYS = ("dashboard", "stellen", "board", "einladen", "mehr")
 # Unterseiten unter „Mehr“: Direktlinks (/employer/<key>) muessen gerendert werden,
 # auch wenn sie nicht in der Sidebar stehen (sonst Fallback auf Dashboard, shell R5-5).
 _NON_SIDEBAR_KEYS = tuple(k for k in PAGE_TITLES if k not in SIDEBAR_KEYS)
@@ -1938,6 +1939,202 @@ def _compliance_rows(conn, employer_id) -> tuple:
     return zugeordnet, nicht_zurechenbar
 
 
+# ─── 3b. Einladungen (Seite; Iteration „Einladungen", Entscheidung 16.10.2026) ──
+# Spec: knowledge/portal/employer-board.md §3/§6 — dritte Aufrufstelle des
+# GLEICHEN Mechanismus (Whitelist-Guard ALLOWED_TRANSITIONS + History +
+# create_invitation-Task), Muster: make_transition in _page_stellen (Inline,
+# ohne Dialog). Slice-Schutz (test_dialog_identity/test_match_actions/
+# test_nm1_nm2, gemessen 16.10.2026): keine Dialog-Marker-Klone, keine der
+# dateiweit verbotenen alten Helfernamen, keine bg-* an Buttons,
+# _legal bleibt Closure in _page_match (hier: Inline-Check wie _page_stellen).
+def _page_einladen(s: dict) -> None:
+    section_header(title=_('Einladungen'), subtitle=_('Bewerbungen zum Einladen'),
+                   icon="person_add")
+    employer_id = s.get("employer_id")
+
+    def _ein_sig():
+        conn = db.get_conn()
+        try:
+            row = conn.execute(
+                "SELECT COUNT(*), MAX(a.aktualisiert_am) FROM applications a "
+                "JOIN jobs j ON a.job_id = j.id WHERE j.employer_id = ?",
+                (employer_id,)).fetchone()
+        finally:
+            conn.close()
+        return (row[0] or 0, row[1] or "")
+
+    _ein_state = {"sig": None}
+
+    def _ein_refresh_now():
+        _ein_state["sig"] = _ein_sig()
+        einladen_view.refresh()
+
+    def _ein_tick():
+        # N-M2-Muster: 15-s-Timer refresht nur bei Signature-Aenderung.
+        sig = _ein_sig()
+        if sig != _ein_state["sig"]:
+            _ein_state["sig"] = sig
+            einladen_view.refresh()
+
+    def _ein_mark_seen(_ap):
+        # Vorlage do_seen (P0-3): direkt, ohne Dialog, ohne Agent-Task —
+        # 'angesehen' hat keinen _hook_task-Eintrag (Paritaet _page_stellen).
+        conn = db.get_conn()
+        _row = conn.execute("SELECT status FROM applications WHERE id = ?", (_ap,)).fetchone()
+        _old = _row[0] if _row else None
+        if _old is None:
+            conn.close()
+            ui.notify(_('Bewerbung nicht gefunden.'), type="negative")
+            return
+        if "angesehen" not in ALLOWED_TRANSITIONS.get(_old, set()):
+            conn.close()
+            ui.notify(_('Ungueltiger Statusuebergang (Whitelist ALLOWED_TRANSITIONS).'),
+                      type="negative")
+            return
+        conn.execute("UPDATE applications SET status='angesehen', aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?", (_ap,))
+        conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'angesehen', 'arbeitgeber')", (_ap,))
+        conn.commit()
+        conn.close()
+        ui.notify(_('Bewerbung als angesehen markiert.'), type="positive")
+        _ein_refresh_now()
+
+    def _ein_send_invite(_ap, _cnd, _job, _dat, _uhr, _dur):
+        # Dritte Aufrufstelle des GLEICHEN Mechanismus (employer-board.md §3,
+        # Entscheidung 16.10.2026): Termin-Validierung + Guard VOR dem UPDATE,
+        # History, Mail-Logik (_notify_statuswechsel) und create_invitation-
+        # Payload identisch zu do_invite/make_transition (agent-automation.md §5).
+        _terr = _invite_termin_error(_dat.value, _uhr.value)
+        if _terr:
+            ui.notify(_terr, type="negative")
+            return
+        conn = db.get_conn()
+        _row = conn.execute("SELECT status FROM applications WHERE id = ?", (_ap,)).fetchone()
+        _old = _row[0] if _row else None
+        if "eingeladen" not in ALLOWED_TRANSITIONS.get(_old, set()):
+            conn.close()
+            ui.notify(_('Ungueltiger Statusuebergang (Whitelist ALLOWED_TRANSITIONS).'),
+                      type="negative")
+            return
+        conn.execute("UPDATE applications SET status = 'eingeladen', aktualisiert_am = CURRENT_TIMESTAMP WHERE id = ?", (_ap,))
+        conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'eingeladen', 'arbeitgeber')", (_ap,))
+        conn.commit()
+        _notify_statuswechsel(conn, _ap, "eingeladen")
+        _pl = {"application_id": _ap, "candidate_id": _cnd, "job_id": _job,
+               "trigger": "hr_klick_portal",
+               "termin_datum": str(_dat.value),
+               "termin_uhrzeit": str(_uhr.value),
+               "termin_dauer_min": int(_dur.value)}
+        db.queue_agent_task("create_invitation", _pl)
+        conn.close()
+        ui.notify(_('Eingeladen - Termin {0} {1} geplant.').format(_dat.value, _uhr.value),
+                  type="positive")
+        _ein_refresh_now()
+
+    @ui.refreshable
+    def einladen_view():
+        conn = db.get_conn()
+        try:
+            _oben = conn.execute("""
+                SELECT a.id, a.status, a.erstellungsdatum, c.id, c.name,
+                       c.hard_skills, c.soft_skills, c.berufserfahrung_jahre,
+                       c.abschluss, c.deutsch, c.englisch, c.standort,
+                       c.lebenslauf_text, j.id, j.titel, j.hard_skills,
+                       j.soft_skills, j.berufserfahrung_jahre, j.deutsch_level,
+                       j.englisch_level, j.standort, j.stellentyp, e.branche
+                FROM applications a
+                JOIN candidates c ON c.id = a.candidate_id
+                JOIN jobs j ON a.job_id = j.id
+                JOIN employers e ON j.employer_id = e.id
+                WHERE j.employer_id = ? AND a.status IN ('eingegangen', 'angesehen')
+                ORDER BY a.erstellungsdatum ASC, a.id ASC""",
+                                 (employer_id,)).fetchall()
+            _unten = conn.execute("""
+                SELECT a.id, a.status, a.aktualisiert_am, c.id, c.name, j.titel
+                FROM applications a
+                JOIN candidates c ON c.id = a.candidate_id
+                JOIN jobs j ON a.job_id = j.id
+                WHERE j.employer_id = ? AND a.status = 'eingeladen'
+                ORDER BY a.aktualisiert_am DESC, a.id DESC""",
+                                  (employer_id,)).fetchall()
+        finally:
+            conn.close()
+
+        ui.label(_('Einladbar ({0})').format(len(_oben))).classes("font-bold")
+        if not _oben:
+            ui.label(_('Keine einladbaren Kandidaten.')).classes(C.SMALL)
+        for (_ap, _st, _ad, _cnd, _nm, _ch, _cs, _cexp, _cab, _cde, _cen,
+             _cst, _ccv, _jid, _jtit, _jh, _js, _jexp, _jde, _jen, _jst,
+             _jtyp, _jbr) in _oben:
+            with ui.card().classes(C.CARD_HOVER + " w-full mb-3 py-2 px-3"):
+                with ui.row().classes("items-center justify-between w-full"):
+                    ui.label(anzeige_name(_nm, _cnd, _st)).classes("font-medium")
+                    status_badge(_st)
+                ui.label(_jtit).classes(C.SMALL + " truncate max-w-md").tooltip(_jtit)
+                _kq = {"hard_skills": _ch, "soft_skills": _cs,
+                       "berufserfahrung_jahre": _cexp, "abschluss": _cab,
+                       "deutsch": _cde, "englisch": _cen,
+                       "standort": _cst, "lebenslauf_text": _ccv or ""}
+                _jq = {"hard_skills": _jh, "soft_skills": _js,
+                       "berufserfahrung_jahre": _jexp, "deutsch_level": _jde,
+                       "englisch_level": _jen, "standort": _jst,
+                       "stellentyp": _jtyp, "branche": _jbr}
+                try:
+                    _rq = logic.berechne_match_score(_kq, _jq)
+                except Exception:
+                    _rq = None
+                _tot = _rq["total"] if _rq else 0
+                with ui.row().classes("items-center gap-3 w-full"):
+                    ui.label(_('Passung')).classes(C.SMALL)
+                    score_bar(_tot, show_label=False)
+                    ui.label("{0}/100".format(_tot)).classes(C.SMALL + " font-bold")
+                _ziele = [ns for ns in _legal_actions(_st) if ns in ("angesehen", "eingeladen")]
+                with ui.row().classes("items-center gap-2 mt-1"):
+                    if "angesehen" in _ziele:
+                        ui.button(_('Als angesehen markieren'), icon="visibility",
+                                  on_click=lambda _a=_ap: _ein_mark_seen(_a)).props("color=primary outline no-caps")
+                    if "eingeladen" in _ziele:
+                        # C1-Muster (_page_stellen, 22.09.2026): Termin-Widgets
+                        # MIT Defaults in der Karte — 2-Klick-Pfad (employer-board §6).
+                        _dat = ui.date_input(_("Datum"), value=str((_dt.now() + _timedelta(days=1)).date())).classes("w-40")
+                        _uhr = ui.time_input(_("Uhrzeit"), value="10:00").classes("w-24")
+                        _dur = ui.select([15, 30, 45, 60], value=30, label=_('Dauer (Min.)')).classes("w-32")
+                        ui.button(_('Einladen'), icon="person_add",
+                                  on_click=lambda _a=_ap, _c=_cnd, _j=_jid,
+                                             _D=_dat, _Z=_uhr, _M=_dur: _ein_send_invite(_a, _c, _j, _D, _Z, _M)).props("color=primary")
+
+        ui.label(_('Eingeladene ({0})').format(len(_unten))).classes("font-bold mt-4")
+        if not _unten:
+            ui.label(_('Keine eingeladenen Bewerbungen.')).classes(C.SMALL)
+        for (_ap, _st, _am, _cnd, _nm, _jtit) in _unten:
+            with ui.card().classes("w-full mb-3 py-2 px-3"):
+                with ui.row().classes("items-center justify-between w-full"):
+                    ui.label(anzeige_name(_nm, _cnd, _st)).classes("font-medium")
+                    status_badge(_st)
+                ui.label(_jtit).classes(C.SMALL + " truncate max-w-md").tooltip(_jtit)
+                _art = db.get_invitation_artifacts(_ap)
+                if _art:
+                    _vlink = (_art.get("vdo_ninja_url") or _art.get("jitsi_url")
+                              or _art.get("meet_url"))
+                    _ics = _art.get("ics_path_hr") or _art.get("ics_path")
+                    _tmn = _art.get("termin", "")
+                    with ui.card().classes("bg-blue-50 border border-blue-200 p-3 mt-2 w-full"):
+                        ui.label(_('📹 Einladung (Kandidat wurde benachrichtigt){0}').format(f" – {_tmn}" if _tmn else "")).classes("text-sm font-medium text-blue-800")
+                        if _vlink:
+                            ui.link(_('🔗 {0}').format(_vlink), _vlink, new_tab=True).classes("text-xs text-blue-700 underline hover:text-blue-900")
+                            ui.label(_('⚠️ Aufnahme nur nach ausdrücklicher Einwilligung – HR-Prozessregel (Gate 9, knowledge/legal/recording-consent.md)')).classes("text-xs text-amber-700")
+                        if _ics and logic.Path(str(_ics)).exists():
+                            def _ein_dl(_p=str(_ics), _n=logic.Path(str(_ics)).name):
+                                ui.download(_p, _n, "text/calendar")
+                            ui.button(_('📅 Termin in Kalender speichern (.ics) – HR'),
+                                      icon="event", on_click=_ein_dl).classes("mt-1").props("color=primary flat")
+                        else:
+                            ui.label(_('ℹ️ ICS-Datei noch nicht vorhanden.')).classes("text-xs text-gray-500")
+
+    _ein_state["sig"] = _ein_sig()
+    einladen_view()
+    ui.timer(interval=15.0, callback=_ein_tick)
+
+
 def _page_compliance(s: dict) -> None:
     """Compliance-Seite mit ZWEI Bloecken (R3-3, 30.09.2026, Nutzer-GO „A").
 
@@ -2969,6 +3166,7 @@ PAGE_MAP = {
     "onboarding": _page_onboarding,
     "feedback": _page_feedback,
     "board": _page_board,
+    "einladen": _page_einladen,
     "mehr": _page_mehr,
 }# Menu-Items auf Modulebene (fuer Sub-Route-Registrierung)
 _ICON_MAP = {
@@ -2976,7 +3174,7 @@ _ICON_MAP = {
     "stellen": "work", "kandidaten": "search", "match": "compare_arrows",
     "compliance": "verified", "agent_details": "smart_toy", "dokumente": "folder",
     "prescreen": "record_voice_over", "onboarding": "assignment", "feedback": "feedback",
-    "board": "view_kanban", "mehr": "more_horiz",
+    "board": "view_kanban", "einladen": "person_add", "mehr": "more_horiz",
 }
 
 def _menu_items_emp() -> list[dict]:

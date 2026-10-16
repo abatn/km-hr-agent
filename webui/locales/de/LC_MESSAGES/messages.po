@@ -3470,3 +3470,21 @@ msgstr "Mehr"
 
 msgid "Alle weiteren Bereiche"
 msgstr "Alle weiteren Bereiche"
+
+msgid "Einladungen"
+msgstr "Einladungen"
+
+msgid "Bewerbungen zum Einladen"
+msgstr "Bewerbungen zum Einladen"
+
+msgid "Einladbar ({0})"
+msgstr "Einladbar ({0})"
+
+msgid "Keine einladbaren Kandidaten."
+msgstr "Keine einladbaren Kandidaten."
+
+msgid "Eingeladene ({0})"
+msgstr "Eingeladene ({0})"
+
+msgid "Keine eingeladenen Bewerbungen."
+msgstr "Keine eingeladenen Bewerbungen."

@@ -102,7 +102,7 @@ def expected_name(k_id: int, status: str, name: str) -> str:
     return name if status in ("eingeladen", "eingestellt") and name else f"Kandidat #{k_id}"
 
 
-def pick_invite() -> tuple[str, str] | None:
+def pick_invite() -> tuple[str, str, int] | None:
     rows = _q(
         "SELECT c.id, c.email FROM applications a "
         "JOIN candidates c ON c.id=a.candidate_id "
@@ -130,7 +130,7 @@ def pick_invite() -> tuple[str, str] | None:
             conn.close()
         PW_FIXTURES.append((cid, old))
         print(f"OK Passwort-Fixture: cand{cid} ({email}) — wird zurueckgesetzt")
-    return email, pw
+    return email, pw, cid
 
 
 def restore_fixtures() -> None:
@@ -350,13 +350,24 @@ with sync_playwright() as p:
     check("P0-2", "Kandidat", "Termin in der Einladungskarte sichtbar",
           bool(m), (m.group(1).strip()[:40] if m else "kein Termin gefunden"))
     check("P0-2", "Kandidat", "Uhrzeit sichtbar", bool(re.search(r"\d{1,2}:\d{2}", body)))
-    check("P0-2", "Kandidat", "genau eine Einladungskarte",
-          body.count("📅 Einladung") == 1, f"Anzahl={body.count('📅 Einladung')}")
+    # datengekoppelt (Muster Klasse-d 14.10.2026): erwartete Kartenanzahl =
+    # eingeladene Bewerbungen DIESES Kandidaten mit done-create_invitation +
+    # result_json (Live-Datenstand 16.10.2026: cand13 hat 2 — apps 35+39).
+    N_INV = _q(
+        "SELECT COUNT(DISTINCT a.id) FROM applications a "
+        "JOIN agent_tasks t ON json_extract(t.payload,'$.application_id')=a.id "
+        "WHERE a.candidate_id=? AND a.status='eingeladen' "
+        "AND t.task_type='create_invitation' AND t.status='done' "
+        "AND t.result_json IS NOT NULL", INVITE[2])[0][0]
+    n_cards = body.count("📅 Einladung")
+    n_links = page.evaluate("""() => [...document.querySelectorAll('input')]
+        .filter(i => (i.value || '').includes('vdo.ninja')).length""")
+    n_anchors = page.evaluate("""() => [...document.querySelectorAll('a')]
+        .filter(a => (a.href || '').includes('vdo.ninja')).length""")
+    check("P0-2", "Kandidat", f"Einladungskarten genau {N_INV} (datengekoppelt)",
+          n_cards == N_INV, f"Anzahl={n_cards} erwartet={N_INV}")
     check("P0-2", "Kandidat", "Meeting-Link als Eingabefeld (Klartext) statt Anker",
-          page.evaluate("""() => [...document.querySelectorAll('input')]
-              .filter(i => (i.value || '').includes('vdo.ninja')).length""") == 1
-          and page.evaluate("""() => [...document.querySelectorAll('a')]
-              .filter(a => (a.href || '').includes('vdo.ninja')).length""") == 0)
+          n_links == N_INV and n_anchors == 0, f"inputs={n_links} anker={n_anchors} erwartet={N_INV}")
     check("P0-2", "Kandidat", "ICS-Kalender-Knopf vorhanden (Render nicht abgebrochen)",
           page.get_by_text("Termin in Kalender speichern").count() >= 1)
     aud = page.evaluate(AUDIT)

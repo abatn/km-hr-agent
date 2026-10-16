@@ -3466,3 +3466,21 @@ msgstr "المزيد"
 
 msgid "Alle weiteren Bereiche"
 msgstr "جميع الأقسام الأخرى"
+
+msgid "Einladungen"
+msgstr "الدعوات"
+
+msgid "Bewerbungen zum Einladen"
+msgstr "طلبات جاهزة للدعوة"
+
+msgid "Einladbar ({0})"
+msgstr "قابل للدعوة ({0})"
+
+msgid "Keine einladbaren Kandidaten."
+msgstr "لا يوجد مرشحون قابلون للدعوة."
+
+msgid "Eingeladene ({0})"
+msgstr "المدعوون ({0})"
+
+msgid "Keine eingeladenen Bewerbungen."
+msgstr "لا طلبات مدعوة."

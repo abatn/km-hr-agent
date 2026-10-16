@@ -64,7 +64,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-16T08:28:42+00:00",
+    "at": "2026-10-16T10:51:39+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -84,15 +84,15 @@
       "skills/language-course/SKILL.md": "872156c64e0bfdf6073afbf6a23fd3acf97bc416",
       "skills/match-candidate/SKILL.md": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
       "skills/mentoring/SKILL.md": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-      "skills/nicegui-migration/SKILL.md": "95b6036b06b67b66f520923bec42804a60e97a58",
+      "skills/nicegui-migration/SKILL.md": "94bfabc66a972094f780f18ff670c8427b75a72f",
       "skills/notify-user/SKILL.md": "ff04f1dee74617c5a3c9af2049369a6974252d88",
       "skills/pre-screen/SKILL.md": "97fa40ff230048e7d68e00da9714dad93d4907c0",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
-    "doc_blob": "51619764e0d2a065d91c274f25cfdfd856070bf6",
-    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: skills/README.md \u2014 Einschub im Zwei-Ebenen-Satzgefuege nach make_transition (Status-Buttons Stellenangebote): GEPLANT-Vermerk Entscheidung 16.10.2026 Iteration Einladungen, dritte Aufrufstelle Seite Einladungen /employer/einladen; Zahlen 14 Seiten und Sidebar 4 Punkte bewusst unveraendert (S6); CODE webui/pages/employer.py Codemarks do_invite, make_transition, PAGE_MAP gemessen 16.10.2026 weiter gueltig."
+    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "doc_blob": "f60b746352b064dcdd5dbe99702f6708ce7a87f4",
+    "note": "Claims 72 gelesen 16.10.2026: Pfad-Claims 19/19 vorhanden; Codemark-Treffer 12/15 in Code (u.a. PAGE_MAP, _TAB_MAP, _page_einladen); staledocs 2.1.0"
   },
   "doc": "skills/README.md",
   "schema": 1

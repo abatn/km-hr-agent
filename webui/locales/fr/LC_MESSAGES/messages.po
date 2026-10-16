@@ -3466,3 +3466,21 @@ msgstr "Plus"
 
 msgid "Alle weiteren Bereiche"
 msgstr "Autres espaces"
+
+msgid "Einladungen"
+msgstr "Invitations"
+
+msgid "Bewerbungen zum Einladen"
+msgstr "Candidatures à inviter"
+
+msgid "Einladbar ({0})"
+msgstr "Invitables ({0})"
+
+msgid "Keine einladbaren Kandidaten."
+msgstr "Aucun candidat à inviter"
+
+msgid "Eingeladene ({0})"
+msgstr "Invités ({0})"
+
+msgid "Keine eingeladenen Bewerbungen."
+msgstr "Aucune candidature invitée."

@@ -114,24 +114,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-15T14:15:17+00:00",
+    "at": "2026-10-16T10:51:38+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "9eb6edb13e31da47f1aaeb2d3502cd8abe1dc5e8",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "b03dbc0e1fd439efe9d73a1d470bf8acbf69f41a",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "ab899e4a69858c04abc7a0322e3b2032e3f31831",
-      "webui/locales/de/LC_MESSAGES/messages.po": "d0e472a8ba1ec923736dddb7d2e7c72fdf7103e2",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "31070b86cd63263932a1fb7c8696e02ea6c6ccd3",
-      "webui/locales/en/LC_MESSAGES/messages.po": "14599e9e19ebcaf97da2798b0af5ba037380d7a6",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "5663a0ffc4f1448085cd249ca3199037bd3e738c",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "fe6bf1668787264189683bddb0800c5ebd439644"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "e2c46ff68e09f91d2726a6e8466fe8bf7b52f2ce",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "24f275f33976606fc653c7b625277b124d8e93d0",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "178a2e24dadcbc4b1e5fb7eeb999e5f524a2e80f",
+      "webui/locales/de/LC_MESSAGES/messages.po": "04d65a1adb21eca82a5dd7a569bbba9142edfef5",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "5703f4cd398584973f49417ee1c0689d65558b2e",
+      "webui/locales/en/LC_MESSAGES/messages.po": "8f4d67ae454e203daee1d14f084d6ae8064c663a",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "f3dee5d72d25fd19eed872aa18e02ab4dbc2e30c",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "ab781bb19f0168b4804caa849a7aad64318c6dc6"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
     "doc_blob": "a6f2fba32239e1dab41d65b9a2b30f1eade17ba5",
-    "note": "Geprueft 15.10.2026: Quellen-Zitate EU-B\u00fcrger, KM-HR-Agent, L\u00fccken-Fragen, Motivations-Fragen, PhD existieren in webui/locales/de/LC_MESSAGES/messages.po (je 1 Treffer); Rebuild-Falle POT-Creation-Date mit Babel-Stempel-Verhalten belegt; Testanzahl-Historie unveraendert (Stand-Datum 07.10.2026). Nach dem Umbau: pytest tests/test_i18n.py 37 passed, rc=0."
+    "note": "Claims 140 gelesen 16.10.2026: Pfad-Claims 16/16 vorhanden; Codemark-Treffer 14/15 in Code (u.a. .format, .mo, .po); staledocs 2.1.0"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

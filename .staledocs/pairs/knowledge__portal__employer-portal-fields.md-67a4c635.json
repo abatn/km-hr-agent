@@ -12,8 +12,11 @@
       "_invite_ctx",
       "_legal",
       "_legal(\"abgelehnt\")",
+      "_page_board",
+      "_page_einladen",
       "_page_kandidaten",
       "_page_match",
+      "_page_mehr",
       "_reject_ctx",
       "app.py",
       "application-status.md",
@@ -66,13 +69,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T08:18:47+00:00",
+    "at": "2026-10-16T10:51:34+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
+      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619"
     },
-    "commit": "9f3455711f683cf1a633f0b39fcbfda58fc94db3",
-    "doc_blob": "c12fb244a088b380f6971cf74e1ae535164e42a7",
-    "note": "L250 PAGE_MAP 14 Eintraege bestaetigt (len-Check 16.10.2026), L334 def _notify_statuswechsel vorhanden in webui/pages/employer.py, L315 Parser-Funktionen unangetastet (nur A4-Guard aeusserte sich in _page_match)."
+    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "doc_blob": "a600ff9457970a5fae738afcfd40e47a7061fe5d",
+    "note": "Claims 71 gelesen 16.10.2026: Pfad-Claims 16/16 vorhanden; Codemark-Treffer 13/15 in Code (u.a. ALLOWED_TRANSITIONS, Begr\u00fcndung:, Grund:); staledocs 2.1.0"
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

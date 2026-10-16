@@ -3466,3 +3466,21 @@ msgstr "More"
 
 msgid "Alle weiteren Bereiche"
 msgstr "All other areas"
+
+msgid "Einladungen"
+msgstr "Invitations"
+
+msgid "Bewerbungen zum Einladen"
+msgstr "Applications ready for invitation"
+
+msgid "Einladbar ({0})"
+msgstr "Invitable ({0})"
+
+msgid "Keine einladbaren Kandidaten."
+msgstr "No invitable candidates."
+
+msgid "Eingeladene ({0})"
+msgstr "Invited ({0})"
+
+msgid "Keine eingeladenen Bewerbungen."
+msgstr "No invited applications."

@@ -33,7 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 CAND_TABS = ["dashboard", "profil", "stellen", "bewerbungen",
              "sprachtest", "prescreen", "onboarding"]
-EMP_PAGES = ["dashboard", "portal", "stellen", "kandidaten", "match",
+EMP_PAGES = ["dashboard", "portal", "stellen", "kandidaten", "match", "einladen",
              "compliance", "agent_details", "dokumente", "prescreen",
              "onboarding", "feedback"]
 

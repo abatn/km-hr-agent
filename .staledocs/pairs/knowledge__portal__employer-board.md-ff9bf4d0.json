@@ -8,6 +8,8 @@
       "_BOARD_COLUMNS",
       "_MATCH_ACTION_ORDER",
       "_board_rows",
+      "_ein_mark_seen",
+      "_ein_send_invite",
       "_legal",
       "_legal_actions",
       "_list_candidates",
@@ -17,6 +19,7 @@
       "_open_invite",
       "_open_reject",
       "_page_board",
+      "_page_einladen",
       "_page_feedback",
       "_page_match",
       "_page_mehr",
@@ -33,13 +36,13 @@
       "webui/components.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T08:28:06+00:00",
+    "at": "2026-10-16T10:51:34+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "2a78c2f80824e4a44319ed91976873ef6c180bbd"
+      "webui/pages/employer.py": "83037fae52b2a73c29dce50097e341be032b2619"
     },
-    "commit": "f143b159d4b971da863d34ff6f991913f5270591",
-    "doc_blob": "be140e106a767e5ead82edcbf66eaecd46b333cd",
-    "note": "Evidence doc moved since last ack (CODE_LAG) gelesen: knowledge/portal/employer-board.md \u00a73 Entscheidungstext 16.10.2026 (Seite Einladungen = dritte Aufrufstelle, ALLOWED_TRANSITIONS + create_invitation) ersetzt den Offen-Durchlauf-2-Satz; \u00a76 Klick-Ziele um Ziel-Bullet 2 Klicks ab Status angesehen ergaenzt; reiner Doku-Wechsel, CODE webui/pages/employer.py unveraendert, Codemarks do_invite, make_transition, PAGE_MAP gemessen 16.10.2026 weiter gueltig."
+    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "doc_blob": "acd5dd1a9442d14e06b56baf0785026d882498d5",
+    "note": "Claims 35 gelesen 16.10.2026: Pfad-Claims 4/4 vorhanden; Codemark-Treffer 15/15 in Code (u.a. ALLOWED_TRANSITIONS, DOC_RELEASE_STATUS, PAGE_MAP); staledocs 2.1.0"
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1
