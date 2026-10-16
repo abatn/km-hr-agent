@@ -3143,7 +3143,27 @@ def _page_board(s: dict) -> None:
     conn = db.get_conn()
     try:
         rows = _board_rows(conn, employer_id)
-        passive = [r for r in _list_candidates(conn, employer_id) if not r["bewerber"]]
+        # Passiv-Filter (Iteration „Hiring-Board Passiv-Filter“, 16.10.2026): dieselben
+        # drei Quellen wie der Passiv-Block `_passive_best` (_page_match) — Gate-Parität
+        # knowledge/portal/matching-filter.md Abschnitt (g). NUR lesende SELECTs;
+        # CV-Pool = Modulkonstante CAND_CV_STATUS (N-K2), keine zweite Statusliste.
+        _pf_jobs = conn.execute(
+            "SELECT j.id, j.titel, j.hard_skills, j.soft_skills, j.berufserfahrung_jahre, "
+            "j.deutsch_level, j.englisch_level, j.standort, j.stellentyp, e.branche "
+            "FROM jobs j JOIN employers e ON e.id = j.employer_id "
+            "WHERE j.employer_id = ? AND j.status = 'aktiv'",
+            (employer_id,)).fetchall()
+        _pf_app_ids = {r[0] for r in conn.execute(
+            "SELECT DISTINCT a.candidate_id FROM applications a "
+            "JOIN jobs j ON a.job_id = j.id "
+            "WHERE j.employer_id = ? AND a.status != 'zurückgezogen'",
+            (employer_id,)).fetchall()}
+        _pf_pool = conn.execute(
+            "SELECT id, name, hard_skills, soft_skills, berufserfahrung_jahre, "
+            "abschluss, deutsch, englisch, standort, lebenslauf_text FROM candidates "
+            f"WHERE status IN ({','.join('?' * len(CAND_CV_STATUS))})",
+            list(CAND_CV_STATUS),
+        ).fetchall()
     finally:
         conn.close()
 
@@ -3168,15 +3188,119 @@ def _page_board(s: dict) -> None:
                                 ui.label(" · ".join(_(_MATCH_ACTION_LABEL[ns]) for ns in _legal_actions(r["status"]))).classes(C.MUTED + " text-xs")
                                 ui.button(_('Im Match öffnen'), on_click=lambda c=r["cid"]: ui.navigate.to(f"/employer/match?kandidat={c}")).props("flat dense")
         with ui.tab_panel(tab_passiv):
-            if not passive:
-                empty_state(icon="person_search", title=_('Keine passiven Kandidaten'),
-                            description=_('Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier.'))
-            for r in passive:
-                with ui.card().classes(C.CARD_HOVER + " w-full py-2 px-3"):
-                    # Passiv = kein Bewerbungsstatus -> nur Pseudonym (employer-portal-fields.md „Kandidaten-Sichtbarkeit“)
-                    ui.label(anzeige_name(r["name"], r["id"], None)).classes("font-medium")
-                    ui.label(r["skills"] or "").classes(C.SMALL + " truncate")
-                    ui.button(_('Im Kandidaten-Profil öffnen'), on_click=lambda c=r["id"]: ui.navigate.to(f"/employer/kandidaten?kandidat={c}")).props("flat dense")
+            # A) Filter über der Kartenliste — jede Auswahl rendert die Liste neu.
+            # Schwellen (90/75/60/40 Score; 2/5/10 Jahre) = Design-Entscheidung
+            # dieser Iteration, keine externe Quelle.
+            _pf_job_opts = {"alle": _('Alle Stellen')}
+            for _pf_pj in _pf_jobs:
+                _pf_job_opts[str(_pf_pj[0])] = _pf_pj[1] or str(_pf_pj[0])
+            with ui.row().classes("w-full gap-3 items-end"):
+                _pf_job = ui.select(
+                    options=_pf_job_opts, value="alle", label=_('Stelle'),
+                    on_change=lambda e: _pf_view.refresh()).classes("w-56")
+                _pf_score = ui.select(
+                    options={0: _('Alle'), 90: "90+", 75: "75+", 60: "60+", 40: "40+"},
+                    value=0, label=_('Score'),
+                    on_change=lambda e: _pf_view.refresh()).classes("w-40")
+                _pf_exp = ui.select(
+                    options={0: _('Alle'), 2: _('ab 2 Jahren'), 5: _('ab 5 Jahren'),
+                             10: _('ab 10 Jahren')},
+                    value=0, label=_('Erfahrung'),
+                    on_change=lambda e: _pf_view.refresh()).classes("w-44")
+                _pf_lang = ui.select(
+                    options={"alle": _('Alle Sprachen'), "de": _('Deutsch'),
+                             "en": _('Englisch')},
+                    value="alle", label=_('Sprache'),
+                    on_change=lambda e: _pf_view.refresh()).classes("w-44")
+
+            def _pf_berechne() -> list[dict]:
+                """Passiv-Ergebnis unter den Filtern — Gate 1:1 wie `_passive_best`.
+
+                Pro Kandidat: Job-Menge (alle aktiven Jobs oder die gewaehlte Stelle),
+                je Job `logic.berechne_match_score` mit dem Dict-Aufbau des Passiv-Blocks;
+                Skip ohne ≥1 Must-Have (`matches`) und bei <50 % der geforderten
+                Erfahrung; bester Treffer je Kandidat. OHNE Treffer ueber das Gate
+                erscheint der Kandidat nicht (auch wenn die Filter passen).
+                Danach Score-/Erfahrungs-/Sprach-Filter, Ergebnis Score DESC.
+                Nur lesende Verarbeitung — kein UPDATE/INSERT, logic.py unveraendert.
+                """
+                _pf_gewaehlt = str(_pf_job.value or "alle")
+                _pf_menge = _pf_jobs if _pf_gewaehlt == "alle" else [
+                    _pf_pj for _pf_pj in _pf_jobs if str(_pf_pj[0]) == _pf_gewaehlt]
+                _pf_min_score = int(_pf_score.value or 0)
+                _pf_min_exp = int(_pf_exp.value or 0)
+                _pf_sprache = str(_pf_lang.value or "alle")
+                _pf_erg: list[dict] = []
+                for _pf_pk in _pf_pool:
+                    if _pf_pk[0] in _pf_app_ids:
+                        continue
+                    _pf_best = None
+                    for _pf_pj in _pf_menge:
+                        try:
+                            _pf_r = logic.berechne_match_score(
+                                {"hard_skills": _pf_pk[2], "soft_skills": _pf_pk[3],
+                                 "berufserfahrung_jahre": _pf_pk[4], "abschluss": _pf_pk[5],
+                                 "deutsch": _pf_pk[6], "englisch": _pf_pk[7],
+                                 "standort": _pf_pk[8], "lebenslauf_text": _pf_pk[9] or ""},
+                                {"hard_skills": _pf_pj[2], "soft_skills": _pf_pj[3],
+                                 "berufserfahrung_jahre": _pf_pj[4],
+                                 "deutsch_level": _pf_pj[5], "englisch_level": _pf_pj[6],
+                                 "standort": _pf_pj[7], "stellentyp": _pf_pj[8],
+                                 "branche": _pf_pj[9]})
+                        except Exception:
+                            continue
+                        if not _pf_r["matches"]:
+                            continue
+                        if _pf_pj[4] and (_pf_pk[4] or 0) < _pf_pj[4] * 0.5:
+                            continue
+                        if _pf_best is None or _pf_r["total"] > _pf_best[0]:
+                            _pf_best = (_pf_r["total"], _pf_pj[1] or "")
+                    if _pf_best is None:
+                        continue
+                    if _pf_min_score and _pf_best[0] < _pf_min_score:
+                        continue
+                    if _pf_min_exp and (_pf_pk[4] or 0) < _pf_min_exp:
+                        continue
+                    if _pf_sprache == "de" and not str(_pf_pk[6] or "").strip():
+                        continue
+                    if _pf_sprache == "en" and not str(_pf_pk[7] or "").strip():
+                        continue
+                    _pf_erg.append({
+                        "id": _pf_pk[0], "name": _pf_pk[1] or "",
+                        "skills": _pf_pk[2] or "", "exp": _pf_pk[4] or 0,
+                        "de": _pf_pk[6] or "", "en": _pf_pk[7] or "",
+                        "ort": _pf_pk[8] or "", "titel": _pf_best[1],
+                        "total": _pf_best[0],
+                    })
+                return sorted(_pf_erg, key=lambda _pf_t: _pf_t["total"], reverse=True)
+
+            @ui.refreshable
+            def _pf_view():
+                _pf_liste = _pf_berechne()
+                if not _pf_liste:
+                    empty_state(icon="person_search", title=_('Keine passiven Kandidaten'),
+                                description=_('Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier.'))
+                    return
+                for _pf_karte in _pf_liste:
+                    with ui.card().classes(C.CARD_HOVER + " w-full py-2 px-3"):
+                        # Passiv = kein Bewerbungsstatus -> nur Pseudonym (dsgvo-gate.md,
+                        # employer-portal-fields.md „Kandidaten-Sichtbarkeit“); keine
+                        # Kontaktdaten, keine Einladen-/Einstellen-Aktionen.
+                        ui.label(anzeige_name(_pf_karte["name"], _pf_karte["id"], None)).classes("font-medium")
+                        ui.label(_pf_karte["titel"]).classes(C.SMALL + " truncate")
+                        ui.label(_pf_karte["skills"]).classes(C.SMALL + " truncate")
+                        ui.label(_('Erfahrung: {0} Jahre').format(_pf_karte["exp"])).classes(C.SMALL)
+                        ui.label(_('DE {0} · EN {1}').format(_pf_karte["de"] or '–',
+                                                            _pf_karte["en"] or '–')).classes(C.SMALL)
+                        ui.label(_('Standort: {0}').format(_pf_karte["ort"] or '–')).classes(C.SMALL)
+                        with ui.row().classes("items-center gap-3 w-full"):
+                            ui.label(_('Passung')).classes(C.SMALL)
+                            score_bar(_pf_karte["total"], show_label=False)
+                            ui.label("{0}/100".format(_pf_karte["total"])).classes(C.SMALL + " font-bold")
+                        ui.button(_('Im Kandidaten-Profil öffnen'),
+                                  on_click=lambda c=_pf_karte["id"]: ui.navigate.to(f"/employer/kandidaten?kandidat={c}")
+                                  ).props("flat dense")
+            _pf_view()
 
 
 def _page_mehr(s: dict) -> None:

@@ -114,24 +114,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T16:53:04+00:00",
+    "at": "2026-10-16T19:15:13+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "ebadf825b38cdecc1bc8e2499548ba13f5cd7684",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "6895a83ca92eb1c9ef5085a5b019c060b908416c",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "19a900a4b0d693554d49f8821330b8bfc2936f34",
-      "webui/locales/de/LC_MESSAGES/messages.po": "b1d595ea2b9b9a8e65b8e59099cadfae44293d9e",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "d4118817bfec5995e6007ed6ce3fed97026f9944",
-      "webui/locales/en/LC_MESSAGES/messages.po": "165b59facec2736e40229811be836c8df488c000",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "408f64c5d5d1a30c83e7e6725b5098f4eb4d7328",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "3f76131005b8130d155dab09e8dc06c8712c88d3"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "8dc1041a3b26c5e990b30fbc9bad333fae13d8d0",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "78464748848a0e05d96fbcc922ba8d045edc95ff",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "74f58ad404920d5449cc192b62171d16ed1ec7d0",
+      "webui/locales/de/LC_MESSAGES/messages.po": "f9c034268f52f20f188d83cd12cc013f146dd210",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "c5c3fa459e4431eec439b467c8254509254da053",
+      "webui/locales/en/LC_MESSAGES/messages.po": "473b361df9f613c7f9d28439558d10a7db0537e1",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "e2b7d7fb32acb9887f64d0f9a60b06e6153660ca",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "fc42c86ed71b1521db701f998024508b1c6e7f04"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "a6f2fba32239e1dab41d65b9a2b30f1eade17ba5",
-    "note": "Claims 140 gelesen 16.10.2026 (staledocs 2.1.0): msgid Match-Seite offnen x4 in .po + .mo gebaut, pybabel compile rc=0, Kataloggleichheit unveraendert erfuellt; Beleg-Tokens .po + .mo"
+    "note": "Claims 140 gelesen 16.10.2026 (staledocs 2.1.0): 8 neue msgids x4 (Alle Stellen, Alle Sprachen, ab 2|5|10 Jahren, Erfahrung: {0} Jahre, DE {0} - EN {1}, Standort: {0}); pybabel compile + checks.py i18n rc=0 | Beleg-Tokens .format + .github/workflows/ci.yml"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

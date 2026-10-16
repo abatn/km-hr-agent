@@ -39,14 +39,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T16:51:19+00:00",
+    "at": "2026-10-16T19:15:09+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "80ebd898ebdd883dfabc7d20fbe1ed20b5153d75",
-    "note": "Claims 39 gelesen 16.10.2026 (staledocs 2.1.0): _notify_statuswechsel-Call-Sites bleiben 5 (test_r35 gruen), create_invitation-Payload identisch (termin_* Defaults morgen 10:00/30)"
+    "note": "Claims 39 gelesen 16.10.2026 (staledocs 2.1.0): kein neuer Schreibpfad; _notify_statuswechsel/Call-Sites unveraendert | Beleg-Tokens ALLOWED_TRANSITIONS + _active_app_ids"
   },
   "doc": "knowledge/lifecycle/status-automation.md",
   "schema": 1

@@ -3464,6 +3464,30 @@ msgstr "Les candidats avec CV sans candidature apparaissent ici."
 msgid "Im Kandidaten-Profil öffnen"
 msgstr "Ouvrir le profil du candidat"
 
+msgid "Alle Stellen"
+msgstr "Toutes les offres"
+
+msgid "Alle Sprachen"
+msgstr "Toutes les langues"
+
+msgid "ab 2 Jahren"
+msgstr "dès 2 ans"
+
+msgid "ab 5 Jahren"
+msgstr "dès 5 ans"
+
+msgid "ab 10 Jahren"
+msgstr "dès 10 ans"
+
+msgid "Erfahrung: {0} Jahre"
+msgstr "Expérience : {0} ans"
+
+msgid "DE {0} · EN {1}"
+msgstr "DE {0} · EN {1}"
+
+msgid "Standort: {0}"
+msgstr "Lieu : {0}"
+
 msgid "Mehr"
 msgstr "Plus"
 

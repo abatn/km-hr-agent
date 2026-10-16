@@ -11,15 +11,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-16T16:53:05+00:00",
+    "at": "2026-10-16T19:15:14+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
-    "note": "Claims 12 gelesen 16.10.2026 (staledocs 2.1.0): Bewerbungsstatus-Flow unveraendert; UX-Korrektur nur im Einladungs-Dialog; Beleg-Tokens knowledge/lifecycle/application-status.md + application_status_history"
+    "note": "Claims 12 gelesen 16.10.2026 (staledocs 2.1.0): keine Statuslogik-Aenderung; Passiv-Filter nur lesende Score-Darstellung im Board | Beleg-Tokens _BOARD_COLUMNS + application_status_history"
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

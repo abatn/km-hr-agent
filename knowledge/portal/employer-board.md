@@ -63,6 +63,24 @@ Das Board hat die Reiter **Aktiv** und **Passiv**.
 
 **Offen (eigener Befund, nicht Teil dieses Fixes):** Die Match-Seite (`_page_match`, Liste mit `name or _("Unbekannt")`) und die Feedback-Seite (`_page_feedback`, gleiche Ausgabe) zeigen Klarnamen unabhängig vom Status. Das muss separat entschieden und behoben werden.
 
+### Passiv-Filter (Specschild, 16.10.2026)
+
+**MD-first (Lab-Schritt 2):** Diese Spez steht **vor** dem Code-Edit der Iteration „Hiring-Board Passiv-Filter" — Zielcode `webui/pages/employer.py`, Reiter **Passiv** in `_page_board`. Stand 16.10.2026: weder die `_pf_*`-Marker noch `tests/e2e_board_passiv_filter.py` existieren (geprüft 16.10.2026 → `grep -n "_pf_" webui/pages/employer.py` = 0 Treffer); das Specschild ist damit die Soll-Spezifikation, der Build-Nachweis folgt.
+
+- **Stellen-Wähler + Default:** ein Stellen-Wähler mit Default **„Alle Stellen"** = **bester Job je Kandidat (Score DESC)** — 1:1-Parität des Passiv-Blocks der Match-Seite (Codemark `_passive_best`, `knowledge/portal/matching-filter.md` Abschnitt (g)). Bei konkreter Stellen-Wahl wird derselbe Job als Score-Kontext je Kandidat genutzt.
+- **Filter-Sets und Semantik:**
+  - **Mindest-Score:** Bänder **90 / 75 / 60 / 40** plus **„Alle"** (Default „Alle"). Band = Mindestwert: sichtbar bleibt Score ≥ Band.
+  - **Mindest-Erfahrung:** Bänder **2 / 5 / 10 Jahre** plus **„Alle"** (Default „Alle").
+  - **Sprache:** **Alle / DE / EN** — **DE** = Kandidat hat ein echtes Deutsch-Level **nicht NULL**, **EN** analog (echtes Englisch-Level nicht NULL).
+  - Filter kombinieren UND-förmig (alle gesetzten Filter müssen erfüllt sein). Filterung passiert **nur auf der Gate-Menge**: Filter ⊆ Menge ohne Filter.
+- **Gate = nur echte Treffer (Parität):** ≥ 1 Must-Have-Skill-Treffer **und** ≥ 50 % der geforderten Erfahrung — **1:1-Parität** zu `_passive_best` / `knowledge/portal/matching-filter.md` Abschnitt (g) (Regeltext dort, hier nicht kopiert). **Nicht-Treffer werden auch bei gesetzten Filtern verworfen** — ein Score-Band allein zieht keinen Kandidaten über das Gate.
+- **Score-Anzeige je Karte:** „Passung X/100". Score wird über **`logic.berechne_match_score` wiederverwendet** — kein Zweitschreibpfad, **kein Schema-Change**, `webui/logic.py` unangetastet, **rein lesend**.
+- **Karteninhalt:** Pseudonym **`anzeige_name(name, id, None)`** + Skills + Erfahrung + Sprachen + Standort + Score. **DSGVO-Vermerk:** Passive bleiben **immer Pseudonym** — kein Klarname, keine Kontaktdaten, keine Schreibaktion (Pseudonym-Regel = DSGVO-Regel oben, Quelle `knowledge/portal/employer-portal-fields.md`, Abschnitte „Kandidaten-Sichtbarkeit“/„Bewerber-Sichtbarkeit“; DSGVO-Spec `knowledge/legal/dsgvo-gate.md`); keine Lebenslauf-Datei (Dokumenten-Gate erst ab Status `eingeladen`, `knowledge/legal/dsgvo-gate.md`).
+- **Neue Code-Marker:** `_pf_jobs` (Stellen-Wähler-Daten), `_pf_pool` (Passiv-Pool), `_pf_state` (Filterzustand), `_pf_view` (gerenderte Sicht) — Soll-Nennung, Umsetzung 16.10.2026.
+- **E2E-Nachweis:** `tests/e2e_board_passiv_filter.py` (Gate-Negativ, Score-DESC relativ, Filter ⊆ Menge ohne Filter, residue 0 + sha256 gleich) — **Lauf folgt in S5** (Nachweis folgt in S5; keine Messwerte hier).
+
+**Kennzeichnung nach Lab-Schritt 1 — Design-Entscheidungen 16.10.2026 (Nutzerbefehl, keine externe Quelle):** (1) Stellen-Wähler-Default **„Alle Stellen"** = bester Job je Kandidat (Score DESC), (2) Score-Bänder **90 / 75 / 60 / 40**, (3) Erfahrungs-Bänder **2 / 5 / 10 Jahre**, (4) Sprach-Semantik **DE/EN = Level nicht NULL**. Für diese vier Werte gibt es **kein Gesetz, keine Studie, keine offizielle Dokumentation** — sie sind ausdrücklich als Design-Entscheidung gekennzeichnet, nicht als belegte Norm. Die Gate-Regel (≥ 1 Must-Have + ≥ 50 %) ist dagegen die bestehende Projektregel aus `matching-filter.md` Abschnitt (g).
+
 ## 6. Navigation
 
 - Sidebar: **5 Punkte** — Dashboard · Stellenangebote · Hiring-Board · Einladungen · Mehr (Stand 16.10.2026; Codemarke: `SIDEBAR_KEYS`, `_menu_items_emp`).

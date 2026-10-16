@@ -35,14 +35,14 @@
       "webui/pages/employer.py",
       "webui/pages/login.py"
     ],
-    "at": "2026-10-16T16:51:21+00:00",
+    "at": "2026-10-16T19:15:11+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
-    "note": "Claims 47 gelesen 16.10.2026 (staledocs 2.1.0): Filter/Scoring unveraendert (berechne_match_score, Passung X/100 + score_bar auf der Einladungen-Karte)"
+    "note": "Claims 47 gelesen 16.10.2026 (staledocs 2.1.0): Gate-Regel (g) 1:1 in _pf_berechne uebernommen (>=1 Must-Have + >=50%); berechne_match_score wiederverwendet, logic.py unveraendert | Beleg-Tokens _matched + _page_kandidaten"
   },
   "doc": "knowledge/portal/matching-filter.md",
   "schema": 1

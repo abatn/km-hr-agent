@@ -26,14 +26,14 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-16T16:53:02+00:00",
+    "at": "2026-10-16T19:15:09+00:00",
     "code_blobs": {
       "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "14c928d0207b48a2c8faa285ec5ac7d014bf612e",
-    "note": "Claims 28 gelesen 16.10.2026 (staledocs 2.1.0): Statusmaschine unveraendert; _ein_send_invite schreibt weiter application_status_history und baut create_invitation; Beleg-Tokens application_status_history + create_invitation"
+    "note": "Claims 28 gelesen 16.10.2026 (staledocs 2.1.0): Passiv-Filter rein lesend; Statusmaschine/ALLOWED_TRANSITIONS unberuehrt | Beleg-Tokens _maybe_gatekeeper + agent_tasks"
   },
   "doc": "knowledge/lifecycle/application-status.md",
   "schema": 1

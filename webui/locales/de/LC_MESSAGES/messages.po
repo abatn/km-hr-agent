@@ -3468,6 +3468,30 @@ msgstr "Kandidaten mit Lebenslauf ohne Bewerbung erscheinen hier."
 msgid "Im Kandidaten-Profil öffnen"
 msgstr "Im Kandidaten-Profil öffnen"
 
+msgid "Alle Stellen"
+msgstr "Alle Stellen"
+
+msgid "Alle Sprachen"
+msgstr "Alle Sprachen"
+
+msgid "ab 2 Jahren"
+msgstr "ab 2 Jahren"
+
+msgid "ab 5 Jahren"
+msgstr "ab 5 Jahren"
+
+msgid "ab 10 Jahren"
+msgstr "ab 10 Jahren"
+
+msgid "Erfahrung: {0} Jahre"
+msgstr "Erfahrung: {0} Jahre"
+
+msgid "DE {0} · EN {1}"
+msgstr "DE {0} · EN {1}"
+
+msgid "Standort: {0}"
+msgstr "Standort: {0}"
+
 msgid "Mehr"
 msgstr "Mehr"
 

@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-16T16:53:06+00:00",
+    "at": "2026-10-16T19:15:16+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
-    "note": "Claims 29 gelesen 16.10.2026 (staledocs 2.1.0): Dokumenten-Gate unberuehrt, kein Pfad-Overlap mit dem Einladungs-Dialog; Beleg-Tokens agent_tasks + candidate_id"
+    "note": "Claims 29 gelesen 16.10.2026 (staledocs 2.1.0): Dokumenten-Gate unberuehrt; Passiv-Filter ohne Dateizugriff | Beleg-Tokens MANUELLE_PRIEFUNG_ERFORDERLICH + agent-automation.md"
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

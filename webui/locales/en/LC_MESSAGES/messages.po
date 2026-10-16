@@ -3464,6 +3464,30 @@ msgstr "Candidates with a CV but no application appear here."
 msgid "Im Kandidaten-Profil öffnen"
 msgstr "Open candidate profile"
 
+msgid "Alle Stellen"
+msgstr "All jobs"
+
+msgid "Alle Sprachen"
+msgstr "All languages"
+
+msgid "ab 2 Jahren"
+msgstr "from 2 years"
+
+msgid "ab 5 Jahren"
+msgstr "from 5 years"
+
+msgid "ab 10 Jahren"
+msgstr "from 10 years"
+
+msgid "Erfahrung: {0} Jahre"
+msgstr "Experience: {0} years"
+
+msgid "DE {0} · EN {1}"
+msgstr "DE {0} · EN {1}"
+
+msgid "Standort: {0}"
+msgstr "Location: {0}"
+
 msgid "Mehr"
 msgstr "More"
 

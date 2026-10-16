@@ -32,6 +32,7 @@
       "e2e_apply_dialog.py",
       "e2e_apply_dialog_multi",
       "e2e_apply_dialog_multi.py",
+      "e2e_board_passiv_filter.py",
       "e2e_candidate_detail*.py",
       "e2e_candidate_ux.py",
       "e2e_einladen_flow.py",
@@ -96,7 +97,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-16T16:51:23+00:00",
+    "at": "2026-10-16T19:15:13+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -108,6 +109,7 @@
       "tests/e2e_applicants_first.py": "dfa8fd103f896620df927201e4da1ed30b182e67",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
       "tests/e2e_apply_dialog_multi.py": "c852947278c20532062dd47bc7b2879df323641c",
+      "tests/e2e_board_passiv_filter.py": "78ce0fe668e6a89c94c61e3b1662dd913c0bd835",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
       "tests/e2e_candidate_detail.py": "9dc7396d8bf7889b12b4fe7f55f0f7ee3d77229a",
       "tests/e2e_candidate_detail2.py": "f9b755ed0cdf7d72c133ec27cc1e0fb1cecaf1f1",
@@ -211,9 +213,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
-    "doc_blob": "3c2a6a8b70cead431fe8d260a787e3f479da550c",
-    "note": "Claims 141 gelesen 16.10.2026 (staledocs 2.1.0): Bestand 51/49 unveraendert (tests/e2e_einladen_flow.py nur angepasst, keine neue Datei); KMHR_E2E_SEED=1-Paritaet belegt: e2e_transition_guard rc=0 Seed-Modus (Log e2e-iso-20261016-184430-seed), Live-Modus-Fail = vorbestehender Daten-Drift"
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "doc_blob": "895e9edf9adf0b890bae0e128405bf39ee5fc210",
+    "note": "Claims 143 gelesen 16.10.2026 (staledocs 2.1.0): Bestand 52/50 nachgezogen (+e2e_board_passiv_filter.py); Guard-Seed-Modus rc=0 belegt (Log e2e-iso-20261016-210446) | Beleg-Tokens .backup + .env"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

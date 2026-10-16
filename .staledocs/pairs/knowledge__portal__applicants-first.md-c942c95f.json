@@ -22,13 +22,13 @@
       "webui/db.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T16:53:03+00:00",
+    "at": "2026-10-16T19:15:10+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
-    "note": "Claims 32 gelesen 16.10.2026 (staledocs 2.1.0): Einladung fliesst weiter ueber _ein_send_invite; Match-Seiten-Mechanik unveraendert; Beleg-Tokens _page_match + app.py"
+    "note": "Claims 32 gelesen 16.10.2026 (staledocs 2.1.0): Bewerber-Ausschluss (_pf_app_ids, status != zurueckgezogen) wie Passiv-Block; Bewerber-Karten unberuehrt | Beleg-Tokens _page_feedback + _page_kandidaten"
   },
   "doc": "knowledge/portal/applicants-first.md",
   "schema": 1

@@ -3464,6 +3464,30 @@ msgstr "يظهر هنا المرشحون الذين لديهم سيرة ذاتي
 msgid "Im Kandidaten-Profil öffnen"
 msgstr "فتح ملف المرشح"
 
+msgid "Alle Stellen"
+msgstr "جميع الوظائف"
+
+msgid "Alle Sprachen"
+msgstr "جميع اللغات"
+
+msgid "ab 2 Jahren"
+msgstr "من سنتين"
+
+msgid "ab 5 Jahren"
+msgstr "من 5 سنوات"
+
+msgid "ab 10 Jahren"
+msgstr "من 10 سنوات"
+
+msgid "Erfahrung: {0} Jahre"
+msgstr "الخبرة: {0} سنة"
+
+msgid "DE {0} · EN {1}"
+msgstr "DE {0} · EN {1}"
+
+msgid "Standort: {0}"
+msgstr "الموقع: {0}"
+
 msgid "Mehr"
 msgstr "المزيد"
 

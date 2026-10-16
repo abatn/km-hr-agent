@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T16:51:18+00:00",
+    "at": "2026-10-16T19:15:08+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "8f702bf1e63286a645b6b8e1556e87c8616a89bf"
+      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Claims 28 gelesen 16.10.2026 (staledocs 2.1.0): DSGVO-Pseudonyme unveraendert: anzeige_name(k_name, k_id, a_status) Literal-Count 3, Dokumenten-Gate unberuehrt; employer.py-Drift = Einladungs-Dialog"
+    "note": "Claims 28 gelesen 16.10.2026 (staledocs 2.1.0): Passive bleiben Pseudonym (anzeige_name(name, id, None)), keine Datei-Freigabe, Gate unveraendert | Beleg-Tokens @ui.refreshable + PAGE_MAP"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1
