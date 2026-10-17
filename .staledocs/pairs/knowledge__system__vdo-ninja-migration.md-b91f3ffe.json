@@ -52,15 +52,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-15T18:08:23+00:00",
+    "at": "2026-10-17T11:33:47+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
+      "webui/components.py": "816ca7f835d9ff70f1865dd21900b137a006e88d",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
-    "note": "Claims 43 gelesen 15.10.2026: Pfad-Claims 17/18 vorhanden, fehlt: jitsi-mcp-server/; Codemark-Treffer 13/15 in Code (u.a. &record, _dokumente_section, agent_tasks.result_json); staledocs 2.1.0"
+    "note": "Claims 43 gelesen 17.10.2026 (staledocs 2.1.0): Drift = components.py geaendert (Drawer-Prop); Video-Prescreen/VDO-Anker unberuehrt | Beleg-Tokens AGENTS.md + README.md"
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

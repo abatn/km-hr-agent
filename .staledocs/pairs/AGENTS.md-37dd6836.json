@@ -129,7 +129,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-16T19:15:06+00:00",
+    "at": "2026-10-17T11:33:42+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -191,7 +191,7 @@
       "tests/e2e_mentoring.py": "51a00261054eff3f97993fe421f09089cde5ca00",
       "tests/e2e_na1_queue_filter.py": "bcdee7c957e2c6b16b17effa77b9650f4045d037",
       "tests/e2e_nm2_expansion_persist.py": "c516cdbf0e32ed7385d67a86ecfab368fec71b93",
-      "tests/e2e_notifications_flow.py": "b86ede399419908b5a292b776e44c8b4324c22d6",
+      "tests/e2e_notifications_flow.py": "4e578a4ee3bf877c8e5534966bdff3072ec0525d",
       "tests/e2e_p1_3_onboarding_action.py": "2a955a0f472d3395c0accf65ad7be66b55c04896",
       "tests/e2e_p2_8_pseudonym.py": "5ad3e54690914b44073f77c98b0f8a1e5cd3bdab",
       "tests/e2e_passive_on_match.py": "c8ffbe05c73e264df54f70ab9ded75dd32fe3654",
@@ -265,7 +265,7 @@
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc",
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
-      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
+      "webui/components.py": "816ca7f835d9ff70f1865dd21900b137a006e88d",
       "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
@@ -292,9 +292,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "3161659964e1dc4a8b4dae4107c8d63d09d80200",
-    "note": "Claims 308 gelesen 16.10.2026 (staledocs 2.1.0): E2E-Bestand 52/50 nachgezogen (+e2e_board_passiv_filter.py); Marker-Baseline _pf_* gruen (77 W\u00e4chter-Tests); Pytest-Spanne 477-484 unveraendert | Beleg-Tokens .bak + .env"
+    "note": "Claims 308 gelesen 17.10.2026 (staledocs 2.1.0): kein Inhaltswechsel: Drift = notifications_drawer value=False in webui/components.py + angepasste Testdatei e2e_notifications_flow.py (Glocken-Klick); Pflichtkette/Gates unveraendert | Beleg-Tokens .bak + .env"
   },
   "doc": "AGENTS.md",
   "schema": 1

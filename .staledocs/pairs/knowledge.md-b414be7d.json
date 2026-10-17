@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-16T19:15:08+00:00",
+    "at": "2026-10-17T11:33:44+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -185,7 +185,7 @@
       "knowledge/lifecycle/referenz-sphinxats.md": "0b37491b8760a9ff40d57095ba28183f42df1178",
       "knowledge/lifecycle/relocation.md": "5281075d2db317dc3e4520b6a8f0ade6d622a55a",
       "knowledge/lifecycle/status-automation.md": "80ebd898ebdd883dfabc7d20fbe1ed20b5153d75",
-      "knowledge/notification-log.md": "72915b1a5c9c85256fea04f18eea290a25ce0571",
+      "knowledge/notification-log.md": "7301c1a609adbeb401c9ee293f305c998543efd2",
       "knowledge/onboarding-default.md": "3ce6e37a5ecced6eb7d9314979a1dab80e304658",
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "749082a7b16a1dd36ee0d048869fa79c4505c8e6",
@@ -224,9 +224,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "f97648e233c7e785141bf4e2b32dc51f8f1fdf63",
-    "note": "Claims 344 gelesen 16.10.2026 (staledocs 2.1.0): Drift employer-board.md S5 (Passiv-Filter-Specschild) + neue E2E-Datei; Wissensstand konsistent | Beleg-Tokens .ar + .bak"
+    "note": "Claims 344 gelesen 17.10.2026 (staledocs 2.1.0): Wissensindex; Drift durch geaenderte Code-/Testdatei (components.py, e2e_notifications_flow.py), kein neuer Fakt | Beleg-Tokens .ar + .bak"
   },
   "doc": "knowledge.md",
   "schema": 1

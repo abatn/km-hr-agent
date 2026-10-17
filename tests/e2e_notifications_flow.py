@@ -259,19 +259,35 @@ def main() -> int:
                 else:
                     fehler.append(f"B2 Badge zeigt {vorher!r}, erwartet >= 1")
 
-                # Drawer oeffnen (Header-Click wird vom Badge-Overlay abgefangen;
-                # Drawer-Root hat nicht .q-drawer -> JS-Fallback, siehe Diagnose)
+                # Drawer oeffnen: ECHTER Glocken-Klick (17.10.2026, nach Fix
+                # ui.right_drawer(value=False) in notifications_drawer). Vorher
+                # hing dieser Test an der Default-offen-UX; der fruehere JS-Fallback
+                # setzte die in Quasar NICHT existierende Klasse 'q-drawer--open'
+                # (No-op, siehe knowledge/notification-log.md). JS-Klick umgeht das
+                # Badge-Overlay auf dem Header-Button.
                 page.evaluate("""() => {
-                    const d = document.querySelector('.q-drawer--right');
-                    if (d && !d.classList.contains('q-drawer--open')) d.classList.add('q-drawer--open');
+                    const b = [...document.querySelectorAll('header button')]
+                        .find(x => ((x.querySelector('i') || {}).textContent || '').trim() === 'notifications');
+                    if (b) b.click();
                 }""")
-                page.wait_for_timeout(400)
+                page.wait_for_timeout(1200)
+                # B3 (verschaerft): Drawer MUSS jetzt sichtbar sein — geometrisch
+                # (getBoundingClientRect), nicht per Fake-Klasse.
+                _drawer_offen = page.evaluate(
+                    """() => {
+                        const d = document.querySelector('.q-drawer--right');
+                        if (!d) return false;
+                        const r = d.getBoundingClientRect();
+                        return r.width > 0 && r.left < (window.innerWidth - 4) && r.right > 4;
+                    }"""
+                )
                 drawer = page.locator(".q-drawer").filter(has_text="Benachrichtigungen")
                 drawer_text = (drawer.first.text_content() or "")
-                if "R35 E2E Test-Benachrichtigung" in drawer_text:
-                    print("B3 Drawer offen, Inhalt zeigt die neue Benachrichtigung")
+                if _drawer_offen and "R35 E2E Test-Benachrichtigung" in drawer_text:
+                    print("B3 Drawer nach Glocken-Klick offen, Inhalt zeigt die neue Benachrichtigung")
                 else:
-                    fehler.append(f"B3 Drawer-Inhalt ohne Benachrichtigung: {drawer_text[:200]!r}")
+                    fehler.append(f"B3 Drawer nicht offen/mit Benachrichtigung "
+                                  f"(offen={_drawer_offen}): {drawer_text[:200]!r}")
 
                 page.get_by_text("Alle als gelesen markieren").first.click(timeout=10000)
                 page.wait_for_timeout(2000)

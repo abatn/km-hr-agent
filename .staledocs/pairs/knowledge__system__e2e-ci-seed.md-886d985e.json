@@ -97,7 +97,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-16T19:15:13+00:00",
+    "at": "2026-10-17T11:33:46+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
@@ -140,7 +140,7 @@
       "tests/e2e_mentoring.py": "51a00261054eff3f97993fe421f09089cde5ca00",
       "tests/e2e_na1_queue_filter.py": "bcdee7c957e2c6b16b17effa77b9650f4045d037",
       "tests/e2e_nm2_expansion_persist.py": "c516cdbf0e32ed7385d67a86ecfab368fec71b93",
-      "tests/e2e_notifications_flow.py": "b86ede399419908b5a292b776e44c8b4324c22d6",
+      "tests/e2e_notifications_flow.py": "4e578a4ee3bf877c8e5534966bdff3072ec0525d",
       "tests/e2e_p1_3_onboarding_action.py": "2a955a0f472d3395c0accf65ad7be66b55c04896",
       "tests/e2e_p2_8_pseudonym.py": "5ad3e54690914b44073f77c98b0f8a1e5cd3bdab",
       "tests/e2e_passive_on_match.py": "c8ffbe05c73e264df54f70ab9ded75dd32fe3654",
@@ -213,9 +213,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "895e9edf9adf0b890bae0e128405bf39ee5fc210",
-    "note": "Claims 143 gelesen 16.10.2026 (staledocs 2.1.0): Bestand 52/50 nachgezogen (+e2e_board_passiv_filter.py); Guard-Seed-Modus rc=0 belegt (Log e2e-iso-20261016-210446) | Beleg-Tokens .backup + .env"
+    "note": "Claims 143 gelesen 17.10.2026 (staledocs 2.1.0): Drift = e2e_notifications_flow.py angepasst (echter Glocken-Klick + Sichtbarkeitspruefung statt Fake-Klasse q-drawer--open); Bestand 52/50 unveraendert | Beleg-Tokens .backup + .env"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

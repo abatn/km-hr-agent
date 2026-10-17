@@ -50,7 +50,7 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-16T19:15:07+00:00",
+    "at": "2026-10-17T11:33:43+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
@@ -68,7 +68,7 @@
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
-      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
+      "webui/components.py": "816ca7f835d9ff70f1865dd21900b137a006e88d",
       "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
@@ -95,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "Claims 111 gelesen 16.10.2026 (staledocs 2.1.0): Drift = Passiv-Filter in _page_board (_pf_*) + neue Testdatei e2e_board_passiv_filter.py; keine inhaltliche Aenderung noetig | Beleg-Tokens .env-email + agent_tasks"
+    "note": "Claims 111 gelesen 17.10.2026 (staledocs 2.1.0): Drift = webui/components.py notifications_drawer (ui.right_drawer value=False, gemessen 17.10.) + Testdatei; Instruktionsinhalt unveraendert | Beleg-Tokens .env-email + agent_tasks"
   },
   "doc": "instructions.md",
   "schema": 1

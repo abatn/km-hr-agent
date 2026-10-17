@@ -96,14 +96,14 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-15T18:08:24+00:00",
+    "at": "2026-10-17T11:33:48+00:00",
     "code_blobs": {
-      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
+      "webui/components.py": "816ca7f835d9ff70f1865dd21900b137a006e88d",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "c9aaaec904701c999397e852701a3a27b25b5ce5",
-    "note": "Claims 116 gelesen 15.10.2026: Pfad-Claims 14/14 vorhanden; Codemark-Treffer 6/15 in Code (u.a. .classes, .props, .style); staledocs 2.1.0"
+    "note": "Claims 116 gelesen 17.10.2026 (staledocs 2.1.0): shell()-Drawer-Verhalten dokumentiert: rechter Notify-Drawer value=False (zu nach Login, nur per Glocke); uebrige Styles/Masse unveraendert | Beleg-Tokens .classes + .glass"
   },
   "doc": "knowledge/ui-design-system.md",
   "schema": 1

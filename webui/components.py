@@ -1197,7 +1197,14 @@ def notifications_drawer(user_id: int, role: str,
     """
     from webui import db
 
-    drawer = ui.right_drawer(fixed=False).props("bordered").classes("w-80")
+    # 17.10.2026 (Ursache gemessen, Messreihe /tmp/opencode/bell-*.png 10/10):
+    # OHNE `value` ist der NiceGUI-Default None -> Quasar `show-if-above` ->
+    # der rechte Drawer stand ab Layoutbreite >= 1024 px AUTOMATISCH offen
+    # (Breakpoint-Grenze 1000 zu / 1025 offen). Es gibt kein aktives show()/
+    # toggle() im Code. Deshalb explizit geschlossen: value=False.
+    # Sichtbar bleibt die Glocke + Badge (`badge.set_visibility(unread > 0)`);
+    # geoeffnet wird nur per Glocken-Klick (`_toggle_drawer`).
+    drawer = ui.right_drawer(value=False, fixed=False).props("bordered").classes("w-80")
     with drawer:
         ui.label(_('Benachrichtigungen')).classes("text-lg font-bold mb-4")
 

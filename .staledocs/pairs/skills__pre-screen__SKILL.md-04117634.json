@@ -26,15 +26,15 @@
       "webui/components.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-15T18:08:26+00:00",
+    "at": "2026-10-17T11:33:48+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/components.py": "9b1b418d4b2f3721e0a11a0842a59983b80e01c2",
+      "webui/components.py": "816ca7f835d9ff70f1865dd21900b137a006e88d",
       "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
     "doc_blob": "97fa40ff230048e7d68e00da9714dad93d4907c0",
-    "note": "Claims 27 gelesen 15.10.2026: Pfad-Claims 7/7 vorhanden; Codemark-Treffer 12/15 in Code (u.a. &record, _tab_onboarding, candidate_name); staledocs 2.1.0"
+    "note": "Claims 27 gelesen 17.10.2026 (staledocs 2.1.0): Drift = webui/components.py (Drawer-Prop); Prescreen-Inhalt unveraendert | Beleg-Tokens _tab_onboarding + app.py"
   },
   "doc": "skills/pre-screen/SKILL.md",
   "schema": 1

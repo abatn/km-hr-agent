@@ -1,13 +1,13 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-12T12:24:42+00:00",
+    "at": "2026-10-17T11:33:45+00:00",
     "code_blobs": {
       "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
-    "doc_blob": "72915b1a5c9c85256fea04f18eea290a25ce0571",
-    "note": "Manueller Beleg 12.10.2026: knowledge/notification-log.md gelesen (Schema |Datum|Typ|Empfaenger|Betreff|Status|, Quelle knowledge/system/agent-automation.md E-Mail-Matrix); reines Prosa-Log, keine Code-Verpflichtung, kein Widerspruch"
+    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
+    "doc_blob": "7301c1a609adbeb401c9ee293f305c998543efd2",
+    "note": "Claims 2 gelesen 17.10.2026 (staledocs 2.1.0): neue Zeile 'UI-Verhalten der Glocke (17.10.2026)' ergaenzt: Drawer value=False, immer zu nach Login, nur per Glocke; Badge-Wahl bleibt; Prosa-Log ohne Code-Widerspruch | Beleg-Tokens notifications_drawer + show-if-above"
   },
   "doc": "knowledge/notification-log.md",
   "schema": 1
