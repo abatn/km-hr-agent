@@ -6,14 +6,14 @@
       "pdf-reader",
       "read_pdf_text"
     ],
-    "at": "2026-10-13T18:51:15+00:00",
+    "at": "2026-10-17T13:56:31+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
+      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "50f95c7d4161ae020d90a5e18ea55257e7e3a5df",
-    "note": "Geprueft: Evidence candidate.py (moved, Doc referenziert candidate.py nicht); keine Extraktionslogik geaendert."
+    "note": "Claims 7 gelesen 17.10.2026 (staledocs 2.1.0): Drift = candidate.py (Notification-Key/Params); Extract-Profil (read_pdf_text, file_path) bleibt unver\u00e4ndert | Beleg-Tokens file_path + knowledge/system/access-control.md | Paar: skills/extract-profile/SKILL.md"
   },
   "doc": "skills/extract-profile/SKILL.md",
   "schema": 1

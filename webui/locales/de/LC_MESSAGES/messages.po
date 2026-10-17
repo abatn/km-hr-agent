@@ -1529,11 +1529,11 @@ msgstr "🤝 Patenschaft (Mentoring)"
 msgid "Akzeptiert: {0}"
 msgstr "Akzeptiert: {0}"
 
-msgid "Alle als gelesen markieren"
-msgstr "Alle als gelesen markieren"
+msgid "Alle Benachrichtigungen gelöscht"
+msgstr "Alle Benachrichtigungen gelöscht"
 
-msgid "Alle als gelesen markiert"
-msgstr "Alle als gelesen markiert"
+msgid "Alle Benachrichtigungen löschen"
+msgstr "Alle Benachrichtigungen löschen"
 
 msgid "Anmerkungen:"
 msgstr "Anmerkungen:"
@@ -3515,3 +3515,18 @@ msgstr "Eingeladene ({0})"
 
 msgid "Keine eingeladenen Bewerbungen."
 msgstr "Keine eingeladenen Bewerbungen."
+
+# 17.10.2026 — Notifications in UI-Sprache (Änderung B): Key/Params-Anzeige
+# im Notifications-Drawer (webui/components.py::_render_content). {status}
+# kommt als bereits uebersetzter Text von status_label.
+msgid "notify.neue_bewerbung.titel"
+msgstr "Neue Bewerbung"
+
+msgid "notify.neue_bewerbung.text"
+msgstr "{name} hat sich beworben: {job}"
+
+msgid "notify.statuswechsel.titel"
+msgstr "Bewerbungsstatus"
+
+msgid "notify.statuswechsel.text"
+msgstr "Deine Bewerbung bei {firma} für {job}: {status}"

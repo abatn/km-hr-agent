@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T19:15:08+00:00",
+    "at": "2026-10-17T13:56:15+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
+      "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Claims 28 gelesen 16.10.2026 (staledocs 2.1.0): Passive bleiben Pseudonym (anzeige_name(name, id, None)), keine Datei-Freigabe, Gate unveraendert | Beleg-Tokens @ui.refreshable + PAGE_MAP"
+    "note": "Claims 28 gelesen 17.10.2026 (staledocs 2.1.0): Drift = employer.py (_notify_statuswechsel schreibt jetzt msg_key/params, Fallback-Text identisch); das Dokumenten-Gate und die Pseudonym-Regeln sind nicht angetastet \u2014 der einzige DSGVO-Neubefund (183-Tage-Delete notifications) steht in logic.py::dsgvo_cleanup und ist in knowledge/legal/gdpr-policy.md bzw. notification-log.md beschrieben, nicht im Gate | Beleg-Tokens webui/pages/employer.py + @ui.refreshable | Paar: knowledge/legal/dsgvo-gate.md"
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

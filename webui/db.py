@@ -572,7 +572,14 @@ def update_job_status(job_id: int, neuer_status: str, changed_by: str = "system"
 # ─── Notifications ────────────────────────────────────────────────────
 
 def init_notifications_table() -> None:
-    """Legt die notifications-Tabelle an (idempotent)."""
+    """Legt die notifications-Tabelle an (idempotent).
+
+    17.10.2026 (Notification-Sprache, Änderung B): msg_key (i18n-msgid
+    Praefix, z.B. 'notify.statuswechsel') + params (JSON-String mit den
+    Formatwerten) — Altbestands-DBs bekommen die Spalten per ALTER TABLE
+    (Muster: init_compliance_protokoll_table). `gelesen` bleibt vestigial
+    (Löschen beim Lesen, 17.10.2026).
+    """
     conn = sqlite3.connect(str(DB_PATH))
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS notifications (
@@ -582,8 +589,15 @@ def init_notifications_table() -> None:
         titel TEXT,
         nachricht TEXT,
         gelesen INTEGER DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        msg_key TEXT,
+        params TEXT
     )""")
+    spalten = {r[1] for r in c.execute("PRAGMA table_info(notifications)").fetchall()}
+    if "msg_key" not in spalten:
+        c.execute("ALTER TABLE notifications ADD COLUMN msg_key TEXT")
+    if "params" not in spalten:
+        c.execute("ALTER TABLE notifications ADD COLUMN params TEXT")
     conn.commit()
     conn.close()
 
@@ -734,22 +748,39 @@ def end_mentoring(candidate_id: int, changed_by: str = "arbeitgeber") -> bool:
     return changed
 
 
-def insert_notification(user_id: int, role: str, titel: str, nachricht: str) -> None:
-    """Fuegt eine Benachrichtigung hinzu."""
+def insert_notification(user_id: int, role: str, titel: str, nachricht: str,
+                        msg_key: str | None = None,
+                        params: dict | None = None) -> None:
+    """Fuegt eine Benachrichtigung hinzu.
+
+    17.10.2026 (Notification-Sprache, Änderung B): optional msg_key +
+    params (dict, als JSON mit sort_keys gespeichert). Rueckwaertskompatibel
+    (Default None) — titel/nachricht bleiben IMMER gefuellt (Fallback-Text
+    fuer DB-Leser ohne i18n und E2E-Plaintext-Asserts).
+    """
     conn = sqlite3.connect(str(DB_PATH))
     conn.execute(
-        "INSERT INTO notifications (user_id, role, titel, nachricht) VALUES (?, ?, ?, ?)",
-        (user_id, role, titel, nachricht),
+        "INSERT INTO notifications (user_id, role, titel, nachricht, msg_key, params) "
+        "VALUES (?, ?, ?, ?, ?, ?)",
+        (user_id, role, titel, nachricht, msg_key,
+         json.dumps(params, sort_keys=True) if params is not None else None),
     )
     conn.commit()
     conn.close()
 
 
 def get_notifications(user_id: int, role: str, limit: int = 20) -> list:
-    """Holt Benachrichtigungen fuer einen User (neueste zuerst)."""
+    """Holt Benachrichtigungen fuer einen User (neueste zuerst).
+
+    17.10.2026 (Notification-Sprache, Änderung B): liefert 7 TUPEL-ELEMENTE
+    (id, titel, nachricht, gelesen, created_at, msg_key, params) — die
+    neuen Spalten haengen hinten an, bestehende Positions-Zugriffe bleiben
+    gueltig. Altbestand: msg_key/params NULL -> Anzeige verbatim.
+    """
     conn = sqlite3.connect(str(DB_PATH))
     rows = conn.execute(
-        "SELECT id, titel, nachricht, gelesen, created_at FROM notifications "
+        "SELECT id, titel, nachricht, gelesen, created_at, msg_key, params "
+        "FROM notifications "
         "WHERE user_id = ? AND role = ? ORDER BY created_at DESC LIMIT ?",
         (user_id, role, limit),
     ).fetchall()
@@ -768,11 +799,16 @@ def get_unread_count(user_id: int, role: str) -> int:
     return count
 
 
-def mark_notifications_read(user_id: int, role: str) -> None:
-    """Markiert alle Benachrichtigungen als gelesen."""
+def delete_notifications(user_id: int, role: str) -> None:
+    """Loescht alle Benachrichtigungen eines Users (Rolle).
+
+    17.10.2026 (Löschen beim Gelesen-Markieren): Ersetzt mark_notifications_read
+    (entfernt). Die Spalte `gelesen` bleibt als vestigialer Default stehen
+    (kein Schema-Change), wird aber nicht mehr gesetzt.
+    """
     conn = sqlite3.connect(str(DB_PATH))
     conn.execute(
-        "UPDATE notifications SET gelesen = 1 WHERE user_id = ? AND role = ? AND gelesen = 0",
+        "DELETE FROM notifications WHERE user_id = ? AND role = ?",
         (user_id, role),
     )
     conn.commit()

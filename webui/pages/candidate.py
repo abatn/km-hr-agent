@@ -68,9 +68,15 @@ def _notify_neue_bewerbung(job_id: int, kandidaten_name: str = "",
             conn.close()
         if not row or not row[0]:
             return  # Stelle ohne Arbeitgeber: nichts zu benachrichtigen
+        # 17.10.2026 (Änderung B, Notification-Sprache): Key + Params mit
+        # speichern (Anzeige im Drawer ueber tr(), Drawer-Renderzeit =
+        # Leser-Sprache). Params-Key-Design: name (mit „Ein Bewerber"-
+        # Fallback), job = Stellentitel. Fallback-Text unveraendert.
         db.insert_notification(
             int(row[0]), "employer", _("Neue Bewerbung"),
             _('{0} hat sich beworben: {1}').format(name or _('Ein Bewerber'), row[1]),
+            msg_key="notify.neue_bewerbung",
+            params={"name": name or _('Ein Bewerber'), "job": row[1]},
         )
     except Exception as ex:
         print(f"[R3-5] Benachrichtigung fehlgeschlagen (job={job_id}): {ex}")

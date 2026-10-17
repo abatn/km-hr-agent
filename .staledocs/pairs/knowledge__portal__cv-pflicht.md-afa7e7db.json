@@ -40,13 +40,13 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-13T18:51:12+00:00",
+    "at": "2026-10-17T13:56:20+00:00",
     "code_blobs": {
-      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
+      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-    "note": "Geprueft: Evidence candidate.py; zitierte Gate-Zeilen (show_scores, erlaubt-Tupel) unveraendert, Aenderung nur _tab_dashboard."
+    "note": "Claims 48 gelesen 17.10.2026 (staledocs 2.1.0): Drift = candidate.py (_notify_neue_bewerbung Key/Params); CV-Pflicht-Regeln und _submit-Logik bleiben unver\u00e4ndert | Beleg-Tokens webui/pages/candidate.py + 1|profil_vollstaendig|CV-da | Paar: knowledge/portal/cv-pflicht.md"
   },
   "doc": "knowledge/portal/cv-pflicht.md",
   "schema": 1

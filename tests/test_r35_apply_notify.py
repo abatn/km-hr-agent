@@ -5,11 +5,16 @@ Quelle der Logik: webui/pages/candidate.py::_notify_neue_bewerbung() +
 ::_bewerbung_senden() (Rueckgabe von db.apply_to_job wird ausgewertet,
 notifications-Zeile NUR bei Erfolg).
 
-Zweiter Teil der Aufgabe (N-D2: Drawer/Badge-Refresh nach „Alle als gelesen
-markieren") liegt in webui/components.py::notifications_drawer()/shell() und
-wird DOM-seitig in tests/e2e_notifications_flow.py belegt. Diese Datei belegt
-die DB-Grundlage der Drawer-Logik: get_unread_count -> 1,
-mark_notifications_read -> 0.
+Zweiter Teil der Aufgabe (N-D2: Drawer/Badge-Refresh nach „Alle
+Benachrichtigungen löschen") liegt in webui/components.py::notifications_drawer()
+/ shell() und wird DOM-seitig in tests/e2e_notifications_flow.py belegt. Diese
+Datei belegt die DB-Grundlage der Drawer-Logik: get_unread_count -> 1,
+delete_notifications -> 0 UND leerer Verlauf (Zeilen sind weg, nicht gelesen=1;
+17.10.2026, „Löschen beim Gelesen-Markieren").
+
+Dritter Teil (17.10.2026, Änderung B): notifications in UI-Sprache —
+insert/get mit msg_key+params (Key/Params-Roundtrip) und die
+DSGVO-Retention fuer ungelesene notifications in logic.dsgvo_cleanup().
 
 Isolation: tests/conftest.py leitet jeden Zugriff auf data/feedback.db in
 einen frischen /tmp-Spiegel um — die Live-DB wird nur gelesen. Alle
@@ -21,15 +26,20 @@ Ausfuehren:
 """
 from __future__ import annotations
 
+import json
 import sqlite3
 from pathlib import Path
 
 import pytest
 
-from webui import db
+from webui import db, logic
 from webui.pages import candidate as candidate_page
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# Hinweis 17.10.2026 (Änderung B): notifications-Schema (msg_key/params)
+# bringt tests/conftest.py auf den Spiegel (App-Start-Parität) — die
+# Tests hier koennen insert/get ohne eigenes Setup nutzen.
 
 
 # ─── Fixtures / Helfer (Spiegel-DB) ─────────────────────────────────────
@@ -174,10 +184,11 @@ def test_unbekanntes_job_id_kein_insert(capsys):
     assert _notifs(emp, "employer") == []
 
 
-# ─── R3-5b (N-D2) DB-Grundlage: unread -> markiert -> 0 ────────────────
+# ─── R3-5b (N-D2) DB-Grundlage: unread -> loeschen -> 0/leer ────────────
 
 def test_unread_count_und_markieren():
-    """get_unread_count 1 -> mark_notifications_read -> 0 (Drawer-Logik)."""
+    """get_unread_count 1 -> delete_notifications -> 0 UND get_notifications
+    leer (Drawer-Logik, 17.10.2026: Loeschen statt Markieren)."""
     emp, _cand, _job = _setup("r35-unread")
     assert db.get_unread_count(emp, "employer") == 0
 
@@ -189,11 +200,13 @@ def test_unread_count_und_markieren():
     assert len(rows) == 1 and rows[0][1] == "Neue Bewerbung"
     assert rows[0][3] == 0  # gelesen = 0
 
-    db.mark_notifications_read(emp, "employer")
+    db.delete_notifications(emp, "employer")
     assert db.get_unread_count(emp, "employer") == 0
-    # idempotent: zweiter Aufruf ändert nichts, Zeile bleibt erhalten
-    db.mark_notifications_read(emp, "employer")
-    assert len(db.get_notifications(emp, "employer")) == 1
+    assert db.get_notifications(emp, "employer") == [], \
+        "Loeschen muss die Zeilen entfernen (nicht nur gelesen=1 setzen)"
+    # idempotent: zweiter Aufruf loescht nichts mehr und wirft keinen Fehler
+    db.delete_notifications(emp, "employer")
+    assert db.get_notifications(emp, "employer") == []
 
 
 # ─── Quelltext-Nachweis der UI-Verdrahtung (kein DB-Zugriff) ───────────
@@ -204,3 +217,58 @@ def test_ui_handler_ruft_bewerbung_senden_auf():
         "_submit() muss die Rueckgabe auswerten (NUR bei Erfolg benachrichtigen)"
     assert "db.apply_to_job(s[\"user_cand_id\"], jid" not in src, \
         "der Bewerbungs-Call muss ueber _bewerbung_senden laufen"
+
+
+# ─── 17.10.2026 (Änderung B): UI-Sprache (Key+Params) + DSGVO-Retention ────
+
+def test_msg_key_params_roundtrip():
+    """insert mit msg_key+params -> get_notifications liefert beide zurueck
+    (params als JSON-String mit sort_keys; titel/nachricht bleiben als
+    Fallback-Text gefuellt, damit Plaintext-Leser nicht brechen)."""
+    emp, _cand, _job = _setup("r35-i18n", titel="R35 Sprachstelle")
+    db.insert_notification(
+        emp, "employer", "Neue Bewerbung",
+        "Anna R35 hat sich beworben: R35 Sprachstelle",
+        msg_key="notify.neue_bewerbung",
+        params={"name": "Anna R35", "job": "R35 Sprachstelle"},
+    )
+    rows = db.get_notifications(emp, "employer")
+    assert len(rows) == 1, rows
+    _nid, titel, nachricht, gelesen, _created, msg_key, params_json = rows[0]
+    assert msg_key == "notify.neue_bewerbung"
+    assert json.loads(params_json) == {"job": "R35 Sprachstelle", "name": "Anna R35"}
+    assert titel == "Neue Bewerbung"
+    assert nachricht == "Anna R35 hat sich beworben: R35 Sprachstelle"
+    assert gelesen == 0
+    # Rueckwaertskompatibilitaet: insert OHNE msg_key/params -> None/None
+    db.insert_notification(emp, "employer", "Alt", "Alttext")
+    rows2 = [r for r in db.get_notifications(emp, "employer") if r[1] == "Alt"]
+    assert rows2 and rows2[0][5] is None and rows2[0][6] is None
+
+
+def test_dsgvo_cleanup_loescht_ungelesene_alte_notifications():
+    """Retention (DSGVO_FRIST_TAGE): ungelesene Zeile VOR der Frist wird
+    geloescht; frische ungelesene Zeile und GELESENE Alt-Zeile bleiben
+    (gelesen=1 wird beim Lesen bereits geloescht — Spalte vestigial)."""
+    emp, _cand, _job = _setup("r35-ret", titel="R35 Retention")
+    conn = db.get_conn()
+    try:
+        for args in (
+                (emp, "Alt-ungelesen", 0, "'2025-01-01 00:00:00'"),
+                (emp, "Alt-gelesen", 1, "'2025-01-01 00:00:00'"),
+                (emp, "Frisch-ungelesen", 0, "CURRENT_TIMESTAMP")):
+            conn.execute(
+                "INSERT INTO notifications (user_id, role, titel, nachricht, "
+                "gelesen, created_at) VALUES (?, 'employer', ?, 'x', ?, "
+                f"{args[3]})", args[:3])
+        conn.commit()
+    finally:
+        conn.close()
+
+    result = logic.dsgvo_cleanup()
+
+    titel = {r[1] for r in _notifs(emp, "employer")}
+    assert "Alt-ungelesen" not in titel, f"alte ungelesene Zeile muss weg: {titel}"
+    assert "Alt-gelesen" in titel, f"gelesene Zeile bleibt angefasst-unveraendert: {titel}"
+    assert "Frisch-ungelesen" in titel, f"frische ungelesene Zeile bleibt: {titel}"
+    assert result["geloeschte_notifications"] >= 1, result

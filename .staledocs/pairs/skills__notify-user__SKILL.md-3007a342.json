@@ -8,13 +8,13 @@
       "scripts/agent-runner.py",
       "webui/db.py"
     ],
-    "at": "2026-10-12T12:26:55+00:00",
+    "at": "2026-10-17T13:56:34+00:00",
     "code_blobs": {
-      "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c"
+      "webui/db.py": "22bd3d34ff837e90452a6839142f8f4c45046f4c"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "ff04f1dee74617c5a3c9af2049369a6974252d88",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `knowledge/lifecycle/matching-criteria.md`, `knowledge/notification-log.md`, `knowledge/system/mcp-connector-config.md`"
+    "note": "Claims 12 gelesen 17.10.2026 (staledocs 2.1.0): Drift = db.py (insert_notification mit msg_key/params, get_notifications liefert 7 Tupel, delete_notifications); der Skill-Verweis auf knowledge/notification-log.md zeigt auf die dort neue Blockquote-Sektion 17.10.2026 | Beleg-Tokens webui/db.py + knowledge/lifecycle/matching-criteria.md | Paar: skills/notify-user/SKILL.md"
   },
   "doc": "skills/notify-user/SKILL.md",
   "schema": 1

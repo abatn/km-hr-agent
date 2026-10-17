@@ -5,6 +5,7 @@ Based on knowledge/ui-design-system.md.
 from __future__ import annotations
 
 import io
+import json
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable, Optional
@@ -12,6 +13,10 @@ from typing import Any, Callable, Optional
 from nicegui import ui
 
 from webui.i18n import _  # i18n Phase 6b (03.10.2026); Spec: knowledge/system/i18n.md
+# 17.10.2026 (Änderung B, Notification-Sprache): get_language + tr für die
+# Key/Params-Anzeige im Notifications-Drawer (tr formt intern, KEIN .format()).
+from webui.i18n import get_language
+from webui.i18n_core import tr
 
 from webui.theme import (
     C,
@@ -1188,8 +1193,11 @@ def notifications_drawer(user_id: int, role: str,
                          badge_state: dict | None = None) -> ui.right_drawer:
     """Rechtsseitiger Drawer mit Benachrichtigungen.
 
-    R3-5 (N-D2, 30.09.2026): „Alle als gelesen markieren" aktualisiert
+    R3-5 (N-D2, 30.09.2026): „Alle Benachrichtigungen löschen" aktualisiert
     (a) den Drawer-Inhalt und (b) das Header-Badge OHNE Seiten-Reload.
+    17.10.2026 (Löschen beim Gelesen-Markieren): Der Klick LOESCHT die
+    Zeilen (db.delete_notifications) statt sie auf gelesen=1 zu setzen —
+    Texte sind entsprechend ehrlich benannt.
     Technik: ui.refreshable()-Container — refresh() rebuildet den Inhalt
     sauber ueber NiceGUI-DOM (kein content.clear()+with, das paddet bei
     Event-Handlern in NG 3.17 nicht zum Client).
@@ -1209,12 +1217,12 @@ def notifications_drawer(user_id: int, role: str,
         ui.label(_('Benachrichtigungen')).classes("text-lg font-bold mb-4")
 
         def _mark_read():
-            db.mark_notifications_read(user_id, role)
+            db.delete_notifications(user_id, role)
             _render_content.refresh()   # (a) Drawer-Inhalt neu via DOM-Refresh
             _refresh = (badge_state or {}).get("refresh")
             if callable(_refresh):
                 _refresh()          # (b) Header-Badge neu zaehlen/einblenden
-            ui.notify(_('Alle als gelesen markiert'), type="positive")
+            ui.notify(_('Alle Benachrichtigungen gelöscht'), type="positive")
 
         @ui.refreshable
         def _render_content():
@@ -1222,7 +1230,33 @@ def notifications_drawer(user_id: int, role: str,
             if not notifications:
                 ui.label(_('Keine Benachrichtigungen')).classes(C.MUTED)
             else:
-                for nid, titel, nachricht, gelesen, created_at in notifications:
+                # 17.10.2026 (Änderung B, Notification-Sprache): Zeilen MIT
+                # msg_key werden zur Renderzeit in der Leser-Sprache uebersetzt
+                # (tr() formt intern — KEIN doppeltes .format()). Der status-
+                # Param liegt als ROH-Slug in der DB und wird VOR dem Format
+                # per status_label in die Leser-Sprache uebersetzt. Altbestand
+                # (msg_key NULL): unveraendert verbatim aus titel/nachricht.
+                lang = get_language()
+                for (nid, titel, nachricht, gelesen, created_at,
+                     msg_key, params_json) in notifications:
+                    if msg_key:
+                        params: dict = {}
+                        if params_json:
+                            try:
+                                geladen = json.loads(params_json)
+                                if isinstance(geladen, dict):
+                                    params = geladen
+                            except (TypeError, ValueError):
+                                params = {}  # kaputter JSON-String -> Text ohne Params
+                        if "status" in params:
+                            params["status"] = status_label(str(params["status"]))
+                        try:
+                            titel = tr(f"{msg_key}.titel", lang)
+                            nachricht = tr(f"{msg_key}.text", lang, **params)
+                        except (KeyError, IndexError, ValueError):
+                            # Platzhalter-Panne (z.B. params unvollstaendig):
+                            # Fallback-Text aus DB bleibt stehen, kein Crash.
+                            pass
                     with ui.card().classes(
                         "w-full mb-2 py-2 px-3"
                         + (" bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500"
@@ -1236,7 +1270,7 @@ def notifications_drawer(user_id: int, role: str,
 
             ui.separator().classes("my-3")
             ui.button(
-                _('Alle als gelesen markieren'),
+                _('Alle Benachrichtigungen löschen'),
                 icon="done_all",
                 on_click=_mark_read,
             ).classes(C.BTN_SECONDARY + " w-full")

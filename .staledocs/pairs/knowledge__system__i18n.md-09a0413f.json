@@ -79,6 +79,8 @@
       "mcp-email-server.py",
       "mcp-meeting-server.py",
       "messages.pot",
+      "notify.neue_bewerbung.*",
+      "notify.statuswechsel.*",
       "notify_hr",
       "q-page-container",
       "rc=0",
@@ -114,24 +116,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T19:15:13+00:00",
+    "at": "2026-10-17T13:56:25+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "8dc1041a3b26c5e990b30fbc9bad333fae13d8d0",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "78464748848a0e05d96fbcc922ba8d045edc95ff",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "74f58ad404920d5449cc192b62171d16ed1ec7d0",
-      "webui/locales/de/LC_MESSAGES/messages.po": "f9c034268f52f20f188d83cd12cc013f146dd210",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "c5c3fa459e4431eec439b467c8254509254da053",
-      "webui/locales/en/LC_MESSAGES/messages.po": "473b361df9f613c7f9d28439558d10a7db0537e1",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "e2b7d7fb32acb9887f64d0f9a60b06e6153660ca",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "fc42c86ed71b1521db701f998024508b1c6e7f04"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "6f486739e9ff92e7132d187ea65bde028ea37e99",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "eda27f16857d47fc5e5ca5ed50d4aa4cc5455938",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "d4fa2719a06a8ed3576932e819a76d4b60f2d836",
+      "webui/locales/de/LC_MESSAGES/messages.po": "48485de88d18f53495f0551bbd4f08efb080833a",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "8276de883cb35768d8d9cf7520bacb0aa6ded41a",
+      "webui/locales/en/LC_MESSAGES/messages.po": "19e818b7a3c35daa36e8568243c6b179c3a6488b",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "d54db76419515bf99cfb1c710df95cfc988f14c4",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "c6d0f692cec322425b005ae2825edd74508e871f"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
-    "doc_blob": "a6f2fba32239e1dab41d65b9a2b30f1eade17ba5",
-    "note": "Claims 140 gelesen 16.10.2026 (staledocs 2.1.0): 8 neue msgids x4 (Alle Stellen, Alle Sprachen, ab 2|5|10 Jahren, Erfahrung: {0} Jahre, DE {0} - EN {1}, Standort: {0}); pybabel compile + checks.py i18n rc=0 | Beleg-Tokens .format + .github/workflows/ci.yml"
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "doc_blob": "55475c787d901d8540185cd395dd44c330066199",
+    "note": "Claims 143 gelesen 17.10.2026 (staledocs 2.1.0): Selbst nachgetragen 17.10.2026 (zwei Stellen: Nicht-\u00fcbersetzt-Liste und Restgrenze-Blockquote) wegen der vier neuen notify.*-Keys; Kataloge je Sprache 1173 msgids und gleich (checks.py i18n rc=0), 2 msgids ersetzt + 4 neu, .mo via pybabel compile; Speicherregel (DB-Text bleibt Erzeugersprache) unver\u00e4ndert | Beleg-Tokens .format + .github/workflows/ci.yml | Paar: knowledge/system/i18n.md"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

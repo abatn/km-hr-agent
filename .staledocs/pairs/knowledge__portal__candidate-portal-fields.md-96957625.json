@@ -31,14 +31,14 @@
       "visum_status",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-13T18:51:07+00:00",
+    "at": "2026-10-17T13:56:19+00:00",
     "code_blobs": {
-      "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c",
-      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac"
+      "webui/db.py": "22bd3d34ff837e90452a6839142f8f4c45046f4c",
+      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
     },
-    "commit": "8cf0b0908900d195bdc775a5840240a7102ebc8d",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "749082a7b16a1dd36ee0d048869fa79c4505c8e6",
-    "note": "Geprueft: Evidence candidate.py; Aenderung nur _tab_dashboard (neue Karte Naechster Schritt, cv-Abfrage); Doku-Abschnitt Startseite Naechster Schritt beschreibt den Stand."
+    "note": "Claims 35 gelesen 17.10.2026 (staledocs 2.1.0): Drift = db.py (notifications-Schema msg_key/params) + candidate.py (notify.neue_bewerbung Key/Params); Profil- und Portal-Felder bleiben unver\u00e4ndert | Beleg-Tokens webui/pages/candidate.py + _PROFIL_SPALTEN | Paar: knowledge/portal/candidate-portal-fields.md"
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

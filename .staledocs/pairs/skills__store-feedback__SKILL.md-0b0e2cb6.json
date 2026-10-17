@@ -1,13 +1,13 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-12T12:26:55+00:00",
+    "at": "2026-10-17T13:56:35+00:00",
     "code_blobs": {
-      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
+      "webui/logic.py": "3e21cd253e0c8423cdb7d0ee49a25aa75dc40dd1"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "bd836181948ab55b62583df2751cfb47d52c0eaf",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `write_file`"
+    "note": "Claims 1 gelesen 17.10.2026 (staledocs 2.1.0): Drift = logic.py (dsgvo_cleanup-Notifications); die Feedback-Speicherung write_file bleibt unver\u00e4ndert | Beleg-Tokens write_file | Paar: skills/store-feedback/SKILL.md"
   },
   "doc": "skills/store-feedback/SKILL.md",
   "schema": 1

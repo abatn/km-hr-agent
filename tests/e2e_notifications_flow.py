@@ -1,5 +1,5 @@
 """E2E R3-5 (30.09.2026): Neue Bewerbung -> Arbeitgeber-Benachrichtigung
-+ Badge/Drawer-Refresh nach „Alle als gelesen markieren" (N-D1 + N-D2).
++ Badge/Drawer-Refresh nach „Alle Benachrichtigungen löschen" (N-D1 + N-D2).
 
 Teil A (N-D1, webui/pages/candidate.py::_notify_neue_bewerbung):
   frischer Kandidat (Registrierung ueber die UI) -> Login -> Lebenslauf ->
@@ -10,9 +10,11 @@ Teil A (N-D1, webui/pages/candidate.py::_notify_neue_bewerbung):
 Teil B (N-D2, webui/components.py::notifications_drawer/shell):
   notifications-Zeile fuer den Kandidaten einspielen (direkter INSERT in die
   SPIEGEL-DB = Test-Setup) -> Kandidaten-Seite neu laden -> Badge zeigt
-  ungelesen (DOM) -> Drawer oeffnen -> „Alle als gelesen markieren" klicken ->
-  Badge verschwindet/0 OHNE Seiten-Reload (DOM) UND Drawer-Inhalt zeigt
-  "Keine Benachrichtigungen" (DOM) UND DB get_unread_count = 0.
+  ungelesen (DOM) -> Drawer oeffnen -> „Alle Benachrichtigungen löschen"
+  klicken (17.10.2026, Änderung A: der Klick LOESCHT die Zeilen, statt sie
+  auf gelesen=1 zu setzen) -> Badge verschwindet/0 OHNE Seiten-Reload (DOM)
+  UND Drawer-Inhalt zeigt "Keine Benachrichtigungen" (DOM)
+  UND DB ungelesene Zeilen = 0 (Zeilen sind weg, nicht markiert).
 
 NUR gegen die Isolations-Instanz (schreibt candidates/applications/
 notifications in die Spiegel-DB; die Live-DB wird nur gelesen):
@@ -289,9 +291,11 @@ def main() -> int:
                     fehler.append(f"B3 Drawer nicht offen/mit Benachrichtigung "
                                   f"(offen={_drawer_offen}): {drawer_text[:200]!r}")
 
-                page.get_by_text("Alle als gelesen markieren").first.click(timeout=10000)
+                # 17.10.2026 (Änderung A): Button + Toast ehrlich umbenannt —
+                # der Klick LOESCHT (db.delete_notifications), markiert nicht.
+                page.get_by_text("Alle Benachrichtigungen löschen").first.click(timeout=10000)
                 page.wait_for_timeout(2000)
-                page.get_by_text("Alle als gelesen markiert").wait_for(timeout=10000)
+                page.get_by_text("Alle Benachrichtigungen gelöscht").wait_for(timeout=10000)
                 page.wait_for_timeout(2000)  # KEIN Reload: SPA bleibt stehen
 
                 nachher = badge_text(page)
@@ -303,27 +307,33 @@ def main() -> int:
                 else:
                     fehler.append(f"B4 Badge immer noch sichtbar: {nachher!r}")
 
-                # B5 Option A: Karte verliert border-blue-500, "Keine Benachrichtigungen" NICHT sichtbar
-                _karten = page.locator(".q-card").all()
-                _verlor_blau = any(
-                    "border-blue-500" not in (k.get_attribute("class") or "")
-                    for k in _karten
-                )
-                if _verlor_blau:
-                    print("B5 Karte verliert border-blue-500 nach Mark-read (Option A)")
-                else:
-                    fehler.append("B5: Keine Karte verlor border-blue-500")
+                # B5 (17.10.2026, Änderung A — vorher „Option A" der Markier-Logik):
+                # Zeilen sind GELÖSCHT -> Drawer zeigt "Keine Benachrichtigungen"
+                # UND keine Ungelesen-Karte (border-blue-500) verbleibt.
                 try:
-                    page.get_by_text("Keine Benachrichtigungen").wait_for(timeout=3000)
-                    fehler.append("B5: 'Keine Benachrichtigungen' erscheint, Option A erwartet NICHT sichtbar")
+                    page.get_by_text("Keine Benachrichtigungen").wait_for(timeout=5000)
+                    print("B5 Drawer zeigt 'Keine Benachrichtigungen' + Badge verschwunden")
                 except Exception:
-                    print("B5 'Keine Benachrichtigungen' NICHT sichtbar (Option A)")
+                    fehler.append("B5: 'Keine Benachrichtigungen' erscheint NICHT "
+                                  "(erwartet nach Loeschen aller Zeilen)")
+                _blaue_karten = [
+                    k for k in drawer.first.locator(".q-card").all()
+                    if "border-blue-500" in (k.get_attribute("class") or "")
+                ]
+                if not _blaue_karten:
+                    print("B5 keine Karte mit border-blue-500 im Drawer (Zeilen weg)")
+                else:
+                    fehler.append(f"B5: {len(_blaue_karten)} Ungelesen-Karte(n) mit "
+                                  "border-blue-500 verbleiben")
 
                 db_nach = unread(cid, "candidate")
-                if db_nach == 0:
-                    print(f"B6 DB get_unread_count({cid}, 'candidate') = 0")
+                db_total = rows("SELECT COUNT(*) FROM notifications "
+                                "WHERE user_id=? AND role='candidate'", (cid,))[0][0]
+                if db_nach == 0 and db_total == 0:
+                    print(f"B6 DB notifications({cid}, 'candidate'): ungelesen=0 UND "
+                          "Zeilen gesamt=0 (geloescht, nicht markiert)")
                 else:
-                    fehler.append(f"B6 DB-Count {db_nach}, erwartet 0")
+                    fehler.append(f"B6 unread={db_nach} gesamt={db_total}, erwartet 0/0")
             except Exception as ex:  # noqa: BLE001
                 fehler.append(f"Exception: {ex!r}")
             finally:

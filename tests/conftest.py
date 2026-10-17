@@ -158,6 +158,18 @@ def _connect(path, *args, **kwargs):
 
 sqlite3.connect = _connect
 
+# 17.10.2026 (Änderung B, App-Start-Parität): die idempotente Migration der
+# notifications-Tabelle (webui/db.py::init_notifications_table, msg_key +
+# params) auf den SPIEGEL anwenden. Produktions-DBs bekommen die Spalten
+# beim App-Start (webui/main.py); der Spiegel bildet denselben Post-Start-
+# Zustand ab — ohne diesen Hook brechen alle UI-Tests, die shell() ohne
+# main.py rendern (Drawer liest get_notifications mit msg_key/params).
+# Ein Fakt = die ALTER-Statements stehen NUR in webui/db.py, hier wird
+# nur die bestehende Funktion aufgerufen.
+from webui import db as _db  # noqa: E402  (nach dem Connect-Patch!)
+
+_db.init_notifications_table()
+
 
 def pytest_sessionfinish(session, exitstatus):
     """Endwerte in die Pointer-Datei — UND ERST DANACH das eigene Spiegel-

@@ -1529,11 +1529,11 @@ msgstr "🤝 Mentorship (mentoring)"
 msgid "Akzeptiert: {0}"
 msgstr "Accepted: {0}"
 
-msgid "Alle als gelesen markieren"
-msgstr "Mark all as read"
+msgid "Alle Benachrichtigungen gelöscht"
+msgstr "All notifications deleted"
 
-msgid "Alle als gelesen markiert"
-msgstr "All marked as read"
+msgid "Alle Benachrichtigungen löschen"
+msgstr "Delete all notifications"
 
 msgid "Anmerkungen:"
 msgstr "Notes:"
@@ -3511,3 +3511,17 @@ msgstr "Invited ({0})"
 
 msgid "Keine eingeladenen Bewerbungen."
 msgstr "No invited applications."
+
+# 17.10.2026 — Notifications in UI language (change B): key/params rendering
+# in the notifications drawer. {status} arrives pre-translated via status_label.
+msgid "notify.neue_bewerbung.titel"
+msgstr "New application"
+
+msgid "notify.neue_bewerbung.text"
+msgstr "{name} has applied: {job}"
+
+msgid "notify.statuswechsel.titel"
+msgstr "Application status"
+
+msgid "notify.statuswechsel.text"
+msgstr "Your application at {firma} for {job} has the status: {status}"

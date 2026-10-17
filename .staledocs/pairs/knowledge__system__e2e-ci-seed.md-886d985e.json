@@ -97,12 +97,12 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-17T11:33:46+00:00",
+    "at": "2026-10-17T13:56:24+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "56751cb9f5136d0c66a88aa9ab57f4e926f6bf36",
       "scripts/seed_ci_db.py": "54b88328cd1d513d2c5ee88c97d5a5847098a36a",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
-      "tests/conftest.py": "5772aaae5c6a46277a345d6415e548659057017f",
+      "tests/conftest.py": "6ce282650ffbe4a68f2b798c52cb2c3c9405b7eb",
       "tests/debug_row.sh": "8bbeb51dbffa58faa0db742ad61de0e2089b8f54",
       "tests/e2e_admin_downloads.py": "46a182ab90fbd75655b6b67ff14691ef8ecd16e7",
       "tests/e2e_agent_details.py": "4f5c5e2de860bbc8a413f1730568363580a416d6",
@@ -140,7 +140,7 @@
       "tests/e2e_mentoring.py": "51a00261054eff3f97993fe421f09089cde5ca00",
       "tests/e2e_na1_queue_filter.py": "bcdee7c957e2c6b16b17effa77b9650f4045d037",
       "tests/e2e_nm2_expansion_persist.py": "c516cdbf0e32ed7385d67a86ecfab368fec71b93",
-      "tests/e2e_notifications_flow.py": "4e578a4ee3bf877c8e5534966bdff3072ec0525d",
+      "tests/e2e_notifications_flow.py": "da8a7b8ac3a177d69b98a44e7d7f81ea568ccdf5",
       "tests/e2e_p1_3_onboarding_action.py": "2a955a0f472d3395c0accf65ad7be66b55c04896",
       "tests/e2e_p2_8_pseudonym.py": "5ad3e54690914b44073f77c98b0f8a1e5cd3bdab",
       "tests/e2e_passive_on_match.py": "c8ffbe05c73e264df54f70ab9ded75dd32fe3654",
@@ -196,7 +196,7 @@
       "tests/test_profile_save.py": "b4d87c0f42337e527cfeab721b36c0d292b4dedc",
       "tests/test_r32_gatekeeper_gen.py": "416de069b066028f19c63ececacd3a1fe85f9c1b",
       "tests/test_r33_compliance_reports.py": "52e52511126b2c71a28a0d4f4e2c379eb7d9e157",
-      "tests/test_r35_apply_notify.py": "a5d5148d97cfdff49db23180800c5b5197d74291",
+      "tests/test_r35_apply_notify.py": "c9ecfc27fe45b3bd0c586822f130a2e505c17ccd",
       "tests/test_r35_status_notify.py": "5ec1f027f4c83786661f483d91dc4face7bd2bc4",
       "tests/test_reapply_after_withdraw.py": "502f35d0c7d5a8e449ab98901d1c845cfe04347e",
       "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
@@ -213,9 +213,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "17e11f1a6a376695570cc93c589697244f0ed68c",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "895e9edf9adf0b890bae0e128405bf39ee5fc210",
-    "note": "Claims 143 gelesen 17.10.2026 (staledocs 2.1.0): Drift = e2e_notifications_flow.py angepasst (echter Glocken-Klick + Sichtbarkeitspruefung statt Fake-Klasse q-drawer--open); Bestand 52/50 unveraendert | Beleg-Tokens .backup + .env"
+    "note": "Claims 143 gelesen 17.10.2026 (staledocs 2.1.0): Drift = tests/conftest.py (Migration init_notifications_table auf dem Spiegel, damit shell() ohne main.py die 7-Tupel liest), tests/e2e_notifications_flow.py (Klickziel/Toast neu, B5 auf \u201eDrawer zeigt \u201aKeine Benachrichtigungen\u2018 + Badge weg\u201c), tests/test_r35_apply_notify.py (+80 Zeilen f\u00fcr msg_key/params/L\u00f6schen); Bestand 52 Dateien / 50 im Isolationslauf und CI-Parit\u00e4t bleiben zutreffend (gemessen 17.10.2026) | Beleg-Tokens tests/conftest.py + tests/e2e_notifications_flow.py | Paar: knowledge/system/e2e-ci-seed.md"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

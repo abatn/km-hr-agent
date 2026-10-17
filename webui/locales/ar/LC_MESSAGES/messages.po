@@ -1529,11 +1529,11 @@ msgstr "🤝 الإرشاد (التوجيه)"
 msgid "Akzeptiert: {0}"
 msgstr "المقبول: {0}"
 
-msgid "Alle als gelesen markieren"
-msgstr "تحديد الكل كمقروء"
+msgid "Alle Benachrichtigungen gelöscht"
+msgstr "تم حذف جميع الإشعارات"
 
-msgid "Alle als gelesen markiert"
-msgstr "تم تحديد الكل كمقروء"
+msgid "Alle Benachrichtigungen löschen"
+msgstr "حذف جميع الإشعارات"
 
 msgid "Anmerkungen:"
 msgstr "ملاحظات:"
@@ -3511,3 +3511,17 @@ msgstr "المدعوون ({0})"
 
 msgid "Keine eingeladenen Bewerbungen."
 msgstr "لا طلبات مدعوة."
+
+# 17.10.2026 — الإشعارات بلغة الواجهة (تغيير B): عرض المفتاح/المعاملات في
+# درج الإشعارات. تصل {status} مترجمة مسبقًا عبر status_label.
+msgid "notify.neue_bewerbung.titel"
+msgstr "طلب جديد"
+
+msgid "notify.neue_bewerbung.text"
+msgstr "{name} قدّم طلبًا: {job}"
+
+msgid "notify.statuswechsel.titel"
+msgstr "حالة الطلب"
+
+msgid "notify.statuswechsel.text"
+msgstr "طلبك لدى {firma} لوظيفة {job}: {status}"

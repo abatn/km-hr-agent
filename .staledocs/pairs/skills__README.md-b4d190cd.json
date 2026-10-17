@@ -64,7 +64,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-16T10:51:39+00:00",
+    "at": "2026-10-17T13:56:27+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -84,15 +84,15 @@
       "skills/language-course/SKILL.md": "872156c64e0bfdf6073afbf6a23fd3acf97bc416",
       "skills/match-candidate/SKILL.md": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
       "skills/mentoring/SKILL.md": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-      "skills/nicegui-migration/SKILL.md": "94bfabc66a972094f780f18ff670c8427b75a72f",
+      "skills/nicegui-migration/SKILL.md": "8b5b3619fdad13ac305f7c026cfc67951d59dd8c",
       "skills/notify-user/SKILL.md": "ff04f1dee74617c5a3c9af2049369a6974252d88",
       "skills/pre-screen/SKILL.md": "97fa40ff230048e7d68e00da9714dad93d4907c0",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
     },
-    "commit": "60e0b23f3e88e28ee59b7189e5e5c2bd5ced4c31",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "f60b746352b064dcdd5dbe99702f6708ce7a87f4",
-    "note": "Claims 72 gelesen 16.10.2026: Pfad-Claims 19/19 vorhanden; Codemark-Treffer 12/15 in Code (u.a. PAGE_MAP, _TAB_MAP, _page_einladen); staledocs 2.1.0"
+    "note": "Claims 0 gelesen 17.10.2026 (staledocs 2.1.0): Paar skills/README.md: Drift kam \u00fcber die Skill-Liste (skills/nicegui-migration/SKILL.md am 17.10.2026 korrigiert: mark_notifications_read() -> delete_notifications()); die \u00dcbersicht (23 Skills, README-Verweise) ist davon unber\u00fchrt | Beleg-Tokens (kein Claim \u2014 Paar-Pfad als Beleg) | Paar: skills/README.md"
   },
   "doc": "skills/README.md",
   "schema": 1

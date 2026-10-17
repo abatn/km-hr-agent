@@ -29,13 +29,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-12T12:26:54+00:00",
+    "at": "2026-10-17T13:56:33+00:00",
     "code_blobs": {
-      "webui/db.py": "3eb406a365441c61c52a72c194ec24799b41774c"
+      "webui/db.py": "22bd3d34ff837e90452a6839142f8f4c45046f4c"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `app.py`, `knowledge/lifecycle/application-status.md`, `knowledge/lifecycle/matching-criteria.md`"
+    "note": "Claims 53 gelesen 17.10.2026 (staledocs 2.1.0): Drift = db.py (notifications-Schema msg_key/params, delete_notifications statt mark_notifications_read); Mentoring-Funktionen bleiben unver\u00e4ndert, die Zahl 28 bleibt (Neumessung 17.10.2026) | Beleg-Tokens PAGE_MAP + _TAB_MAP | Paar: skills/mentoring/SKILL.md"
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

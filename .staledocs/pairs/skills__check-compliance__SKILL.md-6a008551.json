@@ -4,14 +4,14 @@
       "knowledge/legal/contract-sources.md",
       "mindestlohn_2026"
     ],
-    "at": "2026-10-13T14:19:53+00:00",
+    "at": "2026-10-17T13:56:29+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9"
+      "webui/logic.py": "3e21cd253e0c8423cdb7d0ee49a25aa75dc40dd1"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "f56fdef93697826b021a8d978d37151a04b1b945",
-    "note": "skills/check-compliance/SKILL.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "note": "Claims 9 gelesen 17.10.2026 (staledocs 2.1.0): Drift = logic.py (dsgvo_cleanup-Notifications); Compliance-Pr\u00fcfung (mindestlohn_2026, get_provision) bleibt unver\u00e4ndert | Beleg-Tokens get_provision + knowledge/legal/contract-sources.md | Paar: skills/check-compliance/SKILL.md"
   },
   "doc": "skills/check-compliance/SKILL.md",
   "schema": 1

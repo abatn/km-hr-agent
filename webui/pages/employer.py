@@ -1083,9 +1083,16 @@ def _notify_statuswechsel(conn, app_id: int, status: str) -> None:
         if not row or row[0] is None:
             return
         cand_id, firma, titel = row
+        # 17.10.2026 (Änderung B, Notification-Sprache): Key + Params mit
+        # speichern — status als ROH-Slug (Anzeige uebersetzt den Parameter
+        # VOR dem Format per status_label in der Leser-Sprache), firma/job
+        # als Klartext-Werte. Fallback-Text unveraendert (Roh-Slug drin,
+        # Plaintext-Asserts in tests/test_r35_status_notify.py bleiben gueltig).
         db.insert_notification(
             cand_id, "candidate", _("Bewerbungsstatus"),
             _('Deine Bewerbung bei {0} für {1}: {2}').format(firma, titel, status),
+            msg_key="notify.statuswechsel",
+            params={"status": status, "job": titel, "firma": firma},
         )
     except Exception as ex:  # noqa: BLE001 — Helfer darf den Handler nie brechen
         print(f"[notify_statuswechsel] Fehler application={app_id} status={status}: {ex}")

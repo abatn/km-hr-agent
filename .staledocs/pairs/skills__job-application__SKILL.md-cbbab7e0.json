@@ -11,15 +11,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-16T19:15:14+00:00",
+    "at": "2026-10-17T13:56:31+00:00",
     "code_blobs": {
-      "webui/logic.py": "7e0391e279d0a43897c40586b3462c1e278ea6f9",
-      "webui/pages/candidate.py": "7a232825331a38d09caa84a541d490040b1b8cac",
-      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
+      "webui/logic.py": "3e21cd253e0c8423cdb7d0ee49a25aa75dc40dd1",
+      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf",
+      "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
     "doc_blob": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
-    "note": "Claims 12 gelesen 16.10.2026 (staledocs 2.1.0): keine Statuslogik-Aenderung; Passiv-Filter nur lesende Score-Darstellung im Board | Beleg-Tokens _BOARD_COLUMNS + application_status_history"
+    "note": "Claims 12 gelesen 17.10.2026 (staledocs 2.1.0): Drift = logic.py + candidate.py + employer.py (Notification-Key/Params); Status- und Bewerbungslogik (_BOARD_COLUMNS, application_status_history) bleibt unver\u00e4ndert | Beleg-Tokens webui/pages/candidate.py + _BOARD_COLUMNS | Paar: skills/job-application/SKILL.md"
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

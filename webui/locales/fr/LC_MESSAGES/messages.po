@@ -1529,11 +1529,11 @@ msgstr "🤝 Mentorat (mentoring)"
 msgid "Akzeptiert: {0}"
 msgstr "Accepté : {0}"
 
-msgid "Alle als gelesen markieren"
-msgstr "Tout marquer comme lu"
+msgid "Alle Benachrichtigungen gelöscht"
+msgstr "Toutes les notifications supprimées"
 
-msgid "Alle als gelesen markiert"
-msgstr "Tout marqué comme lu"
+msgid "Alle Benachrichtigungen löschen"
+msgstr "Supprimer toutes les notifications"
 
 msgid "Anmerkungen:"
 msgstr "Remarques :"
@@ -3511,3 +3511,17 @@ msgstr "Invités ({0})"
 
 msgid "Keine eingeladenen Bewerbungen."
 msgstr "Aucune candidature invitée."
+
+# 17.10.2026 — Notifications en langue UI (chg. B) : rendu clé/params dans
+# le tiroir de notifications. {status} arrive pré-traduit via status_label.
+msgid "notify.neue_bewerbung.titel"
+msgstr "Nouvelle candidature"
+
+msgid "notify.neue_bewerbung.text"
+msgstr "{name} a postulé : {job}"
+
+msgid "notify.statuswechsel.titel"
+msgstr "Statut de la candidature"
+
+msgid "notify.statuswechsel.text"
+msgstr "Votre candidature chez {firma} pour {job} a le statut : {status}"

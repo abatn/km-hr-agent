@@ -333,9 +333,9 @@ Nicht existierende Stellen bzw. fremde Arbeitgeber werden **gezählt, nicht vers
 | Handler | `do_invite` / `do_reject` / `do_hire` (📄 Match) **und** `make_transition` (💼 Stellenangebote) — jeweils **NACH** erfolgreichem `UPDATE` + `commit` |
 | Helper | `webui/pages/employer.py` (Codemarke `def _notify_statuswechsel`, gemessen 10.10.2026) |
 | Query | `applications` → `JOIN jobs` → `JOIN employers` (candidate_id + Firma + Stellen-Titel) |
-| Schreibung | EINE Zeile `notifications(user_id = candidate_id, role = 'candidate', titel = 'Bewerbungsstatus', nachricht = …, gelesen = 0)` |
-| Nachricht | `Deine Bewerbung bei <Firma> für <Titel>: <Status>` |
-| Anzeige | Kandidaten-Portal-Drawer (`components.py::notifications_drawer`, role `candidate`, N-D2) |
+| Schreibung | EINE Zeile `notifications(user_id = candidate_id, role = 'candidate', titel = 'Bewerbungsstatus', nachricht = …, gelesen = 0)` — seit 17.10.2026 zusätzlich `msg_key = 'notify.statuswechsel'` + `params` (JSON: `firma`/`job`/`status` als Roh-Slug) |
+| Nachricht | `Deine Bewerbung bei <Firma> für <Titel>: <Status>` (DB-Fallback, Erzeugungssprache; siehe Anzeige) |
+| Anzeige | Kandidaten-Portal-Drawer (`components.py::notifications_drawer`, role `candidate`, N-D2) — **ab 17.10.2026 zur Renderzeit** in der Leser-Sprache via `tr(msg_key, lang, **params)`, `status` vorher per `status_label`; Altbestand ohne `msg_key` verbatim |
 
 **Design-Entscheidung (Text/Quelle):** kein externes Vorbild nötig — der Text ist Verhalten, nicht ein Wert. Er nennt Firma und Stelle, aber **keinen Grund/Ablehnungsdetail** (AGG-neutral, Parität zur neutralen Ablehnungs-Mail des Runners) und läuft in der **Erzeugungs-/Session-Sprache** des auslösenden HR-Nutzers (E2, `knowledge/system/i18n.md`; Code nutzt `_()`, Codemark `def _notify_statuswechsel`). Der Status-Slug `{2}` selbst bleibt als DB-Rohwert deutsch (Negativregel).
 

@@ -51,12 +51,14 @@
       "lebenslauf_hochgeladen",
       "make_transition",
       "match_id='employer-job-6-cand-1-\u2026'",
+      "msg_key",
       "onboarding_release",
       "refresh_cands()",
       "save_feedback",
       "scripts/agent-runner.py",
       "send_rejection",
       "soft_skills",
+      "status_label",
       "tests/conftest.py",
       "tests/e2e_compliance_reports.py",
       "tests/e2e_transition_guard.py",
@@ -69,13 +71,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T19:15:11+00:00",
+    "at": "2026-10-17T13:56:21+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "3061d6d6f9aee2f227990019b8c6164ae631a479"
+      "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415"
     },
-    "commit": "483f7e8287ccda52a84f84aabc30253f872daf16",
-    "doc_blob": "a600ff9457970a5fae738afcfd40e47a7061fe5d",
-    "note": "Claims 71 gelesen 16.10.2026 (staledocs 2.1.0): Kartenfelder erweitert (Erfahrung/Sprachen/Standort/Score); Sichtbarkeit/keine Kontaktdaten unveraendert | Beleg-Tokens ALLOWED_TRANSITIONS + NICHT_COMPLIANT"
+    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "doc_blob": "11194040e321495c2ecc380641dc7a1f6e9cfbb7",
+    "note": "Claims 73 gelesen 17.10.2026 (staledocs 2.1.0): Selbst nachgetragen 17.10.2026: die Schreib-Zeile nennt jetzt msg_key/params, die Anzeige-Zeile nennt tr()-Renderzeit + status_label; Drift = employer.py (_notify_statuswechsel); Felder und Matching-Filter bleiben unver\u00e4ndert | Beleg-Tokens webui/pages/employer.py + ALLOWED_TRANSITIONS | Paar: knowledge/portal/employer-portal-fields.md"
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

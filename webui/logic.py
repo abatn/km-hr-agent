@@ -1067,8 +1067,26 @@ def dsgvo_cleanup() -> dict:
             conn.commit()
     except Exception:
         pass
+    try:
+        # 17.10.2026 (Änderung B, DSGVO-Retention): UNGELESENE notifications
+        # nach der Frist loeschen (Muster der bestehenden Deletes: strftime-
+        # Sekundenvergleich gegen created_at, UTC "YYYY-MM-DD HH:MM:SS").
+        # gelesen=1-Zeilen bleiben ANGEFASST-UNVERAENDERT (Design): sie
+        # werden beim Lesen bereits per delete_notifications geloescht —
+        # die Spalte ist vestigial.
+        c.execute("""DELETE FROM notifications
+            WHERE gelesen = 0
+              AND CAST(strftime('%s', 'now') AS INTEGER)
+                  - CAST(strftime('%s', created_at) AS INTEGER) >= ?""",
+            (DSGVO_FRIST_TAGE * 86400,))
+        gel_notifs = c.rowcount
+        if gel_notifs:
+            conn.commit()
+    except Exception:
+        gel_notifs = 0
     conn.close()
-    return {"geloeschte_bewerbungen": len(ids), "geloeschte_dokumente": gel_doks}
+    return {"geloeschte_bewerbungen": len(ids), "geloeschte_dokumente": gel_doks,
+            "geloeschte_notifications": gel_notifs}
 
 
 def run_dsgvo_cleanup_once(_done_marker: dict | None = None) -> dict:
