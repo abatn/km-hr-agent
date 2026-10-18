@@ -7,10 +7,20 @@ aktive Bewerbungen (Paritaet app.py:3898-3900 + fb_bewerber-Ausschluss).
 Ziel: employer.py::refresh_cands (Picker) — (c)3 Subtitle/Tab-Kandidaten bewusst
 draussen (kein GO-Punkt).
 
+Fixture (17.10.2026, self-contained): der Test legt seine EIGENE Stelle des
+eingeloggten Arbeitgebers (employer_id=1) + 2 aktive Bewerbungen mit explizit
+gestaffeltem erstellungsdatum an (Cleanup im finally). hard_skills='Python',
+berufserfahrung_jahre=0 → der Score-Gate laesst einen echten passiven Anhang
+durch (Kandidat 22, in Live- UND Seed-DB verifiziert) ⇒ die Tail-Pruefung ist
+nicht mehr vakuum. Grund: die fruehere Annahme „global kleinste Stelle mit aktiven Bewerbern" driftete — das Dropdown
+listet nur `WHERE employer_id = ?` (employer.py::_page_feedback), gewaehlt wurde
+zuletzt Job #12 (employer_id=4) ⇒ TimeoutError; identischer Fail schon am
+16.10.2026 (Job #11, employer_id=3) VOR den Notifications-Aenderungen.
+
 Ablauf:
  A QUELLTEXT  beide Statuslisten (Bewerber-Query + De-Dup-Subquery) == app.py:3898;
               'all_cands = applicants + passive'
- B DB         Replik fuer die Stelle mit aktiven Bewerbern: Reihenfolge ASC ==
+ B DB         Fixture-Stelle gehoert employer 1 (Dropdown-Scope): Reihenfolge ASC ==
               Sortierung nach erstellungsdatum; kein aktiver Bewerber in der
               passiven Menge; abgelehnte Bewerber duerfen wieder passiv erscheinen
  C UI         /employer/feedback -> Stelle waehlen -> Kandidaten-Select oeffnen:
@@ -37,6 +47,67 @@ from e2e_harness import DB  # Env KMHR_DB_PATH (E2E-Isolation 27.09.2026)
 EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 TRIPLE = ("eingegangen", "angesehen", "eingeladen")
+# Self-contained Fixture: eigener Stellentitel (eindeutig) + Ein-Fakt-Marker in
+# der Beschreibung (Cleanup-/Wiedererkennungshilfe, kein Live-Bestand noetig).
+FIX_TITEL = "E2E Applicants-First Stelle (B2-4)"
+FIX_MARK = "B2-4-selfcontained (17.10.2026)"
+
+
+def setup_fixture() -> dict:
+    """Legt eine eigene Stelle (employer_id=1) + 2 aktive Bewerbungen an.
+
+    Muster: tests/e2e_feedback_jobswitch.py (`INSERT INTO applications`).
+    erstellungsdatum explizit gestaffelt -> ASC-Reihenfolge deterministisch.
+    """
+    conn = sqlite3.connect(str(DB))
+    try:
+        # Pool zuerst pruefen (schlaegt ohne Teil-Insert fehl -> kein Rest).
+        cands = conn.execute(
+            "SELECT id, name FROM candidates "
+            "WHERE COALESCE(name, '') != '' "
+            "AND status IN ('lebenslauf_hochgeladen', 'zugeordnet', 'aktiv') "
+            "ORDER BY id LIMIT 2").fetchall()
+        if len(cands) < 2:
+            raise RuntimeError(f"Kandidaten-Pool zu klein fuer Fixture: {cands!r}")
+        cur = conn.execute(
+            "INSERT INTO jobs (employer_id, titel, beschreibung, standort, "
+            "stellentyp, hard_skills, soft_skills, berufserfahrung_jahre, "
+            "deutsch_level, englisch_level, status) "
+            "VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'aktiv')",
+            (FIX_TITEL, FIX_MARK, "Berlin", "Vollzeit", "Python",
+             "team", 0, "B1", "B1"))
+        job_id = cur.lastrowid
+        app_ids = []
+        for i, (cid, _name) in enumerate(cands):
+            cur = conn.execute(
+                "INSERT INTO applications (candidate_id, job_id, status, erstellungsdatum) "
+                "VALUES (?, ?, ?, ?)",
+                (cid, job_id, ("eingegangen", "angesehen")[i],
+                 f"2026-01-01 08:0{i}:00"))
+            app_ids.append(cur.lastrowid)
+        conn.commit()
+        print(f"OK Fixture: Stelle #{job_id} {FIX_TITEL!r} + Bewerbungen {app_ids} "
+              f"(Kandidaten {[c[0] for c in cands]}, ASC 08:00/08:01)")
+        return {"job_id": job_id, "app_ids": app_ids}
+    finally:
+        conn.close()
+
+
+def cleanup_fixture(created: dict) -> None:
+    """Entfernt Fixture-Stelle + Bewerbungen (keine Reste fuer Folgeskripte)."""
+    if not created:
+        return
+    conn = sqlite3.connect(str(DB))
+    try:
+        job_id = created["job_id"]
+        conn.execute("DELETE FROM application_status_history WHERE application_id IN "
+                     "(SELECT id FROM applications WHERE job_id = ?)", (job_id,))
+        conn.execute("DELETE FROM applications WHERE job_id = ?", (job_id,))
+        conn.execute("DELETE FROM jobs WHERE id = ?", (job_id,))
+        conn.commit()
+        print(f"OK Cleanup: Stelle #{job_id} + Bewerbungen entfernt")
+    finally:
+        conn.close()
 
 
 def _triples_in(text: str) -> list:
@@ -81,19 +152,20 @@ def check_a(failures) -> None:
         print("A Reihenfolge-Beweis: all_cands = applicants + passive")
 
 
-def check_b(failures) -> dict:
+def check_b(failures, created: dict) -> dict:
+    job_id = created["job_id"]
     conn = sqlite3.connect(str(DB))
     try:
-        job = conn.execute("""
-            SELECT j.id, j.titel FROM jobs j
-            WHERE EXISTS (SELECT 1 FROM applications a WHERE a.job_id = j.id
-                          AND a.status IN ('eingegangen', 'angesehen', 'eingeladen'))
-            ORDER BY j.id LIMIT 1
-        """).fetchone()
+        job = conn.execute(
+            "SELECT id, titel, employer_id FROM jobs WHERE id = ?", (job_id,)
+        ).fetchone()
         if not job:
-            failures.append("B keine Stelle mit aktiven Bewerbern (Datenlage)")
+            failures.append(f"B Fixture-Stelle #{job_id} nicht gefunden")
             return {}
-        job_id, job_titel = job
+        job_id, job_titel, employer_id = job
+        if employer_id != 1:
+            failures.append(f"B Fixture-Stelle gehoert employer {employer_id} "
+                            f"(erwartet 1 = Login-/Dropdown-Scope)")
         active = conn.execute("""
             SELECT c.id, c.name, a.id, a.erstellungsdatum
             FROM candidates c JOIN applications a ON a.candidate_id = c.id
@@ -110,7 +182,7 @@ def check_b(failures) -> dict:
         print(f"B Stelle #{job_id} {job_titel!r}: aktiv={[(a[0], a[1]) for a in active]} "
               f"passiv={[(p[0], p[1]) for p in passive]}")
         if not active:
-            failures.append("B gewaehlte Stelle hat keine aktiven Bewerber")
+            failures.append("B Fixture-Stelle hat keine aktiven Bewerber (Fixture defekt)")
         dates = [a[3] for a in active]
         if dates != sorted(dates):
             failures.append(f"B ASC verletzt: {dates}")
@@ -174,10 +246,27 @@ def check_c(page, ctx: dict, failures) -> None:
     else:
         print(f"C passiver Anhang ohne 📩: {tail}")
     if not tail:
-        print("C Hinweis: keine passiven Optionen (Datenlage)")
+        failures.append("C kein passiver Anhang trotz Fixture-Skills (hard_skills='Python', "
+                        "Exp 0) — Score-Gate/Paritaet pruefen")
+    else:
+        print(f"C passiver Anhang nicht leer ({len(tail)} Optionen) ✓")
     dup = [o for o in expected_first if opts.count(o) > 1]
     if dup:
         failures.append(f"C doppelte Optionen: {dup}")
+
+
+def fixture_leftover() -> str:
+    """Nachweis, dass die Fixture vollstaendig entfernt wurde (0 Reste)."""
+    conn = sqlite3.connect(str(DB))
+    try:
+        jobs = conn.execute("SELECT COUNT(*) FROM jobs WHERE beschreibung = ?",
+                            (FIX_MARK,)).fetchone()[0]
+        apps = conn.execute(
+            "SELECT COUNT(*) FROM applications a JOIN jobs j ON j.id = a.job_id "
+            "WHERE j.beschreibung = ?", (FIX_MARK,)).fetchone()[0]
+        return f"jobs={jobs} applications={apps}" if (jobs or apps) else ""
+    finally:
+        conn.close()
 
 
 def main() -> int:
@@ -185,19 +274,30 @@ def main() -> int:
     pre_tasks = pre_max_tasks()
     failures = []
     check_a(failures)
-    ctx = check_b(failures)
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.set_default_timeout(60000)
-        try:
-            login(page)
-            check_c(page, ctx, failures)
-        except Exception as ex:  # noqa: BLE001
-            failures.append(f"Exception: {ex!r}")
-        finally:
-            browser.close()
+    created: dict = {}
+    ctx: dict = {}
+    try:
+        created = setup_fixture()
+        ctx = check_b(failures, created)
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.set_default_timeout(60000)
+            try:
+                login(page)
+                check_c(page, ctx, failures)
+            except Exception as ex:  # noqa: BLE001
+                failures.append(f"Exception: {ex!r}")
+            finally:
+                browser.close()
+    except Exception as ex:  # noqa: BLE001
+        failures.append(f"Setup/Exception: {ex!r}")
+    finally:
+        cleanup_fixture(created)
 
+    leftover = fixture_leftover()
+    if leftover:
+        failures.append(f"F3 Fixture-Reste: {leftover}")
     residue = db_residue_report(pre_tasks)
     if residue:
         failures.append(f"F3 Test-Reste: {residue} agent_tasks verbleiben")
@@ -207,7 +307,8 @@ def main() -> int:
             print(" -", f)
         return 1
     print("PASS: B2-4 Applicants-First — Quelltext/Paritaet app.py:3898, DB-Reihenfolge ASC, "
-          "UI-Bewerber zuerst, kein aktiver Bewerber passiv, view-only")
+          "UI-Bewerber zuerst, kein aktiver Bewerber passiv, self-contained Fixture "
+          "(Cleanup im finally)")
     return 0
 
 
