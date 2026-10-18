@@ -813,3 +813,92 @@ def delete_notifications(user_id: int, role: str) -> None:
     )
     conn.commit()
     conn.close()
+
+
+# ─── Passwort-Reset (18.10.2026) ────────────────────────────────────────
+# Spec: knowledge/system/configuration-secrets.md §(g). Framework-frei (nur
+# sqlite3) — von Web-Schicht UND Agent-Runner nutzbar. Der Klartext-Token wird
+# hier NIE gehalten: gespeichert wird nur der SHA-256-Lookup-Hash.
+# Design-Entscheidungen (keine externe Quelle): Ablauf 60 Min, Rate-Limit
+# 3 Anfragen / 10 Min pro E-Mail.
+RESET_TTL_MINUTES = 60
+RESET_RATE_LIMIT = 3
+RESET_RATE_WINDOW_MINUTES = 10
+
+
+def init_password_resets_table(db_path: Path | None = None) -> None:
+    """Legt die password_resets-Tabelle an (idempotent). Spec §(g)."""
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    c = conn.cursor()
+    c.execute("""CREATE TABLE IF NOT EXISTS password_resets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL,
+        role TEXT NOT NULL,
+        token_hash TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMP NOT NULL,
+        used_at TIMESTAMP
+    )""")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_password_resets_token "
+              "ON password_resets(token_hash)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_password_resets_email "
+              "ON password_resets(email)")
+    conn.commit()
+    conn.close()
+
+
+def hash_reset_token(token: str) -> str:
+    """SHA-256-Lookup-Hash des Reset-Tokens (kein Passwort-Hash-Verfahren —
+    der Token ist kein Nutzer-Passwort). Deterministisch für den Lookup."""
+    import hashlib
+    return hashlib.sha256(token.encode("utf-8")).hexdigest()
+
+
+def create_password_reset(conn, email: str, role: str,
+                          token_hash: str, expires_at: str) -> int:
+    """Schreibt eine Reset-Zeile, gibt die id zurück. `expires_at` im
+    UTC-Format '%Y-%m-%d %H:%M:%S' (passt zu strftime('%s','now'))."""
+    c = conn.cursor()
+    c.execute("INSERT INTO password_resets (email, role, token_hash, expires_at) "
+              "VALUES (?, ?, ?, ?)", (email, role, token_hash, expires_at))
+    conn.commit()
+    return c.lastrowid
+
+
+def count_recent_password_resets(conn, email: str,
+                                 minutes: int = RESET_RATE_WINDOW_MINUTES) -> int:
+    """Anzahl Reset-Anfragen für `email` im Zeitfenster (Rate-Limit-Quelle)."""
+    row = conn.execute(
+        "SELECT COUNT(*) FROM password_resets WHERE lower(email) = lower(?) "
+        "AND CAST(strftime('%s','now') AS INTEGER) "
+        "- CAST(strftime('%s', created_at) AS INTEGER) < ?",
+        (email, minutes * 60)).fetchone()
+    return row[0] if row else 0
+
+
+def find_active_password_reset(conn, token_hash: str):
+    """Aktive Reset-Zeile (unbenutzt + nicht abgelaufen): (id, email, role, ...)
+    oder None. Ablauf-/Benutzungsprüfung liegt in der SQL-Abfrage."""
+    return conn.execute(
+        "SELECT id, email, role, expires_at, used_at FROM password_resets "
+        "WHERE token_hash = ? AND used_at IS NULL "
+        "AND CAST(strftime('%s','now') AS INTEGER) "
+        "< CAST(strftime('%s', expires_at) AS INTEGER)", (token_hash,)).fetchone()
+
+
+def mark_password_reset_used(conn, reset_id: int) -> None:
+    """Markiert die Zeile als verbraucht (Einmal-Verwendung)."""
+    conn.execute("UPDATE password_resets SET used_at = CURRENT_TIMESTAMP "
+                 "WHERE id = ?", (reset_id,))
+    conn.commit()
+
+
+def delete_expired_password_resets(conn) -> int:
+    """Löscht abgelaufene UND verbrauchte Zeilen (Aufruf aus dsgvo_cleanup)."""
+    c = conn.cursor()
+    c.execute("DELETE FROM password_resets WHERE used_at IS NOT NULL "
+              "OR CAST(strftime('%s','now') AS INTEGER) "
+              ">= CAST(strftime('%s', expires_at) AS INTEGER)")
+    n = c.rowcount
+    conn.commit()
+    return n

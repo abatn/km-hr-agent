@@ -3525,3 +3525,39 @@ msgstr "Application status"
 
 msgid "notify.statuswechsel.text"
 msgstr "Your application at {firma} for {job} has the status: {status}"
+
+msgid "Passwort vergessen?"
+msgstr "Forgot password?"
+
+msgid "Geben Sie Ihre E-Mail ein. Wenn ein Konto existiert, senden wir einen Link zum Zuruecksetzen."
+msgstr "Enter your e-mail address. If an account exists, we will send a link to reset it."
+
+msgid "Link senden"
+msgstr "Send link"
+
+msgid "Wenn ein Konto mit dieser E-Mail existiert, ist der Link unterwegs."
+msgstr "If an account with this e-mail exists, the link is on its way."
+
+msgid "Bitte eine gueltige E-Mail eingeben."
+msgstr "Please enter a valid e-mail address."
+
+msgid "Neues Passwort vergeben"
+msgstr "Set a new password"
+
+msgid "Passwort speichern"
+msgstr "Save password"
+
+msgid "Passwort neu gesetzt. Bitte einloggen."
+msgstr "Password reset. Please log in."
+
+msgid "Ungueltiger oder abgelaufener Reset-Link."
+msgstr "Invalid or expired reset link."
+
+msgid "Sie haben ein neues Passwort fuer Ihr KM-HR-Agent-Konto angefordert. Wenn Sie das nicht waren, koennen Sie diese E-Mail ignorieren."
+msgstr "You requested a new password for your KM-HR-Agent account. If this was not you, you can ignore this e-mail."
+
+msgid "Ueber den folgenden Link koennen Sie innerhalb von {0} Minuten ein neues Passwort vergeben:"
+msgstr "Use the following link to set a new password within {0} minutes:"
+
+msgid "Passwort zuruecksetzen – KM-HR-Agent"
+msgstr "Reset password – KM-HR-Agent"

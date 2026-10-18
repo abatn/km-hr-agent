@@ -444,6 +444,73 @@ def send_confirmation(payload: dict) -> dict:
     return {"mail": out[:200], "to": email}
 
 
+def send_password_reset(payload: dict) -> dict:
+    """Passwort-Reset-Mail (18.10.2026). Spec: knowledge/system/configuration-secrets.md §(g).
+
+    Generischer Ablauf (kein Enumeration-Loch): unbekannte E-Mail, Rate-Limit
+    oder fehlende Rolle -> KEINE Mail, gleiche Rückmeldung. Der Klartext-Token
+    wird NUR hier erzeugt und ausschließlich in den Mail-Body geschrieben —
+    nie ins Payload, nie ins Log (der Mail-Body ist per `_MCP_LOG_ALLOWED_KEYS`
+    aus logs/mcp-calls.log ausgeschlossen). Zieltabelle = Tab-Kontext (role).
+    """
+    import secrets as _secrets
+    from datetime import timedelta as _td, timezone as _tz, datetime as _dt
+    from webui import db as _db  # framework-frei (nur sqlite3)
+
+    email = (payload.get("email") or "").strip()
+    role = payload.get("role")
+    lang = _lang(payload)
+    table = {"candidate": "candidates", "employer": "employers"}.get(role)
+    if not email or not table:
+        log("   Passwort-Reset: unbekannte Rolle/leere E-Mail – keine Mail (generisch)")
+        return {"status": "no_account"}
+
+    _db.init_password_resets_table(DB_PATH)
+    conn = sqlite3.connect(str(DB_PATH))
+    token = None
+    try:
+        if _db.count_recent_password_resets(conn, email) >= _db.RESET_RATE_LIMIT:
+            log(f"   Passwort-Reset: Rate-Limit ({_db.RESET_RATE_LIMIT}/"
+                f"{_db.RESET_RATE_WINDOW_MINUTES} Min) erreicht – keine Mail")
+            return {"status": "rate_limited"}
+        row = conn.execute(f"SELECT id FROM {table} WHERE lower(email) = lower(?)",
+                           (email,)).fetchone()
+        if not row:
+            log("   Passwort-Reset: kein Konto in der Zieltabelle – keine Mail (generisch)")
+            return {"status": "no_account"}
+        _other = "employers" if table == "candidates" else "candidates"
+        if conn.execute(f"SELECT 1 FROM {_other} WHERE lower(email) = lower(?)",
+                        (email,)).fetchone():
+            # Dieselbe E-Mail existiert in der anderen Login-Tabelle. Die Rolle
+            # (Tab-Kontext) entscheidet die Zieltabelle; wir protokollieren nur.
+            log(f"   Passwort-Reset: E-Mail auch in {_other} – Reset via Rolle '{role}'")
+        token = _secrets.token_urlsafe(32)
+        expires = (_dt.now(_tz.utc).replace(tzinfo=None)
+                   + _td(minutes=_db.RESET_TTL_MINUTES)).strftime("%Y-%m-%d %H:%M:%S")
+        _db.create_password_reset(conn, email, role, _db.hash_reset_token(token), expires)
+    finally:
+        conn.close()
+
+    base = (os.environ.get("KMHR_PUBLIC_BASE_URL") or "http://localhost:8080").rstrip("/")
+    link = f"{base}/login?reset={token}"
+    # Erster Absatz bewusst > 120 Zeichen: der DRY-RUN-Preview des MCP-Aufrufs
+    # (args[:120]) darf den Link/Token nie zeigen.
+    body = "\n\n".join([
+        tr("Guten Tag,", lang),
+        tr("Sie haben ein neues Passwort fuer Ihr KM-HR-Agent-Konto angefordert. "
+           "Wenn Sie das nicht waren, koennen Sie diese E-Mail ignorieren.", lang),
+        tr("Ueber den folgenden Link koennen Sie innerhalb von {0} Minuten ein "
+           "neues Passwort vergeben:", lang).format(_db.RESET_TTL_MINUTES),
+        link,
+        tr("Ihr KM-HR-Agent", lang),
+    ]) + _ki_hinweis(lang)
+    out = mcp_call(EMAIL_SERVER, "send_email",
+                   {"to": email,
+                    "subject": tr("Passwort zuruecksetzen – KM-HR-Agent", lang),
+                    "body": body})
+    return {"status": "sent", "to": email, "mail": out[:200]}
+
+
 def _dokumente_block(cand_id: int) -> str:
     """Spec v6.1: Sammelt die Dokumente des Kandidaten — TYPED aus candidate_documents
     (Tab 🗂️ Dokumente), Fallback: Glob testdaten/kandidat-N-* (v6-Verhalten)."""
@@ -1958,6 +2025,8 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
     try:
         if task_type == "send_confirmation":
             result = send_confirmation(payload)
+        elif task_type == "send_password_reset":
+            result = send_password_reset(payload)
         elif task_type == "send_rejection":
             result = send_rejection(payload)
         elif task_type == "create_invitation":

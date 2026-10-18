@@ -3525,3 +3525,39 @@ msgstr "Statut de la candidature"
 
 msgid "notify.statuswechsel.text"
 msgstr "Votre candidature chez {firma} pour {job} a le statut : {status}"
+
+msgid "Passwort vergessen?"
+msgstr "Mot de passe oublié ?"
+
+msgid "Geben Sie Ihre E-Mail ein. Wenn ein Konto existiert, senden wir einen Link zum Zuruecksetzen."
+msgstr "Saisissez votre adresse e-mail. Si un compte existe, nous vous enverrons un lien de réinitialisation."
+
+msgid "Link senden"
+msgstr "Envoyer le lien"
+
+msgid "Wenn ein Konto mit dieser E-Mail existiert, ist der Link unterwegs."
+msgstr "Si un compte avec cet e-mail existe, le lien est en route."
+
+msgid "Bitte eine gueltige E-Mail eingeben."
+msgstr "Veuillez saisir une adresse e-mail valide."
+
+msgid "Neues Passwort vergeben"
+msgstr "Définir un nouveau mot de passe"
+
+msgid "Passwort speichern"
+msgstr "Enregistrer le mot de passe"
+
+msgid "Passwort neu gesetzt. Bitte einloggen."
+msgstr "Mot de passe réinitialisé. Veuillez vous connecter."
+
+msgid "Ungueltiger oder abgelaufener Reset-Link."
+msgstr "Lien de réinitialisation invalide ou expiré."
+
+msgid "Sie haben ein neues Passwort fuer Ihr KM-HR-Agent-Konto angefordert. Wenn Sie das nicht waren, koennen Sie diese E-Mail ignorieren."
+msgstr "Vous avez demandé un nouveau mot de passe pour votre compte KM-HR-Agent. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail."
+
+msgid "Ueber den folgenden Link koennen Sie innerhalb von {0} Minuten ein neues Passwort vergeben:"
+msgstr "Utilisez le lien suivant pour définir un nouveau mot de passe dans les {0} minutes :"
+
+msgid "Passwort zuruecksetzen – KM-HR-Agent"
+msgstr "Réinitialiser le mot de passe – KM-HR-Agent"

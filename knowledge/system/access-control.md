@@ -69,7 +69,7 @@ Konsequenz: Die Agent-Ausgaben (`ergebnisse/*.md`, DB-Scores, E-Mail-Entwürfe) 
 
 ### 2.3 GAST
 
-Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgeber-Registrieren, Admin).
+Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgeber-Registrieren, Admin). Die Tabs **Login** (Kandidat) und **Arbeitgeber** tragen seit 18.10.2026 einen Link „Passwort vergessen?" → E-Mail-Dialog → Agent-Runner verschickt einen Link `/login?reset=<token>` → Dialog „Neues Passwort (2×)". Der **Admin**-Tab hat bewusst **keinen** Reset (Nutzerentscheidung R6-2.1 abgelehnt). Ablauf/Sicherheits-Regeln: `knowledge/system/configuration-secrets.md` §(g).
 
 ### 2.4 ADMIN – 12 Seiten (v3.1 + NiceGUI-Dashboard, Stand 20.09.2026)
 

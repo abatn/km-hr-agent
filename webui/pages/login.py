@@ -9,6 +9,7 @@ from __future__ import annotations
 import os
 import sqlite3
 import sys
+from uuid import uuid4
 
 from nicegui import run, ui
 
@@ -20,6 +21,19 @@ from webui.i18n import _, apply_direction, language_switcher
 def _session() -> dict:
     from nicegui import app
     return app.storage.user
+
+
+def _reset_token_param() -> str | None:
+    """/login?reset=<token> der Seiten-Anfrage (NiceGUI 3.17.1: die Starlette-Request
+    des Seitenaufrufs haengt an `ui.context.client.request`). None, wenn kein Token
+    mitgegeben wurde (Muster: employer.py::_kandidat_query_param)."""
+    try:
+        from nicegui import context as _ng_context
+        req = _ng_context.client.request
+        raw = req.query_params.get("reset")
+        return str(raw).strip() if raw else None
+    except Exception:
+        return None
 
 
 def create() -> None:
@@ -166,6 +180,7 @@ def create() -> None:
                                     conn.close()
 
                             ui.button(_("Einloggen"), icon="login", on_click=do_login).classes(C.BTN_PRIMARY + " w-full mt-2")
+                            ui.button(_("Passwort vergessen?"), on_click=lambda: _open_forgot("candidate")).props("flat dense").classes("text-amber-800 text-xs mt-1")
 
                         # ── Candidate Register ───────────────────────────
                         with ui.tab_panel(_("Registrieren")):
@@ -247,6 +262,7 @@ def create() -> None:
                                     e_msg.text = _("Login fehlgeschlagen.")
 
                             ui.button(_("Arbeitgeber-Login"), icon="business", on_click=do_employer_login).classes(C.BTN_PRIMARY + " w-full mt-2")
+                            ui.button(_("Passwort vergessen?"), on_click=lambda: _open_forgot("employer")).props("flat dense").classes("text-amber-800 text-xs mt-1")
 
                         # ── Employer Register ────────────────────────────
                         with ui.tab_panel(_("Arbeitgeber+")):
@@ -362,3 +378,78 @@ def create() -> None:
                                     a_msg.text = _("Admin-Login fehlgeschlagen.")
 
                             ui.button(_("Admin-Login"), icon="shield", on_click=do_admin_login).classes(C.BTN_PRIMARY + " w-full mt-2")
+
+        # ── Passwort-Reset (18.10.2026) — Kandidat + Arbeitgeber ─────────
+        # Spec: knowledge/system/configuration-secrets.md §(g). Der Admin-Tab
+        # hat BEWUSST keinen Reset (Nutzerentscheidung R6-2.1 abgelehnt).
+        _reset_ctx = {"role": "candidate", "token": None}
+
+        def _open_forgot(role: str) -> None:
+            _reset_ctx["role"] = role
+            forgot_email.value = ""
+            forgot_msg.text = ""
+            forgot_dialog.open()
+
+        async def _do_forgot() -> None:
+            email_val = (forgot_email.value or "").strip()
+            if "@" not in email_val or "." not in email_val:
+                forgot_msg.text = _("Bitte eine gueltige E-Mail eingeben.")
+                forgot_msg.classes(replace="text-red-400 text-sm")
+                return
+            # Generische Antwort IMMER gleich (kein Enumeration-Loch): ob ein Konto
+            # existiert und ob das Rate-Limit greift, entscheidet der Agent-Runner.
+            db.queue_agent_task("send_password_reset", {
+                "email": email_val,
+                "role": _reset_ctx["role"],
+                "req": uuid4().hex,
+            })
+            forgot_msg.text = _("Wenn ein Konto mit dieser E-Mail existiert, ist der Link unterwegs.")
+            forgot_msg.classes(replace="text-green-400 text-sm")
+
+        async def _do_reset() -> None:
+            token = _reset_ctx.get("token")
+            if not reset_pw1.value or not reset_pw2.value:
+                reset_msg.text = _("Bitte alle Felder ausfuellen.")
+                reset_msg.classes(replace="text-red-400 text-sm")
+                return
+            if reset_pw1.value != reset_pw2.value:
+                reset_msg.text = _("Passwoerter stimmen nicht ueberein.")
+                reset_msg.classes(replace="text-red-400 text-sm")
+                return
+            ok, code = await run.io_bound(logic.apply_password_reset, token, reset_pw1.value)
+            texte = {
+                "ok": _("Passwort neu gesetzt. Bitte einloggen."),
+                "invalid": _("Ungueltiger oder abgelaufener Reset-Link."),
+                "too_short": _("Passwort muss mindestens 8 Zeichen lang sein."),
+                "same_as_old": _("Neues Passwort darf nicht dem alten Passwort entsprechen."),
+            }
+            reset_msg.text = texte.get(code, texte["invalid"])
+            reset_msg.classes(replace=("text-green-400 text-sm" if ok else "text-red-400 text-sm"))
+            if ok:
+                reset_dialog.close()
+                ui.notify(_("Passwort neu gesetzt. Bitte einloggen."), type="positive")
+
+        with ui.dialog() as forgot_dialog, ui.card().classes("glass-strong w-full max-w-md"):
+            ui.label(_("Passwort vergessen?")).classes(C.CARD_TITLE + " mb-2")
+            ui.label(_("Geben Sie Ihre E-Mail ein. Wenn ein Konto existiert, senden wir einen Link zum Zuruecksetzen.")).classes("text-sm mb-2")
+            forgot_email = ui.input(_("E-Mail"), placeholder=_("name@beispiel.de")).classes("w-full")
+            forgot_msg = ui.label("").classes("text-sm")
+            with ui.row().classes("w-full justify-end gap-2 mt-2"):
+                ui.button(_("Abbrechen"), on_click=forgot_dialog.close).props("flat")
+                ui.button(_("Link senden"), on_click=_do_forgot).props("unelevated").classes(C.BTN_PRIMARY)
+
+        with ui.dialog() as reset_dialog, ui.card().classes("glass-strong w-full max-w-md"):
+            ui.label(_("Neues Passwort vergeben")).classes(C.CARD_TITLE + " mb-2")
+            reset_pw1 = ui.input(_("Neues Passwort"), password=True,
+                                 placeholder=_("Mindestens 8 Zeichen")).classes("w-full")
+            reset_pw2 = ui.input(_("Neues Passwort wiederholen"), password=True).classes("w-full")
+            reset_msg = ui.label("").classes("text-sm")
+            with ui.row().classes("w-full justify-end gap-2 mt-2"):
+                ui.button(_("Abbrechen"), on_click=reset_dialog.close).props("flat")
+                ui.button(_("Passwort speichern"), on_click=_do_reset).props("unelevated").classes(C.BTN_PRIMARY)
+
+        # /login?reset=<token> → Reset-Dialog automatisch oeffnen
+        _tok = _reset_token_param()
+        if _tok:
+            _reset_ctx["token"] = _tok
+            ui.timer(0.3, reset_dialog.open, once=True)

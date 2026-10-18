@@ -3,13 +3,13 @@
     "anchors": [
       "prescreen-config"
     ],
-    "at": "2026-10-13T14:19:54+00:00",
+    "at": "2026-10-18T12:03:57+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866"
+      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "a74aaadaa78720e9ede5d129462cd417faa2a97a",
-    "note": "skills/contact-candidate/SKILL.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "skills/contact-candidate/SKILL.md",
   "schema": 1

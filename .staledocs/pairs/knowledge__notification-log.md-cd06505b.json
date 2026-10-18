@@ -2,18 +2,19 @@
   "ack": {
     "anchors": [
       "db.delete_notifications",
+      "dsgvo_cleanup",
       "gelesen=1",
       "knowledge/legal/gdpr-policy.md",
       "msg_key",
       "webui/logic.py"
     ],
-    "at": "2026-10-17T13:56:18+00:00",
+    "at": "2026-10-18T12:03:43+00:00",
     "code_blobs": {
-      "webui/db.py": "22bd3d34ff837e90452a6839142f8f4c45046f4c"
+      "webui/db.py": "d837214cecc2d9fb1f10baa139103790d8367519"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "2e83a385e5c8ec0cc69e9059d62dbe4217305906",
-    "note": "Claims 11 gelesen 17.10.2026 (staledocs 2.1.0): Nachtrag-Blockquote 17.10.2026 Zeile f\u00fcr Zeile gegen den Code gepr\u00fcft: Button/Toast entsprechen Codemark notifications_drawer::_mark_read (\u201eAlle Benachrichtigungen l\u00f6schen\u201c -> Zeilen weg + Badge 0, Toast \u201eAlle Benachrichtigungen gel\u00f6scht\u201c), Anzeige via tr(f\"{msg_key}.titel\", lang) bzw. tr(f\"{msg_key}.text\", lang, **params) mit status_label-Vor-\u00fcbersetzung und Altbestand NULL verbatim, Retention 183 Tage = DSGVO_FRIST_TAGE in logic.py::dsgvo_cleanup; Claim db.delete_notifications ist namentlich im Doc belegt; Drift = webui/db.py (msg_key/params-Spalten + delete_notifications) | Beleg-Tokens DSGVO_FRIST_TAGE + db.delete_notifications | Paar: knowledge/notification-log.md"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: webui/db.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/notification-log.md",
   "schema": 1

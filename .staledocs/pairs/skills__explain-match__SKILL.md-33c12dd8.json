@@ -1,14 +1,14 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-17T13:56:30+00:00",
+    "at": "2026-10-18T12:03:58+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
-      "webui/logic.py": "3e21cd253e0c8423cdb7d0ee49a25aa75dc40dd1"
+      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
+      "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "7cb5aab4147181e8e528f829676bbef664ee1d56",
-    "note": "Claims 3 gelesen 17.10.2026 (staledocs 2.1.0): Drift = logic.py (dsgvo_cleanup-Notifications); Explain-Match-Ausgabe bleibt unver\u00e4ndert | Beleg-Tokens read_text_file + write_file | Paar: skills/explain-match/SKILL.md"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py, webui/logic.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "skills/explain-match/SKILL.md",
   "schema": 1

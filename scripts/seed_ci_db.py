@@ -41,6 +41,19 @@ def main() -> int:
     try:
         src.backup(dst)
 
+        # 18.10.2026: password_resets garantiert im Seed anlegen (falls die
+        # Quell-DB sie noch nicht hat — die App legt sie beim Start an).
+        dst.execute("""CREATE TABLE IF NOT EXISTS password_resets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            role TEXT NOT NULL,
+            token_hash TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            expires_at TIMESTAMP NOT NULL,
+            used_at TIMESTAMP
+        )""")
+        dst.commit()
+
         def run(sql: str, params: tuple = ()) -> None:
             dst.execute(sql, params)
 

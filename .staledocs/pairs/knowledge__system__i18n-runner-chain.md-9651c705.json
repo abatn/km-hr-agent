@@ -111,14 +111,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-16T16:51:23+00:00",
+    "at": "2026-10-18T12:03:50+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
+      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5"
     },
-    "commit": "2fe8db0d50f0449b2bfffa3834c53fb728cb78ba",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
-    "note": "Claims 136 gelesen 16.10.2026 (staledocs 2.1.0): S5 gegengeprueft und geschrieben: Sleep-Falle /employer/stellen; /employer/einladen per Sidebar-Klick, kein Hang; Marker _ein_dialog/_ein_confirm genannt"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/system/i18n-runner-chain.md",
   "schema": 1

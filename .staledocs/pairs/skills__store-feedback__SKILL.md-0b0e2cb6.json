@@ -1,13 +1,13 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-17T13:56:35+00:00",
+    "at": "2026-10-18T12:04:04+00:00",
     "code_blobs": {
-      "webui/logic.py": "3e21cd253e0c8423cdb7d0ee49a25aa75dc40dd1"
+      "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "bd836181948ab55b62583df2751cfb47d52c0eaf",
-    "note": "Claims 1 gelesen 17.10.2026 (staledocs 2.1.0): Drift = logic.py (dsgvo_cleanup-Notifications); die Feedback-Speicherung write_file bleibt unver\u00e4ndert | Beleg-Tokens write_file | Paar: skills/store-feedback/SKILL.md"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: webui/logic.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "skills/store-feedback/SKILL.md",
   "schema": 1

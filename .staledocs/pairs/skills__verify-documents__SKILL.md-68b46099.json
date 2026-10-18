@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-17T13:56:36+00:00",
+    "at": "2026-10-18T12:04:05+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
+      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
       "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
-    "note": "Claims 29 gelesen 17.10.2026 (staledocs 2.1.0): Drift = employer.py (notify-Key/Params); das Dokumenten-Gate MANUELLE_PRIEFUNG_ERFORDERLICH bleibt unver\u00e4ndert | Beleg-Tokens MANUELLE_PRIEFUNG_ERFORDERLICH + agent-automation.md | Paar: skills/verify-documents/SKILL.md"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

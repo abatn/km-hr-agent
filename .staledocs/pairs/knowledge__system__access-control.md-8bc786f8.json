@@ -31,6 +31,7 @@
       "knowledge.md",
       "knowledge/portal/employer-board.md",
       "knowledge/system/agent-automation.md",
+      "knowledge/system/configuration-secrets.md",
       "lebenslauf_hochgeladen",
       "make_transition",
       "page_role=\"candidate\"",
@@ -45,21 +46,21 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-17T13:56:22+00:00",
+    "at": "2026-10-18T12:03:45+00:00",
     "code_blobs": {
-      "webui/main.py": "30e3d5ee22e269df837a619ccb0eb64740d6802f",
+      "webui/main.py": "b1e56c8bdf0e5e3ee3526d2f26ea67cc801f42bf",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf",
       "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "6f83864790bb16e1fbe54b780d33c35223ee3c47",
+      "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
-    "doc_blob": "35a69b44839fa8bd73b88ee66f659b9da67842d0",
-    "note": "Claims 42 gelesen 17.10.2026 (staledocs 2.1.0): Drift = candidate.py/employer.py (Notification-Eintr\u00e4ge mit Key/Params); Rollen- und Zugriffslogik (Shell-Filter, ADMIN) bleibt unver\u00e4ndert | Beleg-Tokens webui/pages/candidate.py + webui/pages/employer.py | Paar: knowledge/system/access-control.md"
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
+    "doc_blob": "048166a6532a66f8bd225e5a2cfb08e584dad443",
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: webui/main.py, webui/pages/login.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

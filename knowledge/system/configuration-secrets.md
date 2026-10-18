@@ -169,3 +169,45 @@ sein.
 
 > **Design-Entscheidung (keine externe Quelle):** Dateiname `.env`, Variable
 > `KMHR_ENV_FILE`, Verhalten des Starters und die Modus-Empfehlung `600` sind frei gewählt.
+
+---
+
+## (g) Passwort-Reset per E-Mail (18.10.2026)
+
+**Quelle: Auftrag „Passwort vergessen?" (18.10.2026).** Nur die Login-Tabs **Kandidat**
+und **Arbeitgeber** erhalten einen Link „Passwort vergessen?"; der **Admin**-Tab bleibt
+bewusst außen (Nutzerentscheidung R6-2.1 „Admin-Passwort rotieren" wurde am 30.09.2026
+abgelehnt, s. „Bekanntes Restrisiko" oben). Der Reset ändert **nichts** am offenen
+Admin-Restrisiko.
+
+Ablauf: E-Mail-Eingabe → **generische Antwort** (kein Enumeration-Loch) → der
+Agent-Runner legt einen **einmaligen** Token an (secrets.token_urlsafe, **nur als
+SHA-256-Hash** in der neuen Tabelle `password_resets`) und schickt einen Link
+`/login?reset=<token>` → Dialog „Neues Passwort (2×)" → Policy wie `change_password`
+(Mindestlänge 8, „neu ≠ alt") → neuer argon2id-Hash, Token verbraucht.
+
+**Sicherheits-Regeln (verbindlich):**
+
+- Token nur als Hash gespeichert.
+- Einmal verwendbar + Ablauf **60 Min** (Design-Entscheidung).
+- **Rate-Limit 3 Anfragen / 10 Min pro E-Mail.**
+- Generische Antwort bei unbekannter E-Mail.
+- **Token niemals im Log:** der Token steht nur im Mail-Body; `logs/mcp-calls.log`
+  schreibt per Whitelist (frozenset der erlaubten Args-Keys im Runner) ausschließlich
+  `to`/`subject` — der Body wird nie geloggt.
+- **Zieltabelle aus dem Tab-Kontext** (`candidate`→`candidates`, `employer`→`employers`):
+  dieselbe E-Mail kann in beiden Tabellen stehen, der Tab entscheidet.
+- Abgelaufene/verbrauchte Zeilen löscht `dsgvo_cleanup`.
+
+**Design-Entscheidungen (keine externe Quelle):** Ablauf 60 Min und Rate-Limit 3/10-Min
+sind frei gewählt. Der Token wird im **Runner** erzeugt, nicht in der Web-Schicht — so
+berührt der Klartext-Token weder `agent_tasks.payload` noch ein App-Log. Als Lookup
+dient ein SHA-256-Hash (kein Passwort-Hash-Verfahren; der Token ist kein Nutzer-Passwort).
+Der Reset beendet **keine** bestehenden Browser-Sessions (NiceGUI-Cookie) — als
+Restrisiko dokumentiert, nicht umgesetzt.
+
+**Nachweis:** `tests/test_password_reset.py` (Unit, Token-Policy/Log-Freiheit/Rate-Limit)
+und `tests/e2e_password_reset.py` (isoliert). Code: `webui/db.py`
+(init_password_resets_table, hash_reset_token), `webui/logic.py` (apply_password_reset),
+`webui/pages/login.py` (Link „Passwort vergessen?" + Dialoge), `scripts/agent-runner.py`
+(Task send_password_reset).

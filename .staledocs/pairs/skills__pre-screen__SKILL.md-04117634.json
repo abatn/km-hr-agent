@@ -26,15 +26,15 @@
       "webui/components.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-17T13:56:34+00:00",
+    "at": "2026-10-18T12:04:04+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
+      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
       "webui/components.py": "d1daba9c3383c726933b36dcba68fd4ec8cecba7",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "97fa40ff230048e7d68e00da9714dad93d4907c0",
-    "note": "Claims 27 gelesen 17.10.2026 (staledocs 2.1.0): Drift = components.py (Drawer) + candidate.py (Key/Params); Prescreen-Inhalt bleibt unver\u00e4ndert | Beleg-Tokens webui/components.py + webui/pages/candidate.py | Paar: skills/pre-screen/SKILL.md"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "skills/pre-screen/SKILL.md",
   "schema": 1

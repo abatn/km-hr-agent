@@ -3525,3 +3525,39 @@ msgstr "حالة الطلب"
 
 msgid "notify.statuswechsel.text"
 msgstr "طلبك لدى {firma} لوظيفة {job}: {status}"
+
+msgid "Passwort vergessen?"
+msgstr "هل نسيت كلمة المرور؟"
+
+msgid "Geben Sie Ihre E-Mail ein. Wenn ein Konto existiert, senden wir einen Link zum Zuruecksetzen."
+msgstr "أدخل بريدك الإلكتروني. إذا كان هناك حساب، سنرسل رابطًا لإعادة التعيين."
+
+msgid "Link senden"
+msgstr "إرسال الرابط"
+
+msgid "Wenn ein Konto mit dieser E-Mail existiert, ist der Link unterwegs."
+msgstr "إذا كان هناك حساب بهذا البريد الإلكتروني، فسيتم إرسال الرابط."
+
+msgid "Bitte eine gueltige E-Mail eingeben."
+msgstr "يرجى إدخال بريد إلكتروني صالح."
+
+msgid "Neues Passwort vergeben"
+msgstr "تعيين كلمة مرور جديدة"
+
+msgid "Passwort speichern"
+msgstr "حفظ كلمة المرور"
+
+msgid "Passwort neu gesetzt. Bitte einloggen."
+msgstr "تمت إعادة تعيين كلمة المرور. يرجى تسجيل الدخول."
+
+msgid "Ungueltiger oder abgelaufener Reset-Link."
+msgstr "رابط إعادة تعيين غير صالح أو منتهي الصلاحية."
+
+msgid "Sie haben ein neues Passwort fuer Ihr KM-HR-Agent-Konto angefordert. Wenn Sie das nicht waren, koennen Sie diese E-Mail ignorieren."
+msgstr "لقد طلبت كلمة مرور جديدة لحسابك في KM-HR-Agent. إذا لم تكن أنت، يمكنك تجاهل هذا البريد الإلكتروني."
+
+msgid "Ueber den folgenden Link koennen Sie innerhalb von {0} Minuten ein neues Passwort vergeben:"
+msgstr "استخدم الرابط التالي لتعيين كلمة مرور جديدة خلال {0} دقيقة:"
+
+msgid "Passwort zuruecksetzen – KM-HR-Agent"
+msgstr "إعادة تعيين كلمة المرور – KM-HR-Agent"

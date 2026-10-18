@@ -1084,9 +1084,17 @@ def dsgvo_cleanup() -> dict:
             conn.commit()
     except Exception:
         gel_notifs = 0
+    try:
+        # 18.10.2026 (Passwort-Reset, Spec §(g)): abgelaufene UND verbrauchte
+        # Reset-Tokens entfernen (Muster der bestehenden Deletes; toleriert
+        # DBs ohne die Tabelle via try/except).
+        from webui.db import delete_expired_password_resets
+        gel_resets = delete_expired_password_resets(conn)
+    except Exception:
+        gel_resets = 0
     conn.close()
     return {"geloeschte_bewerbungen": len(ids), "geloeschte_dokumente": gel_doks,
-            "geloeschte_notifications": gel_notifs}
+            "geloeschte_notifications": gel_notifs, "geloeschte_resets": gel_resets}
 
 
 def run_dsgvo_cleanup_once(_done_marker: dict | None = None) -> dict:
@@ -1307,6 +1315,61 @@ def change_password(conn, table: str, user_id: int,
     c.execute(f"UPDATE {table} SET password_hash = ? WHERE id = ?", (new_hash, user_id))
     conn.commit()
     return (True, "Passwort geändert.")
+
+
+# ─── Passwort-Reset ohne Altpasswort (18.10.2026) ─────────────────────
+# Spec: knowledge/system/configuration-secrets.md §(g). Tabelle + Token-Helper
+# liegen framework-frei in webui/db.py (auch vom Runner genutzt).
+# Design-Entscheidung: keine Session-Invalidierung (NiceGUI-Cookie) — dokumentiert.
+
+_RESET_ROLE_TABLE = {"candidate": "candidates", "employer": "employers"}
+
+
+def apply_password_reset(token: str, neues_pw: str,
+                         db_path: Path | None = None) -> tuple[bool, str]:
+    """Setzt ein neues Passwort über einen gültigen Reset-Token (ohne Altpasswort).
+    Zieltabelle kommt aus der in der Reset-Zeile gespeicherten Rolle.
+    Gibt `(ok, code)` zurück (code ∈ {ok, invalid, too_short, same_as_old}) — die
+    UI uebersetzt den Code, deshalb bleibt der Framework-Layer i18n-neutral.
+    `invalid` deckt absichtlich alle Fehlfaelle ab (kein Informationsleck)."""
+    from webui.db import (
+        find_active_password_reset, hash_reset_token, mark_password_reset_used,
+    )
+    if not token or not isinstance(token, str):
+        return (False, "invalid")
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    try:
+        row = find_active_password_reset(conn, hash_reset_token(token))
+        if not row:
+            return (False, "invalid")
+        reset_id, email, role = row[0], row[1], row[2]
+        table = _RESET_ROLE_TABLE.get(role)
+        if not table:
+            return (False, "invalid")
+        urow = conn.execute(
+            f"SELECT id, password_hash FROM {table} WHERE lower(email) = lower(?)",
+            (email,)).fetchone()
+        if not urow:
+            return (False, "invalid")
+        user_id, old_hash = urow[0], urow[1]
+
+        # Policy wie change_password: Mindestlänge + „neu ≠ alt"
+        if len(neues_pw) < MIN_PASSWORD_LENGTH:
+            return (False, "too_short")
+        if is_sha256_hash(old_hash):
+            import hashlib
+            if hashlib.sha256(neues_pw.encode()).hexdigest() == old_hash:
+                return (False, "same_as_old")
+        elif verify_password_argon2id(neues_pw, old_hash):
+            return (False, "same_as_old")
+
+        new_hash = hash_password_argon2id(neues_pw)
+        conn.execute(f"UPDATE {table} SET password_hash = ? WHERE id = ?",
+                     (new_hash, user_id))
+        mark_password_reset_used(conn, reset_id)
+        return (True, "ok")
+    finally:
+        conn.close()
 
 
 # ─── Rollen-Login (framework-unabhängig über Session-Dict) ────────────

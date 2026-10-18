@@ -125,14 +125,14 @@
       "webui/pages/employer.py",
       "{task_type}-kandidat-{cid}-{datum}.md"
     ],
-    "at": "2026-10-15T18:08:22+00:00",
+    "at": "2026-10-18T12:03:47+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d8844b522aee1a03c6ecb1bd69b1c05f21a7866",
+      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e"
     },
-    "commit": "4652b9f744c407f241207c0f8b479261567fc344",
+    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
     "doc_blob": "dbfa401846c9a7e27a14d1de3d66cced9b75b39a",
-    "note": "Claims 131 gelesen 15.10.2026: Pfad-Claims 24/25 vorhanden, fehlt: jitsi-mcp-server/; Codemark-Treffer 6/15 in Code (u.a. COALESCE, KMHR_RUNNER_AUTOSTART, _badge_icon); staledocs 2.1.0"
+    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/system/agent-automation.md",
   "schema": 1
