@@ -125,14 +125,14 @@
       "webui/pages/employer.py",
       "{task_type}-kandidat-{cid}-{datum}.md"
     ],
-    "at": "2026-10-18T12:03:47+00:00",
+    "at": "2026-10-18T18:49:07+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
+      "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e"
     },
-    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
+    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
     "doc_blob": "dbfa401846c9a7e27a14d1de3d66cced9b75b39a",
-    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/system/agent-automation.md",
   "schema": 1

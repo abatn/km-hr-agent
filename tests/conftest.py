@@ -170,6 +170,13 @@ from webui import db as _db  # noqa: E402  (nach dem Connect-Patch!)
 
 _db.init_notifications_table()
 
+# 18.10.2026 (FR-Filter Hiring-Board): dieselbe App-Start-Parität für die
+# candidates-Spalten-Migration (webui/db.py::init_candidates_migrations,
+# `franzoesisch`) — alte SPIEGEL werden geheilt, neue sind ein No-Op
+# (idempotent). Wieder Ein Fakt = das ALTER-Statement steht NUR in
+# webui/db.py, hier wird nur die bestehende Funktion aufgerufen.
+_db.init_candidates_migrations()
+
 
 def pytest_sessionfinish(session, exitstatus):
     """Endwerte in die Pointer-Datei — UND ERST DANACH das eigene Spiegel-

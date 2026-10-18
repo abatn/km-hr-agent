@@ -101,19 +101,19 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-18T12:03:49+00:00",
+    "at": "2026-10-18T18:49:09+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "355ba05cbfe330946c98e7aa745a567ff8bb61e8",
-      "scripts/seed_ci_db.py": "255d4ab08251cdd87b974aedbcbda88725814798",
+      "scripts/seed_ci_db.py": "26369c877cb6dc22101ba09e3dfab8fc6267503d",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
-      "tests/conftest.py": "6ce282650ffbe4a68f2b798c52cb2c3c9405b7eb",
+      "tests/conftest.py": "62f5a76301421d713e742757c0e4bbb75e0c0022",
       "tests/debug_row.sh": "8bbeb51dbffa58faa0db742ad61de0e2089b8f54",
       "tests/e2e_admin_downloads.py": "46a182ab90fbd75655b6b67ff14691ef8ecd16e7",
       "tests/e2e_agent_details.py": "4f5c5e2de860bbc8a413f1730568363580a416d6",
       "tests/e2e_applicants_first.py": "194cf0226982ecc484a9dd981a0a6931143dfe03",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
       "tests/e2e_apply_dialog_multi.py": "c852947278c20532062dd47bc7b2879df323641c",
-      "tests/e2e_board_passiv_filter.py": "78ce0fe668e6a89c94c61e3b1662dd913c0bd835",
+      "tests/e2e_board_passiv_filter.py": "f3f850e45f2131df674b97627f5ee83e7c4dee7b",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
       "tests/e2e_candidate_detail.py": "9dc7396d8bf7889b12b4fe7f55f0f7ee3d77229a",
       "tests/e2e_candidate_detail2.py": "f9b755ed0cdf7d72c133ec27cc1e0fb1cecaf1f1",
@@ -161,7 +161,7 @@
       "tests/e2e_ui_p0_p1.py": "da0e370afe84b6431d9cbf883d5599baa6fcd4c2",
       "tests/e2e_video_prescreen.py": "8172ec601d005e9ebc1829aa21de2538a6038c38",
       "tests/e2e_vorgemerkt.py": "39a4c3e8e691d82f16f7477892f98efd7248cf6d",
-      "tests/fixtures/seed.db": "309b97d678d6500131c6f906cfbb419d3382f759",
+      "tests/fixtures/seed.db": "47745dd5e31d0e6d5abb7d3f58cb8d9882c08dbc",
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
       "tests/measure_timing.sh": "3e9a83fac12f406f31ceaadc162ad541f4791ef9",
@@ -199,7 +199,7 @@
       "tests/test_p2_block.py": "cb19c04a68aaaed3f51ba877c6486a71522ac2b3",
       "tests/test_p8_2_agent_details.py": "174457e1c0d6b9ece9d4701203a651f26d4f06da",
       "tests/test_password_reset.py": "35016ad6887a6b9c9194d64b5bcfb2c907c33d54",
-      "tests/test_profile_save.py": "b4d87c0f42337e527cfeab721b36c0d292b4dedc",
+      "tests/test_profile_save.py": "97289156e06c9ec962cd0cb6d4d297055a496f96",
       "tests/test_r32_gatekeeper_gen.py": "416de069b066028f19c63ececacd3a1fe85f9c1b",
       "tests/test_r33_compliance_reports.py": "52e52511126b2c71a28a0d4f4e2c379eb7d9e157",
       "tests/test_r35_apply_notify.py": "c9ecfc27fe45b3bd0c586822f130a2e505c17ccd",
@@ -219,9 +219,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
+    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
     "doc_blob": "10cc8651b90b9bd03348da3bc819afe6fd5912f3",
-    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/ci/checks.py, scripts/seed_ci_db.py, tests/e2e_password_reset.py, tests/fixtures/seed.db, tests/test_password_reset.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/seed_ci_db.py, tests/conftest.py, tests/e2e_board_passiv_filter.py, tests/fixtures/seed.db, tests/test_profile_save.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

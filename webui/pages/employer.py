@@ -1707,6 +1707,7 @@ def _page_match(s: dict) -> None:
                  _pj_ort, _pj_typ, _pj_br) = _pj
                 # N-K2 (01.10.2026): EINE CV-Pool-Quelle — CAND_CV_STATUS
                 # (Modulkonstante), keine zweite hartkodierte Status-Liste.
+                # 18.10.2026: bewusst DE/EN-only (kein FR) — Französisch-Filter nur im Hiring-Board-Passiv-Reiter (_pf_*), Spec employer-board.md.
                 for _pk in conn.execute(
                     "SELECT id, name, hard_skills, soft_skills, berufserfahrung_jahre, "
                     "abschluss, deutsch, englisch, standort, lebenslauf_text FROM candidates "
@@ -3167,7 +3168,8 @@ def _page_board(s: dict) -> None:
             (employer_id,)).fetchall()}
         _pf_pool = conn.execute(
             "SELECT id, name, hard_skills, soft_skills, berufserfahrung_jahre, "
-            "abschluss, deutsch, englisch, standort, lebenslauf_text FROM candidates "
+            "abschluss, deutsch, englisch, standort, lebenslauf_text, franzoesisch "
+            "FROM candidates "
             f"WHERE status IN ({','.join('?' * len(CAND_CV_STATUS))})",
             list(CAND_CV_STATUS),
         ).fetchall()
@@ -3216,7 +3218,7 @@ def _page_board(s: dict) -> None:
                     on_change=lambda e: _pf_view.refresh()).classes("w-44")
                 _pf_lang = ui.select(
                     options={"alle": _('Alle Sprachen'), "de": _('Deutsch'),
-                             "en": _('Englisch')},
+                             "en": _('Englisch'), "fr": _('Französisch')},
                     value="alle", label=_('Sprache'),
                     on_change=lambda e: _pf_view.refresh()).classes("w-44")
 
@@ -3271,6 +3273,8 @@ def _page_board(s: dict) -> None:
                     if _pf_sprache == "de" and not str(_pf_pk[6] or "").strip():
                         continue
                     if _pf_sprache == "en" and not str(_pf_pk[7] or "").strip():
+                        continue
+                    if _pf_sprache == "fr" and not str(_pf_pk[10] or "").strip():
                         continue
                     _pf_erg.append({
                         "id": _pf_pk[0], "name": _pf_pk[1] or "",

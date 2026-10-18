@@ -18,7 +18,7 @@ Minimal-Prototyp für 23 HR-Recruiting-Skills: Profil-Extraktion aus PDF/TXT, Ma
 | `knowledge/` | Wissensbasis (Specs) — siehe Wissens-Index unten |
 | `tests/` | pytest (Unit/Integration) + E2E (Playwright, `tests/e2e_*.py`) |
 | `ergebnisse/` | Berichte + Entscheidungslog (`entscheidungen.md`, Lab-Schritt 4) |
-| `data/feedback.db` | SQLite (16 Tabellen) — **Live-DB nie direkt beschreiben** |
+| `data/feedback.db` | SQLite (17 Tabellen, gemessen per `checks.py schema` 18.10.2026) — **Live-DB nie direkt beschreiben** |
 | `app.py` | Streamlit-Archiv (Paritäts-Referenz, seit 23.09.2026 abgeschaltet) |
 
 ## Befehle (Auszug — maßgeblich: `AGENTS.md`)

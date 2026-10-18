@@ -50,9 +50,9 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-18T12:03:37+00:00",
+    "at": "2026-10-18T18:48:57+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "15054f1ff99ce746b5a5e92c582d249a1a0881d7",
+      "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
       "scripts/asgi_trace.py": "a6878a138af5d4d3d1f7b522e4cfca87eb4c299e",
@@ -64,12 +64,12 @@
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
-      "scripts/seed_ci_db.py": "255d4ab08251cdd87b974aedbcbda88725814798",
+      "scripts/seed_ci_db.py": "26369c877cb6dc22101ba09e3dfab8fc6267503d",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
       "webui/components.py": "d1daba9c3383c726933b36dcba68fd4ec8cecba7",
-      "webui/db.py": "d837214cecc2d9fb1f10baa139103790d8367519",
+      "webui/db.py": "d8a602653dff6cb6b4d9fa437a6d4f2f80bb93e0",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
       "webui/locales/ar/LC_MESSAGES/messages.mo": "245e3b7679b90265d43affe8e71a68ca2a7a2847",
@@ -81,11 +81,11 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "3aa94e6f5dd8ee567a9ecba9c00c851a14254091",
       "webui/locales/fr/LC_MESSAGES/messages.po": "37cbaa182f3558b55b4ba28a2361e32201154772",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
-      "webui/main.py": "b1e56c8bdf0e5e3ee3526d2f26ea67cc801f42bf",
+      "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf",
-      "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415",
+      "webui/pages/employer.py": "ad7fc1ce44232f12a58e6a9d6d3bf379e0cb880d",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
@@ -95,9 +95,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
+    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
     "doc_blob": "52e0cf7f3ff69d1820500d4c6759d0fa9ef7cde3",
-    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: scripts/agent-runner.py, scripts/ci/checks.py, scripts/seed_ci_db.py, webui/db.py, webui/locales/ar/LC_MESSAGES/messages.mo, webui/locales\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py, scripts/seed_ci_db.py, webui/db.py, webui/main.py, webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "instructions.md",
   "schema": 1

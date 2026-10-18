@@ -24,13 +24,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-17T13:56:30+00:00",
+    "at": "2026-10-18T18:49:13+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415"
+      "webui/pages/employer.py": "ad7fc1ce44232f12a58e6a9d6d3bf379e0cb880d"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
+    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
     "doc_blob": "334723bf607967986c66ae895612ebde38334b58",
-    "note": "Claims 32 gelesen 17.10.2026 (staledocs 2.1.0): Drift = employer.py (notify-Key/Params); Board-Aktionen bleiben unver\u00e4ndert | Beleg-Tokens webui/pages/employer.py + .open | Paar: skills/employer-portal/SKILL.md"
+    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "skills/employer-portal/SKILL.md",
   "schema": 1

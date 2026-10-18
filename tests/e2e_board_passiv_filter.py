@@ -3,7 +3,7 @@
 Seite /employer/board (Codemark `_page_board` in webui/pages/employer.py), Reiter
 „Passiv" (Codemark `_pf_*`): ui.select „Stelle" (Default „Alle Stellen" = bester Job
 je Kandidat, Score DESC), „Score" (Alle/90+/75+/60+/40+), „Erfahrung" (Alle/ab 2/5/10
-Jahren), „Sprache" (Alle Sprachen/Deutsch/Englisch). Gate 1:1-Parität `_passive_best`
+Jahren), „Sprache" (Alle Sprachen/Deutsch/Englisch/Französisch). Gate 1:1-Parität `_passive_best`
 (matching-filter.md (g)): >=1 Must-Have UND >=50 % der geforderten Erfahrung — OHNE
 Gate-Treffer erscheint der Kandidat NICHT.
 
@@ -24,7 +24,9 @@ read-only `sqlite3.connect('file:<spiegel>?mode=ro', uri=True)`):
 2) Score-DESC relativ: die X/100-Reihe ist monoton fallend.
 3) Filter ⊆ Menge ohne Filter: Score „60+" (Teilmenge, jeder Score >= 60); „Erfahrung:
    ab 10 Jahren" (Teilmenge, jede Karte „Erfahrung: >= 10"); „Sprache: Deutsch"
-   (Teilmenge, alle mit deutschem Level aus der Spiegel-DB belegt). Jeder Filterwechsel
+   (Teilmenge, alle mit deutschem Level aus der Spiegel-DB belegt); „Sprache:
+   Französisch" (Teilmenge, alle mit franzoesischem Level; FR-Fixture-Kandidat
+   e2e-fr-passiv@example.invalid muss erscheinen). Jeder Filterwechsel
    wird gegen eine unabhaengig berechnete Zielmenge geprueft.
 4) Stellen-Waehler: EIN konkreter Job MIT Gate-Treffer -> Teilmenge der Basismenge;
    ein Job OHNE Gate-Treffer -> leer (ein Kandidat, der fuer DIESEN Job keinen
@@ -53,6 +55,9 @@ from webui import logic  # noqa: E402
 EMP_EMAIL = seed_email("hr@techvision.de")
 EMP_PW = "sicher123"
 EMPLOYER_ID = 1
+# Passiver FR-Fixture-Kandidat aus scripts/seed_ci_db.py (Marker fuer den
+# „Sprache: Französisch"-Nachweis unten).
+FR_EMAIL = "e2e-fr-passiv@example.invalid"
 
 
 def _ro():
@@ -96,8 +101,8 @@ def _pool(conn):
     ph = ",".join("?" * len(CAND_CV_STATUS))
     return conn.execute(
         "SELECT id, name, hard_skills, soft_skills, berufserfahrung_jahre, "
-        "abschluss, deutsch, englisch, standort, lebenslauf_text FROM candidates "
-        f"WHERE status IN ({ph})", list(CAND_CV_STATUS)).fetchall()
+        "abschluss, deutsch, englisch, standort, lebenslauf_text, franzoesisch "
+        f"FROM candidates WHERE status IN ({ph})", list(CAND_CV_STATUS)).fetchall()
 
 
 def erwarte(job_id="alle", min_score=0, min_exp=0, sprache="alle") -> list[dict]:
@@ -148,8 +153,11 @@ def erwarte(job_id="alle", min_score=0, min_exp=0, sprache="alle") -> list[dict]
                 continue
             if sprache == "en" and not str(pk[7] or "").strip():
                 continue
+            if sprache == "fr" and not str(pk[10] or "").strip():
+                continue
             erg.append({"id": pk[0], "score": best[0], "titel": best[1],
-                        "exp": pk[4] or 0, "de": pk[6] or "", "en": pk[7] or ""})
+                        "exp": pk[4] or 0, "de": pk[6] or "", "en": pk[7] or "",
+                        "fr": pk[10] or ""})
         return sorted(erg, key=lambda t: t["score"], reverse=True)
     finally:
         conn.close()
@@ -342,6 +350,32 @@ def main():
                 assert str(de_map.get(k["cid"]) or "").strip(), \
                     f"Karte #{k['cid']} ohne deutsches Level in der Spiegel-DB"
             print(f"FILTER Sprache Deutsch: {sorted(ids(kde))} ⊆ Basis, alle mit deutschem Level")
+
+            # „Sprache: Französisch" — Teilmenge, jede Karte mit franzoesischem
+            # Level aus der Spiegel-DB; der FR-Fixture-Kandidat (Marker-E-Mail
+            # FR_EMAIL, scripts/seed_ci_db.py) MUSS erscheinen.
+            setze_defaults(page)
+            setze_auswahl(page, "Sprache", "Französisch")
+            zielfr = erwarte(sprache="fr")
+            kfr = lese_karten(page)
+            assert len(kfr) >= 1, "Sprache Französisch: keine Karten — FR-Fixture fehlt im Seed?"
+            assert ids(kfr) == {e["id"] for e in zielfr}, \
+                f"Sprache Französisch: UI {sorted(ids(kfr))} != erwartet {sorted(e['id'] for e in zielfr)}"
+            assert ids(kfr) <= basis_ids, "Sprache Französisch nicht Teilmenge der Basismenge"
+            conn_fr = _ro()
+            try:
+                fr_ids = {r[0] for r in conn_fr.execute(
+                    "SELECT id FROM candidates WHERE email=?", (FR_EMAIL,))}
+            finally:
+                conn_fr.close()
+            assert fr_ids and fr_ids <= ids(kfr), \
+                f"FR-Fixture {sorted(fr_ids)} erscheint nicht unter {sorted(ids(kfr))}"
+            fr_map = {e["id"]: e["fr"] for e in zielfr}
+            for k in kfr:
+                assert str(fr_map.get(k["cid"]) or "").strip(), \
+                    f"Karte #{k['cid']} ohne franzoesischen Wert in der Spiegel-DB"
+            print(f"FILTER Sprache Französisch: {sorted(ids(kfr))} ⊆ Basis, "
+                  f"FR-Fixture {sorted(fr_ids)} enthalten")
 
             # ── (4) Stellen-Waehler: Job MIT und OHNE Gate-Treffer ───────
             setze_defaults(page)

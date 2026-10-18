@@ -902,3 +902,25 @@ def delete_expired_password_resets(conn) -> int:
     n = c.rowcount
     conn.commit()
     return n
+
+
+# ─── Candidates-Spalten-Migration (18.10.2026) ─────────────────────────
+# FR-Filter Hiring-Board (Spec: knowledge/portal/employer-board.md, Abschnitt
+# „Passiv-Filter"): Altbestands-DBs bekommen die Spalte `franzoesisch` per
+# ALTER TABLE — Muster: init_notifications_table (Codemark
+# `if "msg_key" not in spalten`). Ein Fakt = das ALTER-Statement steht NUR hier.
+
+def init_candidates_migrations() -> None:
+    """Ergänzt candidates-Spalten jüngerer Iterationen (idempotent).
+
+    18.10.2026: `franzoesisch` (FR-Filter Hiring-Board, Spec
+    employer-board.md). Ohne candidates-Tabelle nichts zu tun — ein
+    ALTER-Try auf einer Frisch-DB ohne Schema soll den Boot nicht brechen.
+    """
+    conn = sqlite3.connect(str(DB_PATH))
+    c = conn.cursor()
+    spalten = {r[1] for r in c.execute("PRAGMA table_info(candidates)").fetchall()}
+    if spalten and "franzoesisch" not in spalten:
+        c.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")
+    conn.commit()
+    conn.close()

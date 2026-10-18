@@ -7,7 +7,7 @@
 
 > **NiceGUI-Umsetzung (Phase 2 am 20.09.2026, Tab-Zahl aktualisiert 02.10.2026)** = `_TAB_MAP` (`webui/pages/candidate.py`, Codemarke, Stand 02.10.2026) (7 Tabs, gerendert via `shell()` aus components.py): 📊 **Dashboard (NEU 01.10.2026, 1. Tab — Nutzerentscheidung: Landing nach Login)** · 👤 Mein Profil (**inkl. Lebenslauf-Upload + 🗂️ Dokumente als aufklappbare Kästen — seit 02.10.2026, frühere Sidebar-Tabs „Upload"/„Dokumente" entfallen**; Status-Historie) · 💼 Stellen · 📨 Bewerbungen (bewerben/zurückziehen) · 🗣️ Sprachtest (**P1.1**: voller Flow generate_test → Scoring → CEFR via MCP → DB) · 📹 Pre-Screen (**P2.2**: eigener VDO.Ninja-Raum seit 27.09.2026 ⓘ08.10.2026 — vorher Jitsi-Raum, Screening-Fragen, MD-Download) · 📋 Onboarding. Streamlit-Ära (app.py): Candidate Portal mit 6 Portal-Tabs + 5 Menü-Seiten.
 
-> **Korrektur 08.10.2026 (VERIFY, Messung ⓘ08.10.2026):** `candidates` hat **22 Spalten** (PRAGMA `table_info`). 7 Felder dieser Datei sind **Phantom-Felder** (keine Spalte, werden nicht gespeichert): `geburtsdatum`, `aktuelles_unternehmen`, `referenzen`, `fachrichtung`, `zertifikate`, `andere_sprachen`, `gehalt_verhandelbar` — in den Tabellen unten durchgestrichen. Umgekehrt fehlte die Code-Spalte `franzoesisch` (optional, jetzt in der Sprachen-Tabelle).
+> **Korrektur 08.10.2026 (VERIFY, Messung ⓘ08.10.2026; Stand-Anpassung 18.10.2026):** `candidates` hat **23 Spalten** (PRAGMA `table_info`; 22 Stand 08.10.2026, **+1 = `franzoesisch`** — die Spalte wird per idempotenter Migration ergänzt, Codemark `init_candidates_migrations` in `webui/db.py`, Messdatum 18.10.2026). 7 Felder dieser Datei sind **Phantom-Felder** (keine Spalte, werden nicht gespeichert): `geburtsdatum`, `aktuelles_unternehmen`, `referenzen`, `fachrichtung`, `zertifikate`, `andere_sprachen`, `gehalt_verhandelbar` — in den Tabellen unten durchgestrichen. Umgekehrt fehlte die Code-Spalte `franzoesisch` (optional, jetzt in der Sprachen-Tabelle; Spalte seit 18.10.2026 per Migration vorhanden).
 
 **AKTUELLER STATUS (10.09.2026):**
 - ✅ Skills 2-8 sind geschützt (brauchen Lebenslauf-Status)
@@ -75,7 +75,7 @@
 |---|---|---|
 | `deutsch` | Auswahl | A1 / A2 / B1 / B2 / C1 / C2 / Muttersprache |
 | `englisch` | Auswahl | A1 / A2 / B1 / B2 / C1 / C2 / Muttersprache |
-| `franzoesisch` | Auswahl | A1–C2/Muttersprache — **optional** (Code-Whitelist `_PROFIL_SPALTEN`, nur editierbar falls Spalte existiert; Live-DB ohne Spalte, PRAGMA ⓘ08.10.2026) |
+| `franzoesisch` | Auswahl | A1–C2/Muttersprache — **optional** (Code-Whitelist `_PROFIL_SPALTEN`, nur editierbar falls Spalte existiert; die Spalte wird per idempotenter Migration ergänzt — Codemark `init_candidates_migrations` in `webui/db.py`, Messdatum 18.10.2026) |
 | ~~`andere_sprachen`~~ | Text | **PHANTOM** — keine Spalte in `candidates` (PRAGMA ⓘ08.10.2026), wird nicht gespeichert |
 
 ### Gehaltsvorstellung
@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS candidates (
     zertifikate TEXT,
     deutsch TEXT DEFAULT 'B1',
     englisch TEXT DEFAULT 'B1',
+    franzoesisch TEXT,
     andere_sprachen TEXT,
     gehaltsvorstellung INTEGER,
     gehalt_verhandelbar INTEGER DEFAULT 1,

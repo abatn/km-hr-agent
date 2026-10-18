@@ -139,24 +139,60 @@ def test_bestehender_freitext_bleibt_beim_speichern(conn):
 
 
 # ── (d) Französisch nur wenn Spalte existiert ──────────────────────────
+# Robust gegen BEIDE Schema-Zustände des Mirrors (die idempotente App-Migration
+# `ALTER TABLE candidates ADD COLUMN franzoesisch` landet ggf. erst später):
+# beide Tests bauen ihre eigene :memory:-DB im Stil des `conn`-Fixtures und
+# tragen ihre Präcondition selbst — unabhaengig von einem Fixture-Refresh.
 
-def test_franzoesisch_ohne_spalte_wird_ignoriert(conn):
-    assert "franzoesisch" not in {r[1] for r in conn.execute("PRAGMA table_info(candidates)")}
-    w = _form_aus_db(conn)
-    w["franzoesisch"] = "B1"
-    cand.save_profile_fields(conn, 1, w)  # darf nicht werfen (no such column)
-    assert "franzoesisch" not in _row(conn)
+def _conn_ohne_fixture(sql: str) -> sqlite3.Connection:
+    c = sqlite3.connect(":memory:")
+    c.execute(sql)
+    c.execute("INSERT INTO candidates (id, email, password_hash, name, status) "
+              "VALUES (1, 't@example.org', 'x', 'Test', 'registriert')")
+    # Schema-Defaults ('EU-Bürger','Sofort','B1') NULLen wie im Fixture, damit
+    # „NULL bleibt NULL" eindeutig pruefbar ist.
+    c.execute("UPDATE candidates SET visum_status=NULL, verfuegbarkeit=NULL, "
+              "deutsch=NULL, englisch=NULL")
+    return c
 
 
-def test_franzoesisch_mit_spalte_wird_gespeichert_und_null_bleibt_null(conn):
-    conn.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")
-    w = _form_aus_db(conn)
-    w["franzoesisch"] = None
-    cand.save_profile_fields(conn, 1, w)
-    assert _row(conn, ("franzoesisch",))["franzoesisch"] is None
-    w["franzoesisch"] = "B2"
-    cand.save_profile_fields(conn, 1, w)
-    assert _row(conn, ("franzoesisch",))["franzoesisch"] == "B2"
+def _schema_ohne_spalte(sql: str, spalte: str) -> str:
+    """Entfernt die Spaltendefinition aus dem CREATE-TABLE-SQL (ohne-Spalte-Fall)."""
+    if spalte not in sql:
+        return sql  # Mirror noch ohne die Spalte — SQL unveraendert verwenden
+    neu = re.sub(rf",\s*{spalte}\s+TEXT\b[^,)]*", "", sql, count=1)
+    assert neu != sql, f"Spalte {spalte!r} im Schema, aber nicht entfernt: {sql}"
+    return neu
+
+
+def test_franzoesisch_wird_gespeichert_wenn_spalte_da():
+    conn = _conn_ohne_fixture(_schema_sql())
+    try:
+        if "franzoesisch" not in {r[1] for r in conn.execute("PRAGMA table_info(candidates)")}:
+            conn.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")  # Präcondition dieses Tests
+        w = _form_aus_db(conn)
+        w["franzoesisch"] = "B2"
+        cand.save_profile_fields(conn, 1, w)
+        assert _row(conn, ("franzoesisch",))["franzoesisch"] == "B2"
+        w["franzoesisch"] = None
+        cand.save_profile_fields(conn, 1, w)
+        assert _row(conn, ("franzoesisch",))["franzoesisch"] is None
+    finally:
+        conn.close()
+
+
+def test_franzoesisch_ohne_spalte_wird_ignoriert():
+    conn = _conn_ohne_fixture(_schema_ohne_spalte(_schema_sql(), "franzoesisch"))
+    try:
+        assert "franzoesisch" not in {r[1] for r in conn.execute("PRAGMA table_info(candidates)")}
+        w = _form_aus_db(conn)
+        w["franzoesisch"] = "B1"
+        w["standort"] = "Berlin"
+        cand.save_profile_fields(conn, 1, w)  # darf nicht werfen (no such column)
+        assert "franzoesisch" not in {r[1] for r in conn.execute("PRAGMA table_info(candidates)")}
+        assert _row(conn)["standort"] == "Berlin"  # normale Felder weiter speicherbar
+    finally:
+        conn.close()
 
 
 # ── Status-Verhalten unverändert ───────────────────────────────────────

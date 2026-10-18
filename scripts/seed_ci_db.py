@@ -63,6 +63,48 @@ def main() -> int:
                 "lebenslauf_datei=?, lebenslauf_text=?, aktuelle_position=? WHERE id=?",
                 (_email(cid), f"Kandidat {cid}", f"+49 000 {cid:04d}",
                  f"kandidat-{cid}-cv.pdf", "[anonymisiert]", f"Position {cid}", cid))
+        # 18.10.2026 (Iteration „Hiring-Board Passiv-Filter FR"): passiver
+        # FR-Kandidat als E2E-Fixture fuer tests/e2e_board_passiv_filter.py
+        # („Sprache: Französisch"; Marker e2e-fr-passiv@example.invalid).
+        # IDEMPOTENT: nur wenn die E-Mail in der KOPIE (DST) noch fehlt.
+        fr_email = "e2e-fr-passiv@example.invalid"
+        if not _has_col(dst, "candidates", "franzoesisch"):
+            # Spiegel-Paritaet zur idempotenten App-Migration
+            # (ALTER TABLE candidates ADD COLUMN franzoesisch TEXT): ohne die
+            # Spalte kann der FR-Wert nicht getragen werden.
+            dst.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")
+        if dst.execute("SELECT COUNT(*) FROM candidates WHERE email=?",
+                       (fr_email,)).fetchone()[0] == 0:
+            # Vergleichszeile = bestehender Passiv-Kandidat aus dem CV-Pool mit
+            # exaktem „Python"-Skill (Gate-Treffer auf „E2E-Beweis: Teststelle"
+            # bzw. „Senior Cloud/DevOps Engineer"); Skills/Erfahrung/Standort
+            # 1:1 kopiert — nichts erfunden. Hash im Stil der anonymisierten
+            # Zeilen (per SELECT aus derselben DB), CV-Felder bleiben NULL.
+            hash_q = dst.execute(
+                "SELECT password_hash FROM candidates "
+                "WHERE password_hash LIKE '$argon2id$%' LIMIT 1").fetchone()
+            if hash_q is None:
+                hash_q = dst.execute(
+                    "SELECT password_hash FROM candidates "
+                    "WHERE COALESCE(password_hash, '') != '' LIMIT 1").fetchone()
+            pw_hash = hash_q[0] if hash_q else "x"
+            # Gate-Werte FIX (18.10.2026, Beleg: e2e_board_passiv_filter — FR-Zeile
+            # fiel durch die Job-Gates, solange Werte live-abhängig aus einer
+            # Vorlage kopiert wurden): exakt die Score-Felder des bekannten
+            # Gate-Passierers (Kandidat #2 im committeden Fixture: 5 Jahre,
+            # „Python, AWS, Kubernetes", deutsch+englisch C1, Standort München,
+            # CV-Feld anonymisiert; Softskills/Abschluss leer) — sonst sinkt der
+            # Match-Score unter die Board-Grenze und der FR-Filter-E2E bleibt leer.
+            hard, soft, exp, abschluss = ("Python, AWS, Kubernetes", None, 5, None)
+            ort, engl, cv_text = ("München", "C1", "[anonymisiert]")
+            fr_cid = dst.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM candidates").fetchone()[0]
+            run("INSERT INTO candidates (id, email, password_hash, name, telefon, "
+                "standort, hard_skills, soft_skills, berufserfahrung_jahre, abschluss, "
+                "deutsch, englisch, franzoesisch, lebenslauf_text, status) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (fr_cid, fr_email, pw_hash, "E2E FR Passiv", f"+49 000 {fr_cid:04d}",
+                 ort, hard, soft, exp, abschluss, "C1", engl, "B2", cv_text,
+                 "lebenslauf_hochgeladen"))
         # employers
         for (eid,) in dst.execute("SELECT id FROM employers").fetchall():
             # `firma` bleibt (Test-Fixture erwartet den Namen), Person bleibt anonym.

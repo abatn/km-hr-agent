@@ -36,6 +36,9 @@
       "_pf_view",
       "anzeige_name",
       "applications.status",
+      "candidates.deutsch",
+      "candidates.englisch",
+      "candidates.franzoesisch",
       "do_invite",
       "ergebnisse/entscheidungen.md",
       "knowledge/legal/dsgvo-gate.md",
@@ -56,13 +59,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-17T13:56:20+00:00",
+    "at": "2026-10-18T18:49:05+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "84fc20bbcfd26c7a16b4f731cc4954575fc74415"
+      "webui/pages/employer.py": "ad7fc1ce44232f12a58e6a9d6d3bf379e0cb880d"
     },
-    "commit": "2a1d0925ea01ab2901d705c81767140942190141",
-    "doc_blob": "b6d6edfb51e9dec5a6c56ec13ab2940c7afd3ede",
-    "note": "Claims 57 gelesen 17.10.2026 (staledocs 2.1.0): Drift = employer.py (notify-Key/Params); Board-Filter, Passiv-Logik und Expansion bleiben unver\u00e4ndert | Beleg-Tokens webui/pages/employer.py + .q-dialog | Paar: knowledge/portal/employer-board.md"
+    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "doc_blob": "dcd6eba593c740c847b1b81b58d72677cef5c7e5",
+    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

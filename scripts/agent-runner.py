@@ -927,6 +927,7 @@ def _collect_text_events(stdout: str) -> str:
 def _db_candidate_context(cid) -> dict:
     """Liest Kandidaten-Kontext aus der DB (Runner-Seite, keine Agent-Tools nötig)."""
     conn = sqlite3.connect(str(DB_PATH)); c = conn.cursor()
+    # 18.10.2026: bewusst DE/EN-only (kein FR) — Französisch-Filter nur im Hiring-Board-Passiv-Reiter (_pf_*), Spec employer-board.md.
     c.execute("SELECT name, hard_skills, soft_skills, berufserfahrung_jahre, abschluss, deutsch, englisch, standort, lebenslauf_text FROM candidates WHERE id = ?", (cid,))
     row = c.fetchone(); conn.close()
     if not row:

@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-18T12:03:38+00:00",
+    "at": "2026-10-18T18:48:58+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -188,9 +188,9 @@
       "knowledge/notification-log.md": "2e83a385e5c8ec0cc69e9059d62dbe4217305906",
       "knowledge/onboarding-default.md": "3ce6e37a5ecced6eb7d9314979a1dab80e304658",
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
-      "knowledge/portal/candidate-portal-fields.md": "749082a7b16a1dd36ee0d048869fa79c4505c8e6",
+      "knowledge/portal/candidate-portal-fields.md": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
       "knowledge/portal/cv-pflicht.md": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-      "knowledge/portal/employer-board.md": "b6d6edfb51e9dec5a6c56ec13ab2940c7afd3ede",
+      "knowledge/portal/employer-board.md": "dcd6eba593c740c847b1b81b58d72677cef5c7e5",
       "knowledge/portal/employer-portal-fields.md": "11194040e321495c2ecc380641dc7a1f6e9cfbb7",
       "knowledge/portal/housing-search.md": "b66f7fb4123cd7875724b8db11b3fc3d2a62589f",
       "knowledge/portal/matching-filter.md": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
@@ -224,9 +224,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
-    "doc_blob": "f97648e233c7e785141bf4e2b32dc51f8f1fdf63",
-    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: knowledge/system/access-control.md, knowledge/system/configuration-secrets.md, knowledge/system/e2e-ci-seed.md\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "doc_blob": "76bb4b99e2943b5bd050d2c18556cb3c1dbb2c95",
+    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: knowledge/portal/candidate-portal-fields.md, knowledge/portal/employer-board.md\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge.md",
   "schema": 1
