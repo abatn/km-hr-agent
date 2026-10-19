@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-19T17:04:50+00:00",
+    "at": "2026-10-19T17:19:06+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -203,7 +203,7 @@
       "knowledge/system/dependency-pinning.md": "2c5e276d7b22734b3740e73a4a1d998c99481697",
       "knowledge/system/deploy-pipeline.md": "5d1642fd3d51253045ce6bcbf48f075030969d2c",
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
-      "knowledge/system/e2e-ci-seed.md": "5b9879ed6a561604164822db8d603b933c4aeb4e",
+      "knowledge/system/e2e-ci-seed.md": "94898da9f28d2bed4db6533f50252459bf0db6de",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
       "knowledge/system/i18n-runner-chain.md": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
       "knowledge/system/i18n.md": "55475c787d901d8540185cd395dd44c330066199",
@@ -224,9 +224,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
+    "commit": "da9e46db3ff5019364f613a389140966d6e15501",
     "doc_blob": "76bb4b99e2943b5bd050d2c18556cb3c1dbb2c95",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "note": "DOC_STALE knowledge.md: code moved knowledge/system/e2e-ci-seed.md; Index-Zeilen L3/L77 unveraendert korrekt, F1-Korrektur braucht keinen Index-Nachtrag."
   },
   "doc": "knowledge.md",
   "schema": 1

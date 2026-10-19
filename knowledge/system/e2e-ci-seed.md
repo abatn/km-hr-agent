@@ -9,7 +9,8 @@
 ## Problem (Befund ⓘ08.10.2026)
 
 - Der E2E-Workflow (`.github/workflows/e2e.yml`) kopiert `tests/fixtures/seed.db` nach `data/feedback.db` und startet den Isolations-Harness.
-- `tests/fixtures/seed.db` wird von `scripts/seed_ci_db.py` erzeugt: es **anonymisiert E-Mails** (`kandidatN@example.invalid`, `hrN@example.invalid`, `admin@example.invalid`), lässt aber die **Passwort-Hashes unverändert**.
+- `tests/fixtures/seed.db` wurde **ursprünglich** mit `scripts/seed_ci_db.py` aus einem Live-Snapshot erzeugt: das Skript **anonymisiert E-Mails** (`kandidatN@example.invalid`, `hrN@example.invalid`, `admin@example.invalid`) und lässt die **Passwort-Hashes unverändert**.
+- **Achtung (Messung 19.10.2026): Der committete Fixture ist hand-gepflegt und NICHT durch einen Generator-Lauf reproduzierbar.** `scripts/seed_ci_db.py data/feedback.db /tmp/…` gegen die heutige Live-DB liefert **9 Jobs / 26 Bewerbungen / 3 Arbeitgeber**, der Fixture hat **6 Jobs / 18 Bewerbungen / 2 Arbeitgeber** (u. a. der FR-Fall Arbeitgeber 4 / Job 12 / Kandidat 23 ist am 19.10.2026 **chirurgisch** ergänzt worden). Ein Voll-Regenerat würde E2E-Baselines und ~10 Unit-Tests verschieben ⇒ Fixture nur chirurgisch ändern (Einzel-INSERT/UPDATE), nie blind neu erzeugen.
 - Die E2E-Skripte sind gegen die **Live-DB** geschrieben und melden sich mit den **Original-E-Mails** an (`hr@techvision.de`, `e2e-beweis-phase1@example.com`, `batniniabdelkader@yahoo.com`, …).
 - Folge in CI: Login trifft kein Konto → keine Navigation → `Timeout 15000ms … waiting for navigation to "**/candidate**"` → **43/46 Skripte rc=1** (Läufe 05.–08.10.2026: 4/4 failure).
 - Lokal grün, weil `data/feedback.db` die Original-Konten enthält.

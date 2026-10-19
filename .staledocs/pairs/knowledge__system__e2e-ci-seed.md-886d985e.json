@@ -107,7 +107,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-19T17:04:58+00:00",
+    "at": "2026-10-19T17:18:39+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "355ba05cbfe330946c98e7aa745a567ff8bb61e8",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -228,9 +228,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
-    "doc_blob": "5b9879ed6a561604164822db8d603b933c4aeb4e",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "commit": "da9e46db3ff5019364f613a389140966d6e15501",
+    "doc_blob": "94898da9f28d2bed4db6533f50252459bf0db6de",
+    "note": "CODE_LAG e2e-ci-seed.md: doc moved; Generator-Aussage korrigiert - Fixture ist hand-gepflegt, seed_ci_db.py gegen heutige Live-DB ergibt 9 Jobs/26 Apps/3 Arbeitgeber vs Fixture 6/18/2 (gemessen 19.10.2026), Voll-Regenerat verboten."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1
