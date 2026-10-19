@@ -11,6 +11,12 @@ Read-only: nur Login/Navigation/Suchfeld/Klick — kein Statuswechsel, keine Wri
 Datengetrieben: welche Zeile auflösbar ist, rechnet dieses Skript über
 `employer._feedback_row_cid()` gegen die (Spiegel-)DB — keine festen IDs.
 
+**Fix 19.10.2026 (Seed-Modus-Ambivalenz):** die Namenssuche („Kandidat“) traf im
+anonymisierten Fixture mehrere Zeilen — Klick auf die falsche (Dialog statt Sprung).
+Neu: Suchbegriff = sichtbare Vorgang-Nr. (derselbe Show-Wert wie `_page_feedback`:
+`match_id.rsplit('-', 3)[0]`), Klickziel = Zeile mit DIESEM Vorgang, dem gleichen
+Datum UND exakter Namens-Knopf-Beschriftung.
+
 Ausführen (isoliert, nie gegen die Live-DB):
   .venv-streamlit/bin/python3 tests/e2e_isolation.py --port 8095 --only e2e_m07_row_click
 """
@@ -61,25 +67,33 @@ def _maps(pairs):
     return nbi, nti, ti
 
 
+def _shown_match_id(mid: str) -> str:
+    """Angezeigte Vorgang-Nr. — dieselbe Show-Regel wie `_page_feedback`
+    (match_id.rsplit('-', 3)[0]; Leer/None -> '--')."""
+    m = mid or ""
+    return m.rsplit("-", 3)[0] if "-" in m else (m or "--")
+
+
 def ziele():
-    """(aufloesbar: (name, cid), nicht_aufloesbar: (name, id)) aus der DB."""
+    """(aufloesbar: (name, cid, fid, vorgang, datum), nicht_aufloesbar:
+    (name, fid, vorgang, datum)) aus der DB."""
     conn = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
     try:
         rows = conn.execute(
-            "SELECT id, match_id, kandidat_name FROM feedback ORDER BY id DESC LIMIT 20"
+            "SELECT id, match_id, kandidat_name, datum FROM feedback ORDER BY id DESC LIMIT 20"
         ).fetchall()
         pairs = conn.execute("SELECT id, name FROM candidates").fetchall()
     finally:
         conn.close()
     nbi, nti, ti = _maps(pairs)
     resolvable, unresolvable = None, None
-    for fid, mid, nm in rows:
+    for fid, mid, nm, dat in rows:
         klass = emp._feedback_klarname(nm, nbi)
         cid = emp._feedback_row_cid(mid, nm, nbi, nti, ti)
         if cid is not None and resolvable is None:
-            resolvable = (klass, cid, fid)
+            resolvable = (klass, cid, fid, _shown_match_id(mid), (dat or "--")[:10])
         if cid is None and unresolvable is None:
-            unresolvable = (klass, fid)
+            unresolvable = (klass, fid, _shown_match_id(mid), (dat or "--")[:10])
     return resolvable, unresolvable
 
 
@@ -96,20 +110,24 @@ def login_employer(page) -> None:
     page.wait_for_url("**/employer**", timeout=25000)
 
 
-def suchen_und_klick(page, name: str) -> bool:
-    """Zeile per Suchfeld heranholen und den Namens-Knopf anklicken."""
+def suchen_und_klick(page, vorgang: str, klass: str, datum: str) -> bool:
+    """Zeile per Suchfeld (Vorgang-Nr.) heranholen und den Namens-Knopf DER
+    exakten Trefferzeile anklicken (Fix 19.10.2026: Name allein ist im
+    anonymisierten Seed-Fixture nicht eindeutig)."""
     feld = page.locator('input[placeholder="Suchen..."]').first
     if not feld.count():
         fail("kein Suchfeld auf /employer/feedback gefunden")
         return False
-    feld.fill(name)
+    feld.fill(vorgang)
     page.wait_for_timeout(600)
-    btn = page.locator("tbody tr").filter(has_text=name).locator(".q-btn").first
-    if not btn.count():
-        fail(f"keine klickbare Zeile (Namens-Knopf) für {name!r}")
-        return False
-    btn.click()
-    return True
+    for row in page.locator("tbody tr").filter(has_text=datum).all():
+        btn = row.locator(".q-btn").first
+        if btn.count() and btn.inner_text().strip() == klass.strip():
+            btn.click()
+            return True
+    fail(f"keine eindeutige Zeile fuer Vorgang {vorgang!r} + Datum {datum!r} "
+         f"+ Name {klass!r}")
+    return False
 
 
 def main() -> int:
@@ -129,12 +147,13 @@ def main() -> int:
         try:
             login_employer(page)
 
-            # ── 1. auflösbar → Match-Sprung ──────────────────────────────
+            # ── 1. aufloesbar → Match-Sprung ───────────────────────────────
             page.goto(URL, wait_until="domcontentloaded")
             page.wait_for_timeout(2500)
-            name, cid, fid = resolvable
-            note(f"klicke auflösbare Zeile {name!r} (erwartet kandidat={cid})")
-            if suchen_und_klick(page, name):
+            name, cid, fid, vorgang, datum = resolvable
+            note(f"klicke aufloesbare Zeile {name!r} (erwartet kandidat={cid}, "
+                 f"Vorgang={vorgang!r})")
+            if suchen_und_klick(page, vorgang, name, datum):
                 ziel = f"/employer/match?kandidat={cid}"
                 try:
                     page.wait_for_url(f"**{ziel}", timeout=15000)
@@ -146,9 +165,10 @@ def main() -> int:
             if unresolvable:
                 page.goto(URL, wait_until="domcontentloaded")
                 page.wait_for_timeout(2500)
-                uname, ufid = unresolvable
-                note(f"klicke nicht auflösbare Zeile {uname!r} (id={ufid}, Dialog erwartet)")
-                if suchen_und_klick(page, uname):
+                uname, ufid, uvorgang, udatum = unresolvable
+                note(f"klicke nicht-aufloesbare Zeile {uname!r} (fid={ufid}, "
+                     f"Vorgang={uvorgang!r}, Dialog erwartet)")
+                if suchen_und_klick(page, uvorgang, uname, udatum):
                     try:
                         dlg = page.locator(".q-dialog").last
                         dlg.wait_for(state="visible", timeout=8000)

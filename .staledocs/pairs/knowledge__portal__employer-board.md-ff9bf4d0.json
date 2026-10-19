@@ -85,13 +85,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T17:04:54+00:00",
+    "at": "2026-10-19T17:51:31+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "ab4ab7d94320896112de06b554ca98b71f874288"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
-    "doc_blob": "6c9dcb7120359ee822c246443a1960902d858696",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "commit": "30dd3e30d3b977567f206e61ff84c425a0e44b25",
+    "doc_blob": "1512e95b5b92791f1e0f126fbfa79629fed22083",
+    "note": "m07-Fix 19.10.2026: tests/e2e_m07_row_click.py zeilengenau (Vorgang+Datum+exakter Name), A/B belegt vorbestehend; employer-board.md \u00a77 aufVolllauf-Befund 51/52 + Reparatur aktualisiert; knowledge-/AGENTS-Aussagen sonst unveraendert."
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

@@ -107,7 +107,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-19T17:18:39+00:00",
+    "at": "2026-10-19T17:50:11+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "355ba05cbfe330946c98e7aa745a567ff8bb61e8",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -143,7 +143,7 @@
       "tests/e2e_invitation_termin_admin.py": "68e47c19fc32f6af2d1ac26967abe5bbdb461690",
       "tests/e2e_isolation.py": "c79df91f6814245c332b9dbaf0943e8e8675fc4b",
       "tests/e2e_kandidaten_filter.py": "7703ec56e76e2eb0468215caef118a6ab3d45f7c",
-      "tests/e2e_m07_row_click.py": "699c1cd5e87cc9eb6778ff4ecd0a0bd4a557ea7b",
+      "tests/e2e_m07_row_click.py": "b9da1786cb5bf258e98b9ee37f074c60fbc2fe8c",
       "tests/e2e_m13_score_once.py": "70e6170fd987f02942416aba3945df1278278aa3",
       "tests/e2e_m17_pushstate.py": "97a5dd68d7b71d501ab2d0dbadf55d7fb34780c6",
       "tests/e2e_m18_skills_marker.py": "01e8995afa41cd1a49a09f37a68761409b123f55",
@@ -228,9 +228,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "da9e46db3ff5019364f613a389140966d6e15501",
+    "commit": "30dd3e30d3b977567f206e61ff84c425a0e44b25",
     "doc_blob": "94898da9f28d2bed4db6533f50252459bf0db6de",
-    "note": "CODE_LAG e2e-ci-seed.md: doc moved; Generator-Aussage korrigiert - Fixture ist hand-gepflegt, seed_ci_db.py gegen heutige Live-DB ergibt 9 Jobs/26 Apps/3 Arbeitgeber vs Fixture 6/18/2 (gemessen 19.10.2026), Voll-Regenerat verboten."
+    "note": "m07-E2E-Fix 19.10.2026: code moved tests/e2e_m07_row_click.py (zeilengenaue Auswahl ueber sichtbare Vorgang-Nr. + Datum + exakte Knopf-Beschriftung, weil der anonymisierte Seed-Fixture mehrdeutige Namens-Buttons hat; Seed rc=0, Live rc=0, Live-Spiegel sha256 unveraendert); E2E-Grundregeln in AGENTS.md/e2e-ci-seed.md unveraendert."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

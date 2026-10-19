@@ -117,6 +117,6 @@ Belege: `ergebnisse/entscheidungen.md` (Einträge 15.10.2026 und 16.10.2026, Kli
 ## 7. Umfang und Stand
 
 - **Durchlauf 1 (erledigt):** Board mit 4 Spalten, Passiv-Reiter, Navigation 4 Punkte, „Mehr“-Seite, Pseudonym-Fix in `_list_candidates`, Unit-Tests nachgezogen, i18n in 4 Sprachen, Doku-Korrekturen der belegten Falschaussagen.
-- **Durchlauf 2 (Stand 19.10.2026, MVP Arbeitgeber-UI):** Drawer (§4) und Kartenschnellaktionen (§3) im Aktiv-Tab **umgesetzt** (Unit `tests/test_board_actions.py`, isoliertes E2E `tests/e2e_board_actions.py` Seed-Modus grün) — offen: E2E-Skripte an die neue Navigation anpassen, isolierter E2E-Volllauf, Klarname-Befund Match/Feedback (§5), Einladen-Klickziel am Board (§6).
+- **Durchlauf 2 (Stand 19.10.2026, MVP Arbeitgeber-UI):** Drawer (§4) und Kartenschnellaktionen (§3) im Aktiv-Tab **umgesetzt** (Unit `tests/test_board_actions.py`, isoliertes E2E `tests/e2e_board_actions.py` Seed-Modus grün) — **erledigt 19.10.2026:** isolierter E2E-Volllauf Seed-Modus **51/52 rc=0**; der einzige Ausfall `e2e_m07_row_click` war eine **vorbestehende** Fixture-Schwäche (Namens-Ambivalenz „Kandidat N“, im A/B mit Code VOR Schritt 2 reproduziert), repariert am 19.10.2026 (zeilengenaue Auswahl über sichtbare Vorgang-Nr. + Datum + exakte Knopf-Beschriftung; seither Seed **und** Live rc=0) — Anpassungen an die neue Navigation waren an keinem Skript nötig. Weiter offen: Klarname-Befund Match/Feedback (§5), Einladen-Klickziel am Board (§6).
 
 Kein Commit und kein Push ohne ausdrückliches Go.

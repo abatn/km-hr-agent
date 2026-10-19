@@ -133,7 +133,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-19T17:12:20+00:00",
+    "at": "2026-10-19T17:50:10+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -188,7 +188,7 @@
       "tests/e2e_invitation_termin_admin.py": "68e47c19fc32f6af2d1ac26967abe5bbdb461690",
       "tests/e2e_isolation.py": "c79df91f6814245c332b9dbaf0943e8e8675fc4b",
       "tests/e2e_kandidaten_filter.py": "7703ec56e76e2eb0468215caef118a6ab3d45f7c",
-      "tests/e2e_m07_row_click.py": "699c1cd5e87cc9eb6778ff4ecd0a0bd4a557ea7b",
+      "tests/e2e_m07_row_click.py": "b9da1786cb5bf258e98b9ee37f074c60fbc2fe8c",
       "tests/e2e_m13_score_once.py": "70e6170fd987f02942416aba3945df1278278aa3",
       "tests/e2e_m17_pushstate.py": "97a5dd68d7b71d501ab2d0dbadf55d7fb34780c6",
       "tests/e2e_m18_skills_marker.py": "01e8995afa41cd1a49a09f37a68761409b123f55",
@@ -301,9 +301,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
+    "commit": "30dd3e30d3b977567f206e61ff84c425a0e44b25",
     "doc_blob": "956608993f979adc1ddd9a6c1dc332a355b898c5",
-    "note": "CODE_LAG AGENTS.md: doc moved (Testspanne 514->522, CI-Paritaet 505->513, E2E-Bestand 54/52) nach MVP-Board-Schritt; Messwerte aus Volllauf 522 passed/0 skipped und Paritaet 513 passed/1 deselected, nur Zahlen/Verweise aktualisiert."
+    "note": "m07-E2E-Fix 19.10.2026: code moved tests/e2e_m07_row_click.py (zeilengenaue Auswahl ueber sichtbare Vorgang-Nr. + Datum + exakte Knopf-Beschriftung, weil der anonymisierte Seed-Fixture mehrdeutige Namens-Buttons hat; Seed rc=0, Live rc=0, Live-Spiegel sha256 unveraendert); E2E-Grundregeln in AGENTS.md/e2e-ci-seed.md unveraendert."
   },
   "doc": "AGENTS.md",
   "schema": 1
