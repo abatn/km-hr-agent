@@ -34,7 +34,28 @@ Alle Skripte wickeln ihre Login-E-Mail-Konstanten in `seed_email(...)`. **Nicht*
 | Kandidat 16 | `e2e-beweis-phase1@example.com` | `kandidat16@example.invalid` |
 | Kandidat 22 | `recruiting.e2e.2809b@kmailtest.de` | `kandidat22@example.invalid` |
 | Arbeitgeber 1 | `hr@techvision.de` | `hr1@example.invalid` |
+| Arbeitgeber 4 | `batniniabdelkader@yahoo.com` | `hr4@example.invalid` |
 | Admin 1 | `admin@km-hr-agent.local` | `admin@example.invalid` |
+
+### Echter FR-Fall: Arbeitgeber 4 / Job #12 (18.10.2026)
+
+**Design-Entscheidung 18.10.2026:** `tests/e2e_board_passiv_filter.py` läuft im
+**Seed-Modus gegen Arbeitgeber 4 / Job #12** (echter FR-Fall: Firma „Banana",
+Stelle „Agent logistique / Préparateur de commandes (H/F) – Grands comptes
+industriels", Kandidat #23 mit FR-Logistik-Skills) und im **Live-Modus gegen
+Arbeitgeber 1**. Der Seed bildet den echten Fall datengetrieben ab
+(`scripts/seed_ci_db.py`, Codemark `WHERE job_id=12 AND status='eingestellt'`):
+die reale Bewerbung wird auf `zurückgezogen` gesetzt (zurückgezogen statt DELETE —
+Zeilenzahlen der Fixture bleiben stabil; `_app_ids` schließt zurückgezogene
+Bewerbungen aus → Kandidat passiv), `franzoesisch='B2'` wird nur wenn leer
+gefüllt und `berufserfahrung_jahre` auf 3 angehoben (Design-Entscheidung: der
+reale Wert ist leer und würde das 50%-Erfahrungs-Gate von Job 12 verfehlen).
+
+**Passwort-Normierung Employer 4 (Design-Entscheidung 18.10.2026):** das echte
+Banana-Passwort ist nicht reproduzierbar — der Seed setzt Employer 4 auf den
+Employer-1-Hash, damit der E2E-Wert `sicher123` (Codemark
+`password_hash = (SELECT … id=1) WHERE id=4`) im Login greift. Nur Employer 4,
+kein anderer Account.
 
 ## Kennzeichnung (Lab-Prinzip)
 

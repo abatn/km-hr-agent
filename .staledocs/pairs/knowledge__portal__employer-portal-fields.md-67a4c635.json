@@ -71,13 +71,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-18T18:49:05+00:00",
+    "at": "2026-10-19T12:18:49+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "ad7fc1ce44232f12a58e6a9d6d3bf379e0cb880d"
+      "webui/pages/employer.py": "f8fa872a0ad063949ab877dbd124326dd365523e"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "6a25ff2e78f9df776e41f164886ff6c9dd120c74",
     "doc_blob": "11194040e321495c2ecc380641dc7a1f6e9cfbb7",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "Re-Ack 19.10.2026 (FR-Korrektur): Evidence \u201ecode moved: webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

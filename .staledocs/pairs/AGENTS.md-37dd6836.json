@@ -121,6 +121,7 @@
       "tests/e2e_harness.py",
       "tests/fixtures/seed.db",
       "tests/test_bak_retention.py",
+      "tests/test_passiv_sprache_filter.py",
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname",
       "ui.run",
@@ -131,7 +132,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-18T18:48:55+00:00",
+    "at": "2026-10-19T12:18:42+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -152,7 +153,7 @@
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
-      "scripts/seed_ci_db.py": "26369c877cb6dc22101ba09e3dfab8fc6267503d",
+      "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
       "tests/conftest.py": "62f5a76301421d713e742757c0e4bbb75e0c0022",
@@ -162,7 +163,7 @@
       "tests/e2e_applicants_first.py": "194cf0226982ecc484a9dd981a0a6931143dfe03",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
       "tests/e2e_apply_dialog_multi.py": "c852947278c20532062dd47bc7b2879df323641c",
-      "tests/e2e_board_passiv_filter.py": "f3f850e45f2131df674b97627f5ee83e7c4dee7b",
+      "tests/e2e_board_passiv_filter.py": "26b2f2c9f23813026bb6e808b362df781bb4d8ea",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
       "tests/e2e_candidate_detail.py": "9dc7396d8bf7889b12b4fe7f55f0f7ee3d77229a",
       "tests/e2e_candidate_detail2.py": "f9b755ed0cdf7d72c133ec27cc1e0fb1cecaf1f1",
@@ -210,7 +211,7 @@
       "tests/e2e_ui_p0_p1.py": "da0e370afe84b6431d9cbf883d5599baa6fcd4c2",
       "tests/e2e_video_prescreen.py": "8172ec601d005e9ebc1829aa21de2538a6038c38",
       "tests/e2e_vorgemerkt.py": "39a4c3e8e691d82f16f7477892f98efd7248cf6d",
-      "tests/fixtures/seed.db": "47745dd5e31d0e6d5abb7d3f58cb8d9882c08dbc",
+      "tests/fixtures/seed.db": "ce2313e918899d2eaed9ead6c04021877759fa63",
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
       "tests/measure_timing.sh": "3e9a83fac12f406f31ceaadc162ad541f4791ef9",
@@ -247,6 +248,7 @@
       "tests/test_p2_8_pseudonym.py": "6f7692c6866c445797850c361949623323a134f7",
       "tests/test_p2_block.py": "cb19c04a68aaaed3f51ba877c6486a71522ac2b3",
       "tests/test_p8_2_agent_details.py": "174457e1c0d6b9ece9d4701203a651f26d4f06da",
+      "tests/test_passiv_sprache_filter.py": "fc68c18f750ebba2918c3ad73fe91a3b99954e95",
       "tests/test_password_reset.py": "35016ad6887a6b9c9194d64b5bcfb2c907c33d54",
       "tests/test_profile_save.py": "97289156e06c9ec962cd0cb6d4d297055a496f96",
       "tests/test_r32_gatekeeper_gen.py": "416de069b066028f19c63ececacd3a1fe85f9c1b",
@@ -286,7 +288,7 @@
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf",
-      "webui/pages/employer.py": "ad7fc1ce44232f12a58e6a9d6d3bf379e0cb880d",
+      "webui/pages/employer.py": "f8fa872a0ad063949ab877dbd124326dd365523e",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
@@ -296,9 +298,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
-    "doc_blob": "eec127b689e0ae2f4cdd5411f9bff8887b554e5b",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py, scripts/seed_ci_db.py, tests/conftest.py, tests/e2e_board_passiv_filter.py, tests/fixtures/seed.db, tests/test_pr\u201c + \u201edoc moved since last ack\u201c geprueft \u2014 doc-Move = Zaehler/Messwert-Update (Unit-Spanne 477\u2013501 mit beiden 18.10-L\u00e4ufen 501/0sk und 496/5sk, CI-Parit\u00e4t 468\u2013492 mit 492/0sk und 487/5sk, checks-Ausgaben 14/17/4 am 18.10.2026; E2E unveraendert 53/51), Code-Moves = FR-Filter-Iteration (Spec+Migration+Board+Tests+Seed)."
+    "commit": "6a25ff2e78f9df776e41f164886ff6c9dd120c74",
+    "doc_blob": "102995391b9cbbc03b517ad6c321b1f753b62f98",
+    "note": "Re-Ack 19.10.2026 (FR-Korrektur): Evidence \u201ecode moved: scripts/seed_ci_db.py, tests/e2e_board_passiv_filter.py, tests/fixtures/seed.db, tests/test_passiv_sprache_filter.py, webui/pages/employer\u201c + \u201edoc moved since last ack\u201c geprueft \u2014 doc-Move = Zaehler-Update (Unit-Spanne 477\u2013514, oberer Rand 514/0sk am 19.10.2026, CI-Parit\u00e4t 468\u2013505 mit 500/5sk am 19.10.2026, checks-Ausgaben 14/17/4, E2E unveraendert 53/51), Code-Moves = FR-Korrektur-Iteration (Pr\u00e4dikat + Seed + Testdiagnose)."
   },
   "doc": "AGENTS.md",
   "schema": 1

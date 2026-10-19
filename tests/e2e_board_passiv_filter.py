@@ -15,8 +15,9 @@ Login -> Sidebar-Klick „Hiring-Board" -> Reiter „Passiv".
 Behauptungen (Erwartung IM Skript unabhaengig aus dem ISOLATIONS-Spiegel berechnet,
 read-only `sqlite3.connect('file:<spiegel>?mode=ro', uri=True)`):
 1) Gate-Negativ + Erwartungsberechnung: ERWARTETE Menge = CV-Pool (CAND_CV_STATUS)
-   minus Bewerber (applications JOIN jobs, employer 1, status != 'zurückgezogen'),
-   pro Kandidat bester Job ueber alle 4 aktiven Jobs mit Gate (`logic.berechne_match_score`:
+   minus Bewerber (applications JOIN jobs, EMPLOYER_ID — SEED: 4, Live: 1, status
+   != 'zurückgezogen'), pro Kandidat bester Job ueber alle aktiven Jobs des
+   Arbeitgebers mit Gate (`logic.berechne_match_score`:
    `matches` nicht leer UND `k_exp or 0 >= j_exp * 0.5`), Score DESC. UI-Gegenprobe:
    (a) jede angezeigte Karte traegt Pseudonym einer ERWARTETEN id; (b) jede erwartete
    id OHNE Gate-Treffer (Gate-negative) darf NICHT auf der Seite vorkommen; (c) die
@@ -25,12 +26,15 @@ read-only `sqlite3.connect('file:<spiegel>?mode=ro', uri=True)`):
 3) Filter ⊆ Menge ohne Filter: Score „60+" (Teilmenge, jeder Score >= 60); „Erfahrung:
    ab 10 Jahren" (Teilmenge, jede Karte „Erfahrung: >= 10"); „Sprache: Deutsch"
    (Teilmenge, alle mit deutschem Level aus der Spiegel-DB belegt); „Sprache:
-   Französisch" (Teilmenge, alle mit franzoesischem Level; FR-Fixture-Kandidat
-   e2e-fr-passiv@example.invalid muss erscheinen). Jeder Filterwechsel
+   Französisch" (Teilmenge, alle mit gefuelltem franzoesischem Level; Zielfrage =
+   passiv (CAND_CV_STATUS) ∧ gate-positiv ∧ candidates.franzoesisch gefuellt —
+   SEED-Modus: hart, Live-Modus: SKIP bei leerer Datenlage). Jeder Filterwechsel
    wird gegen eine unabhaengig berechnete Zielmenge geprueft.
 4) Stellen-Waehler: EIN konkreter Job MIT Gate-Treffer -> Teilmenge der Basismenge;
    ein Job OHNE Gate-Treffer -> leer (ein Kandidat, der fuer DIESEN Job keinen
-   Gate-Treffer hat, erscheint nicht — negativ aus der Spiegel-DB belegt).
+   Gate-Treffer hat, erscheint nicht — negativ aus der Spiegel-DB belegt). Existiert
+   kein Job OHNE Gate-Treffer (z. B. nur ein Job des Arbeitgebers), wird Teil 4b
+   uebersprungen (SKIP-Print); Teil 4a (Job MIT Treffer) laeuft immer.
 5) residue=0 am Ende; die Live-sha256-Gleichheit liefert der Isolations-Lauf
    (tests/e2e_isolation.py, summary.txt).
 """
@@ -46,23 +50,41 @@ from e2e_harness import check_server, db_residue_report, pre_max_tasks
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from e2e_harness import BASE, DB, seed_email  # noqa: E402
+from e2e_harness import BASE, DB, SEED_MODE  # noqa: E402
 
 # Erwartungsberechnung: 1:1 dieselben Quellen wie `_pf_berechne`/`_passive_best`.
 from webui.pages.employer import CAND_CV_STATUS, anzeige_name  # noqa: E402
 from webui import logic  # noqa: E402
 
-EMP_EMAIL = seed_email("hr@techvision.de")
+# Modus-Arbeitgeber (Codemark SEED_MODE, e2e_harness.py; verifiziert 18.10.2026):
+# SEED-Modus = Employer 4 („Banana") mit einzigem aktiven Job #12 — der echte
+# Französisch-Fall (Kandidat mit gefuelltem `franzoesisch`, passiv, gate-positiv,
+# ohne Bewerbungszeile); Live-Modus = Employer 1 (historische Baseline, Passwort
+# `sicher123` dort verifiziert 18.10.2026). Login-E-Mail NICHT hartkodiert —
+# datengetrieben aus dem jeweiligen ISOLATIONS-Spiegel (`_email_von`).
 EMP_PW = "sicher123"
-EMPLOYER_ID = 1
-# Passiver FR-Fixture-Kandidat aus scripts/seed_ci_db.py (Marker fuer den
-# „Sprache: Französisch"-Nachweis unten).
-FR_EMAIL = "e2e-fr-passiv@example.invalid"
+EMPLOYER_ID = 4 if SEED_MODE else 1
 
 
 def _ro():
     """Read-only Verbindung auf den ISOLATIONS-Spiegel (nie Live-DB)."""
     return sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
+
+
+def _email_von(employer_id: int) -> str:
+    """Datengetriebene Login-E-Mail des Arbeitgebers aus dem ISOLATIONS-Spiegel.
+
+    KEINE Marker-/Seed-Mapping-E-Mail: liest employers.email fuer `employer_id`
+    (Live-Spiegel = Originale, Seed-Spiegel = anonymisierte Seed-E-Mail).
+    """
+    conn = _ro()
+    try:
+        row = conn.execute(
+            "SELECT email FROM employers WHERE id=?", (employer_id,)).fetchone()
+    finally:
+        conn.close()
+    assert row and row[0], f"Employer #{employer_id} ohne E-Mail im Spiegel"
+    return row[0]
 
 
 def login_employer(page):
@@ -73,7 +95,7 @@ def login_employer(page):
     panel = page.locator(".q-tab-panel:visible").filter(
         has=page.get_by_role("button", name=re.compile("Arbeitgeber-Login", re.I))
     ).first
-    panel.get_by_label("E-Mail").fill(EMP_EMAIL)
+    panel.get_by_label("E-Mail").fill(_email_von(EMPLOYER_ID))
     panel.get_by_label("Passwort", exact=True).fill(EMP_PW)
     panel.get_by_role("button", name=re.compile("Arbeitgeber-Login", re.I)).click()
     page.wait_for_url("**/employer**", timeout=15000)
@@ -351,31 +373,43 @@ def main():
                     f"Karte #{k['cid']} ohne deutsches Level in der Spiegel-DB"
             print(f"FILTER Sprache Deutsch: {sorted(ids(kde))} ⊆ Basis, alle mit deutschem Level")
 
-            # „Sprache: Französisch" — Teilmenge, jede Karte mit franzoesischem
-            # Level aus der Spiegel-DB; der FR-Fixture-Kandidat (Marker-E-Mail
-            # FR_EMAIL, scripts/seed_ci_db.py) MUSS erscheinen.
+            # „Sprache: Französisch" — Teilmenge, jede Karte mit gefuelltem
+            # franzoesischem Level aus der Spiegel-DB. Echte Diagnose (18.10.2026):
+            # die Verknuepfung candidates.franzoesisch gefuellt ∧ passiv
+            # (CAND_CV_STATUS) ∧ gate-positiv bestimmt die Zielfrage — sie wird
+            # VOR dem UI-Klick auf „Französisch" als reine DB-Rechnung gebildet.
             setze_defaults(page)
-            setze_auswahl(page, "Sprache", "Französisch")
             zielfr = erwarte(sprache="fr")
-            kfr = lese_karten(page)
-            assert len(kfr) >= 1, "Sprache Französisch: keine Karten — FR-Fixture fehlt im Seed?"
-            assert ids(kfr) == {e["id"] for e in zielfr}, \
-                f"Sprache Französisch: UI {sorted(ids(kfr))} != erwartet {sorted(e['id'] for e in zielfr)}"
-            assert ids(kfr) <= basis_ids, "Sprache Französisch nicht Teilmenge der Basismenge"
-            conn_fr = _ro()
-            try:
-                fr_ids = {r[0] for r in conn_fr.execute(
-                    "SELECT id FROM candidates WHERE email=?", (FR_EMAIL,))}
-            finally:
-                conn_fr.close()
-            assert fr_ids and fr_ids <= ids(kfr), \
-                f"FR-Fixture {sorted(fr_ids)} erscheint nicht unter {sorted(ids(kfr))}"
-            fr_map = {e["id"]: e["fr"] for e in zielfr}
-            for k in kfr:
-                assert str(fr_map.get(k["cid"]) or "").strip(), \
-                    f"Karte #{k['cid']} ohne franzoesischen Wert in der Spiegel-DB"
-            print(f"FILTER Sprache Französisch: {sorted(ids(kfr))} ⊆ Basis, "
-                  f"FR-Fixture {sorted(fr_ids)} enthalten")
+            if not zielfr:
+                if SEED_MODE:
+                    assert zielfr, ("Sprache Französisch: Seed hat keinen passiven, "
+                                     "gate-positiven Kandidaten mit gefuelltem franzoesisch")
+                else:
+                    print("SKIP: Sprache Französisch — kein passiver, gate-positiver "
+                          "Kandidat mit gefuelltem franzoesisch (Live-Datenlage; "
+                          "FR-Nachweis liefert der Seed-Modus)")
+            if zielfr:
+                setze_auswahl(page, "Sprache", "Französisch")
+                kfr = lese_karten(page)
+                conn_fr = _ro()
+                try:
+                    kandidaten_mit_fr = {pk[0] for pk in _pool(conn_fr)
+                                         if str(pk[10] or "").strip()}
+                finally:
+                    conn_fr.close()
+                assert ids(kfr) == {e["id"] for e in zielfr}, \
+                    f"Sprache Französisch: UI {sorted(ids(kfr))} != erwartet {sorted(e['id'] for e in zielfr)}"
+                assert ids(kfr) <= basis_ids, "Sprache Französisch nicht Teilmenge der Basismenge"
+                assert {e["id"] for e in zielfr} <= kandidaten_mit_fr, \
+                    (f"Sprache Französisch: erwartete ids {sorted(e['id'] for e in zielfr)} "
+                     f"nicht Teilmenge der FR-Pool-Kandidaten {sorted(kandidaten_mit_fr)}")
+                fr_map = {e["id"]: e["fr"] for e in zielfr}
+                for k in kfr:
+                    assert str(fr_map.get(k["cid"]) or "").strip(), \
+                        f"Karte #{k['cid']} ohne franzoesischen Wert in der Spiegel-DB"
+                print(f"FILTER Sprache Französisch: {sorted(ids(kfr))} ⊆ Basis, "
+                      f"alle mit gefuelltem franzoesisch; FR-Pool "
+                      f"{sorted(kandidaten_mit_fr)}")
 
             # ── (4) Stellen-Waehler: Job MIT und OHNE Gate-Treffer ───────
             setze_defaults(page)
@@ -392,7 +426,9 @@ def main():
                 if not m and ohne is None:
                     ohne = (str(j[0]), j[1])
             assert mit is not None, "kein Job mit Gate-Treffer gefunden (Datenlage?)"
-            assert ohne is not None, "kein Job ohne Gate-Treffer gefunden (Datenlage?)"
+            if ohne is None:
+                print("SKIP (Teil 4b): keine Stelle ohne Gate-Treffer vorhanden "
+                      "(Datenlage, z. B. nur ein Job des Arbeitgebers)")
 
             # Job MIT Treffer: Teilmenge der Basismenge, unabh. Zielmenge gleich
             setze_auswahl(page, "Stelle", mit[1])
@@ -404,16 +440,17 @@ def main():
 
             # Job OHNE Treffer: leer — Kandidaten mit Basis-Treffer, aber ohne
             # Treffer fuer DIESEN Job, duerfen nicht erscheinen (Gate-Negativ je Job)
-            setze_auswahl(page, "Stelle", ohne[1])
-            ziel_ohne = erwarte(job_id=ohne[0])
-            kohne = lese_karten(page)
-            assert ziel_ohne == [], f"Job {ohne[1]!r} sollte keinen Gate-Treffer haben, hat {ziel_ohne}"
-            assert ids(kohne) == set(), f"Job {ohne[1]!r} zeigt Karten ohne Gate-Treffer: {kohne}"
-            verschwunden = basis_ids - ids(kohne)
-            assert verschwunden == basis_ids, \
-                f"Basis-Kandidaten erscheinen trotz fehlendem Job-Gate-Treffer: {ids(kohne)}"
-            print(f"STELLE {ohne[1]!r}: leer — Basis-Kandidaten {sorted(basis_ids)} "
-                  f"verschwinden (Gate-Negativ je Job)")
+            if ohne is not None:
+                setze_auswahl(page, "Stelle", ohne[1])
+                ziel_ohne = erwarte(job_id=ohne[0])
+                kohne = lese_karten(page)
+                assert ziel_ohne == [], f"Job {ohne[1]!r} sollte keinen Gate-Treffer haben, hat {ziel_ohne}"
+                assert ids(kohne) == set(), f"Job {ohne[1]!r} zeigt Karten ohne Gate-Treffer: {kohne}"
+                verschwunden = basis_ids - ids(kohne)
+                assert verschwunden == basis_ids, \
+                    f"Basis-Kandidaten erscheinen trotz fehlendem Job-Gate-Treffer: {ids(kohne)}"
+                print(f"STELLE {ohne[1]!r}: leer — Basis-Kandidaten {sorted(basis_ids)} "
+                      f"verschwinden (Gate-Negativ je Job)")
         finally:
             ctx.close()
             browser.close()

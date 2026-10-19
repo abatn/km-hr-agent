@@ -3145,6 +3145,21 @@ def _board_rows(conn, employer_id) -> list[dict]:
             for r in rows]
 
 
+# Filter-Prädikat „Sprache" (Extraktion 18.10.2026, Iteration „Hiring-Board Passiv-Filter“):
+# pure Funktion, Semantik 1:1 wie die frühere Kette dreier `continue`-Zeilen in
+# `_pf_berechne` (Suchmarke `if _pf_sprache == "fr"`). Spec: knowledge/portal/employer-board.md.
+def sprache_passt(sprache: str, de, en, fr) -> bool:
+    """Passiv-Filter „Sprache": bleibt, wenn der gewaehlte Level-Wert nicht
+    leer ist (trim); 'alle'/unbekannte Werte ohne Bedingung. Spec: employer-board.md."""
+    if sprache == "de":
+        return bool(str(de or "").strip())
+    if sprache == "en":
+        return bool(str(en or "").strip())
+    if sprache == "fr":
+        return bool(str(fr or "").strip())
+    return True
+
+
 def _page_board(s: dict) -> None:
     section_header(title=_('Hiring-Board'), subtitle=_('Bewerbungen nach Status'), icon="view_kanban")
     employer_id = s.get("employer_id")
@@ -3270,11 +3285,7 @@ def _page_board(s: dict) -> None:
                         continue
                     if _pf_min_exp and (_pf_pk[4] or 0) < _pf_min_exp:
                         continue
-                    if _pf_sprache == "de" and not str(_pf_pk[6] or "").strip():
-                        continue
-                    if _pf_sprache == "en" and not str(_pf_pk[7] or "").strip():
-                        continue
-                    if _pf_sprache == "fr" and not str(_pf_pk[10] or "").strip():
+                    if not sprache_passt(_pf_sprache, _pf_pk[6], _pf_pk[7], _pf_pk[10]):
                         continue
                     _pf_erg.append({
                         "id": _pf_pk[0], "name": _pf_pk[1] or "",

@@ -46,21 +46,21 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-18T18:49:06+00:00",
+    "at": "2026-10-19T12:18:51+00:00",
     "code_blobs": {
       "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "3a895d687d0e807ce4a19de8fea2df8aaaacf894",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf",
-      "webui/pages/employer.py": "ad7fc1ce44232f12a58e6a9d6d3bf379e0cb880d",
+      "webui/pages/employer.py": "f8fa872a0ad063949ab877dbd124326dd365523e",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "6a25ff2e78f9df776e41f164886ff6c9dd120c74",
     "doc_blob": "048166a6532a66f8bd225e5a2cfb08e584dad443",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/main.py, webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "Re-Ack 19.10.2026 (FR-Korrektur): Evidence \u201ecode moved: webui/pages/employer.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

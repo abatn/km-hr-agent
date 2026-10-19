@@ -25,6 +25,12 @@ NAMES = ["Kandidat Eins", "Kandidat Zwei", "Kandidat Drei", "Kandidat Vier",
          "Kandidat Fuenf", "Kandidat Sechs", "Kandidat Sieben", "Kandidat Acht"]
 FIRMEN = ["Beispielfirma GmbH", "Musterfirma AG", "Testfirma UG", "Demofirma GmbH"]
 
+# CV-Pool-Status (18.10.2026): 1:1-Literal von `CAND_CV_STATUS` in
+# webui/pages/employer.py — der Generator importiert nichts aus webui, daher
+# Literal statt Import; bei Aenderung dort hier mitziehen.
+CAND_CV_STATUS = ("lebenslauf_hochgeladen", "profil_geprueft",
+                  "match_berechnet", "eingeladen")
+
 
 def _email(i: int) -> str:
     return f"kandidat{i}@example.invalid"
@@ -63,48 +69,90 @@ def main() -> int:
                 "lebenslauf_datei=?, lebenslauf_text=?, aktuelle_position=? WHERE id=?",
                 (_email(cid), f"Kandidat {cid}", f"+49 000 {cid:04d}",
                  f"kandidat-{cid}-cv.pdf", "[anonymisiert]", f"Position {cid}", cid))
-        # 18.10.2026 (Iteration „Hiring-Board Passiv-Filter FR"): passiver
-        # FR-Kandidat als E2E-Fixture fuer tests/e2e_board_passiv_filter.py
-        # („Sprache: Französisch"; Marker e2e-fr-passiv@example.invalid).
-        # IDEMPOTENT: nur wenn die E-Mail in der KOPIE (DST) noch fehlt.
+        # 18.10.2026 (Iteration „Hiring-Board Passiv-Filter FR"): ECHTER
+        # FR-Fall — Employer 4 „Banana" (Job 12 „Agent logistique /
+        # Préparateur de commandes (H/F) – Grands comptes industriels") und
+        # der reale Kandidat aus der Bewerbung auf Job 12 — datengetriebene
+        # Transformation (Marker-E-Mail e2e-fr-passiv@example.invalid nur noch
+        # als FALLBACK, s. unten). IDEMPOTENT.
+        # GEgeben: `src.backup` oben kopiert ALLE Employers UND Jobs aus der
+        # Live-DB in die KOPIE (DST) — Employer 4 + Job 12 sind daher IMMER
+        # Teil des Seeds; dieser Block transformiert nur die Bewerbung/den
+        # Kandidaten, er legt Employer/Job nicht selbst an.
         fr_email = "e2e-fr-passiv@example.invalid"
         if not _has_col(dst, "candidates", "franzoesisch"):
             # Spiegel-Paritaet zur idempotenten App-Migration
             # (ALTER TABLE candidates ADD COLUMN franzoesisch TEXT): ohne die
             # Spalte kann der FR-Wert nicht getragen werden.
             dst.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")
-        if dst.execute("SELECT COUNT(*) FROM candidates WHERE email=?",
-                       (fr_email,)).fetchone()[0] == 0:
-            # Vergleichszeile = bestehender Passiv-Kandidat aus dem CV-Pool mit
-            # exaktem „Python"-Skill (Gate-Treffer auf „E2E-Beweis: Teststelle"
-            # bzw. „Senior Cloud/DevOps Engineer"); Skills/Erfahrung/Standort
-            # 1:1 kopiert — nichts erfunden. Hash im Stil der anonymisierten
-            # Zeilen (per SELECT aus derselben DB), CV-Felder bleiben NULL.
-            hash_q = dst.execute(
-                "SELECT password_hash FROM candidates "
-                "WHERE password_hash LIKE '$argon2id$%' LIMIT 1").fetchone()
-            if hash_q is None:
+        # (1) Passiv-Machung: Bewerbung des echten Falls auf Job 12 suchen.
+        # „zurückgezogen" statt DELETE — Zeilenzahlen der Fixture bleiben
+        # stabil (Baseline-Tests zaehlen applications-ids); `_app_ids` in
+        # tests/e2e_board_passiv_filter.py schliesst zurückgezogene Bewerbungen
+        # aus → der Kandidat wird passiv für Employer 4. Der Bewerbungstext
+        # wird von der allgemeinen Anonymisierungs-Zeile auf applications
+        # (unten) bereits abgedeckt; die Status-Aenderung steht vor dem
+        # commit und bleibt wirksam (die Anonymisierung faehrt status nicht an).
+        echt_apps = dst.execute(
+            "SELECT id, candidate_id FROM applications "
+            "WHERE job_id=12 AND status='eingestellt'").fetchall()
+        echt_cids = {cid for _aid, cid in echt_apps}
+        for aid, _cid in echt_apps:
+            run("UPDATE applications SET status='zurückgezogen' WHERE id=?", (aid,))
+        # (2) Spalte füllen (nur die Kandidaten aus Schritt 1): franzoesisch
+        # nur wenn leer + Erfahrungs-Anhebung. DESIGN-ENTSCHEIDUNG 18.10.2026:
+        # der reale Wert ist leer (NULL) und würde das 50%-Erfahrungs-Gate
+        # (Job 12 fordert 3 Jahre → Schwelle 1,5) verfehlen; 3 = die
+        # Anforderung des echten Jobs (kein erfundener Wert).
+        for cid in echt_cids:
+            run("UPDATE candidates SET "
+                "franzoesisch=CASE WHEN COALESCE(franzoesisch,'')='' "
+                "THEN 'B2' ELSE franzoesisch END, "
+                "berufserfahrung_jahre=CASE "
+                "WHEN COALESCE(berufserfahrung_jahre,0) >= 2 "
+                "THEN berufserfahrung_jahre ELSE 3 END "
+                "WHERE id=?", (cid,))
+            # Status: nur auf den CV-Pool heben, wenn der Kandidat noch NICHT
+            # passiv ist — „lebenslauf_hochgeladen" ist der passende
+            # Passive-Status; wer schon in CAND_CV_STATUS steht, bleibt unveraendert.
+            _st = dst.execute("SELECT status FROM candidates WHERE id=?",
+                              (cid,)).fetchone()
+            if _st and _st[0] not in CAND_CV_STATUS:
+                run("UPDATE candidates SET status='lebenslauf_hochgeladen' "
+                    "WHERE id=?", (cid,))
+        # (3) FALLBACK — nur wenn nach (1)+(2) KEIN Kandidat eine gefüllte
+        # `franzoesisch`-Spalte hat, den anonymisierten Marker-Kandidaten
+        # anlegen (idempotent über COUNT), jetzt mit den Werten des echten
+        # Falls: Skills 1:1 aus Job 12 in der DST (keine Erfindung),
+        # berufserfahrung_jahre=3 (wie Schritt 2), Standort „Alger, Algérie",
+        # deutsch/englisch NULL, franzoesisch 'B2', CV-Feld anonymisiert.
+        if dst.execute(
+                "SELECT COUNT(*) FROM candidates "
+                "WHERE COALESCE(franzoesisch,'') != ''").fetchone()[0] == 0:
+            job12 = dst.execute(
+                "SELECT hard_skills, soft_skills FROM jobs WHERE id=12").fetchone()
+            if job12 is None:
+                print("Hinweis: Job 12 fehlt in der DST — FR-Fallback ausgelassen")
+            else:
+                # Hash im Stil der anonymisierten Zeilen (per SELECT aus
+                # derselben DB), CV-Felder bleiben NULL.
                 hash_q = dst.execute(
                     "SELECT password_hash FROM candidates "
-                    "WHERE COALESCE(password_hash, '') != '' LIMIT 1").fetchone()
-            pw_hash = hash_q[0] if hash_q else "x"
-            # Gate-Werte FIX (18.10.2026, Beleg: e2e_board_passiv_filter — FR-Zeile
-            # fiel durch die Job-Gates, solange Werte live-abhängig aus einer
-            # Vorlage kopiert wurden): exakt die Score-Felder des bekannten
-            # Gate-Passierers (Kandidat #2 im committeden Fixture: 5 Jahre,
-            # „Python, AWS, Kubernetes", deutsch+englisch C1, Standort München,
-            # CV-Feld anonymisiert; Softskills/Abschluss leer) — sonst sinkt der
-            # Match-Score unter die Board-Grenze und der FR-Filter-E2E bleibt leer.
-            hard, soft, exp, abschluss = ("Python, AWS, Kubernetes", None, 5, None)
-            ort, engl, cv_text = ("München", "C1", "[anonymisiert]")
-            fr_cid = dst.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM candidates").fetchone()[0]
-            run("INSERT INTO candidates (id, email, password_hash, name, telefon, "
-                "standort, hard_skills, soft_skills, berufserfahrung_jahre, abschluss, "
-                "deutsch, englisch, franzoesisch, lebenslauf_text, status) "
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                (fr_cid, fr_email, pw_hash, "E2E FR Passiv", f"+49 000 {fr_cid:04d}",
-                 ort, hard, soft, exp, abschluss, "C1", engl, "B2", cv_text,
-                 "lebenslauf_hochgeladen"))
+                    "WHERE password_hash LIKE '$argon2id$%' LIMIT 1").fetchone()
+                if hash_q is None:
+                    hash_q = dst.execute(
+                        "SELECT password_hash FROM candidates "
+                        "WHERE COALESCE(password_hash, '') != '' LIMIT 1").fetchone()
+                pw_hash = hash_q[0] if hash_q else "x"
+                hard, soft = job12
+                fr_cid = dst.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM candidates").fetchone()[0]
+                run("INSERT INTO candidates (id, email, password_hash, name, telefon, "
+                    "standort, hard_skills, soft_skills, berufserfahrung_jahre, abschluss, "
+                    "deutsch, englisch, franzoesisch, lebenslauf_text, status) "
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (fr_cid, fr_email, pw_hash, "Kandidat FR", f"+49 000 {fr_cid:04d}",
+                     "Alger, Algérie", hard, soft, 3, None, None, None, "B2",
+                     "[anonymisiert]", "lebenslauf_hochgeladen"))
         # employers
         for (eid,) in dst.execute("SELECT id FROM employers").fetchall():
             # `firma` bleibt (Test-Fixture erwartet den Namen), Person bleibt anonym.
@@ -113,6 +161,14 @@ def main() -> int:
                 (f"hr{eid}@example.invalid", f"HR {eid}",
                  f"hr{eid}@example.invalid", f"+49 000 1{eid:03d}",
                  "https://example.invalid", "[anonymisiert]", eid))
+        # 18.10.2026 (Design-Entscheidung, Passwort-Normierung Employer 4):
+        # das echte Banana-Passwort ist nicht reproduzierbar; der Seed braucht
+        # den bekannten E2E-Wert `sicher123` (Employer-1-Hash verifiziert True
+        # via logic.verify_password_argon2id) — tests/e2e_board_passiv_filter.py
+        # meldet sich mit EMP_PW = "sicher123" an. NUR Employer 4 angefasst,
+        # kein anderer Account.
+        run("UPDATE employers SET password_hash = "
+            "(SELECT password_hash FROM employers WHERE id=1) WHERE id=4")
         # admins
         run("UPDATE admins SET email='admin@example.invalid', name='Admin'")
         # candidate_documents: Pfad behaelt die Kandidaten-ID (Test-Fixture)
