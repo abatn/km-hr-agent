@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-19T16:21:51+00:00",
+    "at": "2026-10-19T16:34:13+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -190,7 +190,7 @@
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
       "knowledge/portal/cv-pflicht.md": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-      "knowledge/portal/employer-board.md": "d326fdbb4082d93c36663ab6899ec9a3d2f88f93",
+      "knowledge/portal/employer-board.md": "2171a9bb2c2cfa5bdbbfe060bf2577f903acd83d",
       "knowledge/portal/employer-portal-fields.md": "11194040e321495c2ecc380641dc7a1f6e9cfbb7",
       "knowledge/portal/housing-search.md": "b66f7fb4123cd7875724b8db11b3fc3d2a62589f",
       "knowledge/portal/matching-filter.md": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
@@ -224,9 +224,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
     },
-    "commit": "7fa9e9bcba5f8c5c6c83219541da6195141735d3",
+    "commit": "32c3588202f0c2ba49cfd6852a0b3e1189183239",
     "doc_blob": "76bb4b99e2943b5bd050d2c18556cb3c1dbb2c95",
-    "note": "DOC_STALE knowledge.md: code moved knowledge/portal/employer-board.md; Index-Zeilen L3/L77 unveraendert korrekt, kein Nachtrag noetig."
+    "note": "DOC_STALE knowledge.md: code moved knowledge/portal/employer-board.md; Index-Zeilen L3/L77 unveraendert korrekt, Rechts-/Technik-Praezisierung im Board-Doc braucht keinen Index-Nachtrag."
   },
   "doc": "knowledge.md",
   "schema": 1

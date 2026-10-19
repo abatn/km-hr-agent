@@ -67,18 +67,19 @@
       "ui.navigate.to(\"/employer/onboarding\")",
       "ui.navigate.to(f\"/employer/match?kandidat={cid}\")",
       "ui.time",
+      "value=False",
       "visa_confirmation",
       "webui/components.py",
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T16:21:43+00:00",
+    "at": "2026-10-19T16:33:49+00:00",
     "code_blobs": {
       "webui/pages/employer.py": "f8fa872a0ad063949ab877dbd124326dd365523e"
     },
-    "commit": "7fa9e9bcba5f8c5c6c83219541da6195141735d3",
-    "doc_blob": "d326fdbb4082d93c36663ab6899ec9a3d2f88f93",
-    "note": "CODE_LAG employer-board.md: doc moved since last ack; Drawer als Beschluss (Umsetzung offen) korrigiert, Marker _board_drawer fehlt noch im Code."
+    "commit": "32c3588202f0c2ba49cfd6852a0b3e1189183239",
+    "doc_blob": "2171a9bb2c2cfa5bdbbfe060bf2577f903acd83d",
+    "note": "CODE_LAG employer-board.md \u00a74: doc moved since last ack; Technik auf rechts verankertes ui.dialog praezisiert (right_drawer nur Page-Kind, rechter Slot belegt), Marker _board_drawer/_bd_ctx/_open_board_drawer unveraendert."
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1
