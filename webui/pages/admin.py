@@ -15,6 +15,7 @@ from webui.theme import C, PRIMARY, SECONDARY, ACCENT, DANGER
 from webui.components import (
     stat_card, status_badge, data_table, empty_state, section_header, export_candidates_pdf, info_row,
     navigate_to, prescreen_recruiting_section, onboarding_generator_section, skill8_feedback_section,
+    visa_info_section,
 )
 
 # N-S2 (01.10.2026): EINZIGE Whitelist-Quelle der Statusuebergaenge liegt in
@@ -691,26 +692,12 @@ def _page_stellen(s: dict) -> None:
                 else:
                     ui.label(_("Finaler Status erreicht.")).classes("text-caption px-4 pb-2")
 
-                # Visum-Antrag-Bestaetigung (Spec v6, Payload-LIKE Guard wie app.py:3177-3179)
+                # Visum-Info/Schritte (geteilter Trigger, employer-board.md §3(b))
                 if a_status == "eingeladen":
                     with ui.row().classes("px-4 pb-2"):
-                        _visa_rows = conn.execute(
-                            "SELECT COUNT(*) FROM agent_tasks WHERE task_type='visa_confirmation' "
-                            "AND status IN ('pending','running','done') "
-                            "AND json_extract(payload, '$.application_id') = ?",
-                            (a_id,),
-                        ).fetchone()
-                        _visa_done = _visa_rows[0] > 0 if _visa_rows else False
-                        if not _visa_done:
-                            def send_visa(_a_id=a_id, _k_id=k_id, _j_id=j_id):
-                                db.queue_agent_task("visa_confirmation", {"application_id": _a_id,
-                                                                          "candidate_id": _k_id, "job_id": _j_id,
-                                                                          "trigger": "admin_klick"})
-                                ui.notify(_("Visum-Schritte-Mail an den Kandidaten ausgeloest (Agent sendet)."), type="positive")
-                                navigate_to("admin", "stellen")
-                            ui.button(_("📩 Visum-Antrag bestaetigen"), on_click=send_visa).classes("bg-amber-600 text-white")
-                        else:
-                            ui.label(_("✅ Visum-Schritte-Mail versendet.")).classes("text-caption")
+                        visa_info_section(a_id, k_id, j_id, trigger="admin_klick",
+                                          on_sent=lambda: navigate_to("admin", "stellen"),
+                                          classes="bg-amber-600 text-white", props="")
 
     with ui.expansion(_("📋 Archiv ({0}) – eingestellt / abgelehnt / zurückgezogen").format(len(apps_archiv)), icon="archive").classes("w-full mb-4"):
         if not apps_archiv:

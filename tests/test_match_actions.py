@@ -116,8 +116,10 @@ def test_kein_active_app_ids_mehr_zur_zielauswahl():
 
 
 def test_dialog_kontexte_tragen_app_id():
+    # Exakte Zeile (nicht Substring): `_bd_hire_ctx` darf `_hire_ctx` nicht mitmatchen.
+    lines = SRC.splitlines()
     for name in ("_invite_ctx", "_reject_ctx", "_hire_ctx"):
-        assert f'{name} = {{"app_id": 0}}' in SRC, name
+        assert f'    {name} = {{"app_id": 0}}' in lines, name
 
 
 def test_do_handler_nutzen_app_info_und_legal_pro_app_id():

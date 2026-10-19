@@ -1110,6 +1110,72 @@ def skill8_feedback_section() -> None:
         ui.button(_('Feedback speichern'), icon="save", on_click=save_feedback).classes(C.BTN_PRIMARY + " mt-4")
 
 
+# ─── Visum-Info/Schritte (geteilter Trigger) ────────────────────────
+def visa_info_section(application_id: int, candidate_id: int, job_id: int, *,
+                      trigger: str = "hr_klick_portal",
+                      on_sent: Callable[[], None] | None = None,
+                      icon: str = "mail",
+                      props: str = "color=warning",
+                      classes: str = "mt-2") -> None:
+    """Idempotenter visa_confirmation-Trigger fuer Arbeitgeber + Admin.
+
+    Rendert den Button nur, wenn fuer diese Bewerbung noch kein
+    visa_confirmation-Task (pending/running/done) existiert; danach den
+    Versendet-Hinweis. Guard = exakter application_id-Vergleich via
+    json_extract (Quelle: employer-board.md §3(b), visa-rules.md §5.4 —
+    Antrag = Kandidat, HR loest nur die Schritte-Mail aus).
+
+    `on_sent` entscheidet den Refresh des Aufrufers (Seite reload,
+    refreshable, Drawer schliessen). Die Funktion haelt KEINE DB-Verbindung
+    im Klick-Handler (Handler-Connection-Falle).
+    """
+    from webui import db
+
+    conn = db.get_conn()
+    try:
+        row = conn.execute(
+            "SELECT COUNT(*) FROM agent_tasks WHERE task_type='visa_confirmation' "
+            "AND status IN ('pending','running','done') "
+            "AND json_extract(payload, '$.application_id') = ?",
+            (application_id,),
+        ).fetchone()
+        already_sent = bool(row and row[0] > 0)
+    finally:
+        conn.close()
+
+    if already_sent:
+        ui.label(_('✅ Visum-Schritte-Mail versendet.')).classes("text-caption")
+        return
+
+    def _send_visa():
+        # Frischpruefung: der Render-Snapshot kann veraltet sein (z. B. nach
+        # Ablehnung) — nur bei aktivem Status 'eingeladen' einreihen.
+        conn = db.get_conn()
+        try:
+            row = conn.execute("SELECT status FROM applications WHERE id = ?",
+                               (application_id,)).fetchone()
+        finally:
+            conn.close()
+        if not row or row[0] != "eingeladen":
+            ui.notify(_('Ungueltiger Statusuebergang (Bewerbung hat sich zwischenzeitlich geaendert).'), type="warning")
+            if on_sent:
+                on_sent()
+            return
+        db.queue_agent_task("visa_confirmation", {
+            "application_id": application_id,
+            "candidate_id": candidate_id,
+            "job_id": job_id,
+            "trigger": trigger,
+        })
+        ui.notify(_('Visum-Schritte-Mail an Kandidaten ausgeloest.'), type="positive")
+        if on_sent:
+            on_sent()
+
+    button = ui.button(_('Visum-Info/Schritte'), icon=icon, on_click=_send_visa).classes(classes)
+    if props:
+        button.props(props)
+
+
 # ─── PDF Export ─────────────────────────────────────────────────────
 
 def export_candidates_pdf(employer_id: Optional[int] = None) -> None:

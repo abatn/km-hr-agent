@@ -116,24 +116,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T16:13:34+00:00",
+    "at": "2026-10-19T17:05:19+00:00",
     "code_blobs": {
-      "tests/test_i18n.py": "5eb2eaaae01b2ead3de73cdbe0aeccc3b1810586",
+      "tests/test_i18n.py": "5278bba2b76a58ad8d0a57e908c221f18e0f45ae",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "245e3b7679b90265d43affe8e71a68ca2a7a2847",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "1ad3a7f198ed9abfbc5662d0c10626bea9a96f80",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "bd43d4f1e3b652203f608d5bda64351c59656fbe",
-      "webui/locales/de/LC_MESSAGES/messages.po": "de36526bdc3b87d666519df929628652262dc1b3",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "2d87013df233875a385a870ea578b7f9174d1476",
-      "webui/locales/en/LC_MESSAGES/messages.po": "55cbddd0697fbe3ca818f0428db8b521f6cc1313",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "3aa94e6f5dd8ee567a9ecba9c00c851a14254091",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "37cbaa182f3558b55b4ba28a2361e32201154772"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "83eb3db0d1e2255f694548b209bc7d96a7d1cb6f",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "cba389e07f9914765b81233f9b66cc3d2ed82074",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "e2aa13b106d41e15426f179aabe7410a4d38fb77",
+      "webui/locales/de/LC_MESSAGES/messages.po": "de3b9f48be3a2c1eaeef529c813bc276030e2f77",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "9162f0ed69e5c953009f78803d4d83dc368cb7e9",
+      "webui/locales/en/LC_MESSAGES/messages.po": "170213d3284aa632c35efb7488dec4965251c9d4",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "b476816b4fe89796e92e473c234cf405beb2525d",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "fe8e67c8b920beda2ba7351020076ce45ddb43b8"
     },
-    "commit": "7fa9e9bcba5f8c5c6c83219541da6195141735d3",
+    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
     "doc_blob": "55475c787d901d8540185cd395dd44c330066199",
-    "note": "MVP Doku-first (19.10.2026): Evidence \u201ecode moved: tests/test_i18n.py; doc names changed file\" von knowledge/system/i18n.md geprueft \u2014 der Change war NUR die Kommentar-Korrektur in test_employer_sidebar_labels_bei_renderzeit (Sidebar 4\u21925 Punkte, Codemark SIDEBAR_KEYS), 0 Assertionen; die datierten Testzahl-Zitate in knowledge/system/i18n.md (zuletzt 36 am 07.10.2026) sind unberuehrt, aktueller Lauf 19.10.2026: 37 passed."
+    "note": "MVP Board-Drawer 19.10.2026: code moved webui/components.py, webui/pages/employer.py, tests/test_i18n.py, webui/locales/de/LC_MESSAGES/messages.po, webui/locales/de/LC_MESSAGES/messages.mo (neue Keys Bewerbungsdetails, Erlaubte Folgeschritte, Visum-Info/Schritte, DSGVO-Hinweis in 4 Katalogen); i18n-Regeln unveraendert."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

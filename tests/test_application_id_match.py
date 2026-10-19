@@ -153,9 +153,14 @@ def test_keine_like_praefix_abfrage_mehr(datei):
 
 
 def test_json_extract_ist_wo_genutzt():
-    for datei in ("db.py", "logic.py", "pages/employer.py", "pages/admin.py"):
+    # 19.10.2026: Der UI-Guard lebt nur noch im geteilten Helper
+    # (components.py::visa_info_section); die 3 Alt-Kopien in den Seiten sind weg.
+    for datei in ("db.py", "logic.py", "components.py"):
         src = (ROOT / "webui" / datei).read_text(encoding="utf-8")
         assert "json_extract(payload, '$.application_id')" in src, datei
+    for datei in ("pages/employer.py", "pages/admin.py"):
+        src = (ROOT / "webui" / datei).read_text(encoding="utf-8")
+        assert "json_extract(payload, '$.application_id')" not in src, datei
 
 
 # ─── R3-1 / R3-2 (30.09.2026): Pförtner und Queue ebenfalls exakt ─────────

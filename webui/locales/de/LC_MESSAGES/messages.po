@@ -3566,3 +3566,15 @@ msgstr "Ueber den folgenden Link koennen Sie innerhalb von {0} Minuten ein neues
 
 msgid "Passwort zuruecksetzen – KM-HR-Agent"
 msgstr "Passwort zuruecksetzen – KM-HR-Agent"
+
+msgid "Visum-Info/Schritte"
+msgstr "Visum-Info/Schritte"
+
+msgid "Dokumente werden erst ab dem Status 'Eingeladen' sichtbar (DSGVO)."
+msgstr "Dokumente werden erst ab dem Status 'Eingeladen' sichtbar (DSGVO)."
+
+msgid "Bewerbungsdetails"
+msgstr "Bewerbungsdetails"
+
+msgid "Erlaubte Folgeschritte: {0}"
+msgstr "Erlaubte Folgeschritte: {0}"

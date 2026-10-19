@@ -121,9 +121,11 @@ def _employer_of_app(conn, app_id: int) -> int:
 
 def test_quelltext_cid_dict_statt_app_id():
     text = EMPLOYER_PY.read_text(encoding="utf-8")
-    assert '_reject_ctx = {"app_id": 0}' in text
-    assert '_invite_ctx = {"app_id": 0}' in text
-    assert '_hire_ctx = {"app_id": 0}' in text
+    lines = text.splitlines()
+    # Exakte Zeile (nicht Substring): `_bd_hire_ctx` darf `_hire_ctx` nicht mitmatchen.
+    assert '    _reject_ctx = {"app_id": 0}' in lines
+    assert '    _invite_ctx = {"app_id": 0}' in lines
+    assert '    _hire_ctx = {"app_id": 0}' in lines
     # alte candidate_id-Dialogkontexte duerfen nicht zurueckkehren
     for alt in ("_reject_cid", "_invite_cid", "_hire_cid"):
         assert alt not in text

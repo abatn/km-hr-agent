@@ -24,6 +24,7 @@ from webui.components import (
     candidate_avatar, skill_chip, loading_spinner, export_candidates_pdf,
     notifications_drawer, timeline, navigate_to,
     prescreen_recruiting_section, onboarding_generator_section, skill8_feedback_section,
+    visa_info_section,
 )
 
 # R6-3 (30.09.2026): zentraler Logger für die ehemals stillen except-Blöcke
@@ -858,26 +859,11 @@ def _page_stellen(s: dict) -> None:
                 else:
                     ui.label(_('Finaler Status erreicht.')).classes("text-caption px-4 pb-2")
 
-                # Visum-Antrag-Bestaetigung (Spec v6, exakter application_id-Guard)
+                # Visum-Info/Schritte (geteilter Trigger, employer-board.md §3(b))
                 if a_status == "eingeladen":
-                    _visa_rows = conn.execute(
-                        "SELECT COUNT(*) FROM agent_tasks WHERE task_type='visa_confirmation' "
-                        "AND status IN ('pending','running','done') "
-                        "AND json_extract(payload, '$.application_id') = ?",
-                        (a_id,),
-                    ).fetchone()
-                    _visa_done = _visa_rows[0] > 0 if _visa_rows else False
-                    if not _visa_done:
-                        def send_visa(_a_id=a_id, _k_id=k_id, _j_id=j_id):
-                            db.queue_agent_task("visa_confirmation", {"application_id": _a_id,
-                                                                       "candidate_id": _k_id, "job_id": _j_id,
-                                                                       "trigger": "hr_klick_portal"})
-                            ui.notify(_('Visum-Schritte-Mail an Kandidaten ausgeloest.'), type="positive")
-                            # P1-13: auf der Seite bleiben (siehe Statuswechsel oben)
-                            ui.navigate.reload()
-                        ui.button(_('📩 Visum-Antrag bestaetigen'), on_click=send_visa).props("color=primary").classes("px-4 pb-2")  # P1-4: Quasar-Semantik statt Tailwind (ui-design-system.md §2.5)
-                    else:
-                        ui.label(_('✅ Visum-Schritte-Mail versendet.')).classes("text-caption px-4 pb-2")
+                    visa_info_section(a_id, k_id, j_id, trigger="hr_klick_portal",
+                                      on_sent=ui.navigate.reload,
+                                      classes="px-4 pb-2", props="color=primary")
 
     with ui.expansion(_('📋 Archiv ({0}) – eingestellt / abgelehnt / zurückgezogen').format(len(apps_archiv)), icon="archive").classes("w-full mb-4"):
         if not apps_archiv:
@@ -1626,30 +1612,10 @@ def _page_match(s: dict) -> None:
                                         for key, text in erklaerung.items():
                                             ui.label(_('- {0}: {1}').format(key, text)).classes("text-xs text-gray-600")
 
-                                # Visum-Antrag-Bestaetigung (Spec v6, Quelle: app.py:3740-3757)
+                                # Visum-Info/Schritte (geteilter Trigger, employer-board.md §3(b))
                                 if app_status == "eingeladen":
-                                    # Guard: exakter application_id-Vergleich via json_extract
-                                    # (agent_tasks hat keine application_id-Spalte; P1-7 30.09.2026)
-                                    # Quelle: app.py:3177-3179 + db.py:64
-                                    _visa_rows = conn.execute(
-                                        "SELECT COUNT(*) FROM agent_tasks WHERE task_type='visa_confirmation' "
-                                        "AND status IN ('pending','running','done') "
-                                        "AND json_extract(payload, '$.application_id') = ?",
-                                        (app_id,),
-                                    ).fetchone()
-                                    _visa_done = _visa_rows[0] > 0 if _visa_rows else False
-                                    if not _visa_done:
-                                        def send_visa(_a_id=app_id, _c_id=c_id, _j_id=j_id):
-                                            db.queue_agent_task("visa_confirmation", {
-                                                "application_id": _a_id,
-                                                "candidate_id": _c_id,
-                                                "job_id": _j_id,
-                                                "trigger": "hr_klick_portal",
-                                            })
-                                            ui.notify(_('Visum-Schritte-Mail an Kandidaten ausgeloest.'), type="positive")
-                                            _refresh_now()
-                                        ui.button(_('Visum-Antrag bestaetigen'), icon="mail",
-                                                  on_click=send_visa).classes("mt-2").props("color=warning")
+                                    visa_info_section(app_id, c_id, j_id, trigger="hr_klick_portal",
+                                                      on_sent=_refresh_now)
 
                                     # HR-Sicht der Einladung: Meeting-Link + Termin + ICS-Download
                                     # (N1-Port: app.py:502-520 render_hr_ics_download)
@@ -3132,7 +3098,7 @@ _BOARD_COLUMNS = (
 def _board_rows(conn, employer_id) -> list[dict]:
     """Bewerbungen dieses Arbeitgebers mit Status der Board-Spalten (Quelle: ALLOWED_TRANSITIONS)."""
     rows = conn.execute(
-        """SELECT a.id, a.candidate_id, a.status, j.titel, c.name
+        """SELECT a.id, a.job_id, a.candidate_id, a.status, j.titel, c.name
            FROM applications a
            JOIN jobs j ON j.id = a.job_id
            JOIN candidates c ON c.id = a.candidate_id
@@ -3141,7 +3107,8 @@ def _board_rows(conn, employer_id) -> list[dict]:
            ORDER BY a.erstellungsdatum ASC, a.id ASC""",
         (employer_id,),
     ).fetchall()
-    return [{"app_id": r[0], "cid": r[1], "status": r[2], "titel": r[3] or "", "name": r[4] or ""}
+    return [{"app_id": r[0], "job_id": r[1], "cid": r[2], "status": r[3],
+             "titel": r[4] or "", "name": r[5] or ""}
             for r in rows]
 
 
@@ -3191,6 +3158,115 @@ def _page_board(s: dict) -> None:
     finally:
         conn.close()
 
+    # ─── Detail-Drawer (rechts verankert, employer-board.md §4) ────────
+    # NiceGUI-Layoutgrenze (gemessen 19.10.2026): ui.right_drawer muss ein
+    # direktes Page-Kind sein; _page_board rendert in content_container und
+    # der rechte Layout-Slot ist vom Notifications-Drawer belegt. Daher ein
+    # Dialog mit position=right + vollhoehen-Karte (gleiches Oeffnungs- und
+    # Refresh-Muster wie notifications_drawer).
+    _bd_ctx = {"row": None}
+
+    _bd_hire_ctx = {"app_id": 0}
+    with ui.dialog() as _bd_hire_dialog, ui.card().classes("w-96"):
+        ui.label(_('Kandidat einstellen')).classes("text-lg font-bold mb-4")
+        _bd_hire_label = ui.label('').classes("mb-2")
+        with ui.row().classes("justify-end gap-2 mt-4"):
+            ui.button(_('Abbrechen'), on_click=_bd_hire_dialog.close).props("flat")
+
+            def _bd_hire():
+                app_id = _bd_hire_ctx["app_id"]
+                conn = db.get_conn()
+                try:
+                    row = conn.execute(
+                        "SELECT a.candidate_id, a.job_id, a.status FROM applications a "
+                        "JOIN jobs j ON j.id = a.job_id "
+                        "WHERE a.id = ? AND j.employer_id = ?",
+                        (app_id, employer_id)).fetchone()
+                    if not row:
+                        ui.notify(_('Bewerbung nicht gefunden.'), type="negative")
+                        _bd_hire_dialog.close()
+                        _board_drawer.close()
+                        ui.navigate.reload()
+                        return
+                    cid, job_id, old_status = row
+                    # Live-Guard (nie den Karten-Snapshot vertrauen): Whitelist aus der DB.
+                    if "eingestellt" not in _legal_actions(old_status):
+                        ui.notify(_("Ungueltiger Statusuebergang: 'Einstellen' erfordert den Status 'eingeladen' (Whitelist)."), type="negative")
+                        _bd_hire_dialog.close()
+                        _board_drawer.close()
+                        ui.navigate.reload()
+                        return
+                    conn.execute("UPDATE applications SET status='eingestellt', aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?", (app_id,))
+                    conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'eingestellt', 'arbeitgeber')", (app_id,))
+                    conn.commit()
+                    _notify_statuswechsel(conn, app_id, "eingestellt")  # R3-5 nach commit
+                finally:
+                    conn.close()
+                db.queue_agent_task("onboarding_release", {"application_id": app_id, "candidate_id": cid,
+                                                           "job_id": job_id, "trigger": "hr_klick_portal"})
+                ui.notify(_("Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."), type="positive")
+                _bd_hire_dialog.close()
+                _board_drawer.close()
+                ui.navigate.reload()
+
+            ui.button(_('Einstellen'), on_click=_bd_hire).props("color=positive")
+
+    def _bd_open_hire():
+        r = _bd_ctx.get("row")
+        if not r:
+            return
+        _bd_hire_ctx["app_id"] = r["app_id"]
+        _bd_hire_label.set_text(_('{0} fuer die Stelle \u201e{1}\u201c einstellen?').format(
+            anzeige_name(r["name"], r["cid"], r["status"]), r["titel"]))
+        _bd_hire_dialog.open()
+
+    with ui.dialog().props("position=right") as _board_drawer:
+        with ui.card().classes("w-[380px] max-w-full rounded-none p-4 gap-2").style("height:100vh;max-height:100vh;margin:0"):
+            @ui.refreshable
+            def _bd_body():
+                r = _bd_ctx.get("row")
+                if not r:
+                    return
+                status = r["status"]
+                with ui.row().classes("w-full items-center justify-between"):
+                    ui.label(_('Bewerbungsdetails')).classes("text-lg font-bold")
+                    ui.button(icon="close", on_click=_board_drawer.close).props("flat dense")
+                ui.label(anzeige_name(r["name"], r["cid"], status)).classes("font-medium text-base")
+                ui.label(r["titel"]).classes(C.SMALL)
+                with ui.row().classes("items-center gap-2"):
+                    status_badge(status)
+                    ui.label(status_label(status)).classes(C.SMALL)
+                legal = _legal_actions(status)
+                if legal:
+                    ui.label(_('Erlaubte Folgeschritte: {0}').format(
+                        " · ".join(_(_MATCH_ACTION_LABEL[ns]) for ns in legal))).classes(C.MUTED + " text-xs")
+                ui.separator()
+                # DSGVO-Dokumenten-Gate: Zugriff erst ab DOC_RELEASE_STATUS.
+                if status in DOC_RELEASE_STATUS:
+                    ui.button(_('Dokumente'), icon="folder",
+                              on_click=lambda: (ui.navigate.to("/employer/dokumente"), _board_drawer.close())).props("flat dense")
+                else:
+                    ui.label(_("Dokumente werden erst ab dem Status 'Eingeladen' sichtbar (DSGVO).")).classes(C.MUTED + " text-xs")
+                ui.separator()
+                with ui.row().classes("w-full gap-2"):
+                    if "eingestellt" in legal:
+                        ui.button(_('Einstellen'), icon="check", on_click=_bd_open_hire).props("color=positive")
+                    if status == "eingeladen":
+                        visa_info_section(r["app_id"], r["cid"], r["job_id"], trigger="hr_klick_portal",
+                                          on_sent=lambda: (_board_drawer.close(), ui.navigate.reload()),
+                                          classes="", props="color=warning")
+                    if status == "eingestellt":
+                        ui.button(_('Onboarding'), icon="assignment",
+                                  on_click=lambda: (ui.navigate.to("/employer/onboarding"), _board_drawer.close())).props("flat")
+                ui.button(_('Im Match öffnen'), icon="open_in_new",
+                          on_click=lambda: (ui.navigate.to(f"/employer/match?kandidat={r['cid']}"), _board_drawer.close())).props("flat dense")
+            _bd_body()
+
+    def _open_board_drawer(row: dict) -> None:
+        _bd_ctx["row"] = row
+        _bd_body.refresh()
+        _board_drawer.open()
+
     with ui.tabs().classes("w-full") as tabs:
         tab_aktiv = ui.tab(_('Aktiv'))
         tab_passiv = ui.tab(_('Passiv'))
@@ -3207,8 +3283,11 @@ def _page_board(s: dict) -> None:
                         ui.label(f"{_(col_label)} ({len(col_rows)})").classes("font-bold")
                         for r in col_rows:
                             with ui.card().classes(C.CARD_HOVER + " w-full py-2 px-3"):
-                                ui.label(anzeige_name(r["name"], r["cid"], r["status"])).classes("font-medium")
-                                ui.label(r["titel"]).classes(C.SMALL + " truncate")
+                                # Kartenklick = Drawer (nur der Textblock; der Match-Button
+                                # bleibt separat, damit kein Doppel-Event entsteht).
+                                with ui.column().classes("w-full gap-0 cursor-pointer").on('click', lambda r=r: _open_board_drawer(r)):
+                                    ui.label(anzeige_name(r["name"], r["cid"], r["status"])).classes("font-medium")
+                                    ui.label(r["titel"]).classes(C.SMALL + " truncate")
                                 ui.label(" · ".join(_(_MATCH_ACTION_LABEL[ns]) for ns in _legal_actions(r["status"]))).classes(C.MUTED + " text-xs")
                                 ui.button(_('Im Match öffnen'), on_click=lambda c=r["cid"]: ui.navigate.to(f"/employer/match?kandidat={c}")).props("flat dense")
         with ui.tab_panel(tab_passiv):

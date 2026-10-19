@@ -3561,3 +3561,15 @@ msgstr "Use the following link to set a new password within {0} minutes:"
 
 msgid "Passwort zuruecksetzen – KM-HR-Agent"
 msgstr "Reset password – KM-HR-Agent"
+
+msgid "Visum-Info/Schritte"
+msgstr "Visa info/steps"
+
+msgid "Dokumente werden erst ab dem Status 'Eingeladen' sichtbar (DSGVO)."
+msgstr "Documents only become visible from the status 'Invited' (GDPR)."
+
+msgid "Bewerbungsdetails"
+msgstr "Application details"
+
+msgid "Erlaubte Folgeschritte: {0}"
+msgstr "Allowed next steps: {0}"

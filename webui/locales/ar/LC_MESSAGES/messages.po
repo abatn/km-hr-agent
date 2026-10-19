@@ -3561,3 +3561,15 @@ msgstr "استخدم الرابط التالي لتعيين كلمة مرور ج
 
 msgid "Passwort zuruecksetzen – KM-HR-Agent"
 msgstr "إعادة تعيين كلمة المرور – KM-HR-Agent"
+
+msgid "Visum-Info/Schritte"
+msgstr "معلومات/خطوات التأشيرة"
+
+msgid "Dokumente werden erst ab dem Status 'Eingeladen' sichtbar (DSGVO)."
+msgstr "تظهر المستندات فقط بدءًا من الحالة «مدعو» (GDPR)."
+
+msgid "Bewerbungsdetails"
+msgstr "تفاصيل الطلب"
+
+msgid "Erlaubte Folgeschritte: {0}"
+msgstr "الخطوات التالية المسموح بها: {0}"

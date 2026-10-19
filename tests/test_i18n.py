@@ -276,7 +276,9 @@ def test_components_keine_fstrings_und_keine_importzeit_uebersetzung():
     bad_d = []
     for fn in ast.walk(tree):
         if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            for d in list(fn.args.defaults) + [k.value for k in fn.args.kw_defaults if k]:
+            # kw_defaults sind bereits AST-Knoten (kein keyword-Objekt!);
+            # None steht fuer keyword-only-Argumente ohne Default.
+            for d in list(fn.args.defaults) + [k for k in fn.args.kw_defaults if k is not None]:
                 if any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
                        and n.func.id == "_" for n in ast.walk(d)):
                     bad_d.append(fn.name)
