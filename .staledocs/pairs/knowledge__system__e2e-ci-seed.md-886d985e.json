@@ -106,7 +106,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-19T12:18:53+00:00",
+    "at": "2026-10-19T16:13:36+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "355ba05cbfe330946c98e7aa745a567ff8bb61e8",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -185,7 +185,7 @@
       "tests/test_employer_agent_b.py": "d8f8d8423074268636a600e4ded7ec4fe9d1a1da",
       "tests/test_feedback_row_click.py": "f9bff67866181394559062cacf9633b8f09c3113",
       "tests/test_gatekeeper_memo.py": "445339baf6344eaf49abfe7dc65c02cbaa8dec43",
-      "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
+      "tests/test_i18n.py": "5eb2eaaae01b2ead3de73cdbe0aeccc3b1810586",
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
@@ -225,9 +225,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "6a25ff2e78f9df776e41f164886ff6c9dd120c74",
+    "commit": "7fa9e9bcba5f8c5c6c83219541da6195141735d3",
     "doc_blob": "8dc31cf40c8fb2478600718cd0bd3b2bb1e3e06d",
-    "note": "Re-Ack 19.10.2026 (FR-Korrektur): Evidence \u201ecode moved: scripts/seed_ci_db.py, tests/e2e_board_passiv_filter.py, tests/fixtures/seed.db, tests/test_passiv_sprache_filter.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "MVP Doku-first (19.10.2026): Evidence \u201ecode moved: tests/test_i18n.py; 1 file(s) moved, none referenced by this doc\" von knowledge/system/e2e-ci-seed.md geprueft \u2014 der test_i18n-Kommentar-Edit beruehrt keine Konten/Ports/Seeds von e2e-ci-seed.md; Doku-Aussagen unveraendert."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

@@ -132,7 +132,7 @@
       "webui/logic.py",
       "webui/main.py"
     ],
-    "at": "2026-10-19T12:18:42+00:00",
+    "at": "2026-10-19T16:13:35+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -230,7 +230,7 @@
       "tests/test_employer_agent_b.py": "d8f8d8423074268636a600e4ded7ec4fe9d1a1da",
       "tests/test_feedback_row_click.py": "f9bff67866181394559062cacf9633b8f09c3113",
       "tests/test_gatekeeper_memo.py": "445339baf6344eaf49abfe7dc65c02cbaa8dec43",
-      "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
+      "tests/test_i18n.py": "5eb2eaaae01b2ead3de73cdbe0aeccc3b1810586",
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
@@ -298,9 +298,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "6a25ff2e78f9df776e41f164886ff6c9dd120c74",
+    "commit": "7fa9e9bcba5f8c5c6c83219541da6195141735d3",
     "doc_blob": "102995391b9cbbc03b517ad6c321b1f753b62f98",
-    "note": "Re-Ack 19.10.2026 (FR-Korrektur): Evidence \u201ecode moved: scripts/seed_ci_db.py, tests/e2e_board_passiv_filter.py, tests/fixtures/seed.db, tests/test_passiv_sprache_filter.py, webui/pages/employer\u201c + \u201edoc moved since last ack\u201c geprueft \u2014 doc-Move = Zaehler-Update (Unit-Spanne 477\u2013514, oberer Rand 514/0sk am 19.10.2026, CI-Parit\u00e4t 468\u2013505 mit 500/5sk am 19.10.2026, checks-Ausgaben 14/17/4, E2E unveraendert 53/51), Code-Moves = FR-Korrektur-Iteration (Pr\u00e4dikat + Seed + Testdiagnose)."
+    "note": "MVP Doku-first (19.10.2026): Evidence \u201ecode moved: tests/test_i18n.py; 1 file(s) moved, none referenced by this doc\" von AGENTS.md geprueft \u2014 Betroffenheit nur ueber den Kommentar-Edit (Sidebar 4\u21925), AGENTS.md-Inhalt unveraendert; Zaelter 477\u2013514 / 468\u2013505 (Messreihen 19.10.2026) weiterhin korrekt."
   },
   "doc": "AGENTS.md",
   "schema": 1

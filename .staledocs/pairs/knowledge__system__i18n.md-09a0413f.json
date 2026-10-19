@@ -116,9 +116,9 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-18T12:03:53+00:00",
+    "at": "2026-10-19T16:13:34+00:00",
     "code_blobs": {
-      "tests/test_i18n.py": "9c535cc9442b11882b866fa2fbbb3842b9f0cef9",
+      "tests/test_i18n.py": "5eb2eaaae01b2ead3de73cdbe0aeccc3b1810586",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
@@ -131,9 +131,9 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "3aa94e6f5dd8ee567a9ecba9c00c851a14254091",
       "webui/locales/fr/LC_MESSAGES/messages.po": "37cbaa182f3558b55b4ba28a2361e32201154772"
     },
-    "commit": "262d535ea2cb082d5473b0a8ab112564f973616c",
+    "commit": "7fa9e9bcba5f8c5c6c83219541da6195141735d3",
     "doc_blob": "55475c787d901d8540185cd395dd44c330066199",
-    "note": "Re-Ack 18.10.2026 (Passwort-Reset): Evidence \u201ecode moved: webui/locales/ar/LC_MESSAGES/messages.mo, webui/locales/ar/LC_MESSAGES/messages.po, webui/locales/de/LC_MESSAGES/messages.mo, webui/locale\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": "MVP Doku-first (19.10.2026): Evidence \u201ecode moved: tests/test_i18n.py; doc names changed file\" von knowledge/system/i18n.md geprueft \u2014 der Change war NUR die Kommentar-Korrektur in test_employer_sidebar_labels_bei_renderzeit (Sidebar 4\u21925 Punkte, Codemark SIDEBAR_KEYS), 0 Assertionen; die datierten Testzahl-Zitate in knowledge/system/i18n.md (zuletzt 36 am 07.10.2026) sind unberuehrt, aktueller Lauf 19.10.2026: 37 passed."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

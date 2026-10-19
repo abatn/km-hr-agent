@@ -238,8 +238,8 @@ def test_employer_sidebar_labels_bei_renderzeit():
     finally:
         employer._ = orig
     assert all(lbl.startswith("X-") for lbl in labels), labels
-    # 15.10.2026 (employer-board.md §6): Sidebar zeigt nur 4 Punkte; alle übrigen Seiten
-    # liegen unter „Mehr“. Vollständigkeit wird jetzt gegen Sidebar ∪ Mehr geprüft.
+    # 19.10.2026 (employer-board.md §6): Sidebar = 5 Punkte (Codemark SIDEBAR_KEYS, inkl. „mehr“);
+    # Vollständigkeit gegen PAGE_TITLES \ SIDEBAR_KEYS (Rest liegt unter „Mehr“).
     assert keys == set(employer.SIDEBAR_KEYS)
     assert set(employer.SIDEBAR_KEYS) <= set(employer.PAGE_MAP)
     assert (keys | {k for k in employer.PAGE_TITLES if k not in employer.SIDEBAR_KEYS}) \
