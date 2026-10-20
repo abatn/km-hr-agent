@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-20T12:18:43+00:00",
+    "at": "2026-10-20T12:47:32+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -201,7 +201,7 @@
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
       "knowledge/system/configuration-secrets.md": "37b90bc972150f5d7f5ce5c6366b32fae062a1b4",
       "knowledge/system/dependency-pinning.md": "2c5e276d7b22734b3740e73a4a1d998c99481697",
-      "knowledge/system/deploy-pipeline.md": "8600ca5e2a228111a9a701dba47131423c7cde5b",
+      "knowledge/system/deploy-pipeline.md": "840259be71a40709bd6f00cb941f839253f4c14e",
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
       "knowledge/system/e2e-ci-seed.md": "94898da9f28d2bed4db6533f50252459bf0db6de",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
@@ -224,9 +224,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
     },
-    "commit": "195fc6982090953e90525c0b6d4bef3524bf8ceb",
+    "commit": "80bf023f1f24448995660babc2b50308662d2938",
     "doc_blob": "76bb4b99e2943b5bd050d2c18556cb3c1dbb2c95",
-    "note": "DOC_STALE knowledge.md: code moved knowledge/system/deploy-pipeline.md (neuer Abschnitt \"Stoerung 20.10.2026 - Contabo-VPS nicht erreichbar\", Messwerte HTTP/TCP22/TCP8080/Ping 12:15:51Z, Deploy #39420241461 Schritt 3 ssh-keyscan exit 1, Server-Stand f984168); Index-Zeilen unveraendert korrekt."
+    "note": "DOC_STALE knowledge.md: code moved knowledge/system/deploy-pipeline.md (Serverumzug 20.10.2026 auf 176.57.189.201: Ist-Befund, Keys, Installationsschritte, Sicherheitsregel, ufw 22+8080; neues Deploy-Key-Paar, Repo-Key 167062021, Secret CONTABO_SSH_KEY neu gesetzt); Index-Zeilen unveraendert korrekt."
   },
   "doc": "knowledge.md",
   "schema": 1
