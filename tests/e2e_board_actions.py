@@ -8,6 +8,8 @@ Prueft am ISOLATIONS-Spiegel (nie :8080):
 3) Einstellen schreibt 1:1 die do_hire-Sequenz: UPDATE + History
    (`changed_by 'arbeitgeber'`) + `onboarding_release`-Task
    (`trigger=hr_klick_portal`) + Kandidaten-Notification.
+3b) Nach dem Einstellen bleibt **Visum-Info/Schritte** verfügbar
+   (`VISA_INFO_STATUS`, 19.10.2026) und loest `visa_confirmation` aus.
 4) Onboarding-Aktion ist reine Navigation auf /employer/onboarding
    (kein zweiter Trigger).
 5) Restore + residue=0.
@@ -43,7 +45,17 @@ def _ro():
 
 
 def _pick_case():
-    """(employer_id, app_id, candidate_id, name, email) einer eingeladenen Bewerbung."""
+    """(employer_id, app_id, candidate_id, name, email) einer eingeladenen Bewerbung.
+
+    Bewerbungen mit bereits vorhandenem `visa_confirmation`-Task werden
+    ausgeschlossen: dort rendert `visa_info_section` den „versendet"-Hinweis
+    statt des Buttons (Fix 19.10.2026, deterministisch fuer Seed + Live).
+    """
+    NO_VISA = (
+        " AND NOT EXISTS (SELECT 1 FROM agent_tasks t WHERE t.task_type = 'visa_confirmation'"
+        " AND t.status IN ('pending','running','done')"
+        " AND json_extract(t.payload,'$.application_id') = a.id)"
+    )
     conn = _ro()
     try:
         if SEED_MODE:
@@ -53,7 +65,8 @@ def _pick_case():
                 "SELECT j.employer_id, a.id, a.candidate_id, c.name "
                 "FROM applications a JOIN jobs j ON j.id = a.job_id "
                 "JOIN candidates c ON c.id = a.candidate_id "
-                "WHERE a.status = 'eingeladen' ORDER BY a.id LIMIT 1").fetchone()
+                "WHERE a.status = 'eingeladen'" + NO_VISA +
+                " ORDER BY a.id LIMIT 1").fetchone()
         else:
             # Live-Modus: nur Employer 1 (dort ist `sicher123` verifiziert;
             # Employer 4 hat live ein echtes, unbekanntes Passwort).
@@ -61,8 +74,8 @@ def _pick_case():
                 "SELECT j.employer_id, a.id, a.candidate_id, c.name "
                 "FROM applications a JOIN jobs j ON j.id = a.job_id "
                 "JOIN candidates c ON c.id = a.candidate_id "
-                "WHERE a.status = 'eingeladen' AND j.employer_id = ? "
-                "ORDER BY a.id LIMIT 1", (EMPLOYER_ID,)).fetchone()
+                "WHERE a.status = 'eingeladen' AND j.employer_id = ?" + NO_VISA +
+                " ORDER BY a.id LIMIT 1", (EMPLOYER_ID,)).fetchone()
         if not row:
             return None
         email = conn.execute("SELECT email FROM employers WHERE id = ?",
@@ -104,6 +117,18 @@ def _wait_status(app_id: int, expected: str, timeout=12.0) -> bool:
     return False
 
 
+def _visa_task_da(app_id: int, pre_tasks: int) -> bool:
+    """Wurde nach pre_tasks ein visa_confirmation-Task fuer diese Bewerbung angelegt?"""
+    conn = sqlite3.connect(DB)
+    try:
+        return conn.execute(
+            "SELECT COUNT(*) FROM agent_tasks WHERE id > ? AND task_type = 'visa_confirmation' "
+            "AND json_extract(payload,'$.application_id') = ?",
+            (pre_tasks, app_id)).fetchone()[0] > 0
+    finally:
+        conn.close()
+
+
 def main() -> None:
     # Sicherheitsnetz: dieser Test SCHREIBT (Status/History/Task/Notification).
     # Nur auf einem Isolations-Spiegel, nie auf der Live-DB.
@@ -129,6 +154,7 @@ def main() -> None:
     conn.close()
 
     ok = False
+    created_files: set = set()
     try:
         with sync_playwright() as pw:
             browser = pw.chromium.launch(headless=True)
@@ -181,7 +207,7 @@ def main() -> None:
                 assert notifs >= 1, notifs
                 print("DB: +1 History(arbeitgeber), +1 onboarding_release(hr_klick_portal), Notification")
 
-                # 4) Nach Reload: Onboarding sichtbar -> reine Navigation
+                # 4) Nach Reload: Onboarding + Visum-Info (auch bei `eingestellt`)
                 page.wait_for_timeout(1500)
                 page.get_by_role("button", name=re.compile("Hiring-Board")).first.click()
                 page.wait_for_timeout(1200)
@@ -190,9 +216,45 @@ def main() -> None:
                 drawer2.wait_for(state="visible", timeout=8000)
                 onboard = drawer2.get_by_text("Onboarding", exact=True)
                 assert onboard.count() >= 1, "Onboarding fehlt nach eingestellt"
-                onboard.click()
+                visa = drawer2.get_by_text("Visum-Info/Schritte", exact=True)
+                assert visa.count() >= 1, "Visum-Info fehlt nach eingestellt (VISA_INFO_STATUS)"
+                print("DRAWER nach HIRE: Onboarding + Visum-Info/Schritte sichtbar")
+
+                # 4b) Visum-Info nach dem Einstellen ausloesen
+                visa.click()
+                end = time.time() + 12
+                while time.time() < end and not _visa_task_da(app_id, pre_tasks):
+                    time.sleep(0.25)
+                assert _visa_task_da(app_id, pre_tasks), \
+                    "kein visa_confirmation-Task nach Klick auf Visum-Info (eingestellt)"
+                print("VISA: visa_confirmation ausgeloest trotz Status 'eingestellt'")
+
+                # 4c) Zurueck zum Board: Onboarding = reine Navigation
+                page.wait_for_timeout(1500)
+                page.get_by_role("button", name=re.compile("Hiring-Board")).first.click()
+                page.wait_for_timeout(1200)
+                page.get_by_text(label, exact=True).first.click()
+                drawer3 = page.locator(".q-dialog:visible").filter(has_text="Bewerbungsdetails")
+                drawer3.wait_for(state="visible", timeout=8000)
+                drawer3.get_by_text("Onboarding", exact=True).click()
                 page.wait_for_url("**/employer/onboarding**", timeout=8000)
                 print("ONBOARDING: Navigation /employer/onboarding, kein zweiter Trigger")
+
+                # 4d) Generator: Kandidat kommt aus der DB (Status 'eingestellt'),
+                # Checkliste entsteht lokal in ergebnisse/ (kein Mailversand).
+                _before = set(ROOT.glob("ergebnisse/onboarding-*.md"))
+                _sel = page.locator(".q-select").first
+                _sel.click()
+                page.wait_for_timeout(700)
+                page.get_by_text(label, exact=True).last.click()
+                page.wait_for_timeout(500)
+                page.get_by_role("button", name=re.compile(r"^Onboarding generieren$")).click()
+                page.wait_for_timeout(2000)
+                _after = set(ROOT.glob("ergebnisse/onboarding-*.md"))
+                _neu = _after - _before
+                assert _neu, "keine Onboarding-Checkliste erzeugt (DB-Kandidat fehlt im Generator)"
+                created_files.update(_neu)
+                print(f"ONBOARDING-CHECKLISTE: {[f.name for f in _neu]} (Quelle: DB-Kandidat)")
                 ok = True
             finally:
                 browser.close()
@@ -206,11 +268,20 @@ def main() -> None:
             conn.execute(
                 "DELETE FROM agent_tasks WHERE id > ? AND task_type = 'onboarding_release' "
                 "AND json_extract(payload,'$.application_id') = ?", (pre_tasks, app_id))
+            conn.execute(
+                "DELETE FROM agent_tasks WHERE id > ? AND task_type = 'visa_confirmation' "
+                "AND json_extract(payload,'$.application_id') = ?", (pre_tasks, app_id))
             conn.execute("DELETE FROM notifications WHERE id > ? AND user_id = ?",
                          (base_notif, cand_id))
             conn.commit()
         finally:
             conn.close()
+        # Erzeugte Checklisten-Dateien entfernen (kein Rest im Repo).
+        for _f in created_files:
+            try:
+                _f.unlink()
+            except OSError:
+                pass
 
     residue = db_residue_report(pre_tasks)
     print(f"RESTORE: app {app_id} wieder 'eingeladen', History/Task/Notification entfernt")

@@ -29,13 +29,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-18T18:49:18+00:00",
+    "at": "2026-10-20T11:26:52+00:00",
     "code_blobs": {
       "webui/db.py": "d8a602653dff6cb6b4d9fa437a6d4f2f80bb93e0"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/db.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": ""
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

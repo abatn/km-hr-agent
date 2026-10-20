@@ -5,7 +5,7 @@
       "logs/agent-errors.log",
       "logs/mcp-calls.log"
     ],
-    "at": "2026-10-13T14:19:44+00:00",
+    "at": "2026-10-20T11:26:33+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-benchmark-server.py": "512c72ccdca38def81157574054e68f7371cbf85",
@@ -13,9 +13,9 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1"
     },
-    "commit": "43688e688c007edc44e2919302cad7ad49d0ff09",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "67c28704a97b54358512481537acfeeabbed607e",
-    "note": "connectors/hr-api-connectors.md: 13.10.2026 Re-Ack nach Real-E2E-Fix; Code bewegt in scripts/agent-runner.py (Codemark def _body_sprache_ok, def mcp_call/_mcp_log_live, gatekeeper_eval INSERT+UPDATE, result_path-Ueberschreib-Warnung) bzw. webui/pages/employer.py (Codemark def _notify_statuswechsel Docstring E2); Anker agent_tasks/file_path per grep gegen HEAD verifiziert; pytest 477 passed/5 skipped, docrot A+"
+    "note": ""
   },
   "doc": "connectors/hr-api-connectors.md",
   "schema": 1

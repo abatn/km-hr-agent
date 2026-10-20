@@ -3573,3 +3573,15 @@ msgstr "Détails de la candidature"
 
 msgid "Erlaubte Folgeschritte: {0}"
 msgstr "Étapes suivantes autorisées : {0}"
+
+msgid "**Betreff:** Willkommen bei {0}!"
+msgstr "**Objet :** Bienvenue chez {0} !"
+
+msgid "Keine eingestellten Kandidaten gefunden."
+msgstr "Aucun candidat embauché trouvé."
+
+msgid "Checkliste wird lokal in ergebnisse/ gespeichert — kein automatischer Mailversand."
+msgstr "La checkliste est enregistrée localement dans ergebnisse/ — aucun envoi d'e-mail automatique."
+
+msgid "Freigabe-Report"
+msgstr "Rapport de validation"

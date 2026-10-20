@@ -107,7 +107,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-19T17:50:11+00:00",
+    "at": "2026-10-20T11:29:27+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "355ba05cbfe330946c98e7aa745a567ff8bb61e8",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -119,7 +119,7 @@
       "tests/e2e_applicants_first.py": "194cf0226982ecc484a9dd981a0a6931143dfe03",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
       "tests/e2e_apply_dialog_multi.py": "c852947278c20532062dd47bc7b2879df323641c",
-      "tests/e2e_board_actions.py": "139432a985287b6db9d778ac4e4f6edecbdef7b7",
+      "tests/e2e_board_actions.py": "0fb6af3fbffff217ba71d1ba349871c853e626d6",
       "tests/e2e_board_passiv_filter.py": "26b2f2c9f23813026bb6e808b362df781bb4d8ea",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
       "tests/e2e_candidate_detail.py": "9dc7396d8bf7889b12b4fe7f55f0f7ee3d77229a",
@@ -180,7 +180,7 @@
       "tests/test_application_id_match.py": "b03d73a8c8176d6f26d8b842811b9bde150efcd0",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
       "tests/test_bak_retention.py": "6cd8f772f00a33d4cfc187ed73eb14360be110a3",
-      "tests/test_board_actions.py": "9020abe712085f46b987e71a0269c2a9ae68ad5b",
+      "tests/test_board_actions.py": "da7b3f9661d02d7e4dda60501a963dd69aedba1e",
       "tests/test_compliance_scope.py": "de899a6a1409e827650142fa33cdcde793d0b01b",
       "tests/test_compliance_writer.py": "8ccfa66b35b9e889451425e4583e0166e5023b47",
       "tests/test_dialog_identity.py": "59d19c3a0b6c7273f32819cac052fef95069f9ec",
@@ -188,7 +188,7 @@
       "tests/test_employer_agent_b.py": "d8f8d8423074268636a600e4ded7ec4fe9d1a1da",
       "tests/test_feedback_row_click.py": "f9bff67866181394559062cacf9633b8f09c3113",
       "tests/test_gatekeeper_memo.py": "445339baf6344eaf49abfe7dc65c02cbaa8dec43",
-      "tests/test_i18n.py": "5278bba2b76a58ad8d0a57e908c221f18e0f45ae",
+      "tests/test_i18n.py": "3013579f88faa059d0d85155db93aa6ae0e8ef2d",
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
@@ -203,6 +203,7 @@
       "tests/test_nf2_score_cache.py": "e3325c3111402472c5dfacecde41bc15ebf36cfe",
       "tests/test_nm1_nm2.py": "61af662e945c5af5a21597e4bd077af4ee7fe8bb",
       "tests/test_no_undefined_names.py": "059bd0e5eb35f3ea5b52265a179fe0136c911e29",
+      "tests/test_onboarding_source.py": "2f2690e9a68b225233344fc5e28eaabf36297909",
       "tests/test_p2_8_pseudonym.py": "6f7692c6866c445797850c361949623323a134f7",
       "tests/test_p2_block.py": "cb19c04a68aaaed3f51ba877c6486a71522ac2b3",
       "tests/test_p8_2_agent_details.py": "174457e1c0d6b9ece9d4701203a651f26d4f06da",
@@ -228,9 +229,9 @@
       "tests/test_video_section.py": "e2fa8eb3387bf758fc4f88acaafd958af8a5c6bc",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "30dd3e30d3b977567f206e61ff84c425a0e44b25",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "94898da9f28d2bed4db6533f50252459bf0db6de",
-    "note": "m07-E2E-Fix 19.10.2026: code moved tests/e2e_m07_row_click.py (zeilengenaue Auswahl ueber sichtbare Vorgang-Nr. + Datum + exakte Knopf-Beschriftung, weil der anonymisierte Seed-Fixture mehrdeutige Namens-Buttons hat; Seed rc=0, Live rc=0, Live-Spiegel sha256 unveraendert); E2E-Grundregeln in AGENTS.md/e2e-ci-seed.md unveraendert."
+    "note": "Re-Ack 20.10.2026: Evidence von knowledge/system/e2e-ci-seed.md geprueft (state AMBER, changed_code: `tests/test_i18n.py`). Visa/Onboarding-Vorarbeit des Nutzers (uncommittet, 20.10.2026): VISA_INFO_STATUS, onboarding_generator_section(candidates=,firma=), _page_onboarding DB-Quelle, 4 neue i18n-Keys; Aussage von knowledge/system/e2e-ci-seed.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

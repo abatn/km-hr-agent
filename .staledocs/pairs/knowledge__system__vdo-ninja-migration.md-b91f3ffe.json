@@ -52,15 +52,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T17:05:01+00:00",
+    "at": "2026-10-20T11:26:44+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
-      "webui/components.py": "7b501043dc28931ba98ce9eec308f6fa25102431",
+      "webui/components.py": "3bf2e03d156af3b507269bfce3b446f4364f8140",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "da1432a45551bc7252632d4ca9d25c93182848e7",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "note": ""
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

@@ -60,7 +60,7 @@ webui/
 - Quelle: `app.py` (gemessen 10.10.2026), `knowledge/system/access-control.md`
 - Features: status_badge, timeline (Status-Historie), withdraw-Funktion, VDO.Ninja-Link bei "eingeladen"
 
-### Skill 2: Employer-Portal ✅ (`PAGE_MAP` in `webui/pages/employer.py`: 15 Einträge seit 16.10.2026 (+Einladungen; 14 seit 15.10.2026, 12 seit 13.10.2026; Sidebar 5 Punkte)
+### Skill 2: Employer-Portal ✅ (`PAGE_MAP` in `webui/pages/employer.py`: 15 Einträge seit 16.10.2026 (+Einladungen; 14 seit 15.10.2026, 12 seit 13.10.2026; Sidebar 7 Punkte seit 20.10.2026, vorher 5)
 - Dashboard, Kandidaten-Suche, Match-Ergebnis, Compliance, Agent-Details, Dokumente, Pre-Screen, Onboarding, Feedback
 - Quelle: `app.py` (gemessen 10.10.2026), `knowledge/system/access-control.md`
 
@@ -390,7 +390,7 @@ python3 -m webui.main  # → http://localhost:8080
 | # | Entscheidung | Warum | Quelle |
 |---|---|---|---|
 | D28 | **Status-Gate entfällt** in Skills 6/7/8 (Employer + Admin) | Streamlit-Gate war sidebar-gekoppelt und hatte Indent-Bugs: Buttons `app.py` (gemessen 10.10.2026) rendern **außerhalb** des Gates → Gate schützte nie die Aktion; NiceGUI-Sections sind pfadunabhängig | `app.py` (gemessen 10.10.2026) (Indent) + D28-Begründung 22.09.2026 |
-| D29 | Generator-Inputs = **testdaten** `list_profiles()` (NICHT DB-candidates); Dateinamen `pre-screen-{stem}-{date}.md`, `onboarding-{stem}-{startdatum}.md`, `feedback-{stem}-{date}.md`; Skill-8 `match_id = {stem}-{date}`; export_report `candidate_id` = String-Stem | Streamlit-Parität 1:1 (`app.py` (gemessen 10.10.2026)); D29(b): Runner schreibt `onboarding-freigabe-bewerbung-{app_id}.md` (`scripts/agent-runner.py` (gemessen 10.10.2026)) — Candidate-Tab globbt **dieses** Muster, Streamlit globbt tote `onboarding-kandidat-*` (`app.py` (gemessen 10.10.2026) → Streamlit-Gap, Schritt 2) | `app.py` (gemessen 10.10.2026) + `scripts/agent-runner.py` (gemessen 10.10.2026) |
+| D29 | Generator-Inputs = **testdaten** `list_profiles()` (NICHT DB-candidates); Dateinamen `pre-screen-{stem}-{date}.md`, `onboarding-{stem}-{startdatum}.md`, `feedback-{stem}-{date}.md`; Skill-8 `match_id = {stem}-{date}`; export_report `candidate_id` = String-Stem. **Nachtrag 19.10.2026:** Abweichung nur noch für den **Arbeitgeber-Onboarding-Generator** — Quelle dort = DB (`applications.status='eingestellt'`), Dateiname `onboarding-{name-slug}-{cand_id}-{startdatum}.md`; Admin/Demo bleibt `list_profiles()`. Regel: `skills/generate-onboarding/SKILL.md` §1. | Streamlit-Parität 1:1 (`app.py` (gemessen 10.10.2026)); D29(b): Runner schreibt `onboarding-freigabe-bewerbung-{app_id}.md` (`scripts/agent-runner.py` (gemessen 10.10.2026)) — Candidate-Tab globbt **dieses** Muster, Streamlit globbt tote `onboarding-kandidat-*` (`app.py` (gemessen 10.10.2026) → Streamlit-Gap, Schritt 2) | `app.py` (gemessen 10.10.2026) + `scripts/agent-runner.py` (gemessen 10.10.2026) |
 
 ### Download-12-Mapping (FINAL 12/12)
 

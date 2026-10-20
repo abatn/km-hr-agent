@@ -8,14 +8,14 @@
       "timeout=30",
       "webui/pages/candidate.py::load_questions"
     ],
-    "at": "2026-10-14T16:13:58+00:00",
+    "at": "2026-10-20T11:26:35+00:00",
     "code_blobs": {
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "tests/test_language_scoring.py": "2976286c9c93d7cb037ed9a6fedae79e4a9873c3"
     },
-    "commit": "a8b11f0e40b6b005804c1003a52f71feb3e85337",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "4b907df38795d83a62ef1783a0698943531b7af7",
-    "note": "Geprueft 14.10.2026: doc moved = eigene Fakten-Ergaenzung 'Lacken & Latenz' am Dateianfang (EN-A1 ohne Seed-Sektion, Latenzgrenze >30s bei anzahl=20, Fix try/except pro Modell + timeout 45s); die genannten Codemarks _call_nvidia und 'for m in (model or LLM_MODEL, FALLBACK_MODEL)' passen zum geaenderten language-test-server.py, Skip-Meldung in test_language_scoring.py entsprechend praezisiert"
+    "note": ""
   },
   "doc": "knowledge/language-tests.md",
   "schema": 1

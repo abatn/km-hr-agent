@@ -349,7 +349,7 @@ ui.switch("Dark Mode", value=dark.value, on_change=lambda e: dark.set_value(e.va
 📊 Dashboard (NEU 01.10.2026, 1. Tab) · 👤 Mein Profil (inkl. Lebenslauf-Upload + Dokumente, 02.10.2026) · 💼 Stellen · 📨 Bewerbungen · 🗣️ Sprachtest · 📹 Pre-Screen · 📋 Onboarding
 ```
 
-### 8.2 Employer (shell()-Drawer, 12 Seiten – PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026), Zeilenstand 28.09.2026)
+### 8.2 Employer (shell()-Drawer, 15 Seiten – PAGE_MAP `webui/pages/employer.py` (Codemarke `PAGE_MAP`, gemessen 20.10.2026; Stand 10.10.2026 war 12 Seiten, Zeilenstand 28.09.2026; Sidebar 7 Punkte seit 20.10.2026, `employer-board.md` §6))
 
 ```
 📊 Dashboard

@@ -782,33 +782,52 @@ def prescreen_recruiting_section() -> None:
         ui.button(_('Pre-Screen erstellen'), icon="videocam", on_click=create_prescreen).classes(C.BTN_PRIMARY + " mt-4")
 
 
-def onboarding_generator_section(default_stelle: str = "") -> None:
+def onboarding_generator_section(default_stelle: str = "", *,
+                                 candidates: list[tuple] | None = None,
+                                 firma: str = "") -> None:
     """Skill 7 Generator (Employer/Admin). Paritaet: app.py:2396-2515.
 
-    D29: profile aus testdaten (list_profiles), Dateiname
-    onboarding-{stem}-{startdatum}.md.
+    Zwei Quellen (19.10.2026, `skills/generate-onboarding/SKILL.md` §1):
+      - `candidates=None`  -> Admin/Demo: Profile aus `testdata` (`list_profiles`).
+      - `candidates=[...]` -> Arbeitgeber: DB-Bewerber mit Status `eingestellt`
+        als Tupel `(cand_id, name, cv_text, application_id, job_titel)`.
+    Dateiname: `onboarding-{slug}-{cand_id}-{startdatum}.md` (DB) bzw.
+    `onboarding-{stem}-{startdatum}.md` (Profil — Paritaet, unveraendert).
     """
     from webui import logic
 
     ui.label(_('Modus: 🧰 HR – Checkliste erstellen und freigeben.')).classes(C.BODY + " mb-4")
 
-    profiles = logic.list_profiles()
-    if not profiles:
-        ui.label(_('Keine Profile gefunden.')).classes(C.BODY + " text-amber-600")
-        return
+    row_by_id = None
+    if candidates is None:
+        profiles = logic.list_profiles()
+        if not profiles:
+            ui.label(_('Keine Profile gefunden.')).classes(C.BODY + " text-amber-600")
+            return
+        options = {str(p): logic.profile_display_name(p) for p in profiles}
+        first_value = str(profiles[0])
+        first_stelle = default_stelle or logic.aktuelle_stelle_fuer_profil(profiles[0])
+    else:
+        if not candidates:
+            ui.label(_('Keine eingestellten Kandidaten gefunden.')).classes(C.BODY + " text-amber-600")
+            return
+        row_by_id = {str(r[0]): r for r in candidates}
+        options = {str(r[0]): (r[1] or _('Unbekannt')) for r in candidates}
+        first_value = str(candidates[0][0])
+        first_stelle = default_stelle or (candidates[0][4] or "")
 
     with ui.card().classes(C.CARD + " w-full"):
         ui.label(_('Onboarding-Checkliste generieren')).classes(C.CARD_TITLE + " mb-4")
         # P0 (28.09.2026): Klartext-Name statt Dateiname (vorher 'profil---**name:**-...md')
         sel = ui.select(
-            options={str(p): logic.profile_display_name(p) for p in profiles},
+            options=options,
             label=_('Kandidat:'),
-            value=str(profiles[0]),
+            value=first_value,
         ).classes("w-full")
         with ui.row().classes("w-full gap-4"):
             stelle = ui.input(
                 label=_('Stelle:'),
-                value=default_stelle or logic.aktuelle_stelle_fuer_profil(profiles[0]),
+                value=first_stelle,
             ).classes("flex-1")
             # NiceGUI 3.17.1: ui.date_input existiert (C1-Verifikation)
             startdatum = ui.date_input(
@@ -816,15 +835,43 @@ def onboarding_generator_section(default_stelle: str = "") -> None:
                 value=str((datetime.now() + timedelta(days=30)).date()),
             ).classes("w-48")
 
+        if row_by_id is not None:
+            def _stelle_bei_kandidatwechsel():
+                _r = row_by_id.get(str(sel.value))
+                if _r:
+                    stelle.value = _r[4] or ""
+
+            sel.on_value_change(lambda _e: _stelle_bei_kandidatwechsel())
+
+        # Transparenz (19.10.2026): die Checkliste ist ein lokales Artefakt —
+        # der Mailversand laeuft ausschliesslich ueber den Runner-Hook.
+        ui.label(_('Checkliste wird lokal in ergebnisse/ gespeichert — kein automatischer Mailversand.')).classes(C.MUTED + " text-xs")
+
         result_box = ui.column().classes("w-full")
 
         def create_onboarding() -> None:
             if not sel.value:
                 return
-            profil_path = Path(sel.value)
-            profil_text = logic.read_profile_text(str(profil_path))
-            profil_lower = profil_text.lower()
-            name = profil_path.stem.replace("profil-", "").replace("-", " ").title()
+            mentor_candidate_id = None
+            if row_by_id is not None:
+                _row = row_by_id.get(str(sel.value))
+                if not _row:
+                    return
+                cand_id, name, cv_text, _app_id, _job_titel = _row
+                profil_text = cv_text or ""
+                profil_lower = profil_text.lower()
+                _slug = "".join(ch if ch.isalnum() else "-"
+                                for ch in (name or "").casefold()).strip("-")
+                while "--" in _slug:
+                    _slug = _slug.replace("--", "-")
+                kandidat_name = f"{_slug}-{cand_id}" if _slug else f"kandidat-{cand_id}"
+                mentor_candidate_id = cand_id
+            else:
+                profil_path = Path(sel.value)
+                profil_text = logic.read_profile_text(str(profil_path))
+                profil_lower = profil_text.lower()
+                name = profil_path.stem.replace("profil-", "").replace("-", " ").title()
+                kandidat_name = profil_path.stem.replace("profil-", "")
             stelle_val = (stelle.value or "").strip()
             if not stelle_val:
                 # R5-4/S3g: Pflichtprüfung statt erfundener Vorgabe
@@ -851,7 +898,11 @@ def onboarding_generator_section(default_stelle: str = "") -> None:
             # 1. Willkommens-E-Mail
             md += _("## 1. Willkommens-E-Mail") + "\n\n"
             md += _("**Empfänger:** {0}").format(name) + "\n"
-            md += _("**Betreff:** Willkommen bei TechVision GmbH!") + "\n\n"
+            _firma_val = (firma or "").strip()
+            if _firma_val:
+                md += _("**Betreff:** Willkommen bei {0}!").format(_firma_val) + "\n\n"
+            else:
+                md += _("**Betreff:** Willkommen bei TechVision GmbH!") + "\n\n"
             md += _("Sehr geehrte(r) {0},").format(name) + "\n\n"
             md += _("wir freuen uns sehr, Sie ab dem **{0}** ").format(sd.strftime('%d.%m.%Y'))
             md += _("als **{0}** in unserem Team begrüßen zu dürfen.").format(stelle_val) + "\n\n"
@@ -861,13 +912,22 @@ def onboarding_generator_section(default_stelle: str = "") -> None:
             _mentor = None
             try:
                 _conn = _db.get_conn()
-                _mrow = _conn.execute(
-                    "SELECT m.mentor_name FROM mentoring m "
-                    "JOIN candidates c ON c.id = m.candidate_id "
-                    "WHERE m.status = 'aktiv' AND lower(c.name) = lower(?) "
-                    "ORDER BY m.changed_at DESC LIMIT 1",
-                    (name,),
-                ).fetchone()
+                if mentor_candidate_id is not None:
+                    # DB-Modus (19.10.2026): eindeutig per candidate_id, nie per Name.
+                    _mrow = _conn.execute(
+                        "SELECT mentor_name FROM mentoring "
+                        "WHERE status = 'aktiv' AND candidate_id = ? "
+                        "ORDER BY changed_at DESC LIMIT 1",
+                        (mentor_candidate_id,),
+                    ).fetchone()
+                else:
+                    _mrow = _conn.execute(
+                        "SELECT m.mentor_name FROM mentoring m "
+                        "JOIN candidates c ON c.id = m.candidate_id "
+                        "WHERE m.status = 'aktiv' AND lower(c.name) = lower(?) "
+                        "ORDER BY m.changed_at DESC LIMIT 1",
+                        (name,),
+                    ).fetchone()
                 _conn.close()
                 _mentor = _mrow[0] if _mrow else None
             except Exception:
@@ -944,7 +1004,6 @@ def onboarding_generator_section(default_stelle: str = "") -> None:
             md += "---\n\n"
             md += _("*Erstellt am {0} vom KM-HR-Agenten.*").format(datetime.now().strftime('%d.%m.%Y %H:%M')) + "\n"
 
-            kandidat_name = profil_path.stem.replace("profil-", "")
             filename = f"onboarding-{kandidat_name}-{sd.strftime('%Y-%m-%d')}.md"
             logic.save_result(filename, md)
             _md_result_card(result_box, _("Onboarding-Checkliste gespeichert"), filename, md)
@@ -1111,6 +1170,14 @@ def skill8_feedback_section() -> None:
 
 
 # ─── Visum-Info/Schritte (geteilter Trigger) ────────────────────────
+# EINZIGE Quelle der Status-Regel (employer-board.md §3(b), 19.10.2026):
+# Die HR-Visum-Schritte (ZAV-Zustimmung §39 AufenthG, Arbeitsvertrag §18g,
+# Einladung) fallen NACH der Zusage an (visa-rules.md §5.4) — daher neben
+# `eingeladen` auch `eingestellt`. Design-Entscheidung: der Runner
+# (`scripts/agent-runner.py::visa_confirmation`) prueft keinen Status.
+VISA_INFO_STATUS = ("eingeladen", "eingestellt")
+
+
 def visa_info_section(application_id: int, candidate_id: int, job_id: int, *,
                       trigger: str = "hr_klick_portal",
                       on_sent: Callable[[], None] | None = None,
@@ -1149,14 +1216,14 @@ def visa_info_section(application_id: int, candidate_id: int, job_id: int, *,
 
     def _send_visa():
         # Frischpruefung: der Render-Snapshot kann veraltet sein (z. B. nach
-        # Ablehnung) — nur bei aktivem Status 'eingeladen' einreihen.
+        # Ablehnung) — nur bei einem Status aus VISA_INFO_STATUS einreihen.
         conn = db.get_conn()
         try:
             row = conn.execute("SELECT status FROM applications WHERE id = ?",
                                (application_id,)).fetchone()
         finally:
             conn.close()
-        if not row or row[0] != "eingeladen":
+        if not row or row[0] not in VISA_INFO_STATUS:
             ui.notify(_('Ungueltiger Statusuebergang (Bewerbung hat sich zwischenzeitlich geaendert).'), type="warning")
             if on_sent:
                 on_sent()

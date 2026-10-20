@@ -17,13 +17,13 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/main.py"
     ],
-    "at": "2026-10-12T12:26:47+00:00",
+    "at": "2026-10-20T11:26:40+00:00",
     "code_blobs": {
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac"
     },
-    "commit": "74edce2e29ba2584fedb6da597059fe3533f5e10",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "3966b6fb918be26f75767f818444e97b5a6a85e2",
-    "note": "Re-Ack 12.10.2026 (Ack-Falle-Reset, Claims frisch analysiert): gegen Code verifiziert (Datei/Token vorhanden), Belege u.a. `tests/test_asgi_guard.py`, `webui/asgi_guard.py`, `webui/main.py`"
+    "note": ""
   },
   "doc": "knowledge/system/asgi-guard.md",
   "schema": 1

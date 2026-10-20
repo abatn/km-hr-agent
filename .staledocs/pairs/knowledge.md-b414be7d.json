@@ -146,7 +146,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-19T17:51:31+00:00",
+    "at": "2026-10-20T11:36:07+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -175,13 +175,13 @@
       "knowledge/legal/kontakt.fr.md": "ad186f652087dab24b4233dd357c7c29a61475e0",
       "knowledge/legal/kontakt.md": "ad661bd23e2bda0c4a0452cd615c94eb52bd8b73",
       "knowledge/legal/recording-consent.md": "1af7a67f13a2afdbcd2ada676dc22c18beb9dede",
-      "knowledge/legal/visa-rules.md": "1ceea0a43d0930b188a5a21d1fe7cce93ad8fc19",
+      "knowledge/legal/visa-rules.md": "6f3fd7c4a220ffc3956afabf6d2aafd92171c417",
       "knowledge/lifecycle/application-status.md": "14c928d0207b48a2c8faa285ec5ac7d014bf612e",
       "knowledge/lifecycle/cultural-fit-criteria.md": "9f0481bf04c279c81a8b8c8bb0d434a74a604ea1",
       "knowledge/lifecycle/explanation-templates.md": "bc22c597ae3694d1aebf791caae03f0aac909243",
       "knowledge/lifecycle/feedback-schema.md": "7ab0edf7736ab4dae86df13a417c01009aaea965",
       "knowledge/lifecycle/matching-criteria.md": "35e914720f546cce47dd1604623e5bcbc9f8d458",
-      "knowledge/lifecycle/mentoring.md": "ff1917db541e0bbbc31826efe404b839bd185d11",
+      "knowledge/lifecycle/mentoring.md": "a4b24da084f4da18cf555d868f9312987e379486",
       "knowledge/lifecycle/referenz-sphinxats.md": "0b37491b8760a9ff40d57095ba28183f42df1178",
       "knowledge/lifecycle/relocation.md": "5281075d2db317dc3e4520b6a8f0ade6d622a55a",
       "knowledge/lifecycle/status-automation.md": "80ebd898ebdd883dfabc7d20fbe1ed20b5153d75",
@@ -190,13 +190,13 @@
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
       "knowledge/portal/cv-pflicht.md": "1aa8f8eb28590a6a3768a2acad92f500fafb2793",
-      "knowledge/portal/employer-board.md": "1512e95b5b92791f1e0f126fbfa79629fed22083",
-      "knowledge/portal/employer-portal-fields.md": "11194040e321495c2ecc380641dc7a1f6e9cfbb7",
+      "knowledge/portal/employer-board.md": "ac1c18a166e7722df1c2b89cf50b7410337a2ff9",
+      "knowledge/portal/employer-portal-fields.md": "66e216c561c57249ee814c4cdbd6f3777090b6a2",
       "knowledge/portal/housing-search.md": "b66f7fb4123cd7875724b8db11b3fc3d2a62589f",
       "knowledge/portal/matching-filter.md": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
       "knowledge/profiles/README.md": "5578fd70feefdd6b50e07944ade5a65cd7f4745e",
-      "knowledge/system/access-control.md": "646db517a00e92e48dc9d9a0c161982da22aee4a",
-      "knowledge/system/agent-automation.md": "dbfa401846c9a7e27a14d1de3d66cced9b75b39a",
+      "knowledge/system/access-control.md": "275f85bf06929da61e7a92d3573afd2c2502eccb",
+      "knowledge/system/agent-automation.md": "5805ccaf6c9021c173e06b049bc8fe3b3714bd2f",
       "knowledge/system/asgi-guard.md": "3966b6fb918be26f75767f818444e97b5a6a85e2",
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
       "knowledge/system/configuration-secrets.md": "37b90bc972150f5d7f5ce5c6366b32fae062a1b4",
@@ -222,11 +222,11 @@
       "knowledge/templates/onboarding-templates/onboarding-ch.md": "5f45dfaf368b742250b6595abb03e28084ff695c",
       "knowledge/templates/onboarding-templates/onboarding-de.md": "b9fd8a2baf005af93401c547390d5fcee473d7cc",
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
-      "knowledge/ui-design-system.md": "c9aaaec904701c999397e852701a3a27b25b5ce5"
+      "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
     },
-    "commit": "30dd3e30d3b977567f206e61ff84c425a0e44b25",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "76bb4b99e2943b5bd050d2c18556cb3c1dbb2c95",
-    "note": "m07-Fix 19.10.2026: tests/e2e_m07_row_click.py zeilengenau (Vorgang+Datum+exakter Name), A/B belegt vorbestehend; employer-board.md \u00a77 aufVolllauf-Befund 51/52 + Reparatur aktualisiert; knowledge-/AGENTS-Aussagen sonst unveraendert."
+    "note": "Sidebar-Erweiterung 7 Punkte (20.10.2026, Nutzer-GO): doc moved knowledge/portal/employer-board.md \u00a76 (7 Punkte + neue Design-Entscheidung + neu gemessene Klickzahl 1), SIDEBAR_KEYS = dashboard/firmenprofil/portal/stellen/board/einladen/mehr, Icon portal=post_add; Index-/Zugriffs-/Inventar-Doku nachgezogen (access-control.md, employer-portal-fields.md, skills/README.md, nicegui-migration, employer-portal, ui-design-system \u00a78.2); pytest 524/5 + Paritaet 520/1, E2E board_actions + einladen_flow rc=0."
   },
   "doc": "knowledge.md",
   "schema": 1

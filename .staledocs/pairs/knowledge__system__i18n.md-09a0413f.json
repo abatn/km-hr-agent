@@ -116,24 +116,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T17:05:19+00:00",
+    "at": "2026-10-20T11:29:28+00:00",
     "code_blobs": {
-      "tests/test_i18n.py": "5278bba2b76a58ad8d0a57e908c221f18e0f45ae",
+      "tests/test_i18n.py": "3013579f88faa059d0d85155db93aa6ae0e8ef2d",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "83eb3db0d1e2255f694548b209bc7d96a7d1cb6f",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "cba389e07f9914765b81233f9b66cc3d2ed82074",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "e2aa13b106d41e15426f179aabe7410a4d38fb77",
-      "webui/locales/de/LC_MESSAGES/messages.po": "de3b9f48be3a2c1eaeef529c813bc276030e2f77",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "9162f0ed69e5c953009f78803d4d83dc368cb7e9",
-      "webui/locales/en/LC_MESSAGES/messages.po": "170213d3284aa632c35efb7488dec4965251c9d4",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "b476816b4fe89796e92e473c234cf405beb2525d",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "fe8e67c8b920beda2ba7351020076ce45ddb43b8"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "bb1d996114b5abb22b3762cbfaf6903020919ea3",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "6b4eb96f590477d9fe7c73d709a0d3f8e12169bf",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "7e67e25f4b6170478824f5c63ba5de8e8727a114",
+      "webui/locales/de/LC_MESSAGES/messages.po": "2bdd4f058ab89d5ea211ee09795f7438f3043a88",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "50ebb0a1f73ad6140023d09e28191b3fa78cf665",
+      "webui/locales/en/LC_MESSAGES/messages.po": "d17ee724d5eae8b8d661299367613a0530eafa5b",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "33fac6f72cc96c23c74398065f7f97224fb09613",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "cfd59eaf72baa25b45f5872b0b3c73d203b449d2"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "55475c787d901d8540185cd395dd44c330066199",
-    "note": "MVP Board-Drawer 19.10.2026: code moved webui/components.py, webui/pages/employer.py, tests/test_i18n.py, webui/locales/de/LC_MESSAGES/messages.po, webui/locales/de/LC_MESSAGES/messages.mo (neue Keys Bewerbungsdetails, Erlaubte Folgeschritte, Visum-Info/Schritte, DSGVO-Hinweis in 4 Katalogen); i18n-Regeln unveraendert."
+    "note": "Re-Ack 20.10.2026: Evidence von knowledge/system/i18n.md geprueft (state DOC_STALE, changed_code: `tests/test_i18n.py`). Visa/Onboarding-Vorarbeit des Nutzers (uncommittet, 20.10.2026): VISA_INFO_STATUS, onboarding_generator_section(candidates=,firma=), _page_onboarding DB-Quelle, 4 neue i18n-Keys; Aussage von knowledge/system/i18n.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

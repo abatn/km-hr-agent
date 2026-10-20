@@ -4,14 +4,14 @@
       "knowledge/legal/visa-rules.md",
       "knowledge/lifecycle/cultural-fit-criteria.md"
     ],
-    "at": "2026-10-18T18:49:11+00:00",
+    "at": "2026-10-20T11:26:47+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": ""
   },
   "doc": "skills/assess-culture-fit/SKILL.md",
   "schema": 1

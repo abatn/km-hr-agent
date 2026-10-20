@@ -8,13 +8,13 @@
       "msg_key",
       "webui/logic.py"
     ],
-    "at": "2026-10-18T18:49:02+00:00",
+    "at": "2026-10-20T11:26:37+00:00",
     "code_blobs": {
       "webui/db.py": "d8a602653dff6cb6b4d9fa437a6d4f2f80bb93e0"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "2e83a385e5c8ec0cc69e9059d62dbe4217305906",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/db.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": ""
   },
   "doc": "knowledge/notification-log.md",
   "schema": 1

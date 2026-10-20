@@ -3573,3 +3573,15 @@ msgstr "تفاصيل الطلب"
 
 msgid "Erlaubte Folgeschritte: {0}"
 msgstr "الخطوات التالية المسموح بها: {0}"
+
+msgid "**Betreff:** Willkommen bei {0}!"
+msgstr "**الموضوع:** مرحباً بك في {0}!"
+
+msgid "Keine eingestellten Kandidaten gefunden."
+msgstr "لم يتم العثور على مرشحين تم توظيفهم."
+
+msgid "Checkliste wird lokal in ergebnisse/ gespeichert — kein automatischer Mailversand."
+msgstr "يتم حفظ قائمة التحقق محلياً في ergebnisse/ — لا يتم إرسال بريد إلكتروني تلقائياً."
+
+msgid "Freigabe-Report"
+msgstr "تقرير الإفراج"

@@ -15,7 +15,7 @@ from webui.theme import C, PRIMARY, SECONDARY, ACCENT, DANGER
 from webui.components import (
     stat_card, status_badge, data_table, empty_state, section_header, export_candidates_pdf, info_row,
     navigate_to, prescreen_recruiting_section, onboarding_generator_section, skill8_feedback_section,
-    visa_info_section,
+    visa_info_section, VISA_INFO_STATUS,
 )
 
 # N-S2 (01.10.2026): EINZIGE Whitelist-Quelle der Statusuebergaenge liegt in
@@ -693,7 +693,7 @@ def _page_stellen(s: dict) -> None:
                     ui.label(_("Finaler Status erreicht.")).classes("text-caption px-4 pb-2")
 
                 # Visum-Info/Schritte (geteilter Trigger, employer-board.md §3(b))
-                if a_status == "eingeladen":
+                if a_status in VISA_INFO_STATUS:
                     with ui.row().classes("px-4 pb-2"):
                         visa_info_section(a_id, k_id, j_id, trigger="admin_klick",
                                           on_sent=lambda: navigate_to("admin", "stellen"),

@@ -21,6 +21,7 @@
       "app.py",
       "app.storage.user",
       "applications.status='abgelehnt'",
+      "applications.status='eingestellt'",
       "apply_to_job()",
       "assign_mentor()",
       "berechne_match_score",
@@ -78,6 +79,7 @@
       "navigate_to(\"admin\",\"kandidaten\")",
       "navigate_to()",
       "onboarding-kandidat-*",
+      "onboarding-{name-slug}-{cand_id}-{startdatum}.md",
       "onboarding-{stem}-{startdatum}.md",
       "pre-screen-{stem}-{date}.md",
       "prescreen_recruiting_section",
@@ -92,6 +94,7 @@
       "send_rejection",
       "skeleton_loader()",
       "skills/employer-portal/SKILL.md",
+      "skills/generate-onboarding/SKILL.md",
       "skills/nicegui-migration/SKILL.md",
       "soft_skills",
       "st.download_button",
@@ -153,21 +156,21 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-19T17:05:04+00:00",
+    "at": "2026-10-20T11:29:31+00:00",
     "code_blobs": {
       "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
-      "webui/pages/admin.py": "eecf6e9521660e693be5ed89a27a5da1b3bf4fc0",
+      "webui/pages/admin.py": "e30dc44f8abf9e8c39e206d1910dbdb1fa019ef4",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf",
-      "webui/pages/employer.py": "ab4ab7d94320896112de06b554ca98b71f874288",
+      "webui/pages/employer.py": "9e01e67191ce135571ca9b002500e78d9edcd60a",
       "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
-    "doc_blob": "8b5b3619fdad13ac305f7c026cfc67951d59dd8c",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "doc_blob": "5d6bf104650544b2e6f5ad15e14e0d7a2a230e9d",
+    "note": "Re-Ack 20.10.2026: Evidence von skills/nicegui-migration/SKILL.md geprueft (state AMBER, changed_code: `webui/pages/employer.py`). Sidebar-Iteration 20.10.2026 (Nutzer-GO): SIDEBAR_KEYS 5->7 Punkte (+firmenprofil/+portal = die zwei Schreibaufgaben des Arbeitgebers), Reihenfolge aus PAGE_TITLES, _NON_SIDEBAR_KEYS 10->8, Icon-Post_add; Aussage von skills/nicegui-migration/SKILL.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

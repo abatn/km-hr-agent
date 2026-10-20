@@ -161,6 +161,8 @@
 | **Kosten** | Visumsgebühren (~75 €), Anerkennungsgebühren (~200–600 €), ggf. Übersetzungskosten. Arbeitgeber trägt oft Anerkennungskosten. | Budget einplanen |
 | **Alternativen prüfen** | EU-Bürger (kein Visum), ICT-Karte (Intra-Company Transfer), Remote-Only (kein Visum nötig). | Vor Angebot |
 
+**Portal-Trigger (Zeiger, kein zweites Fakt):** Die HR-Aktion „Visum-Info/Schritte" bleibt auch nach der Zusage (`eingestellt`) verfügbar — Status-Regel und Begründung stehen ausschließlich in `knowledge/portal/employer-board.md` §3(b) (Codemark `VISA_INFO_STATUS`).
+
 ### 5.5 Nächste Schritte für HR/Arbeitgeber (FR)
 
 | Schritt | Details | Frist |

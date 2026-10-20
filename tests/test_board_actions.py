@@ -96,6 +96,19 @@ def test_match_button_bleibt_ausserhalb_des_kartenklicks():
     assert click < button
 
 
+def test_visum_status_regel_eine_quelle():
+    """19.10.2026: Visum-Info gilt fuer `eingeladen` UND `eingestellt`
+    (Design-Entscheidung, Quelle employer-board.md §3(b) + visa-rules.md §5.4)."""
+    from webui.components import VISA_INFO_STATUS
+    assert VISA_INFO_STATUS == ("eingeladen", "eingestellt")
+    assert "row[0] not in VISA_INFO_STATUS" in COMP
+    # Alle 4 Aufrufstellen nutzen die Konstante statt eines Einzelstatus.
+    assert "if status in VISA_INFO_STATUS:" in _fn_seg(EMP, "_bd_body")
+    assert "if app_status in VISA_INFO_STATUS:" in _fn_seg(EMP, "_page_match")
+    assert "if a_status in VISA_INFO_STATUS:" in _fn_seg(EMP, "_page_stellen")
+    assert "if a_status in VISA_INFO_STATUS:" in ADMIN
+
+
 def test_neue_i18n_keys_in_allen_katalogen():
     keys = [
         "Visum-Info/Schritte",

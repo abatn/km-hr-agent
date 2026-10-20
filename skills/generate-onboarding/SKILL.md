@@ -30,10 +30,11 @@ connector: filesystem
 
 ## Schritte
 
-### 1. Kandidatenprofil einlesen
-- **Connector**: `filesystem`
-- **Tool**: `read_text_file`
-- **Parameter**: `path` = Kandidatenprofil-Pfad
+### 1. Kandidatenquelle bestimmen (19.10.2026)
+- **Arbeitgeber-Portal (Regel):** Quelle ist die **Datenbank** — `applications.status = 'eingestellt'`, arbeitgeber-scoped über `JOIN jobs`, **eine Zeile je Kandidat** (letzte eingestellte Bewerbung). Kein Profil-Datei-Zwang.
+- **Admin/Demo (Fallback):** `logic.list_profiles()` aus `testdata/profil-*.md` (Parität zu `app.py`).
+- **Kandidatendaten (DB):** `candidates.name` + `candidates.lebenslauf_text` (`hard_skills` als Fallback); Linux-/Kubernetes-Zeilen nur, wenn der Text sie enthält.
+- **Design-Entscheidung:** Profil-Dateien sind Demo-/Legacy-Quelle; die DB ist für das Arbeitgeber-Portal maßgeblich (`application-status.md`: `eingestellt` = eingestellt).
 
 ### 2. Template einlesen (optional)
 - **Connector**: `filesystem`
@@ -47,8 +48,10 @@ connector: filesystem
 - Team-Vorstellungsrunde
 - Erste Aufgaben zuweisen
 
-### 4. Ergebnis speichern
+### 4. Ergebnis speichern (lokal, kein Mailversand)
 - **Connector**: `filesystem`
 - **Tool**: `write_file`
 - **Parameter**: `path` = `~/mimo-agents/km-hr-agent/ergebnisse/onboarding-[name]-[datum].md`
+  (DB-Modus zusätzlich mit Kandidaten-ID: `onboarding-[name]-[cand_id]-[datum].md` — schützt vor Namenskollisionen)
 - **Parameter**: `content` = generierte Checkliste als String
+- **Kein Mailversand:** Der Versand läuft ausschließlich über den Runner-Hook `onboarding_release`/`send_onboarding_mail` (`knowledge/system/agent-automation.md`).

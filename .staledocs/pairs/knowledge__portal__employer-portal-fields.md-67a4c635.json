@@ -5,6 +5,7 @@
       "Begr\u00fcndung:",
       "NICHT_COMPLIANT",
       "PAGE_MAP",
+      "PAGE_TITLES",
       "_()",
       "_app_info",
       "_compliance_rows",
@@ -71,13 +72,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T17:04:54+00:00",
+    "at": "2026-10-20T11:29:24+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "ab4ab7d94320896112de06b554ca98b71f874288"
+      "webui/pages/employer.py": "9e01e67191ce135571ca9b002500e78d9edcd60a"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
-    "doc_blob": "11194040e321495c2ecc380641dc7a1f6e9cfbb7",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "doc_blob": "66e216c561c57249ee814c4cdbd6f3777090b6a2",
+    "note": "Re-Ack 20.10.2026: Evidence von knowledge/portal/employer-portal-fields.md geprueft (state AMBER, changed_code: `webui/pages/employer.py`). Sidebar-Iteration 20.10.2026 (Nutzer-GO): SIDEBAR_KEYS 5->7 Punkte (+firmenprofil/+portal = die zwei Schreibaufgaben des Arbeitgebers), Reihenfolge aus PAGE_TITLES, _NON_SIDEBAR_KEYS 10->8, Icon-Post_add; Aussage von knowledge/portal/employer-portal-fields.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

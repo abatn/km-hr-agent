@@ -22,13 +22,13 @@
       "webui/db.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-19T17:04:53+00:00",
+    "at": "2026-10-20T11:29:23+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "ab4ab7d94320896112de06b554ca98b71f874288"
+      "webui/pages/employer.py": "9e01e67191ce135571ca9b002500e78d9edcd60a"
     },
-    "commit": "7dc95bd70c992fc88fef76d0519f7ef11672b201",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
-    "note": "MVP Board-Drawer 19.10.2026 (Review-Auflagen): code moved webui/pages/employer.py, webui/pages/admin.py, webui/components.py, AGENTS.md, knowledge/portal/employer-board.md, knowledge/system/e2e-ci-seed.md, tests/test_board_actions.py, tests/e2e_board_actions.py, tests/test_i18n.py, tests/test_r35_status_notify.py, tests/test_application_id_match.py, tests/test_match_actions.py, tests/test_dialog_identity.py; Doku-Aussagen geprueft."
+    "note": "Re-Ack 20.10.2026: Evidence von knowledge/portal/applicants-first.md geprueft (state DOC_STALE, changed_code: `webui/pages/employer.py`). Visa/Onboarding-Vorarbeit des Nutzers (uncommittet, 20.10.2026): VISA_INFO_STATUS, onboarding_generator_section(candidates=,firma=), _page_onboarding DB-Quelle, 4 neue i18n-Keys; Aussage von knowledge/portal/applicants-first.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
   },
   "doc": "knowledge/portal/applicants-first.md",
   "schema": 1

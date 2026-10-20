@@ -8,13 +8,13 @@
       "scripts/agent-runner.py",
       "webui/db.py"
     ],
-    "at": "2026-10-18T18:49:20+00:00",
+    "at": "2026-10-20T11:26:53+00:00",
     "code_blobs": {
       "webui/db.py": "d8a602653dff6cb6b4d9fa437a6d4f2f80bb93e0"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "ff04f1dee74617c5a3c9af2049369a6974252d88",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: webui/db.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": ""
   },
   "doc": "skills/notify-user/SKILL.md",
   "schema": 1

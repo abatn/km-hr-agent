@@ -24,7 +24,7 @@ from webui.components import (
     candidate_avatar, skill_chip, loading_spinner, export_candidates_pdf,
     notifications_drawer, timeline, navigate_to,
     prescreen_recruiting_section, onboarding_generator_section, skill8_feedback_section,
-    visa_info_section,
+    visa_info_section, VISA_INFO_STATUS,
 )
 
 # R6-3 (30.09.2026): zentraler Logger für die ehemals stillen except-Blöcke
@@ -50,9 +50,15 @@ PAGE_TITLES = {
 }
 
 # Sidebar: 5 sichtbare Punkte (employer-board.md §6, +Einladungen 16.10.2026). Alle übrigen Seiten liegen unter „Mehr“.
-SIDEBAR_KEYS = ("dashboard", "stellen", "board", "einladen", "mehr")
+# 20.10.2026 (employer-board.md §6, Nutzer-GO): Sidebar 5 -> 7 Punkte. Firmenprofil
+# und Stelle ausschreiben sind die zwei Schreibaufgaben des Arbeitgebers und lagen
+# bisher nur unter „Mehr“; PAGE_MAP/Deep-Links und die 15 Seiten bleiben unveraendert.
+# DIE REIHENFOLGE KOMMT AUS PAGE_TITLES (Codemark _menu_items_emp), NICHT aus diesem
+# Tupel — die beiden Keys ruecken dadurch automatisch an Position 2/3 unter Dashboard.
+SIDEBAR_KEYS = ("dashboard", "firmenprofil", "portal", "stellen", "board", "einladen", "mehr")
 # Unterseiten unter „Mehr“: Direktlinks (/employer/<key>) muessen gerendert werden,
 # auch wenn sie nicht in der Sidebar stehen (sonst Fallback auf Dashboard, shell R5-5).
+# Anzahl „Mehr“ ist abgeleitet (15 - 7 = 8), nicht hart codiert.
 _NON_SIDEBAR_KEYS = tuple(k for k in PAGE_TITLES if k not in SIDEBAR_KEYS)
 
 
@@ -860,7 +866,7 @@ def _page_stellen(s: dict) -> None:
                     ui.label(_('Finaler Status erreicht.')).classes("text-caption px-4 pb-2")
 
                 # Visum-Info/Schritte (geteilter Trigger, employer-board.md §3(b))
-                if a_status == "eingeladen":
+                if a_status in VISA_INFO_STATUS:
                     visa_info_section(a_id, k_id, j_id, trigger="hr_klick_portal",
                                       on_sent=ui.navigate.reload,
                                       classes="px-4 pb-2", props="color=primary")
@@ -1613,13 +1619,15 @@ def _page_match(s: dict) -> None:
                                             ui.label(_('- {0}: {1}').format(key, text)).classes("text-xs text-gray-600")
 
                                 # Visum-Info/Schritte (geteilter Trigger, employer-board.md §3(b))
-                                if app_status == "eingeladen":
+                                if app_status in VISA_INFO_STATUS:
                                     visa_info_section(app_id, c_id, j_id, trigger="hr_klick_portal",
                                                       on_sent=_refresh_now)
 
-                                    # HR-Sicht der Einladung: Meeting-Link + Termin + ICS-Download
-                                    # (N1-Port: app.py:502-520 render_hr_ics_download)
-                                    # `jitsi_url` = Legacy-Schluessel fuer Alt-Einladungen (vor 27.09.2026).
+                                # HR-Sicht der Einladung: Meeting-Link + Termin + ICS-Download
+                                # (N1-Port: app.py:502-520 render_hr_ics_download)
+                                # `jitsi_url` = Legacy-Schluessel fuer Alt-Einladungen (vor 27.09.2026).
+                                # NUR bei `eingeladen` (agent-automation.md: HR-Sicht der Einladung).
+                                if app_status == "eingeladen":
                                     _art = db.get_invitation_artifacts(app_id)
                                     if _art:
                                         _jitsi = (_art.get("vdo_ninja_url") or _art.get("jitsi_url")
@@ -2558,36 +2566,46 @@ def _page_onboarding(s: dict) -> None:
     section_header(title=_('Onboarding'), subtitle=_('Checkliste erstellen'), icon="assignment")
 
     employer_id = s.get("employer_id")
+    _firma = (s.get("employer_firma") or "").strip()
 
-    conn = db.get_conn()
-    _eingestellt = conn.execute("""
-        SELECT j.titel FROM applications a
-        JOIN jobs j ON a.job_id = j.id
-        WHERE j.employer_id = ? AND a.status = 'eingestellt'
-        ORDER BY a.aktualisiert_am DESC LIMIT 1
-    """, (employer_id,)).fetchone()
-    conn.close()
-    _default_stelle = _eingestellt[0] if _eingestellt else ""
+    # 19.10.2026 (skills/generate-onboarding/SKILL.md §1): Quelle = DB-Bewerber
+    # mit Status `eingestellt` (eine Zeile je Kandidat, letzte eingestellte
+    # Bewerbung). Profil-Dateien bleiben Admin-/Demo-Fallback.
+    _rows: list[tuple] = []
+    if employer_id:
+        conn = db.get_conn()
+        _rows = conn.execute("""
+            SELECT c.id, c.name, COALESCE(c.lebenslauf_text, ''), a.id, j.titel
+            FROM candidates c
+            JOIN applications a ON a.candidate_id = c.id
+            JOIN jobs j ON j.id = a.job_id
+            WHERE j.employer_id = ? AND a.status = 'eingestellt'
+              AND a.id = (
+                  SELECT a2.id FROM applications a2
+                  JOIN jobs j2 ON j2.id = a2.job_id
+                  WHERE a2.candidate_id = c.id AND j2.employer_id = ?
+                    AND a2.status = 'eingestellt'
+                  ORDER BY a2.aktualisiert_am DESC, a2.id DESC LIMIT 1
+              )
+            ORDER BY c.id DESC
+        """, (employer_id, employer_id)).fetchall()
+        conn.close()
 
-    # Generator ZUERST (Streamlit-Parität Skill 7),
+    _default_stelle = _rows[0][4] if _rows else ""
+
+    # Generator ZUERST (Streamlit-Paritaet Skill 7),
     # danach Kandidaten-Status-Timeline.
-    onboarding_generator_section(default_stelle=_default_stelle)
+    if employer_id:
+        onboarding_generator_section(default_stelle=_default_stelle,
+                                     candidates=_rows, firma=_firma)
+    else:
+        # Admin oeffnet /employer/onboarding (kein employer_id) -> Profil-Modus.
+        onboarding_generator_section(default_stelle=_default_stelle)
 
     ui.separator().classes("my-6")
     ui.label(_('Kandidaten-Status')).classes(C.CARD_TITLE + " mb-4")
 
-    conn = db.get_conn()
-    candidates = conn.execute("""
-        SELECT DISTINCT c.id, c.name, a.status
-        FROM candidates c
-        JOIN applications a ON a.candidate_id = c.id
-        JOIN jobs j ON a.job_id = j.id
-        WHERE j.employer_id = ?
-        ORDER BY c.id DESC
-    """, (employer_id,)).fetchall()
-    conn.close()
-
-    if not candidates:
+    if not _rows:
         empty_state(
             icon="assignment",
             title=_('Keine Kandidaten fuer Onboarding'),
@@ -2595,7 +2613,8 @@ def _page_onboarding(s: dict) -> None:
         )
         return
 
-    for cand_id, name, status in candidates:
+    for cand_id, name, _cv, app_id, _titel in _rows:
+        status = "eingestellt"
         with ui.card().classes(C.CARD_HOVER + " w-full mb-4"):
             with ui.row().classes("items-center gap-3 mb-4"):
                 candidate_avatar(name)
@@ -2619,6 +2638,13 @@ def _page_onboarding(s: dict) -> None:
                 timeline_items.append({"title": _("Onboarding"), "status": "pending"})
 
             timeline(timeline_items)
+
+            # 19.10.2026: der Freigabe-Report des Runner-Hooks sichtbar machen
+            # (er wurde bisher nur in Agent-Details gelistet).
+            _rep = _Path(logic.ERGEBNISSE) / f"onboarding-freigabe-bewerbung-{app_id}.md"
+            if _rep.exists():
+                with ui.expansion(_('Freigabe-Report'), icon="description").classes("w-full mt-2"):
+                    ui.markdown(_rep.read_text(encoding="utf-8"))
 
             # ── Mentoring / Patenschaft (Phase D P10, User-GO 24.09.2026) ──
             # §2 Option A: HR-Klick vergibt/beendet – Agent entscheidet nie selbst.
@@ -3251,7 +3277,7 @@ def _page_board(s: dict) -> None:
                 with ui.row().classes("w-full gap-2"):
                     if "eingestellt" in legal:
                         ui.button(_('Einstellen'), icon="check", on_click=_bd_open_hire).props("color=positive")
-                    if status == "eingeladen":
+                    if status in VISA_INFO_STATUS:
                         visa_info_section(r["app_id"], r["cid"], r["job_id"], trigger="hr_klick_portal",
                                           on_sent=lambda: (_board_drawer.close(), ui.navigate.reload()),
                                           classes="", props="color=warning")
@@ -3433,7 +3459,9 @@ PAGE_MAP = {
     "mehr": _page_mehr,
 }# Menu-Items auf Modulebene (fuer Sub-Route-Registrierung)
 _ICON_MAP = {
-    "dashboard": "dashboard", "firmenprofil": "business", "portal": "work",
+    # 20.10.2026: „portal“ (Stelle ausschreiben) bekommt ein eigenes Icon — vorher
+    # Kollision mit „stellen“ (beide „work“), in der 7-Punkte-Sidebar jetzt sichtbar.
+    "dashboard": "dashboard", "firmenprofil": "business", "portal": "post_add",
     "stellen": "work", "kandidaten": "search", "match": "compare_arrows",
     "compliance": "verified", "agent_details": "smart_toy", "dokumente": "folder",
     "prescreen": "record_voice_over", "onboarding": "assignment", "feedback": "feedback",

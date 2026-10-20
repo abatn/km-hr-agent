@@ -27,14 +27,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-18T18:49:00+00:00",
+    "at": "2026-10-20T11:26:35+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
       "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "1af7a67f13a2afdbcd2ada676dc22c18beb9dede",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "note": ""
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1

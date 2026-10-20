@@ -65,6 +65,7 @@
       "job_id",
       "knowledge/legal/contract-sources.md",
       "knowledge/onboarding-default.md",
+      "knowledge/portal/employer-board.md",
       "knowledge/system/p8-cloud-datenquellen.md",
       "knowledge/system/vdo-ninja-migration.md",
       "language-test-server.py",
@@ -125,14 +126,14 @@
       "webui/pages/employer.py",
       "{task_type}-kandidat-{cid}-{datum}.md"
     ],
-    "at": "2026-10-18T18:49:07+00:00",
+    "at": "2026-10-20T11:26:40+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
-    "doc_blob": "dbfa401846c9a7e27a14d1de3d66cced9b75b39a",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "doc_blob": "5805ccaf6c9021c173e06b049bc8fe3b3714bd2f",
+    "note": ""
   },
   "doc": "knowledge/system/agent-automation.md",
   "schema": 1

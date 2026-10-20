@@ -3578,3 +3578,15 @@ msgstr "Bewerbungsdetails"
 
 msgid "Erlaubte Folgeschritte: {0}"
 msgstr "Erlaubte Folgeschritte: {0}"
+
+msgid "**Betreff:** Willkommen bei {0}!"
+msgstr "**Betreff:** Willkommen bei {0}!"
+
+msgid "Keine eingestellten Kandidaten gefunden."
+msgstr "Keine eingestellten Kandidaten gefunden."
+
+msgid "Checkliste wird lokal in ergebnisse/ gespeichert — kein automatischer Mailversand."
+msgstr "Checkliste wird lokal in ergebnisse/ gespeichert — kein automatischer Mailversand."
+
+msgid "Freigabe-Report"
+msgstr "Freigabe-Report"

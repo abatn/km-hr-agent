@@ -13,7 +13,7 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 
 **Connector für die UI:** SQLite (lokal, kostenlos) – Tabellen `employers`, `jobs`, `job_status_history` in `data/feedback.db`. Siehe `knowledge/portal/employer-portal-fields.md` für das vollständige Schema.
 
-**Ist-Umsetzung (NiceGUI, verifiziert 09.10.2026):** Der Skill ist als Skill #10 im **NiceGUI**-Employer-Portal umgesetzt (`webui/pages/employer.py`), nicht mehr in Streamlit. **12 Seiten** seit 13.10.2026 (`PAGE_MAP`, Codemarke; `grep -n "^PAGE_MAP = {" webui/pages/employer.py`): 📊 Dashboard, 📝 Firmenprofil (eigene Seite `firmenprofil`), 🏢 Portal (Stelle ausschreiben), 💼 Stellenangebote, 🔍 Kandidaten-Suche, 📄 Match-Ergebnis, ✅ Compliance, 🔎 Agent-Details, 🗂️ Dokumente, 📞 Pre-Screen, 📋 Onboarding, 💬 Feedback.
+**Ist-Umsetzung (NiceGUI, verifiziert 09.10.2026):** Der Skill ist als Skill #10 im **NiceGUI**-Employer-Portal umgesetzt (`webui/pages/employer.py`), nicht mehr in Streamlit. **15 Seiten** seit 16.10.2026 (`PAGE_TITLES`, Codemarke; `grep -n "^PAGE_TITLES = {" webui/pages/employer.py`; vorher 12 Seiten seit 13.10.2026, 14 seit 15.10.2026); Sidebar **7 Punkte** seit 20.10.2026 (`SIDEBAR_KEYS`, Spec `knowledge/portal/employer-board.md` §6): 📊 Dashboard, 📝 Firmenprofil (eigene Seite `firmenprofil`), 🏢 Stelle ausschreiben (`portal`, vormals „Portal = Firmenprofil + Stellen“, P1.2 20.09.2026; Firmenprofil entfernt 13.10.2026), 💼 Stellenangebote, 🗂️ Hiring-Board, 📧 Einladungen, ➕ Mehr — die übrigen 8 Seiten (🔍 Kandidaten-Suche, 📄 Match-Ergebnis, ✅ Compliance, 🔎 Agent-Details, 🗂️ Dokumente, 📞 Pre-Screen, 📋 Onboarding, 💬 Feedback) liegen unter „Mehr“.
 
 **Hinweis:** Lab-Prinzip – kein eigener Code. Der Skill definiert NUR Workflow, Regeln und Felder. Die Umsetzung erfolgt als NiceGUI-Seitenerweiterung analog zum Candidate Portal (Login-Schutz, Tabs, SQLite).
 
@@ -163,7 +163,7 @@ description: Arbeitgeber-Portal – Registrierung, Stellen ausschreiben, Kandida
 1. **Login:** Eigene Tabs "🔑 Arbeitgeber-Login" / "📝 Arbeitgeber-Registrieren" auf dem bestehenden Login-Bildschirm (Trennung von Kandidaten-Accounts durch `employers`-Tabelle)
 2. **Session State:** `employer_logged_in`, `employer_email`, `employer_firma`, `employer_id` *(NiceGUI: `app.storage.user`)*
 3. **Sidebar-Eintrag:** Neuer Punkt "🏢 Arbeitgeber-Portal" in der Skills-Navigation
-4. **Tabs im Portal:** `📝 Firmenprofil` | `📢 Stellen` | `👥 Kandidaten` | `💬 Feedback` *(NiceGUI-Ist: 12 Seiten, siehe oben)*
+4. **Tabs im Portal:** `📝 Firmenprofil` | `📢 Stellen` | `👥 Kandidaten` | `💬 Feedback` *(NiceGUI-Ist: 15 Seiten, siehe oben)*
 5. **Zugriffsregel:** Kandidaten-Liste nur wenn mindestens 1 Stelle mit Status `aktiv`
 
 **Test-Szenario (E2E):**

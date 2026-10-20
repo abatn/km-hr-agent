@@ -1,13 +1,13 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-18T18:49:03+00:00",
+    "at": "2026-10-20T11:26:37+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
     "doc_blob": "3ce6e37a5ecced6eb7d9314979a1dab80e304658",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Prosa-Paar ohne Codemark-Claims; manueller Beleg: FR-\u00c4nderungen sind additiv (Spalte franzoesisch + Filterzweig, Codemark init_candidates_migrations), Doku-Aussage des Paares unveraendert."
+    "note": ""
   },
   "doc": "knowledge/onboarding-default.md",
   "schema": 1

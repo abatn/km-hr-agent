@@ -1,16 +1,24 @@
 {
   "ack": {
     "anchors": [
+      "app.py",
       "application-status.md",
-      "knowledge/system/access-control.md"
+      "candidates.lebenslauf_text",
+      "candidates.name",
+      "hard_skills",
+      "knowledge/system/access-control.md",
+      "knowledge/system/agent-automation.md",
+      "onboarding-[name]-[cand_id]-[datum].md",
+      "onboarding_release",
+      "send_onboarding_mail"
     ],
-    "at": "2026-10-18T18:49:16+00:00",
+    "at": "2026-10-20T11:26:51+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95"
     },
-    "commit": "f9841685fa25bc577efcf4c9c2aaa26bccb1e966",
-    "doc_blob": "207cb55483f5fd2e1468a38cb10450f45ce1ab53",
-    "note": "Re-Ack 18.10.2026 (FR-Filter): Evidence \u201ecode moved: scripts/agent-runner.py\u201c geprueft \u2014 Evidence ohne Pruef-Claims (nur File-Move/Doc-Move); zitierte Codemarks/Pfade vorhanden, Doku-Aussage unveraendert."
+    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "doc_blob": "cd8d31adb6119c3a242eeba50cf39683e6f8c306",
+    "note": ""
   },
   "doc": "skills/generate-onboarding/SKILL.md",
   "schema": 1
