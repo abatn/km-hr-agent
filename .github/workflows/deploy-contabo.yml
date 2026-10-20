@@ -35,7 +35,11 @@ jobs:
           umask 077
           printf '%s\n' "${{ secrets.CONTABO_SSH_KEY }}" > ~/.ssh/id_contabo
           chmod 600 ~/.ssh/id_contabo
-          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+          # 20.10.2026: harter Timeout (Default 5 s) + nicht-fatal. Ein Host mit
+          # Netzaussetzer darf den Deploy nicht kippen - die SSH-Schritte nutzen
+          # StrictHostKeyChecking=accept-new (Host-Key wird dort uebernommen).
+          ssh-keyscan -H -T 30 "$DEPLOY_HOST" >> ~/.ssh/known_hosts \
+            || echo "Hinweis: ssh-keyscan fehlgeschlagen (Host antwortet evtl. langsam) - accept-new uebernimmt den Host-Key"
 
       - name: Deploy (reset auf CI-SHA + restart + health)
         env:

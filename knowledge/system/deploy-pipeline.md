@@ -39,7 +39,7 @@
 
 1. Trigger: `workflow_run` → `workflows: [CI]`, `branches: [main]`, `types: [completed]`.
 2. Gate: `if: github.event.workflow_run.conclusion == 'success'` — **Deploy nur nach grünem CI**.
-3. Secret nach `~/.ssh/id_contabo` (600) + `ssh-keyscan $DEPLOY_HOST` (Workflow-Env `DEPLOY_HOST`, 20.10.2026 auf den neuen Host umgestellt).
+3. Secret nach `~/.ssh/id_contabo` (600) + `ssh-keyscan -H -T 30 $DEPLOY_HOST` (Workflow-Env `DEPLOY_HOST`, 20.10.2026 auf den neuen Host umgestellt). **Härtung 20.10.2026:** `-T 30` statt Default **5 s** und `|| echo` statt Abbruch — ein Host mit Netzaussetzer (Messfall 20.10.2026) darf den Deploy nicht kippen; die SSH-Schritte nutzen ohnehin `StrictHostKeyChecking=accept-new` (Host-Key wird dort übernommen).
 4. SSH nach Contabo: `git fetch origin main` → `git reset --hard $TARGET_SHA` (`workflow_run.head_sha`)
    → `git clean -fd` → `pip install -r requirements.txt` **nur bei Änderung** →
    `systemctl restart km-hr-agent` → Health-Loop `curl 127.0.0.1:8080` (max 60 s).
