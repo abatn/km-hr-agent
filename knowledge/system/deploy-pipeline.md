@@ -1,6 +1,10 @@
 # Deploy-Pipeline: GitHub → Contabo VPS (SSH-Variante)
 
 > **Stand:** 06.10.2026 · **Status:** implementiert (Workflow `.github/workflows/deploy-contabo.yml`)
+> **OFFENE STÖRUNG (20.10.2026):** Der Contabo-VPS ist **nicht erreichbar** (Host komplett
+> down) ⇒ Deploy unmöglich. Messwerte + Handlungsoptionen: Abschnitt **„Störung 20.10.2026 —
+> Contabo-VPS nicht erreichbar"** (unten). Letzter **bekannter** Server-Stand: `f984168`
+> (18.10.2026); `195fc69` (20.10.2026) ist **nicht** deployed.
 > **Ablauf:** lokal `git push` → GitHub CI grün → Deploy-Workflow (SSH) → Contabo `git reset --hard` → App-Neustart
 > **Quellen (GitHub-Doku, Abruf 06.10.2026):**
 > - Continuous deployment: Workflow läuft bei Push auf den Default-Branch
@@ -56,3 +60,46 @@
 - Repo ist **privat** (Voraussetzung für saubere Deploy-Key-Nutzung; siehe GitHub-Doku zu
   Deploy-Keys/Forks — Public-Repos: Fork-PRs könnten Keys auslesen).
 - Rotation: bei Leak → Key auf Contabo neu erzeugen → Deploy-Key löschen/neu setzen → Secret neu setzen.
+
+## Störung 20.10.2026 — Contabo-VPS nicht erreichbar
+
+**Status: offen (Stand 20.10.2026, 12:15:51Z gemessen).** Der Server `169.58.83.32` ist
+**komplett unerreichbar** — nicht nur SSH, sondern auch der App-Port und ICMP:
+
+| Prüfung | Ergebnis (20.10.2026 12:15:51Z) |
+|---|---|
+| `curl http://169.58.83.32:8080/` | **keine Antwort** (Timeout nach 15 s) |
+| TCP **22** (SSH) | Timeout / verweigert |
+| TCP **8080** (App) | Timeout / verweigert |
+| `ping` | 2 Pakete, 0 empfangen, **100 % Paketverlust** |
+| `ssh-keyscan -H 169.58.83.32` | rc=1, **0 Zeilen** |
+
+**Gegenprobe (19.10.2026):** Zugriff auf `169.58.83.32:8080` (HTTP 200) und
+`ssh root@169.58.83.32` waren **an diesem Tag erfolgreich** ⇒ **Ausfall zwischen 19.10.
+und 20.10.2026**, nicht Dauerzustand.
+
+**Auswirkung auf die Pipeline (gemessen, keine Vermutung):**
+- GitHub-CI des Commits `195fc69` ist **grün** (5 Workflows: CI, Docs & Schema,
+  Docs-Drift, Security, i18n — alle `success`; der Billing-Block vom 16.–20.10.2026 war
+  die Ursache der früheren 4-Sekunden-Fehlschläge und ist **behoben**).
+- Der Deploy-Workflow **`Deploy Contabo` #39420241461** startete (Gate `conclusion ==
+  'success'` erfüllt) und scheiterte in **Schritt 3 „SSH-Key + known_hosts"** an
+  `ssh-keyscan` (exit 1) ⇒ **nicht** am Code, **nicht** an Keys: der Host ist nicht
+  erreichbar. Schritte 4/5 (Reset auf SHA + Restart, SHA-Abgleich) wurden **skipped**.
+- **Serverseitiger Code-Stand bleibt `f984168` (18.10.2026, 14:07)** — alle Änderungen
+  ab `6a25ff2` (FR-Filter, MVP-Board, Visum-nach-Einstellen, Onboarding-DB-Quelle,
+  Sidebar 5→7) sind **nicht** live. Lokal läuft der Stand `195fc69` (App + Runner aktiv).
+
+**Handlungsoptionen (keine automatisch ausgeführt — Provider-/Server-Zugriff nötig):**
+1. **Contabo-Panel prüfen** (Powercycle/Neustart des VPS, Netzwerk/Status, ggf. Zahlung/
+   Suspendierung des Accounts) — **Root Cause liegt außerhalb des Repos**.
+2. Danach **Deploy nachholen**: `gh run rerun 39420241461` (Deploy-Workflow) — Ziel-SHA
+   kommt aus `workflow_run.head_sha`; oder manuell per SSH (gleiche Befehle wie der
+   Workflow, siehe „Rollback"): `git fetch origin main && git reset --hard 195fc69 &&
+   git clean -fd && systemctl restart km-hr-agent` + Health-Check `curl 127.0.0.1:8080`.
+3. **Diagnose am Host** (sobald erreichbar): `journalctl -u km-hr-agent`, `ss -ltnp | grep 8080`,
+   `dmesg | tail`, `uptime` — Ziel: warum SSH **und** App-Port und ICMP ausfallen
+   (Reboot/Hänger, Firewall, Provider-Netz).
+
+**Kein Code-/Doku-Fix erforderlich:** Die Pipeline selbst ist unverändert und war bis
+zum Ausfall 2× grün durchgelaufen (`f984168`, 18.10.2026).
