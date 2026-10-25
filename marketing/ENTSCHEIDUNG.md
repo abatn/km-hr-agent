@@ -44,6 +44,18 @@ DB-Aggregate     →   7-Tage-Plan      →   LinkedIn/Facebook/IG   →   Outbo
 - **Retention:** Post-Assets nach Kampagnenende + 90 Tage löschen; keine Social-Analytics mit Kandidaten-Datensätzen verknüpfen.
 - **Plattform-AGB:** keine Scraping-/Automatisierungs-Tricks; nur offizielle APIs. Facebook-Gruppen sind nicht automatisierbar (`publish_to_groups` seit 22.04.2024 entfernt): <https://developers.facebook.com/docs/graph-api/changelog/version19.0/>
 
+## Umsetzungsstand 25.10.2026
+
+- Facebook-App-ID/App-Secret wurden gegen `GET /{app-id}` validiert (HTTP 200,
+  App-ID bestätigt). Der App Access Token ist **kein** Page-Token; für Posts
+  fehlt der User-/Page-OAuth-Flow.
+- LinkedIn-Client-ID ist gesetzt. Für den Token-Tausch fehlen noch
+  **Client Secret + registrierte Redirect-URI**; der OAuth-Helfer
+  `scripts/social_oauth.py` erzeugt Auth-URL und schreibt Tokens nur nach
+  `.env-social` (chmod 600, gitignored).
+- Bis Tokens vorliegen, bleibt `KMHR_SOCIAL_MODE=dry_run`; die Outbox beweist
+  Payload und Redaktionsplan ohne Netzwerkaufruf.
+
 ## Risiken / offene Punkte
 
 - **LinkedIn Community Management API** (Organisations-Posting) braucht App-Review, Rechtsentity, Business-E-Mail und Datenschutzseite; Member-Posting (`w_member_social`) ist self-serve. Bis zum Review läuft LinkedIn im Dry-Run oder als Member-Post.

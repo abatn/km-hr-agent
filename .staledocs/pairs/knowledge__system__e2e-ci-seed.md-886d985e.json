@@ -110,7 +110,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-25T17:42:18+00:00",
+    "at": "2026-10-25T18:59:41+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "49dd1309477e0d26014c2684d4982f9d9eb83112",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -236,6 +236,7 @@
       "tests/test_send_rejection_guard.py": "22901adf0e5c481c927b2bcb1a74b902b0f163c5",
       "tests/test_silent_errors.py": "18936a3ff6f5a6122ab5a1a6930530df128d73ff",
       "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
+      "tests/test_social_oauth.py": "a449f534f754989d05e59e55f8af8046b9a445ae",
       "tests/test_status_guards_md.py": "544699205a4b9d6daa7ca8bf0548bca6e86121a2",
       "tests/test_status_labels_complete.py": "94e67fed275c828932d2938c5b0178de1d7579c7",
       "tests/test_tabs_render.py": "9603b0520dd7f11d317cb7c268c4aa8d5a88db5b",
@@ -244,9 +245,9 @@
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "commit": "6547970327bc3d474fa86414b06b876565a16dda",
     "doc_blob": "061a9260ab8132e4ab336093b712e9a049a9bb85",
-    "note": "tests/test_social_agent.py ist Unit-Test, kein neuer E2E-Lauf; 55 e2e-Dateien/53 im Isolationslauf unver\u00e4ndert"
+    "note": "tests/test_social_oauth.py ist Unit-Test; 55 e2e-Dateien/53 im Isolationslauf unver\u00e4ndert"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

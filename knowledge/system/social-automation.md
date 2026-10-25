@@ -19,6 +19,28 @@ Tokens.
 
 Entscheidung und Quellen: `marketing/ENTSCHEIDUNG.md`.
 
+## OAuth-Bootstrap (einmalig)
+
+Client-ID/App-ID allein reicht nicht. Tokens werden **nur** in `.env-social`
+geschrieben (chmod 600, gitignored):
+
+```bash
+# LinkedIn: Client Secret + Redirect-URI in der LinkedIn-App registrieren
+python3 scripts/social_oauth.py linkedin --url
+python3 scripts/social_oauth.py linkedin --exchange "<CODE>"
+# oder lokaler Callback-Server:
+python3 scripts/social_oauth.py linkedin --serve
+
+# Facebook: Redirect-URI in der Meta-App registrieren; Page-Rolle nötig
+python3 scripts/social_oauth.py facebook --url
+python3 scripts/social_oauth.py facebook --exchange "<CODE>"
+python3 scripts/social_oauth.py facebook --serve --page-id <PAGE_ID>
+```
+
+Der Facebook-Helfer liest `/me/accounts` und schreibt Page-Token,
+`FACEBOOK_PAGE_ID` sowie – falls vorhanden – `INSTAGRAM_USER_ID` und
+`INSTAGRAM_ACCESS_TOKEN`. Tokens werden nie auf stdout ausgegeben.
+
 ## Ausführung
 
 ```bash
@@ -134,11 +156,12 @@ logs/social-agent.log
 ## Tests
 
 ```bash
-.venv-streamlit/bin/python3 -m pytest tests/test_social_agent.py -q
+.venv-streamlit/bin/python3 -m pytest tests/test_social_agent.py tests/test_social_oauth.py -q
 ```
 
 Abgedeckt: 7-Tage-Plan, PII-Guard, Dry-Run ohne Netz, Idempotenz, Live-Gate,
-Fake-Adapter, fehlende Tokens, Instagram-Bildpflicht.
+Fake-Adapter, fehlende Tokens, Instagram-Bildpflicht, OAuth-URLs und
+`.env-social`-Schreibschutz.
 
 ## Quellen
 

@@ -14,14 +14,16 @@
       "scripts/social_agent.py",
       "skills/**"
     ],
-    "at": "2026-10-25T17:42:20+00:00",
+    "at": "2026-10-25T18:59:42+00:00",
     "code_blobs": {
       "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
-      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8"
+      "scripts/social_oauth.py": "0b8f03bc760a6822f736935b3b7e6666b23f276c",
+      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
+      "tests/test_social_oauth.py": "a449f534f754989d05e59e55f8af8046b9a445ae"
     },
-    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "commit": "6547970327bc3d474fa86414b06b876565a16dda",
     "doc_blob": "fc02a5a9d15896609a6b2aa199111b5d05954b5c",
-    "note": "Erst-Ack: Skill verweist auf social-agent.md/social-automation.md; scripts/social_agent.py und Tests vorhanden"
+    "note": "social-agent/SKILL.md: OAuth-Helfer scripts/social_oauth.py und Tests verifiziert"
   },
   "doc": "skills/social-agent/SKILL.md",
   "schema": 1
