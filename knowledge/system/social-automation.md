@@ -128,6 +128,8 @@ Der Guard `assert_no_pii` blockt zusätzlich E-Mail-, Telefon- und
 | `LINKEDIN_AUTHOR_URN` | — | `urn:li:person:…` oder `urn:li:organization:…` |
 | `LINKEDIN_VERSION` | `202506` | LinkedIn-Version-Header |
 | `FACEBOOK_PAGE_ID` / `FACEBOOK_PAGE_ACCESS_TOKEN` | — | Page-Posting |
+| `FACEBOOK_SCOPES` | `pages_show_list,pages_manage_posts,pages_read_engagement` | Page-OAuth; Instagram-Scopes erst nach Review |
+| `FACEBOOK_FETCH_INSTAGRAM` | `0` | `1` liest `instagram_business_account` aus `/me/accounts` |
 | `INSTAGRAM_USER_ID` / `INSTAGRAM_ACCESS_TOKEN` / `INSTAGRAM_IMAGE_URL` | — | IG-Publishing |
 
 Vorlage: `.env-social.example`; Datei mit `chmod 600`. **Nicht** in `.env`,

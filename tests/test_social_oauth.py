@@ -107,3 +107,10 @@ def test_url_override_wird_verwendet():
     env = {"LINKEDIN_CLIENT_ID": "client-123"}
     url = m.linkedin_url(env, "state", "http://127.0.0.1:8790/oauth/callback")
     assert "redirect_uri=http%3A%2F%2F127.0.0.1%3A8790%2Foauth%2Fcallback" in url
+
+
+def test_facebook_fields_instagram_ist_opt_in():
+    m = _load()
+    assert m.facebook_fields({}) == "id,name,access_token"
+    assert m.facebook_fields({"FACEBOOK_FETCH_INSTAGRAM": "1"}) == (
+        "id,name,access_token,instagram_business_account")

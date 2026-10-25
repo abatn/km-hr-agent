@@ -1,6 +1,7 @@
 {
   "ack": {
     "anchors": [
+      "*_REDIRECT_URI",
       "--force",
       ".env-social",
       ".env-social.example",
@@ -11,18 +12,23 @@
       "hiring_stats",
       "kmhr-social.timer",
       "new_jobs",
-      "scripts/social_agent.py"
+      "pages_manage_posts",
+      "scripts/social_agent.py",
+      "scripts/social_oauth.py",
+      "w_member_social"
     ],
-    "at": "2026-10-25T17:42:19+00:00",
+    "at": "2026-10-25T19:52:54+00:00",
     "code_blobs": {
       "deploy/systemd/kmhr-social.service": "9d5a1ed292d4e26fc86b042c1439c3b818481572",
       "deploy/systemd/kmhr-social.timer": "a7ab8fe8115b45cd37f7efe674c0e18512cddd96",
       "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
-      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8"
+      "scripts/social_oauth.py": "51f7f5b87f05159616a2404cba048500c9c8248e",
+      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
+      "tests/test_social_oauth.py": "a14d309a0904d2f5b7d74860b3533c67a7f53eba"
     },
-    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
-    "doc_blob": "83a5f1afbf7e071071bcb19d1c51d74d4981503a",
-    "note": "Erst-Ack: Kanalwahl/Quellen, scripts/social_agent.py und Dry-Run-Outbox verifiziert"
+    "commit": "a8bf9132898eeafc27c0004fc342be4ec50dc744",
+    "doc_blob": "d97bcc20241db91534f36315e2a475b709b05874",
+    "note": "ENTSCHEIDUNG.md: HTTPS-Pflicht/\u00f6ffentlicher Callback und Facebook page-only Scopes dokumentiert"
   },
   "doc": "marketing/ENTSCHEIDUNG.md",
   "schema": 1

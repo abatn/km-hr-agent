@@ -66,7 +66,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-25T19:27:07+00:00",
+    "at": "2026-10-25T19:52:37+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -93,9 +93,9 @@
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "d540129a5c16be5461b860668bc11511fc8e43f4"
     },
-    "commit": "4cc70865067b8f9f1796f2b877d009d7977fff8e",
-    "doc_blob": "30aa556901b043c90ebd86424b0a28ad6ffb0128",
-    "note": "skills/README.md: 24 Skills, 659 Tests/654 passed, social-agent-Z\u00e4hlkontrolle 18+6"
+    "commit": "a8bf9132898eeafc27c0004fc342be4ec50dc744",
+    "doc_blob": "55139a4e35c6e2c4524cf23f891ebc4f17125565",
+    "note": "skills/README.md: 24 Skills, 660 Tests/655 passed, social-agent-Z\u00e4hlkontrolle 18+6"
   },
   "doc": "skills/README.md",
   "schema": 1

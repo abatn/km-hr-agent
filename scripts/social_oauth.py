@@ -190,6 +190,14 @@ def linkedin_exchange(env: dict[str, str], code: str,
             "author": author or "nicht ermittelt"}
 
 
+def facebook_fields(env: dict[str, str]) -> str:
+    """Page-Felder; Instagram nur bei explizit aktivierter Permission."""
+    fields = "id,name,access_token"
+    if env.get("FACEBOOK_FETCH_INSTAGRAM", "0").strip().lower() in ("1", "true", "yes"):
+        fields += ",instagram_business_account"
+    return fields
+
+
 def facebook_exchange(env: dict[str, str], code: str, page_id: str = "",
                       redirect_uri: str | None = None) -> dict[str, str]:
     _require(env, "FACEBOOK_APP_ID", "FACEBOOK_APP_SECRET")
@@ -206,8 +214,7 @@ def facebook_exchange(env: dict[str, str], code: str, page_id: str = "",
         raise SystemExit("Facebook lieferte keinen user access_token")
     pages = requests.get(
         "https://graph.facebook.com/v21.0/me/accounts",
-        params={"access_token": user_token,
-                "fields": "id,name,access_token,instagram_business_account"}, timeout=30)
+        params={"access_token": user_token, "fields": facebook_fields(env)}, timeout=30)
     if not pages.ok:
         raise SystemExit(f"Facebook /me/accounts fehlgeschlagen: HTTP {pages.status_code}")
     data = pages.json().get("data", [])
