@@ -47,8 +47,11 @@ DB-Aggregate     →   7-Tage-Plan      →   LinkedIn/Facebook/IG   →   Outbo
 ## Umsetzungsstand 25.10.2026
 
 - Facebook-App-ID/App-Secret wurden gegen `GET /{app-id}` validiert (HTTP 200,
-  App-ID bestätigt). Der App Access Token ist **kein** Page-Token; für Posts
-  fehlt der User-/Page-OAuth-Flow.
+  App-ID bestätigt; `debug_token`: `type=APP`, `user_id=null`, `scopes=[]`).
+  Der App Access Token (`app_id|app_secret`) ist **kein** Page-Token; `/me`
+  und `/me/accounts` liefern `OAuthException 2500`. Für Posts ist der
+  User-/Page-OAuth-Flow zwingend; der Agent lehnt App-Tokens jetzt mit
+  Klartext ab.
 - LinkedIn-Client-ID ist gesetzt. Für den Token-Tausch fehlen noch
   **Client Secret + registrierte Redirect-URI**; der OAuth-Helfer
   `scripts/social_oauth.py` erzeugt Auth-URL und schreibt Tokens nur nach

@@ -169,6 +169,7 @@ logs/social-agent.log
 | `KMHR_SOCIAL_MODE=dry_run` | Outbox, kein Netz |
 | `mode=live`, Auto-Publish fehlt | Dry-Run mit `reason=approval_required` |
 | Token fehlt | `failed` mit Klartext, keine stille Veröffentlichung |
+| App Access Token (`app_id\|app_secret`) als Page-Token | `failed` mit Klartext; User-/Page-OAuth nötig |
 | HTTP 429/401 | `failed` mit Status/Text; nächster Timer-Lauf |
 | Instagram ohne `INSTAGRAM_IMAGE_URL` | `failed` (Instagram braucht Bild) |
 | Outbox existiert | `skipped` (idempotent) |

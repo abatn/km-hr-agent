@@ -32,16 +32,16 @@
       "scripts/social_agent.py",
       "skills/**"
     ],
-    "at": "2026-10-25T19:52:36+00:00",
+    "at": "2026-10-25T21:21:12+00:00",
     "code_blobs": {
-      "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
+      "scripts/social_agent.py": "a1f89bbb7a2c6c54ff330e903a12ea9743b50152",
       "scripts/social_oauth.py": "51f7f5b87f05159616a2404cba048500c9c8248e",
-      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
+      "tests/test_social_agent.py": "c29337c793fb6dce80b2ea517863c108a8a4dfe4",
       "tests/test_social_oauth.py": "a14d309a0904d2f5b7d74860b3533c67a7f53eba"
     },
-    "commit": "a8bf9132898eeafc27c0004fc342be4ec50dc744",
+    "commit": "9b8a64666caea4e49b7df42f2edf22af5657efac",
     "doc_blob": "5b1b477f6a6a65ec4e1089219ff76768167cc3c9",
-    "note": "social-agent.md: OAuth-Helper auf VPS/Caddy \u00f6ffentlicher Callback umgestellt"
+    "note": "social-agent.md: App-Token-Hinweis/OAuth-Pfad und Tests aktuell"
   },
   "doc": "marketing/social-agent.md",
   "schema": 1

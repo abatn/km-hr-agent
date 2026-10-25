@@ -116,7 +116,7 @@
       "webui/pages/",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-25T19:52:34+00:00",
+    "at": "2026-10-25T21:21:10+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -138,7 +138,7 @@
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
-      "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
+      "scripts/social_agent.py": "a1f89bbb7a2c6c54ff330e903a12ea9743b50152",
       "scripts/social_oauth.py": "51f7f5b87f05159616a2404cba048500c9c8248e",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
@@ -262,7 +262,7 @@
       "tests/test_send_onboarding_guard.py": "406de816d32c7ad0328b22ccfaf2efb9b8e989c5",
       "tests/test_send_rejection_guard.py": "22901adf0e5c481c927b2bcb1a74b902b0f163c5",
       "tests/test_silent_errors.py": "18936a3ff6f5a6122ab5a1a6930530df128d73ff",
-      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
+      "tests/test_social_agent.py": "c29337c793fb6dce80b2ea517863c108a8a4dfe4",
       "tests/test_social_oauth.py": "a14d309a0904d2f5b7d74860b3533c67a7f53eba",
       "tests/test_status_guards_md.py": "544699205a4b9d6daa7ca8bf0548bca6e86121a2",
       "tests/test_status_labels_complete.py": "94e67fed275c828932d2938c5b0178de1d7579c7",
@@ -300,9 +300,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "a8bf9132898eeafc27c0004fc342be4ec50dc744",
+    "commit": "9b8a64666caea4e49b7df42f2edf22af5657efac",
     "doc_blob": "c1a92486c3610dd5842981db4ba6aa9cd7140290",
-    "note": "AGENTS.md: social_oauth.py \u00f6ffentlicher HTTPS-Callback/Caddy dokumentiert; 655 passed"
+    "note": "AGENTS.md: Social-Agent/App-Token-Ablehnung und OAuth-Hinweis; 656 passed"
   },
   "doc": "AGENTS.md",
   "schema": 1

@@ -328,6 +328,11 @@ class FacebookAdapter:
     def publish(self, post: dict[str, Any]) -> dict[str, Any]:
         if not self.page_id or not self.token:
             raise SocialError("FACEBOOK_PAGE_ID/FACEBOOK_PAGE_ACCESS_TOKEN fehlen")
+        if "|" in self.token:
+            raise SocialError(
+                "Facebook App Access Token (app_id|app_secret) kann keine Page-Posts "
+                "erstellen. Nutze den OAuth-Flow (scripts/social_oauth.py facebook) "
+                "und den daraus erzeugten Page Access Token.")
         resp = requests.post(
             f"https://graph.facebook.com/v21.0/{self.page_id}/feed",
             data={"message": post["text"], "link": post["link"],

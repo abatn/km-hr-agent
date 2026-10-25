@@ -146,6 +146,15 @@ def test_live_mit_auto_publish_nutzt_adapter(mod, db, monkeypatch):
     assert data["result"]["external_id"] == "urn:li:share:1"
 
 
+def test_facebook_app_token_wird_abgelehnt(mod, monkeypatch):
+    monkeypatch.setenv("FACEBOOK_PAGE_ID", "123")
+    monkeypatch.setenv("FACEBOOK_PAGE_ACCESS_TOKEN", "1142211678381849|secret")
+    post = {"platform": "facebook", "text": "x", "link": "https://example.org"}
+    with pytest.raises(mod.SocialError) as exc:
+        mod.FacebookAdapter().publish(post)
+    assert "App Access Token" in str(exc.value)
+
+
 def test_instagram_ohne_bild_ist_konfigurationsfehler(mod, monkeypatch):
     monkeypatch.setenv("INSTAGRAM_USER_ID", "123")
     monkeypatch.setenv("INSTAGRAM_ACCESS_TOKEN", "token")

@@ -14,16 +14,16 @@
       "scripts/social_agent.py",
       "skills/**"
     ],
-    "at": "2026-10-25T18:59:42+00:00",
+    "at": "2026-10-25T21:21:13+00:00",
     "code_blobs": {
-      "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
-      "scripts/social_oauth.py": "0b8f03bc760a6822f736935b3b7e6666b23f276c",
-      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
-      "tests/test_social_oauth.py": "a449f534f754989d05e59e55f8af8046b9a445ae"
+      "scripts/social_agent.py": "a1f89bbb7a2c6c54ff330e903a12ea9743b50152",
+      "scripts/social_oauth.py": "51f7f5b87f05159616a2404cba048500c9c8248e",
+      "tests/test_social_agent.py": "c29337c793fb6dce80b2ea517863c108a8a4dfe4",
+      "tests/test_social_oauth.py": "a14d309a0904d2f5b7d74860b3533c67a7f53eba"
     },
-    "commit": "6547970327bc3d474fa86414b06b876565a16dda",
+    "commit": "9b8a64666caea4e49b7df42f2edf22af5657efac",
     "doc_blob": "fc02a5a9d15896609a6b2aa199111b5d05954b5c",
-    "note": "social-agent/SKILL.md: OAuth-Helfer scripts/social_oauth.py und Tests verifiziert"
+    "note": "social-agent/SKILL.md: App-Token-Ablehnung und OAuth-Helfer verifiziert"
   },
   "doc": "skills/social-agent/SKILL.md",
   "schema": 1
