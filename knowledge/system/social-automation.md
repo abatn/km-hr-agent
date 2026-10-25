@@ -52,6 +52,12 @@ Für Facebook analog `facebook --serve --page-id <PAGE_ID>`; der Helfer liest
 `/me/accounts` und schreibt Page-Token, `FACEBOOK_PAGE_ID` sowie – falls
 vorhanden – `INSTAGRAM_USER_ID`/`INSTAGRAM_ACCESS_TOKEN`.
 
+**LinkedIn-Scopes:** `openid profile w_member_social`. `w_member_social` allein
+erlaubt das Posten, liefert aber **keine Autor-URN**; `/v2/userinfo` antwortet
+dann mit 403. Ohne `LINKEDIN_AUTHOR_URN` bricht der Agent den Live-Post ab.
+Dafür in der LinkedIn-App das Produkt „Sign In with LinkedIn using OpenID
+Connect“ aktivieren und neu autorisieren.
+
 **Fehlerquellen:** Die Redirect-URI muss zeichengenau passen (Schema, Host,
 Port, Pfad). `--serve` öffnet **keinen** Browser (WSL/Headless: DBus/GCM/WebGL);
 die URL wird manuell geöffnet. Ein alter `--serve`-Prozess blockiert Port 8765:

@@ -30,6 +30,14 @@ def test_linkedin_url_enthält_client_id_redirect_scope():
     assert "state=state-abc" in url
 
 
+def test_linkedin_default_scopes_enthalten_openid_profile():
+    m = _load()
+    env = {"LINKEDIN_CLIENT_ID": "client-123",
+           "LINKEDIN_REDIRECT_URI": "https://jobs.hanibal-ai.com/oauth/callback"}
+    url = m.linkedin_url(env, "state")
+    assert "scope=openid+profile+w_member_social" in url
+
+
 def test_facebook_url_enthält_app_id_und_scopes():
     m = _load()
     env = {"FACEBOOK_APP_ID": "1142211678381849",

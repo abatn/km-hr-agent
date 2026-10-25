@@ -141,7 +141,7 @@ def linkedin_url(env: dict[str, str], state: str, redirect_uri: str | None = Non
         "response_type": "code",
         "client_id": env["LINKEDIN_CLIENT_ID"],
         "redirect_uri": _redirect(env, "LINKEDIN_REDIRECT_URI", redirect_uri),
-        "scope": env.get("LINKEDIN_SCOPES", "w_member_social"),
+        "scope": env.get("LINKEDIN_SCOPES", "openid profile w_member_social"),
         "state": state,
     }
     return "https://www.linkedin.com/oauth/v2/authorization?" + urllib.parse.urlencode(params)
@@ -175,19 +175,30 @@ def linkedin_exchange(env: dict[str, str], code: str,
     token = resp.json().get("access_token", "")
     if not token:
         raise SystemExit("LinkedIn lieferte keinen access_token")
-    user = requests.get("https://api.linkedin.com/v2/userinfo",
-                        headers={"Authorization": f"Bearer {token}"}, timeout=30)
-    author = ""
-    if user.ok:
-        sub = user.json().get("sub", "")
-        if sub:
-            author = f"urn:li:person:{sub}"
+    author = env.get("LINKEDIN_AUTHOR_URN", "").strip()
+    if not author:
+        headers = {"Authorization": f"Bearer {token}"}
+        # userinfo braucht openid/profile; /v2/me braucht r_liteprofile.
+        for url, field in (("https://api.linkedin.com/v2/userinfo", "sub"),
+                           ("https://api.linkedin.com/v2/me", "id")):
+            user = requests.get(url, headers=headers, timeout=30)
+            if not user.ok:
+                continue
+            value = user.json().get(field, "")
+            if value:
+                author = f"urn:li:person:{value}"
+                break
     updates = {"LINKEDIN_ACCESS_TOKEN": token}
     if author:
         updates["LINKEDIN_AUTHOR_URN"] = author
     update_env(ENV_FILE, updates)
+    warning = ""
+    if not author:
+        warning = ("LINKEDIN_AUTHOR_URN fehlt: Scopes 'openid profile' "
+                   "(Sign In with LinkedIn using OpenID Connect) hinzufügen "
+                   "und neu autorisieren.")
     return {"provider": "linkedin", "token": "gespeichert",
-            "author": author or "nicht ermittelt"}
+            "author": author or "FEHLT", "warning": warning}
 
 
 def facebook_fields(env: dict[str, str]) -> str:
@@ -338,6 +349,8 @@ def serve(provider: str, env: dict[str, str], page_id: str = "",
     result = (linkedin_exchange(env, _Callback.code, uri) if provider == "linkedin"
               else facebook_exchange(env, _Callback.code, page_id, uri))
     print(result)
+    if result.get("warning"):
+        print("WARNUNG:", result["warning"])
     print(f"Tokens in {ENV_FILE} gespeichert (chmod 600).")
     return 0
 

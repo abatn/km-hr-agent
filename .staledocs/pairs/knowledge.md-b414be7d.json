@@ -150,7 +150,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-25T21:21:11+00:00",
+    "at": "2026-10-25T22:42:38+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -218,7 +218,7 @@
       "knowledge/system/md-schreib-konvention.md": "a92bef26f2438f97e013c25020d07f009840ae4e",
       "knowledge/system/mvp.md": "68c4e76f360b29d9bc0e6edd19c985a639a031aa",
       "knowledge/system/p8-cloud-datenquellen.md": "6d6b91e3a295dd81d9e6595bab242701dbcc06b0",
-      "knowledge/system/social-automation.md": "fc015c30aa2646e7155ff05da34f9fdd067511a5",
+      "knowledge/system/social-automation.md": "9ba381ec099494d8af082c960dfc63a0afb07f7a",
       "knowledge/system/vdo-ninja-migration.md": "75fdde7f607a0f3b1ec7dfcad86e79cc443b7c32",
       "knowledge/team-profile.md": "31626b6e650f69f8c4df53db401e32a236d25da5",
       "knowledge/templates/contract-templates/arbeitsvertrag-de-skeleton.md": "b1cadf6fafd722d469dc5bdf1eb37f0dc51dbb2c",
@@ -231,9 +231,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
     },
-    "commit": "9b8a64666caea4e49b7df42f2edf22af5657efac",
+    "commit": "333dc8534956ae84b88a9ea6ef8800adbf541cdc",
     "doc_blob": "e3e69994ac9bf5e1d2e0ae8324949b34e7a74495",
-    "note": "knowledge.md: 78 Knowledge-MD/24 Skills, social-automation/cloudflare im Index; 656 passed/661 collected"
+    "note": "knowledge.md: 78 Knowledge-MD/24 Skills, social-automation/cloudflare im Index; 658 passed/663 collected"
   },
   "doc": "knowledge.md",
   "schema": 1
