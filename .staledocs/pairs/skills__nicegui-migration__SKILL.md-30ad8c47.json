@@ -170,21 +170,21 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-23T10:43:56+00:00",
+    "at": "2026-10-25T15:42:29+00:00",
     "code_blobs": {
       "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "e30dc44f8abf9e8c39e206d1910dbdb1fa019ef4",
       "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4",
       "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d",
-      "webui/pages/landing.py": "b3826b246cc2e4b4951c8b278d8d61ed106cf3cd",
+      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
     "doc_blob": "969f836a67b9a4ae92604cf5e5f6c36398193c0d",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/nicegui-migration/SKILL.md"
+    "note": "webui/pages/landing.py auf 5 Kapitel umgebaut und alte Builder entfernt; Migration-Aussagen unber\u00fchrt"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

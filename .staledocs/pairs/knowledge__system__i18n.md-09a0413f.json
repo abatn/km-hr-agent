@@ -108,6 +108,7 @@
       "ui.navigate.reload()",
       "ui.select",
       "ui.table",
+      "ui/ANIMATION_ENTSCHEIDUNG.md",
       "user_name",
       "webui/components.py",
       "webui/db.py",
@@ -116,24 +117,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-23T10:43:45+00:00",
+    "at": "2026-10-25T14:54:51+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "3013579f88faa059d0d85155db93aa6ae0e8ef2d",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "ad73d11b1d66e12d2028a7785986a2fd981c5dcf",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "cf94d0dd5fcd308e50b7064e84840b9c80080273",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "456541459e43bc87bdd620635d3fbbda0e687c3d",
-      "webui/locales/de/LC_MESSAGES/messages.po": "549205d2cf92d058ee5da588f2135078428b36f6",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "486d9263276f141da679fc32611260691c8ff393",
-      "webui/locales/en/LC_MESSAGES/messages.po": "eaf11d20ee49388589f3231067e61fe1349a5457",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "76cc380e3fe40257061ad098beb6997178b5ba9f",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "401ce389798a85a093a4c976fa71941ce3178ab8"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "fd94faabedad7c7ca46d53a1154755625d751ff4",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "e9a92afc013b70d406c84ca7a581156d473a3e34",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "dc960b151ddf6ebb76972b7dc1350fa87125f3b8",
+      "webui/locales/de/LC_MESSAGES/messages.po": "195ef91cc1be2a959282a44555216123d6573cf6",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "4f6dc1da95857a16285088e220868384c97ed048",
+      "webui/locales/en/LC_MESSAGES/messages.po": "bb91405e27d001b2e37f1dfd33439b480088c8fc",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "601343954bb9ca6ed7e96450ba283255f7f0bce5",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "b8231a71ad851e4a68d62ce6f6750e18e015f14e"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "55475c787d901d8540185cd395dd44c330066199",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/i18n.md"
+    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
+    "doc_blob": "6aa370101d39c7881d44e3afbcc161503ba44448",
+    "note": "webui/locales/fr/LC_MESSAGES/messages.mo und .po ge\u00e4ndert; 27 neue msgids, 1220 Keys, checks.py i18n rc=0"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

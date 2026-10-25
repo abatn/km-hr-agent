@@ -41,6 +41,7 @@
       "e2e_einladen_flow.py",
       "e2e_feedback_jobswitch",
       "e2e_feedback_jobswitch.py",
+      "e2e_harness.py",
       "e2e_housing.py",
       "e2e_i18n_full_chain.py",
       "e2e_isolation.py",
@@ -56,6 +57,7 @@
       "employer_id=1",
       "end_source=",
       "ergebnisse/",
+      "ergebnisse/screenshots/landing-agent-*.png",
       "fails.append()",
       "franzoesisch='B2'",
       "hr1@example.invalid",
@@ -102,12 +104,13 @@
       "tests/e2e_harness.py",
       "tests/e2e_housing.py",
       "tests/e2e_isolation.py",
+      "tests/e2e_landing_chapters.py",
       "tests/fixtures/seed.db",
       "tests/test_r33_compliance_reports.py",
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-23T10:43:42+00:00",
+    "at": "2026-10-25T14:54:51+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "49dd1309477e0d26014c2684d4982f9d9eb83112",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -143,6 +146,7 @@
       "tests/e2e_invitation_termin_admin.py": "68e47c19fc32f6af2d1ac26967abe5bbdb461690",
       "tests/e2e_isolation.py": "c79df91f6814245c332b9dbaf0943e8e8675fc4b",
       "tests/e2e_kandidaten_filter.py": "7703ec56e76e2eb0468215caef118a6ab3d45f7c",
+      "tests/e2e_landing_chapters.py": "8659af0e5f032d2a7134c70ff15d1070e122f3ff",
       "tests/e2e_m07_row_click.py": "b9da1786cb5bf258e98b9ee37f074c60fbc2fe8c",
       "tests/e2e_m13_score_once.py": "70e6170fd987f02942416aba3945df1278278aa3",
       "tests/e2e_m17_pushstate.py": "97a5dd68d7b71d501ab2d0dbadf55d7fb34780c6",
@@ -196,7 +200,7 @@
       "tests/test_invitation_termin_guard.py": "82c42327c96c9c6e80c90b05179a0cd2028c7e44",
       "tests/test_job_dedupe.py": "ca531ab6448303f3528067168adee1fe8f62d277",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
-      "tests/test_landing_page.py": "ade4d2ae97343088439761e77616e6b97e68896d",
+      "tests/test_landing_page.py": "4c5ab676bf03774219ef90342a57f794c3ff4c71",
       "tests/test_language_scoring.py": "2976286c9c93d7cb037ed9a6fedae79e4a9873c3",
       "tests/test_llm_fehler_logging.py": "1f4015577ed27cf2221eae8338e24847df1d5065",
       "tests/test_logic_i18n.py": "f1b57af835765385f99d5cce44e51caea45b0813",
@@ -239,9 +243,9 @@
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "94898da9f28d2bed4db6533f50252459bf0db6de",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/e2e-ci-seed.md"
+    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
+    "doc_blob": "061a9260ab8132e4ab336093b712e9a049a9bb85",
+    "note": "tests/e2e_landing_chapters.py neu; 55 e2e-Dateien/53 im Isolationslauf, rc=0, Live-DB sha vor==nach"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

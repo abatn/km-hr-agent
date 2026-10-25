@@ -148,7 +148,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-23T10:43:31+00:00",
+    "at": "2026-10-25T14:56:27+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -205,10 +205,10 @@
       "knowledge/system/dependency-pinning.md": "2c5e276d7b22734b3740e73a4a1d998c99481697",
       "knowledge/system/deploy-pipeline.md": "38cb01cdac817273ce69aea33733305592e1e0d5",
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
-      "knowledge/system/e2e-ci-seed.md": "94898da9f28d2bed4db6533f50252459bf0db6de",
+      "knowledge/system/e2e-ci-seed.md": "061a9260ab8132e4ab336093b712e9a049a9bb85",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
       "knowledge/system/i18n-runner-chain.md": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
-      "knowledge/system/i18n.md": "55475c787d901d8540185cd395dd44c330066199",
+      "knowledge/system/i18n.md": "6aa370101d39c7881d44e3afbcc161503ba44448",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -227,9 +227,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
     "doc_blob": "cc57a092474f7862d2d4024515ee13376359f4a2",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge.md"
+    "note": "knowledge/system/i18n.md und knowledge/system/e2e-ci-seed.md aktualisiert; Index-Eintr\u00e4ge weiter korrekt, keine neuen Wissensdateien au\u00dfer ui/ANIMATION_ENTSCHEIDUNG.md (separat gepaart)"
   },
   "doc": "knowledge.md",
   "schema": 1

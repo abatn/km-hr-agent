@@ -2,9 +2,9 @@
 Landing page (Startseite „/") für den KM-HR-Agent – NiceGUI.
 =============================================================
 Zeigt VOR dem Login, was der KM-HR-Agent tut: eine in sich geschlossene,
-EXAKT 30-sekündige Three.js-Animation (7 Kapitel, `TOTAL = 30.0`) in Endlosschleife
+EXAKT 30-sekündige Three.js-Animation (5 Kapitel, `TOTAL = 30.0`) in Endlosschleife
 mit sichtbarem Countdown 30 → 0, Fortschrittsbalken und Button „Nochmal ansehen“.
-Die 7-Schritte-Liste + Quellen liegen in einem aufklappbaren Bereich
+Die 5-Schritte-Liste + Quellen liegen in einem aufklappbaren Bereich
 (`ui.expansion` „Details & Quellen“) – die Hauptseite bleibt aufgeräumt.
 
 Nutzerentscheidungen 02.10.2026:
@@ -203,31 +203,25 @@ import * as THREE from '/static/three/three.module.js';
   const KATEGORIEN = [['kern', 30], ['erfahrung', 30], ['bildung', 15], ['standort', 10],
                       ['branche', 10], ['soft', 10], ['sprache', 10]];
 
-  /* 7 Kapitel in exakt 30,0 s. Fenster = ursprüngliche Fenster × 30/32, auf 0,1 s
-     gerundet (Design-Entscheidung 02.10.2026). Je Kapitel nur EINE kurze Textzeile –
-     Quellen stehen im aufklappbaren Bereich „Details & Quellen“. */
+  /* 5 Kapitel in exakt 30,0 s. Das Agenten-Prinzip: Gehirn → Loop →
+     Sub-Agenten → Werkzeuge → Ergebnis. Je Kapitel nur EINE kurze Textzeile;
+     Quellen/Entscheidungen stehen in ui/ANIMATION_ENTSCHEIDUNG.md. */
   const CH = [
-    { id: 'netz', zi: 0, t0: 0.0, t1: 3.7,
-      kicker: 'Start', title: 'Das Netzwerk',
-      text: 'Kandidaten aus Nordafrika treffen auf Arbeitgeber in DE, FR und CH.' },
-    { id: 'cv', zi: 1, t0: 4.5, t1: 8.0,
-      kicker: 'Zoom 1', title: 'CV-Upload → PDF-Extraktion',
-      text: 'Der Lebenslauf wird hochgeladen und als Text ausgelesen.' },
-    { id: 'agent', zi: 2, t0: 8.7, t1: 12.6,
-      kicker: 'Zoom 2', title: 'Agent-Kette: 10 Tasks',
-      text: 'Zehn Aufgaben laufen automatisch – von der Bestätigung bis zur Benachrichtigung.' },
-    { id: 'score', zi: 3, t0: 13.4, t1: 17.1,
-      kicker: 'Zoom 3', title: 'Matching-Score: 7 Kategorien',
-      text: 'Sieben Kategorien ergeben einen Score von 0 bis 100.' },
-    { id: 'legal', zi: 4, t0: 17.9, t1: 21.2,
-      kicker: 'Zoom 4', title: 'Compliance DE / FR / CH',
-      text: 'Rechtsprüfung nach Land – bevor es weitergeht.' },
-    { id: 'hr', zi: 5, t0: 21.9, t1: 25.5,
-      kicker: 'Zoom 5', title: 'HR entscheidet',
-      text: 'Einladen, ablehnen oder einstellen – dann Video-Meeting (VDO.Ninja) und Onboarding.' },
-    { id: 'quant', zi: 6, t0: 26.3, t1: 30.0,
-      kicker: 'Ende', title: 'Das Quantenfeld',
-      text: 'Zeit sparen, rechtssicher, kulturell passend. Jetzt: Login.' },
+    { id: 'brain', zi: 0, t0: 0.0, t1: 5.2,
+      kicker: 'Kapitel 1', title: 'Das Gehirn',
+      text: 'Der Orchestrator plant jede Aufgabe und behält den Überblick.' },
+    { id: 'loop', zi: 1, t0: 6.0, t1: 11.2,
+      kicker: 'Kapitel 2', title: 'Die Loop',
+      text: 'Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task.' },
+    { id: 'agents', zi: 2, t0: 12.0, t1: 17.2,
+      kicker: 'Kapitel 3', title: 'Die Sub-Agenten',
+      text: 'Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab.' },
+    { id: 'tools', zi: 3, t0: 18.0, t1: 23.2,
+      kicker: 'Kapitel 4', title: 'Die Werkzeuge',
+      text: 'MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests.' },
+    { id: 'result', zi: 4, t0: 24.0, t1: 30.0,
+      kicker: 'Kapitel 5', title: 'Das Ergebnis',
+      text: 'Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet.' },
   ];
   /* i18n (Phase 2b 02.10.2026): Kapiteltexte aus window.__KMHR_CH__ überschreiben,
      das die Seite pro Session (Sprache) vor dem Modul-Skript setzt. */
@@ -289,7 +283,7 @@ import * as THREE from '/static/three/three.module.js';
 
   function buildUi(host) {
     host.innerHTML = `
-      <div class="kmhr-canvas"></div>
+      <div class="kmhr-canvas" aria-hidden="true"></div>
       <div class="kmhr-fade" id="kmhr-fade"></div>
       <div class="kmhr-overlay">
         <div class="kmhr-toprow">
@@ -308,6 +302,8 @@ import * as THREE from '/static/three/three.module.js';
         <div class="kmhr-bottom">
           <div class="kmhr-dots" id="kmhr-dots"></div>
           <div class="kmhr-progress"><div class="kmhr-progress-fill" id="kmhr-progress-fill"></div></div>
+          <button class="kmhr-replay" id="kmhr-pause" type="button"
+                  title="Pause" aria-label="Pause">&#10074;&#10074;</button>
           <button class="kmhr-replay" id="kmhr-replay" type="button">&#8635; Nochmal ansehen</button>
         </div>
       </div>`;
@@ -330,6 +326,21 @@ import * as THREE from '/static/three/three.module.js';
       S.staticIdx = 0;
       S.startTime = performance.now();
       setCaption(0);
+    });
+    const pauseBtn = document.getElementById('kmhr-pause');
+    pauseBtn.addEventListener('click', () => {
+      if (S.pausedAt === null) {
+        S.pausedAt = performance.now();
+        pauseBtn.innerHTML = '&#9654;';
+        pauseBtn.setAttribute('aria-label', 'Weiter');
+        pauseBtn.title = 'Weiter';
+      } else {
+        S.startTime += performance.now() - S.pausedAt;
+        S.pausedAt = null;
+        pauseBtn.innerHTML = '&#10074;&#10074;';
+        pauseBtn.setAttribute('aria-label', 'Pause');
+        pauseBtn.title = 'Pause';
+      }
     });
     S.endEl = document.getElementById('kmhr-end');
     S.fillEl = document.getElementById('kmhr-progress-fill');
@@ -374,174 +385,247 @@ import * as THREE from '/static/three/three.module.js';
     return sprite;
   }
 
-  /* ── Stationen ─────────────────────────────────────────────────── */
-  /* Low-poly Menschenfigur (Kopf + Körper + Arme + Beine) statt abstrakter Kugeln.
-     Nutzerentscheidung 02.10.2026: „Figuren statt Punkte". */
-  function makePerson(material) {
-    const p = new THREE.Group();
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.17, 16, 16), material);
-    head.position.y = 0.66; p.add(head);
-    const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.15, 0.42, 6, 12), material);
-    body.position.y = 0.2; p.add(body);
-    const armGeo = new THREE.CapsuleGeometry(0.055, 0.3, 4, 8);
-    const armL = new THREE.Mesh(armGeo, material); armL.position.set(-0.25, 0.3, 0); armL.rotation.z = 0.38; p.add(armL);
-    const armR = new THREE.Mesh(armGeo, material); armR.position.set(0.25, 0.3, 0); armR.rotation.z = -0.38; p.add(armR);
-    const legGeo = new THREE.CapsuleGeometry(0.065, 0.34, 4, 8);
-    const legL = new THREE.Mesh(legGeo, material); legL.position.set(-0.09, -0.28, 0); p.add(legL);
-    const legR = new THREE.Mesh(legGeo, material); legR.position.set(0.09, -0.28, 0); p.add(legR);
-    return p;
-  }
+  /* ── Agenten-Prinzip: 5 Stationen ─────────────────────────────── */
 
-  function buildNetwork() {
+  /* 1) Das Gehirn: zentraler Orchestrator als Drahtgitter-Kern,
+     umkreist von Nervenpartikeln und drei Ringbahnen. */
+  function buildBrain() {
     const g = new THREE.Group();
-    const gold = new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.45, metalness: 0.15 });
-    const blue = new THREE.MeshStandardMaterial({ color: COLORS.primaryLight, roughness: 0.45, metalness: 0.15 });
-    const left = [], right = [];
-    for (let i = 0; i < 6; i++) {
-      const m = makePerson(gold);
-      m.position.set(-8.2 + rng() * 4.4, (rng() - 0.5) * 5.2, (rng() - 0.5) * 4.4);
-      m.scale.setScalar(0.95 + rng() * 0.25);
-      g.add(m); left.push(m.position.clone());
-    }
-    for (let i = 0; i < 6; i++) {
-      const m = makePerson(blue);
-      m.position.set(3.8 + rng() * 4.4, (rng() - 0.5) * 5.2, (rng() - 0.5) * 4.4);
-      m.scale.setScalar(0.95 + rng() * 0.25);
-      g.add(m); right.push(m.position.clone());
-    }
-    const pts = [];
-    left.forEach((p) => {
-      for (let k = 0; k < 2; k++) pts.push(p.clone(), right[Math.floor(rng() * right.length)].clone());
-    });
-    const lines = new THREE.LineSegments(
-      new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineBasicMaterial({ color: COLORS.sky, transparent: true, opacity: 0.5 }));
-    g.add(lines);
     const L = window.__KMHR_LABELS__ || {};
-    const t1 = makeLabel(L.kandidaten || 'Kandidaten · Nordafrika', { color: '#92400E', border: 'rgba(245,158,11,0.45)' });
-    t1.position.set(-6.0, 5.2, 0); g.add(t1);
-    const t2 = makeLabel(L.arbeitgeber || 'Arbeitgeber · DE / FR / CH', { color: '#1E3A8A' });
-    t2.position.set(6.0, 5.2, 0); g.add(t2);
-    return { group: g, update: (t) => {
-      g.rotation.y = Math.sin(t * 0.12) * 0.22;
-      lines.material.opacity = 0.42 + 0.16 * Math.sin(t * 1.3);
-    } };
-  }
-
-  function buildDoc() {
-    const g = new THREE.Group();
-    const paper = new THREE.Mesh(new THREE.BoxGeometry(6.4, 8.4, 0.35),
-      new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.6, metalness: 0.05 }));
-    g.add(paper);
-    const clip = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.55, 0.55),
-      new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.35, metalness: 0.35 }));
-    clip.position.set(0, 4.45, 0.28);
-    g.add(clip);
-    const lineMat = new THREE.MeshStandardMaterial({ color: COLORS.primaryLight, roughness: 0.5 });
-    const widths = [4.6, 3.8, 4.3, 3.1, 4.5, 2.7, 3.6];
-    widths.forEach((w, i) => {
-      const l = new THREE.Mesh(new THREE.BoxGeometry(w, 0.3, 0.08), lineMat);
-      l.position.set(-3.0 + w / 2, 2.7 - i * 0.92, 0.22);
-      g.add(l);
-    });
-    const badge = makeLabel('PDF', { color: '#B91C1C', border: 'rgba(220,38,38,0.4)', sx: 2.6, sy: 1.1 });
-    badge.position.set(2.4, -3.6, 0.7);
-    g.add(badge);
-    /* Extrahierter Text: Partikel steigen aus dem Dokument auf */
-    const N = 220;
+    const core = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(2.45, 2),
+      new THREE.MeshStandardMaterial({
+        color: COLORS.primary, roughness: 0.28, metalness: 0.55,
+        emissive: COLORS.primaryLight, emissiveIntensity: 0.22, wireframe: true }));
+    g.add(core);
+    const shell = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(3.15, 1),
+      new THREE.MeshBasicMaterial({ color: COLORS.primaryLight, wireframe: true,
+                                    transparent: true, opacity: 0.12 }));
+    g.add(shell);
+    const N = 240;
     const pos = new Float32Array(N * 3);
-    const base = new Float32Array(N * 3);
-    const speed = new Float32Array(N);
     for (let i = 0; i < N; i++) {
-      base[i * 3] = -2.6 + rng() * 6.2;
-      base[i * 3 + 1] = -3.4 + rng() * 6.8;
-      base[i * 3 + 2] = 0.4 + rng() * 1.6;
-      speed[i] = 0.35 + rng() * 0.85;
-      pos[i * 3] = base[i * 3]; pos[i * 3 + 1] = base[i * 3 + 1]; pos[i * 3 + 2] = base[i * 3 + 2];
+      const r = 3.3 + rng() * 2.2;
+      const th = rng() * Math.PI * 2;
+      const ph = Math.acos(2 * rng() - 1);
+      pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+      pos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
+      pos[i * 3 + 2] = r * Math.cos(ph);
     }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const points = new THREE.Points(pGeo, new THREE.PointsMaterial({
-      color: COLORS.accent, size: 0.11, transparent: true, opacity: 0.75, sizeAttenuation: true }));
-    g.add(points);
+    const cloud = new THREE.Points(pGeo, new THREE.PointsMaterial({
+      color: COLORS.accent, size: 0.09, transparent: true, opacity: 0.8,
+      sizeAttenuation: true }));
+    g.add(cloud);
+    const rings = [];
+    [0.0, Math.PI / 3, -Math.PI / 3].forEach((rx, i) => {
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(3.5 + i * 0.22, 0.035, 8, 96),
+        new THREE.MeshBasicMaterial({ color: i === 1 ? COLORS.accent : COLORS.primaryLight,
+                                      transparent: true, opacity: 0.55 }));
+      ring.rotation.x = rx;
+      ring.rotation.y = i * 0.6;
+      g.add(ring); rings.push(ring);
+    });
+    const label = makeLabel(L.brain || 'Orchestrator', { sx: 4.4, sy: 1.05 });
+    label.position.set(0, 4.7, 0);
+    g.add(label);
     return { group: g, update: (t) => {
-      g.position.y = Math.sin(t * 0.6) * 0.22;
-      g.rotation.y = Math.sin(t * 0.32) * 0.12;
-      const arr = pGeo.attributes.position.array;
-      for (let i = 0; i < N; i++) {
-        let y = base[i * 3 + 1] + ((t * speed[i] * 1.4) % 8.4);
-        if (y > 5.0) y -= 8.4;
-        arr[i * 3] = base[i * 3] + Math.sin(t * 0.9 + i) * 0.16;
-        arr[i * 3 + 1] = y;
-      }
-      pGeo.attributes.position.needsUpdate = true;
+      core.rotation.y = t * 0.38; core.rotation.x = t * 0.11;
+      shell.rotation.y = -t * 0.16; shell.rotation.z = t * 0.07;
+      core.scale.setScalar(1 + Math.sin(t * 1.7) * 0.035);
+      cloud.rotation.y = t * 0.11;
+      cloud.rotation.x = Math.sin(t * 0.23) * 0.16;
+      rings.forEach((r, i) => { r.rotation.z = t * (0.22 + i * 0.08); });
     } };
   }
 
-  function buildChain() {
+  /* 2) Die Loop: fünf Stationen der Runner-Queue auf einer Ringbahn,
+     ein goldener Impuls läuft im Kreis. */
+  function buildLoop() {
     const g = new THREE.Group();
+    const L = window.__KMHR_LABELS__ || {};
+    const rings = [];
+    [{ r: 3.2, tube: 0.10, color: COLORS.primaryLight, rx: 0.0, ry: 0.0 },
+     { r: 3.65, tube: 0.05, color: COLORS.accent, rx: 0.5, ry: 0.3 },
+     { r: 2.75, tube: 0.05, color: COLORS.sky, rx: -0.5, ry: -0.3 }].forEach((s) => {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(s.r, s.tube, 10, 96),
+        new THREE.MeshBasicMaterial({ color: s.color, transparent: true, opacity: 0.6 }));
+      ring.rotation.x = s.rx; ring.rotation.y = s.ry;
+      g.add(ring); rings.push(ring);
+    });
+    const nodeGeo = new THREE.OctahedronGeometry(0.22, 0);
+    const nodes = [];
+    const nodeLabels = ['Queue', 'Claim', 'Task', 'Retry', 'Done'];
+    for (let i = 0; i < 5; i++) {
+      const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
+      const node = new THREE.Mesh(nodeGeo, new THREE.MeshStandardMaterial({
+        color: i === 4 ? COLORS.accent : COLORS.primaryLight,
+        emissive: i === 4 ? COLORS.accent : COLORS.primaryLight,
+        emissiveIntensity: 0.25, roughness: 0.35, metalness: 0.25 }));
+      node.position.set(Math.cos(a) * 3.2, Math.sin(a) * 3.2, 0);
+      g.add(node); nodes.push(node);
+      const lab = makeLabel(nodeLabels[i], { px: 56, sx: 2.5, sy: 0.75 });
+      lab.position.set(Math.cos(a) * 4.25, Math.sin(a) * 4.25, 0);
+      g.add(lab);
+    }
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16),
+      new THREE.MeshBasicMaterial({ color: COLORS.accent }));
+    g.add(orb);
+    const label = makeLabel(L.loop || '60-s-Loop', { sx: 4.2, sy: 1.0 });
+    label.position.set(0, 5.0, 0);
+    g.add(label);
+    return { group: g, update: (t, local) => {
+      rings.forEach((r, i) => { r.rotation.z = t * (0.18 + i * 0.09); });
+      nodes.forEach((n, i) => {
+        n.rotation.y = t * 0.8 + i;
+        n.scale.setScalar(1 + 0.18 * Math.sin(t * 2.4 + i * 1.1));
+      });
+      const a = ((local || 0) * 0.95) % (Math.PI * 2) - Math.PI / 2;
+      orb.position.set(Math.cos(a) * 3.2, Math.sin(a) * 3.2, 0.4);
+    } };
+  }
+
+  /* 3) Die Sub-Agenten: zehn spezialisierte Aufgaben-Knoten auf einem Bogen. */
+  function buildSubAgents() {
+    const g = new THREE.Group();
+    const L = window.__KMHR_LABELS__ || {};
     const nodes = [];
     const pts = [];
-    const geo = new THREE.IcosahedronGeometry(0.55, 1);
+    const geo = new THREE.IcosahedronGeometry(0.5, 1);
     for (let i = 0; i < TASKS.length; i++) {
-      const x = -9.2 + i * (18.4 / (TASKS.length - 1));
-      const y = Math.sin((i / (TASKS.length - 1)) * Math.PI) * 2.1 - 1.1;
-      const z = Math.sin(i * 1.7) * 0.6;
+      const x = -8.2 + i * (16.4 / (TASKS.length - 1));
+      const y = Math.sin((i / (TASKS.length - 1)) * Math.PI) * 1.4 + 0.2;
+      const z = Math.sin(i * 1.7) * 0.55;
       const mat = new THREE.MeshStandardMaterial({
         color: COLORS.primaryLight, roughness: 0.35, metalness: 0.2,
         emissive: COLORS.primaryLight, emissiveIntensity: 0.12 });
       const m = new THREE.Mesh(geo, mat);
       m.position.set(x, y, z);
-      g.add(m);
-      nodes.push(m);
+      g.add(m); nodes.push(m);
       pts.push(new THREE.Vector3(x, y, z));
-      const label = makeLabel(TASKS[i], { px: 62, sx: 3.5, sy: 0.9 });
-      label.position.set(x, y - 1.3, z);
+      const label = makeLabel(TASKS[i], { px: 52, sx: 2.9, sy: 0.78 });
+      // Drei feste Zeilen unterhalb der Knoten: verhindert Überlappung der
+      // 10 langen Task-Namen und der Kugeln.
+      label.position.set(x, -1.2 - (i % 3) * 0.8, 1.2);
       g.add(label);
     }
     const line = new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(pts),
       new THREE.LineBasicMaterial({ color: COLORS.accent, transparent: true, opacity: 0.65 }));
     g.add(line);
+    const label = makeLabel(L.subagents || '10 Sub-Agenten', { sx: 4.8, sy: 1.05 });
+    label.position.set(0, 4.2, 0);
+    g.add(label);
     return { group: g, update: (t, local, active) => {
       const p = active ? (local * 2.1) % TASKS.length : 0;
       nodes.forEach((m, i) => {
         const d = Math.abs(i - p);
         const glow = Math.max(0, 1 - d);
-        m.scale.setScalar(1 + 0.32 * glow);
+        m.scale.setScalar(1 + 0.3 * glow);
         m.material.emissiveIntensity = 0.12 + 0.55 * glow;
       });
       line.material.opacity = 0.5 + 0.2 * Math.sin(t * 1.1);
     } };
   }
 
-  function buildScore() {
+  /* 4) Die Werkzeuge: MCP-Konnektoren als Werkzeug-Pods um einen Hub. */
+  function buildTools() {
     const g = new THREE.Group();
+    const L = window.__KMHR_LABELS__ || {};
+    const tools = ['filesystem', 'pdf-reader', 'Recht', 'E-Mail',
+                   'Meeting', 'Sprachtest', 'Benchmark', 'Gehalt'];
+    const hub = new THREE.Mesh(new THREE.OctahedronGeometry(0.9, 0),
+      new THREE.MeshStandardMaterial({
+        color: COLORS.accent, roughness: 0.3, metalness: 0.45,
+        emissive: COLORS.accent, emissiveIntensity: 0.18 }));
+    hub.position.set(0, 0.4, 0);
+    g.add(hub);
+    const pods = [];
+    const linePts = [];
+    tools.forEach((name, i) => {
+      const a = (i / tools.length) * Math.PI * 2 - Math.PI / 2;
+      const x = Math.cos(a) * 5.0;
+      const y = Math.sin(a) * 2.9 + 0.4;
+      const geo = i % 3 === 0 ? new THREE.BoxGeometry(0.85, 0.85, 0.85)
+                : i % 3 === 1 ? new THREE.CylinderGeometry(0.45, 0.45, 0.8, 16)
+                : new THREE.SphereGeometry(0.5, 18, 18);
+      const pod = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+        color: i % 2 ? COLORS.primaryLight : COLORS.primary,
+        roughness: 0.35, metalness: 0.3,
+        emissive: i % 2 ? COLORS.primaryLight : COLORS.primary,
+        emissiveIntensity: 0.12 }));
+      pod.position.set(x, y, 0);
+      g.add(pod);
+      pods.push({ m: pod, y0: y, phase: i * 0.7 });
+      linePts.push(new THREE.Vector3(0, 0.4, 0), new THREE.Vector3(x, y, 0));
+      const lab = makeLabel(name, { px: 56, sx: 3.0, sy: 0.8 });
+      lab.position.set(Math.cos(a) * 6.15, Math.sin(a) * 3.5 + 0.4, 0);
+      g.add(lab);
+    });
+    const lines = new THREE.LineSegments(
+      new THREE.BufferGeometry().setFromPoints(linePts),
+      new THREE.LineBasicMaterial({ color: COLORS.sky, transparent: true, opacity: 0.42 }));
+    g.add(lines);
+    const label = makeLabel(L.tools || 'MCP-Werkzeuge', { sx: 4.6, sy: 1.05 });
+    label.position.set(0, 5.0, 0);
+    g.add(label);
+    return { group: g, update: (t) => {
+      hub.rotation.y = t * 0.5; hub.rotation.x = t * 0.2;
+      pods.forEach((p, i) => {
+        p.m.rotation.y = t * 0.6 + i;
+        p.m.position.y = p.y0 + Math.sin(t * 1.4 + p.phase) * 0.12;
+        p.m.scale.setScalar(1 + 0.08 * Math.sin(t * 2.2 + p.phase));
+      });
+    } };
+  }
+
+  /* 5) Das Ergebnis: Score-Karte mit sieben Kategorien, Häkchen und
+     dem menschlichen Entscheid als Fußzeile. */
+  function buildResult() {
+    const g = new THREE.Group();
+    const L = window.__KMHR_LABELS__ || {};
+    const card = new THREE.Mesh(new THREE.BoxGeometry(15.5, 7.2, 0.35),
+      new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+    card.position.set(0, 0.0, -0.45);
+    g.add(card);
     const bars = [];
     const maxV = 30;
     KATEGORIEN.forEach((kat, i) => {
-      const h = 1.4 + (kat[1] / maxV) * 4.1;
-      const mat = new THREE.MeshStandardMaterial({
-        color: i % 2 ? COLORS.primary : COLORS.primaryLight, roughness: 0.4, metalness: 0.15 });
-      const bar = new THREE.Mesh(new THREE.BoxGeometry(1.35, 1, 1.35), mat);
-      const x = -6.9 + i * 2.3;
+      const h = 0.8 + (kat[1] / maxV) * 2.8;
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1, 1.1),
+        new THREE.MeshStandardMaterial({
+          color: i % 2 ? COLORS.primary : COLORS.primaryLight,
+          roughness: 0.4, metalness: 0.15 }));
+      const x = -6.0 + i * 2.0;
       bar.position.set(x, 0, 0);
       bar.scale.y = 0.001;
       g.add(bar);
       bars.push({ mesh: bar, h: h });
-      const cap = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.18, 1.5),
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.15, 1.25),
         new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.3, metalness: 0.35 }));
-      cap.position.set(x, h + 0.12, 0);
+      cap.position.set(x, 0, 0);
       cap.scale.y = 0.001;
       g.add(cap);
       bars[i].cap = cap;
-      const label = makeLabel(kat[0], { px: 70, sx: 2.5, sy: 0.85 });
-      label.position.set(x, -1.35, 0);
+      const label = makeLabel(kat[0], { px: 54, sx: 2.15, sy: 0.74 });
+      label.position.set(x, -1.5, 0.2);
       g.add(label);
     });
-    const head = makeLabel('Score 0–100', { color: '#B45309', border: 'rgba(245,158,11,0.5)', sx: 5.0, sy: 1.25 });
-    head.position.set(0, 6.3, 0);
+    const check = makeLabel('✓', { px: 110, sx: 1.6, sy: 1.6,
+      color: '#B45309', bg: 'rgba(245,158,11,0.18)', border: 'rgba(245,158,11,0.55)' });
+    check.position.set(0, 4.5, 0.3);
+    g.add(check);
+    const head = makeLabel(L.result || 'Score 0–100',
+      { color: '#B45309', border: 'rgba(245,158,11,0.5)', sx: 4.6, sy: 1.05 });
+    head.position.set(0, 5.7, 0.3);
     g.add(head);
+    const foot = makeLabel(L.result_foot || 'Mensch entscheidet · VDO.Ninja · Onboarding',
+      { px: 46, sx: 7.2, sy: 0.85 });
+    foot.position.set(0, -2.9, 0.3);
+    g.add(foot);
     return { group: g, update: (t, local, active) => {
       bars.forEach((b, i) => {
         const grow = active ? smooth(local * 1.3 - i * 0.11) : 1;
@@ -551,134 +635,8 @@ import * as THREE from '/static/three/three.module.js';
         b.cap.scale.y = s;
         b.cap.position.y = b.h * s + 0.12;
       });
-      g.rotation.y = Math.sin(t * 0.25) * 0.14;
-    } };
-  }
-
-  function buildCompliance() {
-    const g = new THREE.Group();
-    const parts = [];
-    ['DE', 'FR', 'CH'].forEach((land, i) => {
-      const x = -5.6 + i * 5.6;
-      const shield = new THREE.Mesh(new THREE.CylinderGeometry(2.15, 2.15, 0.5, 6),
-        new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.55, metalness: 0.1 }));
-      shield.rotation.x = Math.PI / 2;
-      shield.position.set(x, 0.6, 0);
-      g.add(shield);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(2.15, 0.1, 12, 48),
-        new THREE.MeshStandardMaterial({ color: COLORS.primaryLight, roughness: 0.35, metalness: 0.3 }));
-      ring.position.set(x, 0.6, 0.05);
-      g.add(ring);
-      const check = makeLabel('✓', { px: 110, sx: 1.7, sy: 1.7,
-        color: '#B45309', bg: 'rgba(245,158,11,0.16)', border: 'rgba(245,158,11,0.5)' });
-      check.position.set(x, 0.75, 0.6);
-      g.add(check);
-      const label = makeLabel(land, { sx: 2.4, sy: 1.1, px: 84 });
-      label.position.set(x, -2.6, 0);
-      g.add(label);
-      parts.push({ shield: shield, ring: ring, phase: i * 0.9 });
-    });
-    return { group: g, update: (t) => {
-      parts.forEach((p) => {
-        const bob = Math.sin(t * 1.1 + p.phase) * 0.22;
-        p.shield.position.y = 0.6 + bob;
-        p.ring.position.y = 0.6 + bob;
-        p.ring.rotation.z = t * 0.35 + p.phase;
-      });
-    } };
-  }
-
-  function buildHR() {
-    const g = new THREE.Group();
-    const diamond = new THREE.Mesh(new THREE.OctahedronGeometry(1.5),
-      new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.3, metalness: 0.45 }));
-    diamond.position.set(-6.4, 1.0, 0);
-    g.add(diamond);
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(5.2, 3.3, 0.35),
-      new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.55 }));
-    frame.position.set(0, 1.0, 0);
-    g.add(frame);
-    const screen = new THREE.Mesh(new THREE.BoxGeometry(4.5, 2.6, 0.06),
-      new THREE.MeshStandardMaterial({ color: COLORS.primaryLight, roughness: 0.25, metalness: 0.2 }));
-    screen.position.set(0, 1.0, 0.22);
-    g.add(screen);
-    [-1.15, 1.15].forEach((x) => {
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.52, 20, 20),
-        new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.5 }));
-      head.position.set(x, 1.35, 0.5);
-      g.add(head);
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.8, 20, 20),
-        new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.5 }));
-      body.position.set(x, 0.35, 0.5);
-      body.scale.y = 0.62;
-      g.add(body);
-    });
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 5.2, 12),
-      new THREE.MeshStandardMaterial({ color: COLORS.primary, roughness: 0.4, metalness: 0.3 }));
-    pole.position.set(6.4, 1.4, 0);
-    g.add(pole);
-    const flag = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.5, 0.1),
-      new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.45 }));
-    flag.position.set(7.6, 3.3, 0);
-    g.add(flag);
-    const l1 = makeLabel((window.__KMHR_LABELS__||{}).hr || 'HR-Entscheidung', { sx: 4.2, sy: 1.05 }); l1.position.set(-6.4, -1.9, 0); g.add(l1);
-    const l2 = makeLabel((window.__KMHR_LABELS__||{}).vdo || 'VDO.Ninja Meeting', { sx: 4.4, sy: 1.05 }); l2.position.set(0, -1.9, 0); g.add(l2);
-    const l3 = makeLabel('Onboarding', { sx: 3.6, sy: 1.05 }); l3.position.set(7.0, -1.9, 0); g.add(l3);
-    const pathPts = [new THREE.Vector3(-6.4, 1.0, 0.4), new THREE.Vector3(0, 1.0, 0.4), new THREE.Vector3(7.0, 2.6, 0.4)];
-    const path = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pathPts),
-      new THREE.LineBasicMaterial({ color: COLORS.accent, transparent: true, opacity: 0.6 }));
-    g.add(path);
-    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.32, 16, 16),
-      new THREE.MeshBasicMaterial({ color: COLORS.accent }));
-    g.add(orb);
-    return { group: g, update: (t, local, active) => {
-      diamond.rotation.y = t * 0.5;
-      diamond.rotation.x = t * 0.22;
-      const u = active ? (local % 3.2) / 3.2 : 0;
-      if (u < 0.5) {
-        const f = u * 2;
-        orb.position.set(lerp(-6.4, 0, f), lerp(1.0, 1.0, f), 0.45);
-      } else {
-        const f = (u - 0.5) * 2;
-        orb.position.set(lerp(0, 7.0, f), lerp(1.0, 2.6, f), 0.45);
-      }
-      flag.rotation.y = Math.sin(t * 1.1) * 0.18;
-    } };
-  }
-
-  function buildQuantum() {
-    const g = new THREE.Group();
-    const N = 1600;
-    const pos = new Float32Array(N * 3);
-    const col = new Float32Array(N * 3);
-    const cA = new THREE.Color(COLORS.primaryLight);
-    const cB = new THREE.Color(COLORS.accent);
-    for (let i = 0; i < N; i++) {
-      const r = 5 + rng() * 9.5;
-      const th = rng() * Math.PI * 2;
-      const ph = Math.acos(2 * rng() - 1);
-      pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
-      pos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th) * 0.72;
-      pos[i * 3 + 2] = r * Math.cos(ph);
-      const c = rng() < 0.72 ? cA : cB;
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    const cloud = new THREE.Points(geo, new THREE.PointsMaterial({
-      size: 0.14, vertexColors: true, transparent: true, opacity: 0.85, sizeAttenuation: true }));
-    g.add(cloud);
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(7.2, 0.1, 12, 96),
-      new THREE.MeshBasicMaterial({ color: COLORS.accent, transparent: true, opacity: 0.5 }));
-    ring.rotation.x = Math.PI / 2.4;
-    g.add(ring);
-    return { group: g, update: (t) => {
-      g.rotation.y = t * 0.055;
-      g.rotation.x = 0.22 + Math.sin(t * 0.08) * 0.1;
-      const s = 1 + Math.sin(t * 0.55) * 0.035;
-      g.scale.setScalar(s);
-      ring.rotation.z = t * 0.12;
+      check.scale.setScalar(1 + Math.sin(t * 2.2) * 0.06);
+      g.rotation.y = Math.sin(t * 0.22) * 0.06;
     } };
   }
 
@@ -695,7 +653,9 @@ import * as THREE from '/static/three/three.module.js';
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(COLORS.bg);
-    scene.fog = new THREE.Fog(COLORS.bg, 20, 95);
+    // Straffe Nebelgrenze: aktive Station (13 Einheiten vor der Kamera) bleibt
+    // klar, die nächste Station (43 Einheiten) verschwindet im Hintergrund.
+    scene.fog = new THREE.Fog(COLORS.bg, 18, 52);
 
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 400);
     camera.position.set(0, 2.1, 13);
@@ -708,7 +668,7 @@ import * as THREE from '/static/three/three.module.js';
     warm.position.set(-8, 4, -6);
     scene.add(warm);
 
-    const builders = [buildNetwork, buildDoc, buildChain, buildScore, buildCompliance, buildHR, buildQuantum];
+    const builders = [buildBrain, buildLoop, buildSubAgents, buildTools, buildResult];
     const stations = builders.map((build, i) => {
       const st = build();
       st.group.position.z = -SPACING * i;
@@ -728,6 +688,12 @@ import * as THREE from '/static/three/three.module.js';
 
     const reduceQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
     S.reduce = !!(reduceQuery && reduceQuery.matches);
+    const pauseEl = document.getElementById('kmhr-pause');
+    if (pauseEl && S.reduce) {
+      pauseEl.disabled = true;
+      pauseEl.title = 'Statisch (Reduced Motion)';
+      pauseEl.setAttribute('aria-label', 'Statisch (Reduced Motion)');
+    }
 
     function cameraZ(t) {
       for (let i = 0; i < CH.length; i++) {
@@ -770,7 +736,10 @@ import * as THREE from '/static/three/three.module.js';
     window.__kmhr = {
       seek: (sec) => { S.startTime = performance.now() - sec * 1000; },
       state: () => {
-        const t = S.reduce ? CH[S.staticIdx].t0 + 0.2 : (performance.now() - S.startTime) / 1000;
+        // Pause einfrieren: sonst meldet der Debug-Hook eine laufende Zeit,
+        // obwohl frame() bereits vor der Aktualisierung zurückkehrt.
+        const now = S.pausedAt !== null ? S.pausedAt : performance.now();
+        const t = S.reduce ? CH[S.staticIdx].t0 + 0.2 : (now - S.startTime) / 1000;
         return { t: t, camZ: camera.position.z, idx: activeIndex(Math.min(t, TOTAL)),
                  reduce: S.reduce, frames: S.frames, loops: S.loops, total: TOTAL,
                  count: S.countEl ? S.countEl.textContent : null,
@@ -838,39 +807,35 @@ import * as THREE from '/static/three/three.module.js';
 # Kapiteltexte der Animation (Phase 2b 02.10.2026). Reihenfolge = JS-`CH`-Array;
 # die übersetzten Texte werden als window.__KMHR_CH__ ins JS injiziert.
 _CHAPTERS = [
-    ("Start", "Das Netzwerk",
-     "Kandidaten aus Nordafrika treffen auf Arbeitgeber in DE, FR und CH."),
-    ("Zoom 1", "CV-Upload → PDF-Extraktion",
-     "Der Lebenslauf wird hochgeladen und als Text ausgelesen."),
-    ("Zoom 2", "Agent-Kette: 10 Tasks",
-     "Zehn Aufgaben laufen automatisch – von der Bestätigung bis zur Benachrichtigung."),
-    ("Zoom 3", "Matching-Score: 7 Kategorien",
-     "Sieben Kategorien ergeben einen Score von 0 bis 100."),
-    ("Zoom 4", "Compliance DE / FR / CH",
-     "Rechtsprüfung nach Land – bevor es weitergeht."),
-    ("Zoom 5", "HR entscheidet",
-     "Einladen, ablehnen oder einstellen – dann Video-Meeting (VDO.Ninja) und Onboarding."),
-    ("Ende", "Das Quantenfeld",
-     "Zeit sparen, rechtssicher, kulturell passend. Jetzt: Login."),
+    ("Kapitel 1", "Das Gehirn",
+     "Der Orchestrator plant jede Aufgabe und behält den Überblick."),
+    ("Kapitel 2", "Die Loop",
+     "Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task."),
+    ("Kapitel 3", "Die Sub-Agenten",
+     "Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab."),
+    ("Kapitel 4", "Die Werkzeuge",
+     "MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests."),
+    ("Kapitel 5", "Das Ergebnis",
+     "Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet."),
 ]
 
 # 3D-Labels der Animation (Phase 2b). Werden als window.__KMHR_LABELS__ injiziert.
 _LABELS = {
-    "kandidaten": "Kandidaten · Nordafrika",
-    "arbeitgeber": "Arbeitgeber · DE / FR / CH",
-    "hr": "HR-Entscheidung",
-    "vdo": "VDO.Ninja Meeting",
+    "brain": "Orchestrator",
+    "loop": "60-s-Loop",
+    "subagents": "10 Sub-Agenten",
+    "tools": "MCP-Werkzeuge",
+    "result": "Score 0–100",
+    "result_foot": "Mensch entscheidet · VDO.Ninja · Onboarding",
 }
 
 # Aufklappbarer Bereich: EINE kurze Zeile pro Schritt (Text) + Quellen separat.
 _STEP_LINES = [
-    "Start – Kandidaten (Nordafrika) und Arbeitgeber (DE / FR / CH) als Netzwerk.",
-    "CV-Upload → PDF-Extraktion.",
-    "Agent-Kette mit 10 Tasks.",
-    "Matching-Score mit 7 Kategorien.",
-    "Compliance DE / FR / CH.",
-    "HR-Entscheidung (einladen, ablehnen, einstellen) → Video-Meeting per VDO.Ninja → Onboarding.",
-    "Ende – Übergang zum Login, Quantenfeld als Vision.",
+    "Das Gehirn – der Orchestrator plant und verteilt die Aufgaben.",
+    "Die Loop – der Runner holt alle 60 Sekunden neue Tasks aus der Queue.",
+    "Die Sub-Agenten – zehn spezialisierte Schritte von Extraktion bis Benachrichtigung.",
+    "Die Werkzeuge – MCP-Connectoren für PDF, Recht, Mail, Meeting und Sprachtests.",
+    "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet.",
 ]
 
 # Häufige Fragen (P1.2, Bipperz-Muster 02.10.2026). Antworten aus dem Projekt
@@ -982,7 +947,7 @@ def create() -> None:
             # Schritt B (Nutzerentscheidung 02.10.2026): die 30-s-Animation ist das
             # Alleinstellungsmerkmal → früh sichtbar. Überschrift/Dauer: TOTAL = 30.0.
             ui.html('<div id="kmhr-ablauf"></div>')
-            ui.label(_("Der Ablauf – in 30 Sekunden")).classes("kmhr-h2")
+            ui.label(_("Das Agenten-Prinzip – in 30 Sekunden")).classes("kmhr-h2")
             # w-full am ui.html-Wrapper ist NOTWENDIG: NiceGUI-Spalten haben
             # align-items:flex-start, das anonyme Wrapper-Element schrumpft sonst
             # auf 0 px (Bug-Fund 02.10.2026, Messung: Host war 2 px breit).

@@ -101,7 +101,8 @@
       "skills/notify-user/SKILL.md",
       "skills/pre-screen/SKILL.md",
       "skills/store-feedback/SKILL.md",
-      "skills/verify-documents/SKILL.md"
+      "skills/verify-documents/SKILL.md",
+      "ui/ANIMATION_ENTSCHEIDUNG.md"
     ],
     "source_exclude": [],
     "source_include": [
@@ -112,7 +113,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-25T13:53:51+00:00",
+  "at": "2026-10-25T16:04:06+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

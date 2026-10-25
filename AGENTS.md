@@ -9,6 +9,7 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
 - **`scripts/agent-runner.py`**: Hintergrund-Runner, Queue `agent_tasks`, 60-s-Loop, max. 3 Versuche pro Task. Startet mit der App (PID `data/agent-runner.pid`), Opt-out `KMHR_RUNNER_AUTOSTART=0`. Dry-Run: `.venv-streamlit/bin/python3 scripts/agent-runner.py --once --dry-run`.
 - **MCP-Connectoren** (`connectors/`, `mcp-*-server.py`, `scripts/language-test-server.py`) sind in `opencode.json` registriert. Root-MCP-Server laufen mit `.venv-pdf/bin/python3`, `connectors/*` und Language-Test mit System-`python3`. Externe Dienste nur darüber ansprechen; direkter HTTP-Aufruf nur NVIDIA-API im Runner. In Code/Doku nur Tool-Namen aus `opencode.json` nennen (`fetch`, `anysearch`; `websearch`/`webfetch` gibt es dort nicht).
 - **Wissensbasis**: `knowledge/` (Specs, Index `knowledge.md`), `skills/*/SKILL.md` (Übersicht `skills/README.md`). Maßgeblich je Gebiet ist die Spec, z. B. `knowledge/system/configuration-secrets.md`, `knowledge/system/agent-automation.md`, `knowledge/system/access-control.md`, `knowledge/system/i18n.md`, `knowledge/system/doku-authority.md`, `knowledge/system/md-schreib-konvention.md`.
+- **Landingpage-Animation**: `webui/pages/landing.py` (5 Kapitel: Gehirn, Loop, Sub-Agenten, Werkzeuge, Ergebnis; Three.js lokal); Entscheidung/Quellen in `ui/ANIMATION_ENTSCHEIDUNG.md`.
 
 ## Setup & Start
 

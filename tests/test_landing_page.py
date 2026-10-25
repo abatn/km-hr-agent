@@ -75,13 +75,13 @@ def _js_ch_windows(src):
 
 
 def test_dauer_exakt_30_sekunden():
-    """Pkt. 1: TOTAL = 30.0; 7 Fenster liegen in 0–30 s, sortiert, ohne Überlappung."""
+    """Pkt. 1: TOTAL = 30.0; 5 Fenster liegen in 0–30 s, sortiert, ohne Überlappung."""
     import re
     src = LANDING.read_text(encoding="utf-8")
     assert re.search(r"const TOTAL = 30\.0;", src)
     assert "TOTAL = 32" not in src
     w = _js_ch_windows(src)
-    assert len(w) == 7
+    assert len(w) == 5
     assert w[0][0] == 0.0 and w[-1][1] == 30.0
     for (a0, a1), (b0, b1) in zip(w, w[1:]):
         assert a0 < a1 <= b0 < b1
@@ -90,9 +90,9 @@ def test_dauer_exakt_30_sekunden():
 
 
 def test_ueberschrift_konsistent():
-    """Pkt. 5."""
+    """Pkt. 5: Die Animation erklärt das Agenten-Prinzip in 30 Sekunden."""
     src = LANDING.read_text(encoding="utf-8")
-    assert 'ui.label(_("Der Ablauf – in 30 Sekunden"))' in src
+    assert 'ui.label(_("Das Agenten-Prinzip – in 30 Sekunden"))' in src
     assert "30 Sekunden erklärt" not in src
 
 
@@ -117,8 +117,29 @@ def test_minimalismus_details_aufklappbar():
     spec = importlib.util.spec_from_file_location("landing_mod", LANDING)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    assert len(mod._STEP_LINES) == 7
+    assert len(mod._STEP_LINES) == 5
     assert all(len(z) <= 100 for z in mod._STEP_LINES)    # eine kurze Zeile je Schritt
+
+
+def test_kapitelstruktur_synchron():
+    """5 Kapitel: JS-CH, Python-_CHAPTERS, _STEP_LINES und builders bleiben synchron.
+    Schützt vor der stillen Desynchronisierung (deutsche Restkapitel/leere Kamera)."""
+    import importlib.util
+    import re
+    src = LANDING.read_text(encoding="utf-8")
+    spec = importlib.util.spec_from_file_location("landing_mod_sync", LANDING)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert len(mod._CHAPTERS) == 5
+    assert len(mod._STEP_LINES) == 5
+    ch_ids = re.findall(r"\{ id: '(\w+)', zi: (\d+), t0:", src)
+    assert len(ch_ids) == 5
+    assert [int(zi) for _, zi in ch_ids] == list(range(5))
+    builders = re.search(r"const builders = \[(.*?)\];", src, re.S).group(1)
+    assert len([b for b in builders.split(",") if b.strip()]) == 5
+    # Jedes injizierte 3D-Label wird im JS auch als L.<key> gelesen.
+    for key in mod._LABELS:
+        assert f"L.{key}" in src or f"__KMHR_LABELS__ || {{}}).{key}" in src
 
 
 def test_zahlen_gegen_quellcode_gezaehlt():

@@ -3588,3 +3588,84 @@ msgstr "Rapport de validation"
 
 msgid "Einladung wird vorbereitet"
 msgstr "L'invitation est en cours de préparation"
+
+msgid "Das Agenten-Prinzip – in 30 Sekunden"
+msgstr "Le principe de l'agent – en 30 secondes"
+
+msgid "Kapitel 1"
+msgstr "Chapitre 1"
+
+msgid "Das Gehirn"
+msgstr "Le cerveau"
+
+msgid "Der Orchestrator plant jede Aufgabe und behält den Überblick."
+msgstr "L'orchestrateur planifie chaque tâche et garde une vue d'ensemble."
+
+msgid "Kapitel 2"
+msgstr "Chapitre 2"
+
+msgid "Die Loop"
+msgstr "La boucle"
+
+msgid "Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task."
+msgstr "Le runner interroge la file toutes les 60 secondes – jusqu'à trois tentatives par tâche."
+
+msgid "Kapitel 3"
+msgstr "Chapitre 3"
+
+msgid "Die Sub-Agenten"
+msgstr "Les sous-agents"
+
+msgid "Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab."
+msgstr "Dix agents spécialisés traitent la candidature étape par étape."
+
+msgid "Kapitel 4"
+msgstr "Chapitre 4"
+
+msgid "Die Werkzeuge"
+msgstr "Les outils"
+
+msgid "MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "Les connecteurs MCP relient PDF, droit, e-mail, réunion et tests linguistiques."
+
+msgid "Kapitel 5"
+msgstr "Chapitre 5"
+
+msgid "Das Ergebnis"
+msgstr "Le résultat"
+
+msgid "Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet."
+msgstr "Score, invitation via VDO.Ninja et onboarding – l'humain décide."
+
+msgid "Orchestrator"
+msgstr "Orchestrateur"
+
+msgid "60-s-Loop"
+msgstr "Boucle de 60 s"
+
+msgid "10 Sub-Agenten"
+msgstr "10 sous-agents"
+
+msgid "MCP-Werkzeuge"
+msgstr "Outils MCP"
+
+msgid "Score 0–100"
+msgstr "Score 0–100"
+
+msgid "Mensch entscheidet · VDO.Ninja · Onboarding"
+msgstr "L'humain décide · VDO.Ninja · Onboarding"
+
+msgid "Das Gehirn – der Orchestrator plant und verteilt die Aufgaben."
+msgstr "Le cerveau – l'orchestrateur planifie et répartit les tâches."
+
+msgid "Die Loop – der Runner holt alle 60 Sekunden neue Tasks aus der Queue."
+msgstr "La boucle – le runner récupère de nouvelles tâches toutes les 60 secondes."
+
+msgid "Die Sub-Agenten – zehn spezialisierte Schritte von Extraktion bis Benachrichtigung."
+msgstr "Les sous-agents – dix étapes spécialisées, de l'extraction à la notification."
+
+msgid "Die Werkzeuge – MCP-Connectoren für PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "Les outils – connecteurs MCP pour PDF, droit, e-mail, réunion et tests linguistiques."
+
+msgid "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
+msgstr "Le résultat – score, invitation via VDO.Ninja et onboarding ; l'humain décide."

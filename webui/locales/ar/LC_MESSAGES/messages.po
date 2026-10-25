@@ -3588,3 +3588,84 @@ msgstr "تقرير الإفراج"
 
 msgid "Einladung wird vorbereitet"
 msgstr "جارٍ تجهيز الدعوة"
+
+msgid "Das Agenten-Prinzip – in 30 Sekunden"
+msgstr "مبدأ الوكيل – في 30 ثانية"
+
+msgid "Kapitel 1"
+msgstr "الفصل 1"
+
+msgid "Das Gehirn"
+msgstr "الدماغ"
+
+msgid "Der Orchestrator plant jede Aufgabe und behält den Überblick."
+msgstr "المُنسّق يخطط لكل مهمة ويحافظ على النظرة الشاملة."
+
+msgid "Kapitel 2"
+msgstr "الفصل 2"
+
+msgid "Die Loop"
+msgstr "الحلقة"
+
+msgid "Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task."
+msgstr "يستعلم المشغّل عن قائمة الانتظار كل 60 ثانية – حتى ثلاث محاولات لكل مهمة."
+
+msgid "Kapitel 3"
+msgstr "الفصل 3"
+
+msgid "Die Sub-Agenten"
+msgstr "الوكلاء الفرعيون"
+
+msgid "Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab."
+msgstr "عشرة وكلاء متخصصون يعالجون الطلب خطوة بخطوة."
+
+msgid "Kapitel 4"
+msgstr "الفصل 4"
+
+msgid "Die Werkzeuge"
+msgstr "الأدوات"
+
+msgid "MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "موصلات MCP تربط PDF والقانون والبريد والاجتماعات واختبارات اللغة."
+
+msgid "Kapitel 5"
+msgstr "الفصل 5"
+
+msgid "Das Ergebnis"
+msgstr "النتيجة"
+
+msgid "Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet."
+msgstr "النتيجة والدعوة عبر VDO.Ninja والتهيئة – الإنسان يقرر."
+
+msgid "Orchestrator"
+msgstr "المُنسّق"
+
+msgid "60-s-Loop"
+msgstr "حلقة 60 ثانية"
+
+msgid "10 Sub-Agenten"
+msgstr "10 وكلاء فرعيون"
+
+msgid "MCP-Werkzeuge"
+msgstr "أدوات MCP"
+
+msgid "Score 0–100"
+msgstr "النتيجة 0–100"
+
+msgid "Mensch entscheidet · VDO.Ninja · Onboarding"
+msgstr "الإنسان يقرر · VDO.Ninja · التهيئة"
+
+msgid "Das Gehirn – der Orchestrator plant und verteilt die Aufgaben."
+msgstr "الدماغ – المُنسّق يخطط ويوزع المهام."
+
+msgid "Die Loop – der Runner holt alle 60 Sekunden neue Tasks aus der Queue."
+msgstr "الحلقة – يجلب المشغّل مهام جديدة من قائمة الانتظار كل 60 ثانية."
+
+msgid "Die Sub-Agenten – zehn spezialisierte Schritte von Extraktion bis Benachrichtigung."
+msgstr "الوكلاء الفرعيون – عشر خطوات متخصصة من الاستخراج إلى الإشعار."
+
+msgid "Die Werkzeuge – MCP-Connectoren für PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "الأدوات – موصلات MCP لـ PDF والقانون والبريد والاجتماعات واختبارات اللغة."
+
+msgid "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
+msgstr "النتيجة – النتيجة والدعوة عبر VDO.Ninja والتهيئة؛ الإنسان يقرر."

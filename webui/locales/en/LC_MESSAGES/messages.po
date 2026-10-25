@@ -3588,3 +3588,84 @@ msgstr "Release report"
 
 msgid "Einladung wird vorbereitet"
 msgstr "Invitation is being prepared"
+
+msgid "Das Agenten-Prinzip – in 30 Sekunden"
+msgstr "The agent principle – in 30 seconds"
+
+msgid "Kapitel 1"
+msgstr "Chapter 1"
+
+msgid "Das Gehirn"
+msgstr "The brain"
+
+msgid "Der Orchestrator plant jede Aufgabe und behält den Überblick."
+msgstr "The orchestrator plans every task and keeps the overview."
+
+msgid "Kapitel 2"
+msgstr "Chapter 2"
+
+msgid "Die Loop"
+msgstr "The loop"
+
+msgid "Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task."
+msgstr "The runner polls the queue every 60 seconds – up to three attempts per task."
+
+msgid "Kapitel 3"
+msgstr "Chapter 3"
+
+msgid "Die Sub-Agenten"
+msgstr "The sub-agents"
+
+msgid "Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab."
+msgstr "Ten specialised agents work through the application step by step."
+
+msgid "Kapitel 4"
+msgstr "Chapter 4"
+
+msgid "Die Werkzeuge"
+msgstr "The tools"
+
+msgid "MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "MCP connectors link PDF, law, email, meetings and language tests."
+
+msgid "Kapitel 5"
+msgstr "Chapter 5"
+
+msgid "Das Ergebnis"
+msgstr "The result"
+
+msgid "Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet."
+msgstr "Score, invitation via VDO.Ninja and onboarding – the human decides."
+
+msgid "Orchestrator"
+msgstr "Orchestrator"
+
+msgid "60-s-Loop"
+msgstr "60-second loop"
+
+msgid "10 Sub-Agenten"
+msgstr "10 sub-agents"
+
+msgid "MCP-Werkzeuge"
+msgstr "MCP tools"
+
+msgid "Score 0–100"
+msgstr "Score 0–100"
+
+msgid "Mensch entscheidet · VDO.Ninja · Onboarding"
+msgstr "Human decides · VDO.Ninja · Onboarding"
+
+msgid "Das Gehirn – der Orchestrator plant und verteilt die Aufgaben."
+msgstr "The brain – the orchestrator plans and distributes the tasks."
+
+msgid "Die Loop – der Runner holt alle 60 Sekunden neue Tasks aus der Queue."
+msgstr "The loop – the runner fetches new tasks from the queue every 60 seconds."
+
+msgid "Die Sub-Agenten – zehn spezialisierte Schritte von Extraktion bis Benachrichtigung."
+msgstr "The sub-agents – ten specialised steps from extraction to notification."
+
+msgid "Die Werkzeuge – MCP-Connectoren für PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "The tools – MCP connectors for PDF, law, email, meetings and language tests."
+
+msgid "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
+msgstr "The result – score, invitation via VDO.Ninja and onboarding; the human decides."

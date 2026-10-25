@@ -32,6 +32,8 @@ pairs:
   # --- Projekt-Wissensbasis (Catch-All: kein Source-File ohne verantwortliche Doku)
   - doc: AGENTS.md
     code: ["connectors/**", "docs/**", "scripts/**", "tests/**", "webui/**"]
+  - doc: ui/ANIMATION_ENTSCHEIDUNG.md
+    code: ["webui/pages/landing.py", "webui/static/three/**", "tests/test_landing_page.py", "tests/e2e_landing_chapters.py"]
   - doc: instructions.md
     code: ["webui/**", "scripts/**"]
   - doc: knowledge.md

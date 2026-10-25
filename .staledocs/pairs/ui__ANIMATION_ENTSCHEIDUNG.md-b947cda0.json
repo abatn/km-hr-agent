@@ -1,0 +1,39 @@
+{
+  "ack": {
+    "anchors": [
+      "THREE.Points",
+      "_CHAPTERS",
+      "_STEP_LINES",
+      "aria-hidden",
+      "ergebnisse/",
+      "ergebnisse/screenshots/landing-agent-ergebnis.png",
+      "ergebnisse/screenshots/landing-agent-prinzip.png",
+      "prefers-reduced-motion",
+      "tests/conftest.py",
+      "tests/e2e_landing_chapters.py",
+      "tests/test_landing_page.py::test_kapitelstruktur_synchron",
+      "three.core.js",
+      "three.module.js",
+      "type=\"importmap\"",
+      "ui/",
+      "webui/",
+      "webui/pages/landing.py",
+      "window.__kmhr",
+      "window.__kmhr.seek(t)"
+    ],
+    "at": "2026-10-25T15:42:32+00:00",
+    "code_blobs": {
+      "tests/e2e_landing_chapters.py": "8659af0e5f032d2a7134c70ff15d1070e122f3ff",
+      "tests/test_landing_page.py": "4c5ab676bf03774219ef90342a57f794c3ff4c71",
+      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
+      "webui/static/three/LICENSE": "8ada2a5f982916b0ba4b7a0aa7de347587e745d7",
+      "webui/static/three/three.core.js": "0a1d6cb9ef3cabc97a50bd02394c85e8d1c513c2",
+      "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426"
+    },
+    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
+    "doc_blob": "285c792f41f1d766c4779abe56c14b7c4151430d",
+    "note": "landing.py: 5 Builder/Stationen, window.__kmhr/seek, Reduced Motion und Screenshots im Test verifiziert"
+  },
+  "doc": "ui/ANIMATION_ENTSCHEIDUNG.md",
+  "schema": 1
+}

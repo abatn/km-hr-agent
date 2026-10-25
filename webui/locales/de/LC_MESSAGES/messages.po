@@ -3593,3 +3593,84 @@ msgstr "Freigabe-Report"
 
 msgid "Einladung wird vorbereitet"
 msgstr "Einladung wird vorbereitet"
+
+msgid "Das Agenten-Prinzip – in 30 Sekunden"
+msgstr "Das Agenten-Prinzip – in 30 Sekunden"
+
+msgid "Kapitel 1"
+msgstr "Kapitel 1"
+
+msgid "Das Gehirn"
+msgstr "Das Gehirn"
+
+msgid "Der Orchestrator plant jede Aufgabe und behält den Überblick."
+msgstr "Der Orchestrator plant jede Aufgabe und behält den Überblick."
+
+msgid "Kapitel 2"
+msgstr "Kapitel 2"
+
+msgid "Die Loop"
+msgstr "Die Loop"
+
+msgid "Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task."
+msgstr "Der Runner fragt alle 60 Sekunden die Queue ab – bis zu drei Versuche pro Task."
+
+msgid "Kapitel 3"
+msgstr "Kapitel 3"
+
+msgid "Die Sub-Agenten"
+msgstr "Die Sub-Agenten"
+
+msgid "Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab."
+msgstr "Zehn spezialisierte Agenten arbeiten die Bewerbung Schritt für Schritt ab."
+
+msgid "Kapitel 4"
+msgstr "Kapitel 4"
+
+msgid "Die Werkzeuge"
+msgstr "Die Werkzeuge"
+
+msgid "MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "MCP-Connectoren verbinden PDF, Recht, Mail, Meeting und Sprachtests."
+
+msgid "Kapitel 5"
+msgstr "Kapitel 5"
+
+msgid "Das Ergebnis"
+msgstr "Das Ergebnis"
+
+msgid "Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet."
+msgstr "Score, Einladung per VDO.Ninja und Onboarding – der Mensch entscheidet."
+
+msgid "Orchestrator"
+msgstr "Orchestrator"
+
+msgid "60-s-Loop"
+msgstr "60-s-Loop"
+
+msgid "10 Sub-Agenten"
+msgstr "10 Sub-Agenten"
+
+msgid "MCP-Werkzeuge"
+msgstr "MCP-Werkzeuge"
+
+msgid "Score 0–100"
+msgstr "Score 0–100"
+
+msgid "Mensch entscheidet · VDO.Ninja · Onboarding"
+msgstr "Mensch entscheidet · VDO.Ninja · Onboarding"
+
+msgid "Das Gehirn – der Orchestrator plant und verteilt die Aufgaben."
+msgstr "Das Gehirn – der Orchestrator plant und verteilt die Aufgaben."
+
+msgid "Die Loop – der Runner holt alle 60 Sekunden neue Tasks aus der Queue."
+msgstr "Die Loop – der Runner holt alle 60 Sekunden neue Tasks aus der Queue."
+
+msgid "Die Sub-Agenten – zehn spezialisierte Schritte von Extraktion bis Benachrichtigung."
+msgstr "Die Sub-Agenten – zehn spezialisierte Schritte von Extraktion bis Benachrichtigung."
+
+msgid "Die Werkzeuge – MCP-Connectoren für PDF, Recht, Mail, Meeting und Sprachtests."
+msgstr "Die Werkzeuge – MCP-Connectoren für PDF, Recht, Mail, Meeting und Sprachtests."
+
+msgid "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
+msgstr "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
