@@ -51,9 +51,10 @@
       "send_pre_screen_invitation",
       "skills/*/SKILL.md",
       "skills/README.md",
+      "social-agent",
       "testdaten/"
     ],
-    "at": "2026-10-25T16:51:39+00:00",
+    "at": "2026-10-25T17:42:51+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
@@ -68,6 +69,7 @@
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
+      "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "webui/__init__.py": "24b52011003ed30beeafdfe0de0892ed911693f9",
       "webui/asgi_guard.py": "fcabc30e84188dd8e42f99c175d360484bf008ac",
@@ -98,9 +100,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "e5d2156cc4e1752bd95babcbdf54b72d6c795244",
-    "doc_blob": "9a5b94620ceec0f2f6125c68df409b5fa64d4f16",
-    "note": "webui/main.py: KMHR_HOST/Cookie-Secure erg\u00e4nzt; MCP-Connector-Census unver\u00e4ndert"
+    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "doc_blob": "0ddf542041e3711499ed35e67aa842b00372afde",
+    "note": "instructions.md: Skill-Zahl auf 24 aktualisiert (skills/social-agent/SKILL.md neu)"
   },
   "doc": "instructions.md",
   "schema": 1

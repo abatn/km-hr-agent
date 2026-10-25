@@ -31,6 +31,7 @@ Der KM-HR-Agent besteht aus folgenden Skills, die auf MCP-Connectoren basieren:
 | `export-report` | Match-Ergebnisse als PDF/Excel exportieren | filesystem | write_file |
 | `notify-user` | Benachrichtigungen bei Top-Matches (E-Mail) | filesystem + email-sender | read_text_file + send_email |
 | `nicegui-migration` | Migration Streamlit→NiceGUI: framework-freie Layer (webui/db.py + logic.py) + webui/-App, Phasen-Doku + Inventar-Pflege | filesystem + SQLite | read_text_file + write_file |
+| `social-agent` | Autonomer Social-Media-Agent: 7-Tage-Plan, LinkedIn/Facebook/Instagram, Dry-Run-Outbox, DSGVO-Guard | — (Runtime-Adapter) | `scripts/social_agent.py` |
 
 ### Entfernte Skills (nie implementiert)
 
@@ -45,9 +46,9 @@ stehen in `ergebnisse/entscheidungen.md` (Phase-E P0, append-only).
 
 *Übernommen aus `knowledge.md` (S3-Dedup 10.10.2026) — die Nummern sind Skill-Inventar und gehören zur Skill-Übersicht.*
 
-Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Phase-E P0). Nummerierung = Sidebar-/Code-Numerierung der laufenden App (Upload = 0, kein SKILL.md).
+Zählung: `ls skills/*/SKILL.md | wc -l` = **24** (Stand 25.10.2026: `social-agent` ergänzt). Nummerierung = Sidebar-/Code-Numerierung der laufenden App (Upload = 0, kein SKILL.md).
 
-**Code-belegte Nummern (Codemarke + Messdatum ⓘ09.10.2026, `app.py` = Archiv):** 0 (Codemarke `Skill 0: Upload`, `app.py` Archiv), 4 (Sidebar `4️⃣ Contact Candidate`, `app.py` Archiv), 6 (Sidebar `6️⃣ Pre-Screen`, `app.py` Archiv), 9 (Codemarke `Skill 9: explain-match`, `app.py` Archiv + Runner-Prompt `explain_match`, `scripts/agent-runner.py`), 12 (Bericht `verify-documents-lab-test-2026-09-12.md`), 13 (Codemarke `Skill 13: check-gdpr`, `app.py` Archiv + Runner-Task `check_gdpr`, `scripts/agent-runner.py`), 16 (Codemarke `Skill 16: export-report`, `app.py` Archiv + `def export_report`, `scripts/agent-runner.py`), 17 (Codemarke `Skill 17: notify-user`, `app.py` Archiv + Runner-Task `notify_user`, `scripts/agent-runner.py`), 18 (`def handle_errors`, `scripts/agent-runner.py`), 23 (`def contract_preflight`, `scripts/agent-runner.py`). Slots 14 und 19–22 sind bisher **nirgends belegt** (in der alten Fassung stand fälschlich ein Pre-Screen-Duplikat auf 14) — die 5 Skills ohne Nummern-Nachweis stehen separat.
+**Code-belegte Nummern (Codemarke + Messdatum ⓘ09.10.2026, `app.py` = Archiv):** 0 (Codemarke `Skill 0: Upload`, `app.py` Archiv), 4 (Sidebar `4️⃣ Contact Candidate`, `app.py` Archiv), 6 (Sidebar `6️⃣ Pre-Screen`, `app.py` Archiv), 9 (Codemarke `Skill 9: explain-match`, `app.py` Archiv + Runner-Prompt `explain_match`, `scripts/agent-runner.py`), 12 (Bericht `verify-documents-lab-test-2026-09-12.md`), 13 (Codemarke `Skill 13: check-gdpr`, `app.py` Archiv + Runner-Task `check_gdpr`, `scripts/agent-runner.py`), 16 (Codemarke `Skill 16: export-report`, `app.py` Archiv + `def export_report`, `scripts/agent-runner.py`), 17 (Codemarke `Skill 17: notify-user`, `app.py` Archiv + Runner-Task `notify_user`, `scripts/agent-runner.py`), 18 (`def handle_errors`, `scripts/agent-runner.py`), 23 (`def contract_preflight`, `scripts/agent-runner.py`). Slots 14 und 19–22 sind bisher **nirgends belegt** (in der alten Fassung stand fälschlich ein Pre-Screen-Duplikat auf 14) — die 6 Skills ohne Nummern-Nachweis stehen separat.
 
 | # | Skill | MCP-Connector | Tool |
 |---|---|---|---|
@@ -71,7 +72,7 @@ Zählung: `ls skills/*/SKILL.md | wc -l` = **23** (Stand 24.09.2026, Abgleich Ph
 | 18 | handle-errors | filesystem | write_file |
 | 23 | contract-management | filesystem + ansvar-german-law + fetch | read_text_file + write_file + fetch |
 
-**Ohne Nummern-Nachweis (5 Skills):** `check-visa`, `language-course`, `nicegui-migration`, `mentoring`, `housing-search` — Zählkontrolle: 18 nummerierte Skills (Zeilen 1–13, 15–18, 23; Upload zählt nicht) + 5 ohne Nr. = **23**.
+**Ohne Nummern-Nachweis (6 Skills):** `check-visa`, `language-course`, `nicegui-migration`, `mentoring`, `housing-search`, `social-agent` — Zählkontrolle: 18 nummerierte Skills (Zeilen 1–13, 15–18, 23; Upload zählt nicht) + 6 ohne Nr. = **24**.
 
 ## Workflow
 
@@ -185,4 +186,4 @@ Zwei-Ebenen-Modell (v4.5), spezifiziert in `knowledge/system/access-control.md` 
 
 ---
 
-**Stand:** 21.10.2026 (Inventar ⓘ21.10.2026: **23 Skills** · **76 Knowledge-MD** (`find knowledge -name '*.md' -not -name '*.bak*' | wc -l`, gemessen 21.10.2026) · **615 Tests** (`.venv-streamlit/bin/python3 -m pytest --collect-only -q` → „615 tests collected"; Volllauf 610 passed / 5 skipped, gemessen 22.10.2026; Vorwerte 544/539 (21.10.2026), 522/0sk (19.10.2026)) · 17 DB-Tabellen (gemessen 21.10.2026) · 14 MCP-Server; v4.5: Zwei-Ebenen-Zugriffskontrolle + ADMIN ✅ implementiert; Matching/Feedback Phase 2–4.6 ✅: Synonyme, Gehaltscheck, geschlossener Feedback-Loop, DSGVO-Löschung, Branchen-Score; **23 Skills seit 24.09.2026** incl. `mentoring` + `housing-search` (beide implementiert) + `contract-management` (Preflight implementiert, Signatur offen))
+**Stand:** 25.10.2026 (Inventar ⓘ25.10.2026: **24 Skills** · **78 Knowledge-MD** (`find knowledge -name '*.md' -not -name '*.bak*' | wc -l`, gemessen 25.10.2026) · **650 Tests** (`.venv-streamlit/bin/python3 -m pytest --collect-only -q` → „650 tests collected"; Volllauf 645 passed / 5 skipped, gemessen 25.10.2026) · 17 DB-Tabellen (gemessen 25.10.2026) · 14 MCP-Server; v4.5: Zwei-Ebenen-Zugriffskontrolle + ADMIN ✅ implementiert; Matching/Feedback Phase 2–4.6 ✅: Synonyme, Gehaltscheck, geschlossener Feedback-Loop, DSGVO-Löschung, Branchen-Score; **24 Skills seit 25.10.2026** incl. `social-agent` (Dry-Run-Default))

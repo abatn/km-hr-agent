@@ -1,0 +1,12 @@
+[Unit]
+Description=KM-HR-Agent Social-Media-Agent (Dry-Run/Post)
+Documentation=knowledge/system/social-automation.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/km-hr-agent
+Environment=KMHR_SOCIAL_ENABLED=1
+EnvironmentFile=-/opt/km-hr-agent/.env-social
+ExecStart=/opt/km-hr-agent/.venv-streamlit/bin/python /opt/km-hr-agent/scripts/social_agent.py --once

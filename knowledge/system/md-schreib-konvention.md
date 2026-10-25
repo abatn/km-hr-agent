@@ -134,7 +134,7 @@ Jede Schreibfunktion gibt den Pfad (und, wo sinnvoll, den geschriebenen Text) an
 | R2.3 (kein `meet.jit.si`) | `knowledge/system/vdo-ninja-migration.md` Kopf (Providerentscheid 27.09.2026) | 27.09.2026 (Spec) / 21.10.2026 (geprüft) |
 | R5.1 („neueste" vs. „heutige") | Messung `_visum_auswertung_from_ergebnisse` (Docstring „letzten", Code ältester) + `_score_from_ergebnisse` (ältester) vs. Kultur-Fit-Lesung in `export_report` (neuester) | 21.10.2026 |
 | Umsetzung 1 („neuester Report") | `knowledge/system/agent-automation.md` (Ist-Code-Beleg 10.10.2026) + `knowledge/system/doku-authority.md` §2 Ziffer 3 | 21.10.2026 |
-| Zählwerte (Abschnitt „Wächter") | live gemessen: `find knowledge -name "*.md" \| wc -l` = **77** (inkl. dieser Spec) · `sqlite_master`-COUNT = **17** · `opencode.json`-`mcp` = **14** | 25.10.2026 |
+| Zählwerte (Abschnitt „Wächter") | live gemessen: `find knowledge -name "*.md" \| wc -l` = **78** (inkl. dieser Spec) · `sqlite_master`-COUNT = **17** · `opencode.json`-`mcp` = **14** | 25.10.2026 |
 | Zählwert-Korrektur (21.10.2026, V-15): „Einmal-Report" | live gemessen: **408** top-level `.md` in `ergebnisse/` (nach Löschung genau **eines** Alt-Artefakts, V-20), davon **132** ohne Datum und **91** Einmal-Reports | 21.10.2026 |
 | Allowlist „Alt-Bestand < 21.10.2026" | AGENTS.md Convention („Alt-Reports in `ergebnisse/` bleiben unangetastet") + Doku-Authority §1 „historisch" | 21.10.2026 |
 | R4.6-Erkennung (V-12) | Probe gegen den echten Checker: `except Exception: pass` + `return {"logged": True}` ⇒ **1 Fund**; korrekte Form (`ok`-Variable) ⇒ **0 Funde**; `except FileNotFoundError` + konstante Rückgabe ⇒ **0 Funde** | 21.10.2026 |

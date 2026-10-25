@@ -12,6 +12,7 @@ source:
     - "connectors/**"
     - "deploy/**"
     - "docs/**"
+    - "marketing/**"
     - "scripts/**"
     - "tests/**"
     - "webui/**"
@@ -36,7 +37,15 @@ pairs:
   - doc: ui/ANIMATION_ENTSCHEIDUNG.md
     code: ["webui/pages/landing.py", "webui/static/three/**", "tests/test_landing_page.py", "tests/e2e_landing_chapters.py"]
   - doc: knowledge/system/cloudflare-deployment.md
-    code: ["deploy/caddy/**", "deploy/systemd/**", "webui/main.py"]
+    code: ["deploy/caddy/**", "deploy/systemd/km-hr-agent.service", "webui/main.py"]
+  - doc: marketing/ENTSCHEIDUNG.md
+    code: ["scripts/social_agent.py", "tests/test_social_agent.py", "deploy/systemd/kmhr-social.service", "deploy/systemd/kmhr-social.timer"]
+  - doc: marketing/social-agent.md
+    code: ["scripts/social_agent.py", "tests/test_social_agent.py"]
+  - doc: skills/social-agent/SKILL.md
+    code: ["scripts/social_agent.py", "tests/test_social_agent.py"]
+  - doc: knowledge/system/social-automation.md
+    code: ["scripts/social_agent.py", "tests/test_social_agent.py", "deploy/systemd/kmhr-social.service", "deploy/systemd/kmhr-social.timer"]
   - doc: instructions.md
     code: ["webui/**", "scripts/**"]
   - doc: knowledge.md

@@ -80,8 +80,11 @@
       "knowledge/system/i18n.md",
       "knowledge/system/mcp-connector-config.md",
       "knowledge/system/md-schreib-konvention.md",
+      "knowledge/system/social-automation.md",
       "knowledge/system/vdo-ninja-migration.md",
       "knowledge/ui-design-system.md",
+      "marketing/ENTSCHEIDUNG.md",
+      "marketing/social-agent.md",
       "skills/README.md",
       "skills/assess-culture-fit/SKILL.md",
       "skills/candidate-portal/SKILL.md",
@@ -101,6 +104,7 @@
       "skills/nicegui-migration/SKILL.md",
       "skills/notify-user/SKILL.md",
       "skills/pre-screen/SKILL.md",
+      "skills/social-agent/SKILL.md",
       "skills/store-feedback/SKILL.md",
       "skills/verify-documents/SKILL.md",
       "ui/ANIMATION_ENTSCHEIDUNG.md"
@@ -110,12 +114,13 @@
       "connectors/**",
       "deploy/**",
       "docs/**",
+      "marketing/**",
       "scripts/**",
       "tests/**",
       "webui/**"
     ]
   },
-  "at": "2026-10-25T16:51:40+00:00",
+  "at": "2026-10-25T17:44:15+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

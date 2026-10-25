@@ -1,0 +1,28 @@
+{
+  "ack": {
+    "anchors": [
+      ".json",
+      "KMHR_SOCIAL_AUTO_PUBLISH=1",
+      "assert_no_pii",
+      "candidate_tips",
+      "hiring_stats",
+      "knowledge/**",
+      "knowledge/system/social-automation.md",
+      "logs/social-agent.log",
+      "marketing/social-agent.md",
+      "new_jobs",
+      "scripts/social_agent.py",
+      "skills/**"
+    ],
+    "at": "2026-10-25T17:42:20+00:00",
+    "code_blobs": {
+      "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
+      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8"
+    },
+    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "doc_blob": "fc02a5a9d15896609a6b2aa199111b5d05954b5c",
+    "note": "Erst-Ack: Skill verweist auf social-agent.md/social-automation.md; scripts/social_agent.py und Tests vorhanden"
+  },
+  "doc": "skills/social-agent/SKILL.md",
+  "schema": 1
+}

@@ -7,17 +7,19 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
 - **Einzige UI: NiceGUI** in `webui/` (Port 8080, Override `KMHR_PORT`). Einstieg `webui/main.py`: Secrets-Gate → DB-Bootstrap → Seiten `create_*()` → ASGI-Guard → `ui.run`. Frameworkfrei: `webui/db.py` (SQLite), `webui/logic.py`; Pages in `webui/pages/`.
 - **`app.py` ist archiviertes Streamlit** (seit 23.09.2026). Nur Paritäts-Referenz, nicht starten/erweitern; `start.sh` bricht bewusst mit rc=1 ab.
 - **`scripts/agent-runner.py`**: Hintergrund-Runner, Queue `agent_tasks`, 60-s-Loop, max. 3 Versuche pro Task. Startet mit der App (PID `data/agent-runner.pid`), Opt-out `KMHR_RUNNER_AUTOSTART=0`. Dry-Run: `.venv-streamlit/bin/python3 scripts/agent-runner.py --once --dry-run`.
-- **MCP-Connectoren** (`connectors/`, `mcp-*-server.py`, `scripts/language-test-server.py`) sind in `opencode.json` registriert. Root-MCP-Server laufen mit `.venv-pdf/bin/python3`, `connectors/*` und Language-Test mit System-`python3`. Externe Dienste nur darüber ansprechen; direkter HTTP-Aufruf nur NVIDIA-API im Runner. In Code/Doku nur Tool-Namen aus `opencode.json` nennen (`fetch`, `anysearch`; `websearch`/`webfetch` gibt es dort nicht).
+- **Social-Agent**: `scripts/social_agent.py` (7-Tage-Plan, LinkedIn/Facebook/Instagram, Dry-Run-Outbox, PII-Guard); Spec `knowledge/system/social-automation.md`, Agent `marketing/social-agent.md`, Entscheidung `marketing/ENTSCHEIDUNG.md`.
+- **MCP-Connectoren** (`connectors/`, `mcp-*-server.py`, `scripts/language-test-server.py`) sind in `opencode.json` registriert. Root-MCP-Server laufen mit `.venv-pdf/bin/python3`, `connectors/*` und Language-Test mit System-`python3`. Externe Dienste nur darüber ansprechen; direkter HTTP-Aufruf nur NVIDIA-API im Runner und LinkedIn/Meta/Instagram im Social-Agenten (`scripts/social_agent.py`, dokumentierte Ausnahme). In Code/Doku nur Tool-Namen aus `opencode.json` nennen (`fetch`, `anysearch`; `websearch`/`webfetch` gibt es dort nicht).
 - **Wissensbasis**: `knowledge/` (Specs, Index `knowledge.md`), `skills/*/SKILL.md` (Übersicht `skills/README.md`). Maßgeblich je Gebiet ist die Spec, z. B. `knowledge/system/configuration-secrets.md`, `knowledge/system/agent-automation.md`, `knowledge/system/access-control.md`, `knowledge/system/i18n.md`, `knowledge/system/doku-authority.md`, `knowledge/system/md-schreib-konvention.md`.
 - **Landingpage-Animation**: `webui/pages/landing.py` (5 Kapitel: Gehirn, Loop, Sub-Agenten, Werkzeuge, Ergebnis; Three.js lokal); Entscheidung/Quellen in `ui/ANIMATION_ENTSCHEIDUNG.md`.
 
 ## Setup & Start
 
 - Venv: `source .venv-streamlit/bin/activate` (Pfad in Skripten: `.venv-streamlit/bin/python3`). Deps: `requirements.txt` (Prod) + `requirements-dev.txt` (pytest, pyflakes, playwright). Der Name „streamlit" ist historisch — die App ist NiceGUI.
-- Secrets in **drei** Dateien, nicht vermischen. Falsche Datei ⇒ Fehler:
+- Secrets in **vier** Dateien, nicht vermischen. Falsche Datei ⇒ Fehler:
   - `.env`: `start-webui.sh` (`KMHR_STORAGE_SECRET`, `KMHR_ADMIN_SEED_PASSWORD`); Vorlage `.env.example`, danach `chmod 600`.
   - `.env-runner`: `scripts/agent-runner.py`, `scripts/language-test-server.py` (`NVIDIA_API_KEY`, `KMHR_LLM_MODEL`).
   - `.env-email`: `mcp-email-server.py` (`SMTP_*`).
+  - `.env-social`: `scripts/social_agent.py` (`KMHR_SOCIAL_*`, `LINKEDIN_*`, `FACEBOOK_*`, `INSTAGRAM_*`); Vorlage `.env-social.example`, Default Dry-Run.
 - Start: `./start-webui.sh` verweigert ohne die beiden `.env`-Secrets den Start (rc=1); andere Env-Datei per `KMHR_ENV_FILE`. Ohne Secrets nur lokal: `KMHR_DEV=1 ./start-webui.sh`. `python3 -m webui.main` braucht dieselben Secrets. `KMHR_HOST` steuert die Bindung (Default `127.0.0.1`; `0.0.0.0` nur bewusst für LAN); `KMHR_COOKIE_SECURE=1` setzt das Session-Cookie hinter HTTPS auf `Secure`.
 - Live-Admin-Konto trägt noch das alte Seed-Passwort: App **nicht aus dem lokalen Netz erreichbar machen**, bis rotiert ist (Details `knowledge/system/configuration-secrets.md`).
 - DB: `data/feedback.db` (SQLite). Pfad-Override nur über `KMHR_DB_PATH` (Runner und WebUI teilen ihn). **Live-DB nie direkt beschreiben.**

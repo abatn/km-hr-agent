@@ -1,0 +1,12 @@
+[Unit]
+Description=Täglicher KM-HR-Agent Social-Media-Lauf
+Documentation=knowledge/system/social-automation.md
+
+[Timer]
+OnCalendar=*-*-* 07:15:00
+Persistent=true
+RandomizedDelaySec=300
+Unit=kmhr-social.service
+
+[Install]
+WantedBy=timers.target

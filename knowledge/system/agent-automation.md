@@ -137,6 +137,12 @@ und `agent_chars`, keine Aufrufer brechen. Die frühere Obergrenze `RESULT_TEXT_
 
 ## 4. Hintergrund-Runner (`scripts/agent-runner.py`) – HYBRID v2
 
+**Social-Agent (25.10.2026):** Der Social-Media-Agent ist **nicht** Teil der
+`apply_to_job`-Kette und läuft nicht über `agent_tasks`. Er hat einen eigenen
+Systemd-Timer (`kmhr-social.timer` → `scripts/social_agent.py --once`), liest
+nur PII-freie Aggregate und schreibt nach `ergebnisse/social/<Tag>/`.
+Spec: `knowledge/system/social-automation.md`.
+
 **Kernprinzip v2 (aktualisiert 13.09.2026):** Der Runner ruft die **Projekt-MCP-Connectors direkt** auf (stdio JSON-RPC, handshake-getestet ✅) – ohne LLM, ohne Modell-Abhängigkeit, in Sekunden. Die LLM-Tasks (Extract/Match/Compliance/Culture-Fit + v6/v6.2: verify_documents, check_visa) laufen über die **direkte NVIDIA-API** (`requests.post`, `import requests`, Script `scripts/agent-runner.py` 559–565) — **nicht mehr via `opencode run`** (lieferte nur `step_start`-Events ohne Text, Modell antwortete korrekt → Root-Cause war opencode, nicht das Modell; live verifiziert 13.09.2026).
 
 | Aspekt | Umsetzung |

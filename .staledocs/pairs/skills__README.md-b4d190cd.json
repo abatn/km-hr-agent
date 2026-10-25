@@ -53,7 +53,9 @@
       "read_pdf_text",
       "read_text_file",
       "scripts/agent-runner.py",
+      "scripts/social_agent.py",
       "send_email",
+      "social-agent",
       "store-feedback",
       "validate_citation",
       "verify-documents",
@@ -64,7 +66,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-21T22:41:32+00:00",
+    "at": "2026-10-25T17:42:52+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -87,12 +89,13 @@
       "skills/nicegui-migration/SKILL.md": "969f836a67b9a4ae92604cf5e5f6c36398193c0d",
       "skills/notify-user/SKILL.md": "4fb3b459fb8894ef5144b456ea01a86f500270ed",
       "skills/pre-screen/SKILL.md": "9c058641c56917045c13dc1712d5f6d3bf7fe355",
+      "skills/social-agent/SKILL.md": "fc02a5a9d15896609a6b2aa199111b5d05954b5c",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "d540129a5c16be5461b860668bc11511fc8e43f4"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "8fefce42f6edb0bbb4d985fafbc3224f9ab8397b",
-    "note": "Geprueft 22.10.2026: skills/README.md wurde nach der letzten Bestaetigung bewegt (Testzahl auf 615 collected / 610 passed nachgezogen) \u2014 die gelisteten 23 Skills, Tools (email-sender, pdf-reader, extract-profile) und Connectoren bleiben unveraendert."
+    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "doc_blob": "a2935ddb666585c838c18b17dc556d125fb30137",
+    "note": "skills/README.md: social-agent als 24. Skill, 650 Tests/645 passed, Z\u00e4hlkontrolle 18+6"
   },
   "doc": "skills/README.md",
   "schema": 1

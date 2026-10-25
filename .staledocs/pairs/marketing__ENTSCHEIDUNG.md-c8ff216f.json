@@ -1,0 +1,29 @@
+{
+  "ack": {
+    "anchors": [
+      "--force",
+      ".env-social",
+      ".env-social.example",
+      "INSTAGRAM_IMAGE_URL",
+      "KMHR_SOCIAL_AUTO_PUBLISH=1",
+      "assert_no_pii",
+      "candidate_tips",
+      "hiring_stats",
+      "kmhr-social.timer",
+      "new_jobs",
+      "scripts/social_agent.py"
+    ],
+    "at": "2026-10-25T17:42:19+00:00",
+    "code_blobs": {
+      "deploy/systemd/kmhr-social.service": "9d5a1ed292d4e26fc86b042c1439c3b818481572",
+      "deploy/systemd/kmhr-social.timer": "a7ab8fe8115b45cd37f7efe674c0e18512cddd96",
+      "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
+      "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8"
+    },
+    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "doc_blob": "83a5f1afbf7e071071bcb19d1c51d74d4981503a",
+    "note": "Erst-Ack: Kanalwahl/Quellen, scripts/social_agent.py und Dry-Run-Outbox verifiziert"
+  },
+  "doc": "marketing/ENTSCHEIDUNG.md",
+  "schema": 1
+}

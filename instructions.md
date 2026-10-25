@@ -67,7 +67,7 @@
 
 ## Skills
 
-**23 Stück – alle aktiv** (Stand 24.09.2026). Die Skill-Tabelle mit Tool-Zuordnung und Nummern-Nachweis steht in `skills/README.md`, jede Detail-Spec in `skills/<name>/SKILL.md`.
+**24 Stück – alle aktiv** (Stand 25.10.2026: `social-agent` ergänzt). Die Skill-Tabelle mit Tool-Zuordnung und Nummern-Nachweis steht in `skills/README.md`, jede Detail-Spec in `skills/<name>/SKILL.md`.
 
 ## Jobportal-Prinzip (Zugriffskontrolle)
 

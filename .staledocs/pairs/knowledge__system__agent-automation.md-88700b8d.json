@@ -15,6 +15,7 @@
       "MAX_ATTEMPTS",
       "N=1",
       "Path.unlink()",
+      "RuntimeError",
       "[DRY-RUN]",
       "_badge_icon",
       "_maybe_gatekeeper",
@@ -76,12 +77,14 @@
       "ids[0]",
       "jitsi_url",
       "job_id",
+      "kmhr-social.timer",
       "knowledge/error-statistics.md",
       "knowledge/legal/contract-sources.md",
       "knowledge/onboarding-default.md",
       "knowledge/portal/employer-board.md",
       "knowledge/system/md-schreib-konvention.md",
       "knowledge/system/p8-cloud-datenquellen.md",
+      "knowledge/system/social-automation.md",
       "knowledge/system/vdo-ninja-migration.md",
       "language-test-server.py",
       "log()",
@@ -126,6 +129,8 @@
       "testdaten/kandidat-N-*",
       "tests/conftest.py",
       "tests/test_application_id_match.py",
+      "tests/test_einladung_hinweis.py",
+      "tests/test_invitation_termin_guard.py",
       "tests/test_r32_gatekeeper_gen.py",
       "tests/test_runner_persistenz.py",
       "tests/test_runner_persistenz.py::test_db_pfad_von_runner_und_webui_ist_der_gleiche",
@@ -148,14 +153,14 @@
       "webui/pages/employer.py",
       "{task_type}-kandidat-{cid}-{datum}.md"
     ],
-    "at": "2026-10-22T06:32:57+00:00",
+    "at": "2026-10-25T17:44:15+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "05b88485d633da8a26322054b79f76621ee9a973",
+      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "989d7555a6d0f751eaf5107792813fdd3a19471d",
-    "note": "Geprueft 22.10.2026: `scripts/agent-runner.py` wurde geaendert (distinct-Stellen-Zaehlung in `_score_from_ergebnisse`, V-13(c)) \u2014 die Spec-Zeile 'Score-Fallback (V-13)' wurde im selben Schritt praezisiert (Kandidat 2: zwei Reports / eine Stelle \u21d2 90; zwei distinct Stellen \u21d2 'unbekannt'); die uebrigen Regeln der Spec unveraendert."
+    "commit": "2b20cb5585fd6dda5a674da9298335e99d0a3359",
+    "doc_blob": "164e1d47bebd2c0ea0a869d14f25e0a264a684b3",
+    "note": "agent-automation.md: Social-Agent als eigener Timer dokumentiert (scripts/social_agent.py, nicht apply_to_job)"
   },
   "doc": "knowledge/system/agent-automation.md",
   "schema": 1

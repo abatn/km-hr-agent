@@ -66,6 +66,12 @@ jobs:
             install -m 644 deploy/systemd/km-hr-agent.service /etc/systemd/system/km-hr-agent.service
             systemctl daemon-reload
           fi
+          if [ -f deploy/systemd/kmhr-social.service ] && [ -f deploy/systemd/kmhr-social.timer ]; then
+            install -m 644 deploy/systemd/kmhr-social.service \
+              deploy/systemd/kmhr-social.timer /etc/systemd/system/
+            systemctl daemon-reload
+            systemctl enable --now kmhr-social.timer
+          fi
           if [ -f deploy/caddy/jobs.hanibal-ai.com.caddy ] && command -v caddy >/dev/null 2>&1; then
             install -d -m 755 /etc/caddy/conf.d
             install -m 644 deploy/caddy/jobs.hanibal-ai.com.caddy \

@@ -1,6 +1,7 @@
 # ── Secrets — dürfen NIE committet werden (Lab-Prinzip / F7.5 Credentials-Regel) ──
 .env*
 !.env.example
+!.env-social.example
 *.key
 github.key
 *.pem
