@@ -19,36 +19,45 @@ Tokens.
 
 Entscheidung und Quellen: `marketing/ENTSCHEIDUNG.md`.
 
-## OAuth-Bootstrap (einmalig)
+## OAuth-Bootstrap (einmalig, produktiv)
 
-Client-ID/App-ID allein reicht nicht. Tokens werden **nur** in `.env-social`
-geschrieben (chmod 600, gitignored):
+**Wichtig:** LinkedIn verlangt laut offizieller Doku eine **HTTPS**-Redirect-URI.
+`http://localhost:8765` ist deshalb **kein** belastbarer Produktionsweg (und
+Meta blockiert Localhost im Live-Modus). Der verbindliche Callback ist:
 
-```bash
-# LinkedIn: Client Secret + Redirect-URI in der LinkedIn-App registrieren
-python3 scripts/social_oauth.py linkedin --url
-python3 scripts/social_oauth.py linkedin --exchange "<CODE>"
-# oder lokaler Callback-Server:
-python3 scripts/social_oauth.py linkedin --serve
-
-# Facebook: Redirect-URI in der Meta-App registrieren; Page-Rolle nötig
-python3 scripts/social_oauth.py facebook --url
-python3 scripts/social_oauth.py facebook --exchange "<CODE>"
-python3 scripts/social_oauth.py facebook --serve --page-id <PAGE_ID>
+```text
+https://jobs.hanibal-ai.com/oauth/callback
 ```
 
-Der Facebook-Helfer liest `/me/accounts` und schreibt Page-Token,
-`FACEBOOK_PAGE_ID` sowie – falls vorhanden – `INSTAGRAM_USER_ID` und
-`INSTAGRAM_ACCESS_TOKEN`. Tokens werden nie auf stdout ausgegeben.
+Diese URI muss in **beiden** Apps exakt registriert sein. Caddy leitet
+`/oauth/callback` an den lokalen Helper auf dem VPS weiter
+(`127.0.0.1:8765`); der Helper tauscht den Code gegen Tokens und schreibt sie
+nur nach `/opt/km-hr-agent/.env-social` (chmod 600, gitignored).
 
-**Redirect-URI (häufigste Fehlerquelle):** Die URI muss in der App **exakt**
-registriert sein — Schema, Host, Port und Pfad. `--serve` bindet den lokalen
-Server an genau diese URI und öffnet **keinen** Browser (WSL/Headless: DBus/GCM/
-WebGL-Fehler). Die URL wird ausgegeben und manuell geöffnet. Bei abweichender
-Registrierung hilft nur: URI in der App ergänzen oder
-`--redirect-uri <exakt-registrierte-URI>` verwenden. Ein alter `--serve`-Prozess
-blockiert den Port; prüfen mit `ss -ltnp | grep :8765`, beenden mit `kill <PID>`.
-`--timeout` (Default 300 s) gibt den Port automatisch wieder frei.
+```bash
+# 1) .env-social auf den VPS kopieren (enthält Client Secret/App Secret)
+scp .env-social root@176.57.189.201:/opt/km-hr-agent/.env-social
+ssh root@176.57.189.201 'chmod 600 /opt/km-hr-agent/.env-social'
+
+# 2) Helper auf dem VPS starten (bindet 127.0.0.1:8765; Caddy macht HTTPS)
+ssh -t root@176.57.189.201 \
+  'cd /opt/km-hr-agent && .venv-streamlit/bin/python scripts/social_oauth.py linkedin --serve --timeout 600'
+
+# 3) Auth-URL im normalen Browser öffnen, LinkedIn/Facebook bestätigen
+# 4) Callback geht an https://jobs.hanibal-ai.com/oauth/callback -> Caddy -> Helper
+# 5) Tokens landen in /opt/km-hr-agent/.env-social
+```
+
+Für Facebook analog `facebook --serve --page-id <PAGE_ID>`; der Helfer liest
+`/me/accounts` und schreibt Page-Token, `FACEBOOK_PAGE_ID` sowie – falls
+vorhanden – `INSTAGRAM_USER_ID`/`INSTAGRAM_ACCESS_TOKEN`.
+
+**Fehlerquellen:** Die Redirect-URI muss zeichengenau passen (Schema, Host,
+Port, Pfad). `--serve` öffnet **keinen** Browser (WSL/Headless: DBus/GCM/WebGL);
+die URL wird manuell geöffnet. Ein alter `--serve`-Prozess blockiert Port 8765:
+`ss -ltnp | grep :8765`, dann `kill <PID>`. `--timeout` gibt den Port automatisch
+frei. `--listen-port` ändert nur den lokalen Helper-Port; die öffentliche URI
+bleibt unverändert.
 
 ## Ausführung
 

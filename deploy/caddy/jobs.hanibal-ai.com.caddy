@@ -15,10 +15,19 @@ jobs.hanibal-ai.com {
         }
     }
 
-    reverse_proxy 127.0.0.1:8080 {
-        header_up X-Real-IP {remote_host}
-        # NiceGUI/Socket.IO: keine Pufferung, lange WebSocket-Verbindungen.
-        flush_interval -1
+    # OAuth-Callback: nur während des OAuth-Flows lauscht der Helper auf 8765.
+    # Caddy terminiert HTTPS; der Helper tauscht den Code und schreibt Tokens
+    # nach /opt/km-hr-agent/.env-social. Ohne laufenden Helper: 502.
+    handle /oauth/callback* {
+        reverse_proxy 127.0.0.1:8765
+    }
+
+    handle {
+        reverse_proxy 127.0.0.1:8080 {
+            header_up X-Real-IP {remote_host}
+            # NiceGUI/Socket.IO: keine Pufferung, lange WebSocket-Verbindungen.
+            flush_interval -1
+        }
     }
 
     header {

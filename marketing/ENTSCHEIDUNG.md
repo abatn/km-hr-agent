@@ -60,6 +60,12 @@ DB-Aggregate     →   7-Tage-Plan      →   LinkedIn/Facebook/IG   →   Outbo
   `*_REDIRECT_URI` und gibt den Port nach Timeout/Ctrl+C frei. Eine
   LinkedIn-Meldung „redirect_uri does not match the registered value" bedeutet
   immer: URI in der LinkedIn-App exakt gleich eintragen (Schema/Host/Port/Pfad).
+- **Localhost ist für LinkedIn nicht zulässig:** Die offizielle Doku verlangt
+  eine HTTPS-Redirect-URI. Deshalb ist der verbindliche Callback
+  `https://jobs.hanibal-ai.com/oauth/callback`; Caddy leitet ihn an den
+  lokalen Helper auf dem VPS (`127.0.0.1:8765`) weiter. Meta blockiert
+  Localhost ebenfalls im Live-Modus. Quelle:
+  <https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow>
 
 ## Risiken / offene Punkte
 

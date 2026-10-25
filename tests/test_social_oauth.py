@@ -77,12 +77,14 @@ def test_redirect_port_override_behaelt_host_und_pfad():
     ) == "http://localhost:8790/oauth/callback"
 
 
-def test_parse_redirect_nur_lokales_http():
+def test_parse_redirect_lokal_und_https_proxy():
     m = _load()
     assert m.parse_redirect("http://localhost:8765/oauth/callback") == (
-        "127.0.0.1", 8765, "/oauth/callback")
+        "127.0.0.1", 8765, "/oauth/callback", False)
+    assert m.parse_redirect("https://jobs.hanibal-ai.com/oauth/callback", 8765) == (
+        "127.0.0.1", 8765, "/oauth/callback", True)
     with pytest.raises(SystemExit):
-        m.parse_redirect("https://jobs.hanibal-ai.com/oauth/callback")
+        m.parse_redirect("ftp://example.org/oauth/callback")
 
 
 def test_belegter_port_liefert_klartext():

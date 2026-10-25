@@ -12,15 +12,15 @@
       "knowledge/system/configuration-secrets.md",
       "reverse_proxy"
     ],
-    "at": "2026-10-25T16:42:06+00:00",
+    "at": "2026-10-25T19:45:22+00:00",
     "code_blobs": {
-      "deploy/caddy/jobs.hanibal-ai.com.caddy": "c3f86ae042a5bbc494c4e24d6e7d89a24d04f642",
+      "deploy/caddy/jobs.hanibal-ai.com.caddy": "0b409295a8493c94521ca183f3ab221be25e7352",
       "deploy/systemd/km-hr-agent.service": "96c4a2f0e6947f1e5cceb736bf089753c1fbe53b",
       "webui/main.py": "0f2d280388a7b6cbfb652176bb7575789eeadd5e"
     },
-    "commit": "e5d2156cc4e1752bd95babcbdf54b72d6c795244",
+    "commit": "7a01fc40f5c0406787c0e5b598bb524c6527451b",
     "doc_blob": "6c4cef6bd843fe3f0eab4efc0eab1a97a62c0406",
-    "note": "Erst-Ack: jobs.hanibal-ai.com \u00fcber Cloudflare/Caddy live 200; Caddy validiert, 525 behoben, Deploy-Dateien vorhanden"
+    "note": "cloudflare-deployment.md: deploy/caddy/jobs.hanibal-ai.com.caddy um /oauth/callback -> 127.0.0.1:8765 erg\u00e4nzt"
   },
   "doc": "knowledge/system/cloudflare-deployment.md",
   "schema": 1

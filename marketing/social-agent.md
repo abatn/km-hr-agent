@@ -49,9 +49,12 @@ logs/social-agent.log           # append-only Lauf-Log
 ## Aufruf
 
 ```bash
-# OAuth (Redirect-URI exakt in der App registrieren; Browser manuell öffnen)
-python3 scripts/social_oauth.py linkedin --serve
-python3 scripts/social_oauth.py facebook --serve
+# OAuth produktiv: öffentlicher HTTPS-Callback (LinkedIn verlangt HTTPS)
+# 1) https://jobs.hanibal-ai.com/oauth/callback in LinkedIn/Meta registrieren
+# 2) .env-social auf den VPS kopieren, dann Helper dort starten:
+ssh -t root@176.57.189.201 \
+  'cd /opt/km-hr-agent && .venv-streamlit/bin/python scripts/social_oauth.py linkedin --serve --timeout 600'
+# 3) Auth-URL im normalen Browser öffnen; Callback läuft über Caddy -> Helper
 
 # Wochenplan + heutigen Post als Dry-Run
 .venv-streamlit/bin/python3 scripts/social_agent.py --once --dry-run

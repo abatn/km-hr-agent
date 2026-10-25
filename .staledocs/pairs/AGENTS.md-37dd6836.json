@@ -116,7 +116,7 @@
       "webui/pages/",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-25T19:26:34+00:00",
+    "at": "2026-10-25T19:45:03+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -139,7 +139,7 @@
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
       "scripts/social_agent.py": "37991928d9e86c8beeba044cb012cf9e619577cb",
-      "scripts/social_oauth.py": "cdf3633a436d2000eeb5d0c4f0fa221df751f0a3",
+      "scripts/social_oauth.py": "df5f2bd2454c5a6ac8021221308095087c5c2b2a",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
       "tests/conftest.py": "a95af8fe900295323fc32fd6e3126823d6d079aa",
@@ -263,7 +263,7 @@
       "tests/test_send_rejection_guard.py": "22901adf0e5c481c927b2bcb1a74b902b0f163c5",
       "tests/test_silent_errors.py": "18936a3ff6f5a6122ab5a1a6930530df128d73ff",
       "tests/test_social_agent.py": "c0d50af03479ce586667eb4924a91c14404be7f8",
-      "tests/test_social_oauth.py": "e7e71efac443ed3bdcb0c30eeb54aa1c0726c77f",
+      "tests/test_social_oauth.py": "e0f6a6d1b6f53473ccf20fe4a7fcbb8f17b06a3a",
       "tests/test_status_guards_md.py": "544699205a4b9d6daa7ca8bf0548bca6e86121a2",
       "tests/test_status_labels_complete.py": "94e67fed275c828932d2938c5b0178de1d7579c7",
       "tests/test_tabs_render.py": "9603b0520dd7f11d317cb7c268c4aa8d5a88db5b",
@@ -300,9 +300,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "4cc70865067b8f9f1796f2b877d009d7977fff8e",
+    "commit": "7a01fc40f5c0406787c0e5b598bb524c6527451b",
     "doc_blob": "c1a92486c3610dd5842981db4ba6aa9cd7140290",
-    "note": "AGENTS.md: scripts/social_oauth.py als OAuth-Bootstrap; Redirect-URI/OAuth-Hinweis unver\u00e4ndert korrekt"
+    "note": "AGENTS.md: social_oauth.py auf \u00f6ffentlichen HTTPS-Callback umgestellt; OAuth-Aussagen korrekt"
   },
   "doc": "AGENTS.md",
   "schema": 1

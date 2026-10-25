@@ -92,29 +92,37 @@ def redirect_with_port(uri: str, port: int) -> str:
     return urllib.parse.urlunparse(p._replace(netloc=netloc))
 
 
-def parse_redirect(uri: str) -> tuple[str, int, str]:
-    """Liefert (bind_host, port, path) aus der registrierten Redirect-URI."""
+def parse_redirect(uri: str, listen_port: int = 8765) -> tuple[str, int, str, bool]:
+    """Liefert (bind_host, bind_port, path, proxy_mode).
+
+    - http://localhost|127.0.0.1:  lokaler Server direkt auf Host/Port.
+    - https://...:                 Caddy/Reverse-Proxy terminiert TLS und
+                                   leitet den Pfad an 127.0.0.1:<listen_port>.
+      Das ist der produktive Weg; LinkedIn verlangt HTTPS.
+    """
     p = urllib.parse.urlparse(uri)
-    if p.scheme != "http" or p.hostname not in ("localhost", "127.0.0.1"):
-        raise SystemExit(
-            f"--serve unterstützt nur http://localhost/127.0.0.1, nicht {uri!r}.\n"
-            "Für eine öffentliche HTTPS-Redirect-URI braucht es einen echten "
-            "Callback-Endpunkt (Reverse Proxy), keinen lokalen Server.")
-    port = p.port or 80
     path = p.path or "/oauth/callback"
-    bind_host = "127.0.0.1" if p.hostname == "localhost" else p.hostname
-    return bind_host, port, path
+    if p.scheme == "http" and p.hostname in ("localhost", "127.0.0.1"):
+        port = p.port or 80
+        bind_host = "127.0.0.1" if p.hostname == "localhost" else p.hostname
+        return bind_host, port, path, False
+    if p.scheme == "https" and p.hostname:
+        return "127.0.0.1", listen_port, path, True
+    raise SystemExit(
+        f"Ungültige Redirect-URI: {uri!r}\n"
+        "Erlaubt: https://<öffentlicher-host>/oauth/callback (Produktion) "
+        "oder http://localhost:<port>/oauth/callback (nur lokale Tests).")
 
 
-def _make_server(uri: str) -> tuple[HTTPServer, str]:
-    bind_host, port, path = parse_redirect(uri)
+def _make_server(uri: str, listen_port: int = 8765) -> tuple[HTTPServer, str, bool]:
+    bind_host, port, path, proxy_mode = parse_redirect(uri, listen_port)
 
     class _Server(HTTPServer):
         # Erlaubt erneutes Binden nach Ctrl+C/TIME_WAIT auf demselben Port.
         allow_reuse_address = True
 
     try:
-        return _Server((bind_host, port), _Callback), path
+        return _Server((bind_host, port), _Callback), path, proxy_mode
     except OSError as exc:
         if exc.errno == errno.EADDRINUSE:
             raise SystemExit(
@@ -261,9 +269,15 @@ class _Callback(BaseHTTPRequestHandler):
 
 def serve(provider: str, env: dict[str, str], page_id: str = "",
           redirect_override: str | None = None, port_override: int | None = None,
-          timeout: float = 300.0, open_browser: bool = False) -> int:
+          timeout: float = 300.0, open_browser: bool = False,
+          listen_port: int = 8765) -> int:
     key = "LINKEDIN_REDIRECT_URI" if provider == "linkedin" else "FACEBOOK_REDIRECT_URI"
     uri = _redirect(env, key, redirect_override)
+    if port_override and urllib.parse.urlparse(uri).scheme == "https":
+        raise SystemExit(
+            "Bei einer HTTPS-Redirect-URI keinen --port verwenden.\n"
+            "Der öffentliche Port ist 443; der lokale Helper lauscht auf "
+            f"--listen-port (Default {listen_port}).")
     if port_override:
         uri = redirect_with_port(uri, port_override)
         print(f"Hinweis: Port überschrieben. Diese URI muss registriert sein:\n  {uri}")
@@ -278,12 +292,18 @@ def serve(provider: str, env: dict[str, str], page_id: str = "",
     _Callback.error_description = ""
     _Callback.expected_state = state
     _Callback.expected_path = urllib.parse.urlparse(uri).path or "/oauth/callback"
-    server, _path = _make_server(uri)
+    server, _path, proxy_mode = _make_server(uri, listen_port)
     url = (linkedin_url(env, state, uri) if provider == "linkedin"
            else facebook_url(env, state, uri))
     print(f"Redirect-URI (muss exakt in der App registriert sein):\n  {uri}\n")
+    if proxy_mode:
+        print(f"Öffentlicher HTTPS-Callback; lokaler Helper lauscht auf "
+              f"127.0.0.1:{listen_port}. Caddy/Proxy muss "
+              f"{_Callback.expected_path} dorthin leiten.\n")
+    else:
+        print(f"Lokaler Callback-Server: {uri}\n")
     print(f"Auth-URL ({provider}):\n{url}\n")
-    print(f"Warte auf Callback auf {uri} (Timeout {int(timeout)} s) ...")
+    print(f"Warte auf Callback (Timeout {int(timeout)} s) ...")
     if open_browser:
         try:
             webbrowser.open(url)
@@ -305,7 +325,8 @@ def serve(provider: str, env: dict[str, str], page_id: str = "",
         print(f"OAuth-Fehler: {_Callback.error} — {_Callback.error_description}")
         return 1
     if not _Callback.code:
-        print("Timeout: kein Callback empfangen. Läuft der Browser auf demselben Rechner?")
+        print("Timeout: kein Callback empfangen. Bei HTTPS: Caddy-Route und "
+              "Firewall prüfen; bei HTTP: Browser auf demselben Rechner?")
         return 2
     result = (linkedin_exchange(env, _Callback.code, uri) if provider == "linkedin"
               else facebook_exchange(env, _Callback.code, page_id, uri))
@@ -323,7 +344,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--redirect-uri", default=None,
                     help="überschreibt *_REDIRECT_URI für diesen Lauf")
     ap.add_argument("--port", type=int, default=None,
-                    help="Port überschreiben (neue URI muss registriert sein)")
+                    help="nur lokale HTTP-URI: Port überschreiben (neu registrieren)")
+    ap.add_argument("--listen-port", type=int, default=8765,
+                    help="lokaler Helper-Port bei HTTPS-Redirect (Default 8765)")
     ap.add_argument("--timeout", type=float, default=300.0,
                     help="Sekunden bis der Callback-Server aufgibt (Default 300)")
     ap.add_argument("--open-browser", action="store_true",
@@ -335,7 +358,11 @@ def main(argv: list[str] | None = None) -> int:
     redirect = args.redirect_uri
     if args.port:
         key = "LINKEDIN_REDIRECT_URI" if args.provider == "linkedin" else "FACEBOOK_REDIRECT_URI"
-        redirect = redirect_with_port(_redirect(env, key, redirect), args.port)
+        base = _redirect(env, key, redirect)
+        if urllib.parse.urlparse(base).scheme == "https":
+            raise SystemExit("--port ist nur für lokale HTTP-URIs. "
+                             "Bei HTTPS den Helper-Port mit --listen-port setzen.")
+        redirect = redirect_with_port(base, args.port)
 
     if args.url:
         print(linkedin_url(env, state, redirect) if args.provider == "linkedin"
@@ -349,7 +376,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.serve:
         return serve(args.provider, env, args.page_id, redirect, args.port,
-                     args.timeout, args.open_browser)
+                     args.timeout, args.open_browser, args.listen_port)
     ap.print_help()
     return 2
 
