@@ -49,6 +49,10 @@ logs/social-agent.log           # append-only Lauf-Log
 ## Aufruf
 
 ```bash
+# OAuth (Redirect-URI exakt in der App registrieren; Browser manuell öffnen)
+python3 scripts/social_oauth.py linkedin --serve
+python3 scripts/social_oauth.py facebook --serve
+
 # Wochenplan + heutigen Post als Dry-Run
 .venv-streamlit/bin/python3 scripts/social_agent.py --once --dry-run
 

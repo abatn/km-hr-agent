@@ -68,3 +68,40 @@ def test_exchange_ohne_secret_wird_abgelehnt():
         m.linkedin_exchange({"LINKEDIN_CLIENT_ID": "x",
                              "LINKEDIN_REDIRECT_URI": "http://localhost/cb"}, "code")
     assert "LINKEDIN_CLIENT_SECRET" in str(exc.value)
+
+
+def test_redirect_port_override_behaelt_host_und_pfad():
+    m = _load()
+    assert m.redirect_with_port(
+        "http://localhost:8765/oauth/callback", 8790
+    ) == "http://localhost:8790/oauth/callback"
+
+
+def test_parse_redirect_nur_lokales_http():
+    m = _load()
+    assert m.parse_redirect("http://localhost:8765/oauth/callback") == (
+        "127.0.0.1", 8765, "/oauth/callback")
+    with pytest.raises(SystemExit):
+        m.parse_redirect("https://jobs.hanibal-ai.com/oauth/callback")
+
+
+def test_belegter_port_liefert_klartext():
+    import socket
+    m = _load()
+    sock = socket.socket()
+    try:
+        sock.bind(("127.0.0.1", 0))
+        sock.listen(1)
+        port = sock.getsockname()[1]
+        with pytest.raises(SystemExit) as exc:
+            m._make_server(f"http://127.0.0.1:{port}/oauth/callback")
+        assert "bereits belegt" in str(exc.value)
+    finally:
+        sock.close()
+
+
+def test_url_override_wird_verwendet():
+    m = _load()
+    env = {"LINKEDIN_CLIENT_ID": "client-123"}
+    url = m.linkedin_url(env, "state", "http://127.0.0.1:8790/oauth/callback")
+    assert "redirect_uri=http%3A%2F%2F127.0.0.1%3A8790%2Foauth%2Fcallback" in url

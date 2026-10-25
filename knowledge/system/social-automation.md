@@ -41,6 +41,15 @@ Der Facebook-Helfer liest `/me/accounts` und schreibt Page-Token,
 `FACEBOOK_PAGE_ID` sowie – falls vorhanden – `INSTAGRAM_USER_ID` und
 `INSTAGRAM_ACCESS_TOKEN`. Tokens werden nie auf stdout ausgegeben.
 
+**Redirect-URI (häufigste Fehlerquelle):** Die URI muss in der App **exakt**
+registriert sein — Schema, Host, Port und Pfad. `--serve` bindet den lokalen
+Server an genau diese URI und öffnet **keinen** Browser (WSL/Headless: DBus/GCM/
+WebGL-Fehler). Die URL wird ausgegeben und manuell geöffnet. Bei abweichender
+Registrierung hilft nur: URI in der App ergänzen oder
+`--redirect-uri <exakt-registrierte-URI>` verwenden. Ein alter `--serve`-Prozess
+blockiert den Port; prüfen mit `ss -ltnp | grep :8765`, beenden mit `kill <PID>`.
+`--timeout` (Default 300 s) gibt den Port automatisch wieder frei.
+
 ## Ausführung
 
 ```bash

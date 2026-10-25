@@ -55,6 +55,11 @@ DB-Aggregate     →   7-Tage-Plan      →   LinkedIn/Facebook/IG   →   Outbo
   `.env-social` (chmod 600, gitignored).
 - Bis Tokens vorliegen, bleibt `KMHR_SOCIAL_MODE=dry_run`; die Outbox beweist
   Payload und Redaktionsplan ohne Netzwerkaufruf.
+- Der OAuth-Helfer öffnet **keinen** Browser mehr automatisch (WSL/Headless:
+  DBus/GCM/WebGL-Fehler), bindet den lokalen Server an die exakte
+  `*_REDIRECT_URI` und gibt den Port nach Timeout/Ctrl+C frei. Eine
+  LinkedIn-Meldung „redirect_uri does not match the registered value" bedeutet
+  immer: URI in der LinkedIn-App exakt gleich eintragen (Schema/Host/Port/Pfad).
 
 ## Risiken / offene Punkte
 
