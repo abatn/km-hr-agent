@@ -207,10 +207,17 @@ def assert_no_pii(text: str) -> None:
 
 
 def _job_lines(agg: dict[str, Any], lang: str) -> list[str]:
-    lines = []
-    for job in agg["jobs"][:3]:
+    lines: list[str] = []
+    seen: set[tuple[str, str]] = set()
+    for job in agg["jobs"]:
+        key = (str(job.get("titel", "")), str(job.get("standort", "")))
+        if key in seen:
+            continue
+        seen.add(key)
         place = " · ".join(x for x in (job.get("standort"), job.get("land")) if x)
         lines.append(f"• {job['titel']}" + (f" ({place})" if place else ""))
+        if len(lines) == 3:
+            break
     if not lines:
         lines.append("• " + TEXT[lang]["new_jobs_intro"])
     return lines

@@ -80,6 +80,17 @@ def test_render_post_ist_pii_frei_und_hat_link(mod, db):
     assert post["post_id"]
 
 
+def test_job_lines_dedupliziert_gleiche_stelle(mod):
+    agg = {"jobs": [
+        {"titel": "Python Entwickler", "standort": "Berlin", "land": "DE"},
+        {"titel": "Python Entwickler", "standort": "Berlin", "land": "DE"},
+        {"titel": "Logistik", "standort": "Lyon", "land": "FR"},
+    ]}
+    lines = mod._job_lines(agg, "de")
+    assert len(lines) == 2
+    assert sum("Python Entwickler" in z for z in lines) == 1
+
+
 def test_stats_post_hat_aggregate_und_keine_personen(mod, db):
     agg = mod.read_aggregates(db)
     entry = {"day": "2026-10-29", "platform": "facebook",

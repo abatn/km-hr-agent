@@ -14,16 +14,16 @@
       "scripts/social_agent.py",
       "skills/**"
     ],
-    "at": "2026-10-25T21:21:13+00:00",
+    "at": "2026-10-25T22:20:35+00:00",
     "code_blobs": {
-      "scripts/social_agent.py": "a1f89bbb7a2c6c54ff330e903a12ea9743b50152",
+      "scripts/social_agent.py": "cc69b1cd727d389721a12ef4f9b7b1a868edefc2",
       "scripts/social_oauth.py": "51f7f5b87f05159616a2404cba048500c9c8248e",
-      "tests/test_social_agent.py": "c29337c793fb6dce80b2ea517863c108a8a4dfe4",
+      "tests/test_social_agent.py": "b19f7ae02090f5895298a73f9bb8b3af3b302546",
       "tests/test_social_oauth.py": "a14d309a0904d2f5b7d74860b3533c67a7f53eba"
     },
-    "commit": "9b8a64666caea4e49b7df42f2edf22af5657efac",
+    "commit": "454c6ce82a23d045e3a8352283f04480ec42ce31",
     "doc_blob": "fc02a5a9d15896609a6b2aa199111b5d05954b5c",
-    "note": "social-agent/SKILL.md: App-Token-Ablehnung und OAuth-Helfer verifiziert"
+    "note": "social-agent/SKILL.md: Facebook App-Token-Ablehnung/OAuth und Testlage verifiziert"
   },
   "doc": "skills/social-agent/SKILL.md",
   "schema": 1
