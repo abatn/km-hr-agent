@@ -22,7 +22,7 @@ machine (or a VM) … Only one recording at a time is supported on a single jibr
 |---|---|---|
 | `scripts/agent-runner.py` (gemessen 10.10.2026) (Director-URL; Gast-URL `&record=off`, Einladung an den Kandidaten) | `jitsi_url = f"https://meet.jit.si/pre-screening-{code}"` | `vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"` + `vdo_ninja_gast_url = f"https://vdo.ninja/?room=prescreening{code}&record=off"` (letzteres seit 28.09.2026, §2.2; **Raumname ohne Bindestrich seit 04.10.2026, §2.5**) |
 | `webui/components.py` (gemessen 10.10.2026) (Pre-Screen-Werkzeug) | `meet_url = f"https://meet.jit.si/pre-screening-{room_code}"` | `meet_url = f"https://vdo.ninja/?director=prescreening{room_code}"` (Raumname ohne Bindestrich seit 04.10.2026, §2.5) |
-| `webui/pages/candidate.py` (gemessen 10.10.2026) (Selbstpräsentation) | `meet_url = f"https://meet.jit.si/{room_name}"` | `meet_url = f"https://vdo.ninja/?director={room_name}"` (inzwischen `?push=` — §2.3) |
+| `webui/pages/candidate.py` (gemessen 10.10.2026) (Selbstpräsentation) | `meet_url = f"https://meet.jit.si/{room_name}"` | `meet_url = f"https://vdo.ninja/?director={room_name}"` (inzwischen `?push=` — §2.3; Stream-ID alphanumerisch seit 20.10.2026 — §2.6) |
 | `mcp-meeting-server.py` (Codemarke `def create_meeting_link`, gemessen 10.10.2026) (LEGACY-Tool `create_meeting_link`, 0 py-Aufrufer, per MCP-stdio erreichbar; Details §4 Punkt e) | `https://meet.jit.si/pre-screening-{code}` | `https://vdo.ninja/?director=prescreening{code}` (Raumname ohne Bindestrich seit 04.10.2026, §2.5) |
 
 **Warum trotzdem „keine Code-Änderung nötig" im Auftragstext nicht zutrifft:** Der Auftrag forderte
@@ -69,9 +69,26 @@ Download-Ordner des Kandidaten).
 dahin **nur** `?push=<id>` **ohne** Aufnahme-Parameter.
 
 **Status:** ✅ **UMGESETZT 03.10.2026** — `webui/pages/candidate.py` („Selbstpräsentation starten"
-`?push=self-presentation-…` + „Video-Link generieren" `?push=vorstellung-…`).
+`?push=…` + „Video-Link generieren" `?push=…`); **Stream-IDs alphanumerisch seit 20.10.2026**
+(`selfpresentation{code}` bzw. `vorstellung{cand_id}{uuid8}`, §2.6).
 **Hinweis:** Bereits persistierte Alt-Links (`ergebnisse/self-presentation-*.md`) bleiben
 `?director=` — **keine Migration** (der Kandidat erzeugt bei Bedarf einen neuen `?push=`-Link).
+**Portal-Verhalten (Stand 21.10.2026):** Der Kandidaten-Portal-Leser (`def load_video_link`,
+`webui/pages/candidate.py`, gemessen 21.10.2026) bevorzugt die **heutige** Datei und fällt
+sonst auf die **neueste Datei mit** Video-Abschnitt zurück — ein persistierter Alt-`?director=`-Link
+bleibt damit **im Portal sichtbar** (Leser-Fallback, Spec
+`knowledge/system/md-schreib-konvention.md` R-S2 „Leser-Regel"). Für den **Schreiber** gilt
+weiterhin: nur die Datei des **heutigen** Datums, kein Carry-over über Tagesgrenzen.
+
+**HR-Sicht (Arbeitgeber/Admin, Stand 22.10.2026, V-19):** Die Recruiting-Ansicht
+(`def prescreen_recruiting_section`, `webui/components.py`) wendet **dieselbe Leser-Regel** an,
+aber **ohne** Alt-Link-Ausgabe: je Kandidat wird **nur der neueste Stand mit nutzbarem
+Video-Abschnitt** gelistet (Auswahl-Helfer `def selbstpraesentation_je_kandidat`,
+`webui/components.py`), und ein `?director=`-Link gilt dort **nicht** als nutzbarer Link
+(Helper `def _video_link_aus_abschnitt`, `webui/components.py`) — der veraltete Director-Link
+wird **nicht** als Link ausgegeben (Spec R2.2). **Verhaltensänderung:** zuvor wurden alle
+Fassungen eines Kandidaten gelistet. Nachweis: `tests/test_video_section.py`
+(Proben „HR-Sicht zeigt nur den neuesten Stand mit Video" / „Director-Link wird ignoriert").
 
 ### 2.4 Aufnahme aktiviert (`&record=6000`) + Video-Upload (04.10.2026, Nutzerauftrag)
 **Offiziell belegt** (docs.vdo.ninja, Abruf 04.10.2026): Der **Aufnahme-Knopf** erscheint nur mit
@@ -85,9 +102,10 @@ erreichbar.
 - **Upload ermöglicht:** Dokumente-Tab (`_dokumente_section`) akzeptiert jetzt **`.webm/.mp4`**
   (`accept` + serverseitige Endungsprüfung) und **`max_file_size=150_000_000`** (≈150 MB für 2–3 min
   @ 6000 kbps); Label „Dokumente (PDF/TXT/Video, …)". Der CV-Upload bleibt unverändert (PDF/TXT, 5 MB).
-- **Offen (nicht umgesetzt):** Stream-ID alphanumerisch (VDO ersetzt Sonderzeichen selbst —
-  betrifft die Kandidaten-`?push=`-IDs; der **Raumname** der Einladung ist in §2.5 umgesetzt);
-  Server-RAM bei großen Uploads (`await file.read()` lädt komplett); UI-Hinweis zum Aufnahme-Ablauf.
+- ~~**Offen: Stream-ID alphanumerisch**~~ → **✅ erledigt 20.10.2026 (§2.6):** beide Kandidaten-
+  `?push=`-IDs sind alphanumerisch (`selfpresentation{code}` bzw. `vorstellung{cand_id}{uuid8}`).
+- **Offen (nicht umgesetzt):** Server-RAM bei großen Uploads (`await file.read()` lädt komplett);
+  UI-Hinweis zum Aufnahme-Ablauf.
 
 ### 2.5 Raumname alphanumerisch: `prescreening{code}` (04.10.2026, Lab Schritt 1–3)
 
@@ -106,12 +124,42 @@ die Verbindung funktionierte — die Warnung und der abweichende Raumname entfal
 
 - **Geändert wurde ausschließlich der Raumname** (ohne Bindestrich); `code`/`room_code` bleibt
   8 Zeichen Kleinbuchstaben+Ziffern (`string.ascii_lowercase + string.digits`, `random.choices`).
-- **Bewusst unverändert:** `mcp-meeting-server.py` (Codemarke `mcp`, gemessen 10.10.2026) (LEGACY, 0 py-Aufrufer) und die
-  Kandidaten-`?push=`-IDs (`self-presentation-…`, `vorstellung-…`) — außerhalb des Auftrags.
+- **Bewusst unverändert:** `mcp-meeting-server.py` (Codemarke `mcp`, gemessen 10.10.2026) (LEGACY, 0 py-Aufrufer).
+  ~~Die Kandidaten-`?push=`-IDs (`self-presentation-…`, `vorstellung-…`)~~ → **seit 20.10.2026
+  alphanumerisch (§2.6).**
 - **Keine Migration bestehender Links/ICS** (wie §2.3): Alt-Einladungen behalten ihren Raumnamen.
 - **Verifikation (04.10.2026, isolierte Browser-Prüfung):** Director- und Gast-Link ohne
   VDO-Warnung geöffnet, Gast beigetreten → Control Room zeigt den Feed (gleicher Raum);
   Screenshots + Messwerte in `ergebnisse/entscheidungen.md` (Abschnitt Raumname alphanumerisch).
+
+### 2.6 Stream-ID alphanumerisch: `selfpresentation{code}` / `vorstellung{cand_id}{uuid8}` (20.10.2026, Lab Schritt 1–3)
+
+**Quelle (Lab Schritt 1):** docs.vdo.ninja/advanced-settings/setup-parameters/push, Abruf 20.10.2026:
+*„&push — 1 to 64-characters long. Non-alphanumeric characters are sanitized to _; case sensitive."*
+**Live-Befund (20.10.2026):** Bei `?push=self-presentation-{code}` zeigte der VDO-Dialog
+*„Info: Only Alphanumeric characters should be used for the stream ID. The offending characters
+have been replaced by an underscore."* (Screenshot `/tmp/opencode/vdo-analyse-20261020/C_push.png`) —
+die Stream-ID hieß tatsächlich `self_presentation_{code}`. **Auch `_` ist non-alphanumeric**
+(sonst läge die Sanitisierung ja auf derselben Ebene) — Unterstriche sind deshalb **kein**
+zulässiger Ersatz.
+
+| Ort (Codemark) | ALT (bis 19.10.2026) | NEU (seit 20.10.2026) |
+|---|---|---|
+| `webui/pages/candidate.py` `start_prescreen` („Selbstpräsentation starten") | `?push=self-presentation-{room_code}` | `?push=selfpresentation{room_code}` |
+| `webui/pages/candidate.py` `_gen_video_link` („Video-Link generieren") | `?push=vorstellung-{cand_id}-{uuid8}` | `?push=vorstellung{cand_id}{uuid8}` |
+
+- **Geändert wurde ausschließlich die Stream-ID** (Bindestriche entfernt); die URL-Parameter
+  (`?push=…&record=6000` — gleiche Wörter, gleiche Groß-/Kleinschreibung, gleiche Reihenfolge)
+  bleiben unverändert. Länge ≤ 64 Zeichen (`selfpresentation` + 8; `vorstellung` + cand_id + uuid8);
+  **Eindeutigkeit bleibt über `uuid8`**, die Zufälligkeit wurde nicht verändert (`uuid.uuid4()`
+  unverändert; `room_code` weiterhin 8 Zeichen aus `string.ascii_lowercase + string.digits`).
+- **Bestehende Alt-Links bleiben hyphenisiert und funktionieren:** VDO sanitizt `?push=`-IDs auf
+  **beiden** Seiten identisch (`self_presentation_…` bzw. `vorstellung_…`) — Sender und Empfänger
+  landen im selben Stream. **Keine DB-Migration**, keine Änderung an persistierten ICS/MD-Dateien.
+- **Bewusst unverändert:** `app.py` (Paritäts-Referenz; Codemarken `room_name` / `video_code`,
+  gemessen 20.10.2026 — behält das Alt-Muster) sowie `vdo_ninja_url` / `vdo_ninja_gast_url` in
+  `scripts/agent-runner.py` und `mcp-meeting-server.py` (Regie-/Gast-Links haben keine Bindestriche,
+  §2.5).
 
 ## 3. Aufzeichnungs-Parameter: kein einschaltender gesetzt — Härtung `&record=off` auf dem Gast-Link (28.09.2026)
 
@@ -199,7 +247,7 @@ Voraussetzung, nicht Kür.
    Dienst genutzt wird — Datenschutzfrage, siehe `ergebnisse/browser-recording-plan-2026-09-27.md`.
 4. **`jitsi-mcp-server/`-Ordner:** ~~liegt ungenutzt im Repo~~ → **existiert nicht mehr auf Disk** (Stand 01.10.2026). Damit erledigt.
 
-## 7. Quellen (alle abgerufen 27.09.2026)
+## 7. Quellen (Q1–Q6 abgerufen 27.09.2026 · Q7 abgerufen 20.10.2026)
 | # | Quelle | Für |
 |---|---|---|
 | Q1 | https://github.com/jitsi/jibri | Jibri = eigener Server für Jitsi-Aufzeichnung |
@@ -208,3 +256,4 @@ Voraussetzung, nicht Kür.
 | Q4 | https://docs.vdo.ninja/advanced-settings/recording-parameters/and-autorecordremote | `&autorecordremote` |
 | Q5 | https://www.gesetze-im-internet.de/bdsg_2018/__26.html | § 26 Abs. 2 + Abs. 8 BDSG (Bewerber = Beschäftigte) |
 | Q6 | https://docs.vdo.ninja/readme/why-use-vdo-ninja-over-other-solutions | kostenlos, Peer-to-Peer, quelloffen, selbst hostbar |
+| Q7 | https://docs.vdo.ninja/advanced-settings/setup-parameters/push | `&push` = Stream-ID, 1–64 Zeichen, **alphanumerisch** (Non-Alphanumeric → `_`), case sensitive (§2.6) |

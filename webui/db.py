@@ -14,7 +14,7 @@ from __future__ import annotations
 import os
 import sqlite3
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +48,21 @@ def set_language_resolver(fn) -> None:
 
 
 def init_agent_tasks_table() -> None:
-    """Legt die agent_tasks-Tabelle an (idempotent). Kopie aus app.py:421-444."""
+    """Legt die agent_tasks-Tabelle an (idempotent) + ergänzt fehlende Spalten.
+
+    Paritätskopie zu `app.py` (Codemarke `init_agent_tasks_table`, Streamlit-Archiv).
+    Ergänzung 21.10.2026: `CREATE TABLE IF NOT EXISTS` ändert eine **bestehende**
+    Tabelle nicht — ein Altbestand ohne `started_at`/`finished_at`/`result_json`
+    würde beim Runner-Claim (`scripts/agent-runner.py::claim_task`) mit
+    `sqlite3.OperationalError` abbrechen (Endlosschleife „Loop-Fehler (Runner läuft
+    weiter)").
+    Die ALTERs sind idempotent (wie `init_notifications_table`,
+    `init_candidates_migrations`) — belegt auf einer Kopie: 5 → 11 Spalten, Daten
+    erhalten; auf Live- und Seed-DB ein No-op (Messung 21.10.2026).
+    Migrationsweg dokumentiert in `knowledge/system/agent-automation.md`
+    („Erweitertes Schema" + Abschnitt „5.1 Task-Status, DB-Pfad und
+    Score-Fallback", Zeile „Schema-Migration ohne WebUI").
+    """
     conn = sqlite3.connect(str(AGENT_TASKS_DB))
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS agent_tasks (
@@ -65,6 +79,13 @@ def init_agent_tasks_table() -> None:
         finished_at TIMESTAMP
     )""")
     c.execute("CREATE INDEX IF NOT EXISTS idx_agent_tasks_status ON agent_tasks(status)")
+    # Idempotente Spalten-Ergänzung (Altbestand aus Hand-SQLite-Dateien).
+    vorhanden = {r[1] for r in c.execute("PRAGMA table_info(agent_tasks)")}
+    for spalte, typ in (("started_at", "TIMESTAMP"), ("finished_at", "TIMESTAMP"),
+                        ("result_json", "TEXT"), ("result_path", "TEXT"),
+                        ("error_text", "TEXT"), ("attempts", "INTEGER DEFAULT 0")):
+        if spalte not in vorhanden:
+            c.execute(f"ALTER TABLE agent_tasks ADD COLUMN {spalte} {typ}")
     conn.commit()
     conn.close()
 
@@ -95,7 +116,13 @@ def queue_agent_task(task_type: str, payload: dict) -> int | None:
         # von der alten geschluckt. Altbestand ohne gen-Feld → COALESCE 0,
         # das Dedupe-Verhalten für Bestandsdaten bleibt damit unverändert.
         gen = int(payload.get("gen", 0) or 0)
-        heute = datetime.now().strftime("%Y-%m-%d")
+        # ZEITZONEN-FIX (22.10.2026): `created_at` wird von SQLite als **UTC**
+        # gesetzt (CURRENT_TIMESTAMP), die Dedupe-Grenze lief aber ueber das
+        # **lokale** Datum => im Fenster 00:00-02:00 (CEST) fielen die Zeilen
+        # des heutigen Tages aus dem Filter (Doppel-Insert). Beide Seiten nutzen
+        # jetzt UTC (Beleg: pytest-Lauf 22.10.2026 00:00 - 2 Fehlschlaege in
+        # tests/test_r32_gatekeeper_gen.py + tests/test_runner_i18n.py).
+        heute = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         if app_id is not None:
             # P1-7 (30.09.2026): `payload LIKE '%"application_id": N%'` war UNSCHARF —
             # N=1 traf auch 10..19 (live belegt: 34 Fremd-Treffer, 0 eigene).
@@ -271,6 +298,34 @@ def get_invitation_artifacts(application_id: int) -> dict | None:
     except Exception as ex:
         print(f"[db] get_invitation_artifacts({application_id}) fehlgeschlagen: {ex!r}")
     return None
+
+
+def get_invitation_task_status(application_id: int) -> str | None:
+    """Status des jüngsten create_invitation-Tasks der Bewerbung (oder None).
+
+    22.10.2026 (Einladungs-Hinweis, Vorfall Bewerbung #42): `get_invitation_
+    artifacts` liest NUR `status='done'` und liefert in allen anderen Fällen
+    None — die Employer-Seite konnte zwischen „Task hängt noch in der Queue"
+    (63 min Wartezeit, gemessen 22.10.2026) und „gar kein Task" nicht
+    unterscheiden und schwieg komplett. Diese Funktion liefert nur den reinen
+    Status ('pending'/'running'/'failed'/'done'), damit die Seite zwischen-
+    unterscheiden kann. Eigene Verbindung, wie alle db-Leser (Handler-
+    Connection-Gotcha) — read-only.
+    """
+    try:
+        conn = sqlite3.connect(str(AGENT_TASKS_DB))
+        cur = conn.cursor()
+        cur.execute("""SELECT status FROM agent_tasks
+            WHERE task_type = 'create_invitation'
+              AND json_extract(payload, '$.application_id') = ?
+            ORDER BY id DESC LIMIT 1""",
+            (application_id,))
+        row = cur.fetchone()
+        conn.close()
+        return row[0] if row else None
+    except Exception as ex:
+        print(f"[db] get_invitation_task_status({application_id}) fehlgeschlagen: {ex!r}")
+        return None
 
 
 def get_application_status_history(application_id: int) -> list:

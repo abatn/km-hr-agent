@@ -19,14 +19,14 @@
 | `webui/pages/employer.py` (Codemarke `def make_transition`, gemessen 10.10.2026) | `for ns in naechste:` → `def make_transition(...)` → `ui.button(f"→ {ns}", on_click=make_transition())` – Übergang nur über Whitelist-Button |
 | `webui/pages/employer.py` (Codemarke `ALLOWED_TRANSITIONS`, gemessen 10.10.2026) | `ALLOWED_TRANSITIONS = {"eingegangen": {"angesehen","abgelehnt"}, "angesehen": {"eingeladen","abgelehnt"}, "eingeladen": {"eingestellt","abgelehnt"}}` |
 | **`grep -n "ALLOWED_TRANSITIONS" webui/pages/employer.py`** | **genau 1 Treffer = die Definition** → **toter Code, nirgends gelesen** |
-| `webui/pages/employer.py` (gemessen 10.10.2026) | `def _active_app_ids(cid: int)` … `AND a.status IN ('eingegangen', 'angesehen', 'eingeladen')` – liefert nur aktive IDs, **keinen Statuswert** |
+| `webui/pages/employer.py` (gemessen 21.10.2026) | `def _app_info(app_id: int)` (liest Status **einer** Bewerbung) und `def _employer_application_ids(conn, employer_id)` (liefert Bewerbungs-/Kandidaten-IDs **ohne** Statusfilter) – der Statusfilter `a.status IN ('eingegangen', 'angesehen', 'eingeladen')` steht heute **inline** in den Aufrufern (Konstante `AKTIV` in `_page_stellen`) |
 | `webui/pages/employer.py` (Codemarke `def do_invite`, gemessen 10.10.2026) | `def do_invite():` → `UPDATE applications SET status='eingeladen' …`  – **kein Whitelist-Check gegen den Ausgangsstatus** |
 | `webui/pages/employer.py` (Codemarke `def do_reject`, gemessen 10.10.2026) | `def do_reject():` → `UPDATE applications SET status='abgelehnt' …` – kein Check |
 | `webui/pages/employer.py` (Codemarke `def do_hire`, gemessen 10.10.2026) | `def do_hire():` → `UPDATE applications SET status='eingestellt' …` – kein Check |
 | `webui/pages/admin.py` (gemessen 10.10.2026) | Admin-Ebene spiegelt dieselbe Whitelist (`erl` / `naechste = erl.get(...)`) – **hier ebenfalls kein `ALLOWED_TRANSITIONS`-Guard** |
 
 **Konkrete Lücke:** Über die drei Modal-Buttons in `_page_match` sind Sprünge möglich, die die Whitelist verbietet, z. B.
-`eingegangen → eingestellt` (überspringt `angesehen` und `eingeladen`) oder `eingegangen → eingeladen` (überspringt `angesehen`). `_active_app_ids` verhindert das nicht – es filtert nur auf Status ∈ AKTIV.
+`eingegangen → eingestellt` (überspringt `angesehen` und `eingeladen`) oder `eingegangen → eingeladen` (überspringt `angesehen`). Ein Helper, der nur auf Status ∈ AKTIV filtert, verhindert das nicht.
 
 ### „angesehen"-Auto-Setzer – existiert **nirgends**
 | Suche | Ergebnis (25.09.2026) |
@@ -63,7 +63,7 @@
 2. `do_invite()` : vor `UPDATE` (`webui/pages/employer.py` (Codemarke `def do_invite`, gemessen 10.10.2026)) `if not _legal("eingeladen", app_id): ui.notify(...); return`.
 3. `do_reject()` : vor dem `UPDATE`  je ID prüfen (`abgelehnt` ist aus AKTIV-Sicht immer legal, aber der Check macht die Absicht explizit).
 4. `do_hire()` : vor `UPDATE`  `if not _legal("eingestellt", app_id): …` → verhindert `eingegangen → eingestellt`.
-5. Alternativ (weniger Code): `_active_app_ids()`  um den Status erweitern und den Guard dort zentral legen – **Design-Entscheidung**.
+5. Alternativ (weniger Code): `_app_info()` um den Status erweitern und den Guard dort zentral legen – **Design-Entscheidung**.
 6. `webui/pages/admin.py` (Codemarke `def make_transition`, gemessen 10.10.2026) (Admin-Pfad) **mitziehen**, sonst entsteht ein Bypass; `webui/pages/employer.py` (Codemarke `def make_transition`, gemessen 10.10.2026) bleibt unverändert (Rendering-Guard ist bereits korrekt).
 
 ### (c-b) „angesehen"-Auto-Setzer — **NEUE Design-Entscheidung, kein Code in B1**

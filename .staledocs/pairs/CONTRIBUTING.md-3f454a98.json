@@ -26,13 +26,13 @@
       "tests/e2e_isolation.py",
       "webui/"
     ],
-    "at": "2026-10-20T11:26:32+00:00",
+    "at": "2026-10-21T22:15:14+00:00",
     "code_blobs": {
-      "scripts/ci/checks.py": "355ba05cbfe330946c98e7aa745a567ff8bb61e8"
+      "scripts/ci/checks.py": "49dd1309477e0d26014c2684d4982f9d9eb83112"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "c189b6060ebaa0252acaf0d0ea280865659bb46c",
-    "note": ""
+    "note": "Geprueft 22.10.2026: die zitierten Tokens `db.py`, `logic.py`, `webui/` und `knowledge/` stammen aus der Beschreibung der NiceGUI-Struktur, nicht aus `scripts/ci/checks.py`; dort wurde nur der Waechter `mdguard` geaendert (Auto-Discovery, Fixtures) \u2014 die im Doc beschriebene Projektstruktur bleibt unveraendert."
   },
   "doc": "CONTRIBUTING.md",
   "schema": 1

@@ -1,137 +1,73 @@
-# Project knowledge
+# AGENTS.md — KM-HR-Agent
 
-This file gives Freebuff context about your project: goals, commands, conventions, and gotchas.
+HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboarding). Mensch-in-der-Schleife: der Agent lädt/lehnt nie selbst ein oder ab. Sprache der Repo-Doku und der UI: **Deutsch**.
 
-> **Rolle dieser Datei (Doku-Authority v1.0):** operativ — Setup, Tests, CI-Gates, Gotchas, bindende Conventions, Zeiger auf die Specs. Kein Changelog (datierte Narrative → `ergebnisse/entscheidungen.md`), keine Detail-Specs (→ `knowledge/**`, `skills/*/SKILL.md`). Regel: **Ein Fakt steht an genau einem Ort** (`knowledge/system/doku-authority.md`).
+## Architektur
 
----
+- **Einzige UI: NiceGUI** in `webui/` (Port 8080, Override `KMHR_PORT`). Einstieg `webui/main.py`: Secrets-Gate → DB-Bootstrap → Seiten `create_*()` → ASGI-Guard → `ui.run`. Frameworkfrei: `webui/db.py` (SQLite), `webui/logic.py`; Pages in `webui/pages/`.
+- **`app.py` ist archiviertes Streamlit** (seit 23.09.2026). Nur Paritäts-Referenz, nicht starten/erweitern; `start.sh` bricht bewusst mit rc=1 ab.
+- **`scripts/agent-runner.py`**: Hintergrund-Runner, Queue `agent_tasks`, 60-s-Loop, max. 3 Versuche pro Task. Startet mit der App (PID `data/agent-runner.pid`), Opt-out `KMHR_RUNNER_AUTOSTART=0`. Dry-Run: `.venv-streamlit/bin/python3 scripts/agent-runner.py --once --dry-run`.
+- **MCP-Connectoren** (`connectors/`, `mcp-*-server.py`, `scripts/language-test-server.py`) sind in `opencode.json` registriert. Root-MCP-Server laufen mit `.venv-pdf/bin/python3`, `connectors/*` und Language-Test mit System-`python3`. Externe Dienste nur darüber ansprechen; direkter HTTP-Aufruf nur NVIDIA-API im Runner. In Code/Doku nur Tool-Namen aus `opencode.json` nennen (`fetch`, `anysearch`; `websearch`/`webfetch` gibt es dort nicht).
+- **Wissensbasis**: `knowledge/` (Specs, Index `knowledge.md`), `skills/*/SKILL.md` (Übersicht `skills/README.md`). Maßgeblich je Gebiet ist die Spec, z. B. `knowledge/system/configuration-secrets.md`, `knowledge/system/agent-automation.md`, `knowledge/system/access-control.md`, `knowledge/system/i18n.md`, `knowledge/system/doku-authority.md`, `knowledge/system/md-schreib-konvention.md`.
 
-# LAB-PRINZIPIEN (Gesetz)
+## Setup & Start
 
-> **Gilt ab: 15.09.2026** | **Für jede Aufgabe bindend – keine Ausnahme.**
-
-## Schritt 1: Quelle finden
-Bevor du eine Zahl, eine Regel oder einen Wert verwendest, MUSST du eine externe Quelle finden:
-- Gesetz (z.B. ansvar-german-law)
-- Studie (z.B. SHRM, LinkedIn)
-- Offizielle Dokumentation (z.B. Bipperz)
-Wenn keine Quelle gefunden wird: SAGE ES KLAR – und kennzeichne den Wert als "Design-Entscheidung".
-
-## Schritt 2: MD-first
-Schreibe die Logik in SKILL.md und knowledge/ – nicht in Python.
-Nur wenn MD nicht ausreicht (UI, DB, API), darf Python genutzt werden.
-
-## Schritt 3: Konsistenz prüfen
-Vergleiche SKILL.md und Code. Wenn sie nicht übereinstimmen:
-Korrigiere das MD – nicht den Code.
-
-## Schritt 4: Transparenz
-Dokumentiere jede Entscheidung in ergebnisse/entscheidungen.md:
-- Was wurde geändert?
-- Warum?
-- Welche Quelle?
-
-## Schritt 5: Iteration
-Arbeite einen Skill nach dem anderen ab. Nicht alles auf einmal.
-
-## Regeln (verbindlich)
-- Keine Erfindungen – jede Zahl hat eine Quelle oder wird als "Design-Entscheidung" gekennzeichnet.
-- Kein Code, wo MD reicht.
-- Keine Inkonsistenz zwischen MD und Code.
-- Keine Behauptung ohne Beweis.
-
-## Schritt 6: Prüfen (Pflicht bei JEDER Änderung)
-Jede Änderung (Code **oder** Doku) wird **vor dem Commit** durch die **Pflicht-Prüfkette** belegt — jeder Punkt mit `rc=0`:
-
-| # | Prüfung | Befehl | Soll |
-|---|---|---|---|
-| 1 | Doku↔Code | `./.venv-streamlit/bin/staledocs check --gate strict` | **rc=0** (0 rot) |
-| 2 | Doku-Beispiele/Links | `npx -y docrot-cli --fail-on=error` | **A+, rc=0** |
-| 3 | Tests | `./.venv-streamlit/bin/python3 -m pytest -q` | grün (0 neue Fehler) |
-| 4 | Syntax/Import | `./.venv-streamlit/bin/python3 -m compileall -q webui/ scripts/ connectors/` | rc=0 |
-| 5 | Lint | `./.venv-streamlit/bin/python3 -m pyflakes webui/ scripts/ connectors/ tests/` | **0 blockierende** — der rc ist 1, sobald es Hinweise gibt (unbenutzte Importe, f-Strings, …); gewertet wird die Ausnahmen-Liste in `ci.yml` (Codemark `echte=`), **nicht** der rc |
-| 6 | Transparenz | `ergebnisse/entscheidungen.md` (Schritt 4) + `git status` (nur gewollte Dateien) | belegt |
-
-**Ein roter oder fehlender Pflicht-Punkt ⇒ KEIN Commit/Push.** Bei Doku-Änderungen zusätzlich die staledocs-Paar-Belege erneuern (zweistufiger Re-Ack, s. Gotchas). Bedeutung/CI-Parität der Gates: Abschnitt „## CI-Gates (verbindlich)".
-
----
-
-## Setup & Betrieb
-
-- **Venv:** `source .venv-streamlit/bin/activate` (in Automatismen `.venv-streamlit/bin/python3`).
-- **DB:** SQLite `data/feedback.db` (Pfad-Override `KMHR_DB_PATH`, z. B. E2E-Isolation) — `webui/db.py` liest **nur** `KMHR_DB_PATH`; `KMHR_DB_BACKEND`/`KMHR_DATABASE_URL` werden **nicht** verwendet (inert).
-- **Dev (NiceGUI, einzige UI):** `./start-webui.sh` → http://localhost:8080. Der Starter liest `./.env` (Vorlage `.env.example`) und **verweigert den Start ohne `KMHR_STORAGE_SECRET` + `KMHR_ADMIN_SEED_PASSWORD`** (rc=1); bewusst ohne Secrets: `KMHR_DEV=1 ./start-webui.sh`. Direktstart `python3 -m webui.main` braucht dieselben Secrets. Spec: `knowledge/system/configuration-secrets.md`.
-- **Drei Env-Dateien — nicht vermischen** (Codemark je Loader): `.env` → `start-webui.sh` (Codemark `ENV_FILE`; `KMHR_STORAGE_SECRET`, `KMHR_ADMIN_SEED_PASSWORD`) · `.env-runner` → `scripts/agent-runner.py` **und** `scripts/language-test-server.py` (Codemark `_env_runner`; `NVIDIA_API_KEY`, `KMHR_LLM_MODEL`) · `.env-email` → `mcp-email-server.py` (Codemark `env_file`; `SMTP_*`). Der LLM-Key in der falschen Datei ⇒ `RuntimeError("NVIDIA_API_KEY nicht gesetzt – prüfe .env-runner oder Umgebungsvariable")` (Codemark in `scripts/agent-runner.py`).
-- **Streamlit = abgeschaltet (23.09.2026):** `app.py` bleibt als Paritäts-Referenz, `start.sh` verweigert den Start.
-- **Agent-Runner:** startet mit der App (PID-Datei `data/agent-runner.pid`); Opt-out `KMHR_RUNNER_AUTOSTART=0`; Dry-Run `python3 scripts/agent-runner.py --once --dry-run`.
-- **i18n-Kataloge bauen:** `.venv-streamlit/bin/pybabel compile -d webui/locales` (kein `babel.cfg`, keine `.pot`; `pybabel --version` → 2.18.0) — rc=0 (Stand 15.10.2026). **Rebuild-Falle:** die `.po` enthalten kein `POT-Creation-Date` — babel stempelt beim Bauen die aktuelle Zeit in den `.mo`-Header ⇒ ein Lauf macht die 4 getrackten `.mo` **ohne Inhaltsänderung** dreckig; `git status webui/locales` zurücksetzen, wenn nicht gewollt. Key-Menge je Sprache == DE prüfen: `python3 scripts/ci/checks.py i18n` (Zahl und Fix-Historie: `knowledge/system/i18n.md`, Codemark `I3 pybabel compile` in `ergebnisse/entscheidungen.md`).
-- **Beweislog (Pflicht, Lab-Schritt 4):** `ergebnisse/entscheidungen.md`; Änderungsverlauf `git log --oneline -10`.
+- Venv: `source .venv-streamlit/bin/activate` (Pfad in Skripten: `.venv-streamlit/bin/python3`). Deps: `requirements.txt` (Prod) + `requirements-dev.txt` (pytest, pyflakes, playwright). Der Name „streamlit" ist historisch — die App ist NiceGUI.
+- Secrets in **drei** Dateien, nicht vermischen. Falsche Datei ⇒ Fehler:
+  - `.env`: `start-webui.sh` (`KMHR_STORAGE_SECRET`, `KMHR_ADMIN_SEED_PASSWORD`); Vorlage `.env.example`, danach `chmod 600`.
+  - `.env-runner`: `scripts/agent-runner.py`, `scripts/language-test-server.py` (`NVIDIA_API_KEY`, `KMHR_LLM_MODEL`).
+  - `.env-email`: `mcp-email-server.py` (`SMTP_*`).
+- Start: `./start-webui.sh` verweigert ohne die beiden `.env`-Secrets den Start (rc=1); andere Env-Datei per `KMHR_ENV_FILE`. Ohne Secrets nur lokal: `KMHR_DEV=1 ./start-webui.sh`. `python3 -m webui.main` braucht dieselben Secrets.
+- Live-Admin-Konto trägt noch das alte Seed-Passwort: App **nicht aus dem lokalen Netz erreichbar machen**, bis rotiert ist (Details `knowledge/system/configuration-secrets.md`).
+- DB: `data/feedback.db` (SQLite). Pfad-Override nur über `KMHR_DB_PATH` (Runner und WebUI teilen ihn). **Live-DB nie direkt beschreiben.**
+- i18n: `.venv-streamlit/bin/pybabel compile -d webui/locales`. Es gibt **kein** `babel.cfg`/`.pot` — Kataloge werden gepflegt, nicht extrahiert. Babel stempelt die aktuelle Zeit in die `.mo`-Header und macht alle 4 (de/en/fr/ar) dreckig; ohne Inhaltsänderung `git checkout -- webui/locales`. Key-Gleichheit: `python3 scripts/ci/checks.py i18n`.
 
 ## Tests
 
-- **Unit-Tests:** `.venv-streamlit/bin/python3 -m pytest -q` → **477–522 passed, 0 failed** (Spanne statt Momentzahl, Messreihe 12.–19.10.2026; oberer Rand am 19.10.2026 gemessen: **522 passed, 0 skipped** — +8 Board-Tests `tests/test_board_actions.py` seit MVP Arbeitgeber-UI; davor 514/0sk (+13 Prädikat-Tests `tests/test_passiv_sprache_filter.py`); Vormessungen 18.10.2026: 501/0sk und 496/5sk — Differenz ausschließlich die flaky Language-Tests; `tests/conftest.py` spiegelt `tests/fixtures/seed.db` → deterministisch). **Flaky = Spannen-Ursache:** netz-/LLM-abhängige `test_language_scoring`-Kombinationen **skippen** (Language-Test-Server liefert 0 Fragen), wenn Server/LLM nicht erreichbar — **0–5 skipped** verschieben die Passed-Zahl, **kein** Regressionssignal.
-- **CI-Parität:** mit `--ignore=` für `tests/test_r33_compliance_reports.py` + `--deselect` für `tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname` = **468–513 passed, 1 deselected** (gemessen 19.10.2026: **513 passed, 0 skipped, 1 deselected** = 522−9; Vormessungen 18.10.2026: 492/0sk und 487/5sk; Differenz zur Vollliste **9** = 8 DSGVO-Tests + 1 Deselect). Spec: `knowledge/system/e2e-ci-seed.md`.
-- **E2E (Playwright):** immer **isoliert** via `python3 tests/e2e_isolation.py --port <frei>` (`--port` ist **Flag, kein Positionsargument**; Port vorher mit `ss -ltn | grep :<frei>` frei prüfen — sonst läuft der Test gegen einen Alt-Server; Einzel-Skript: `--only e2e_<name>`) — `tests/e2e_harness.py` bricht ohne `KMHR_E2E_BASE` ab (R6-0), **nie** gegen die Live-App :8080. Konten: lokal Originale-Mails (Spiegel der Live-DB), in CI anonymisierte Seed-Konten (`KMHR_E2E_SEED=1`) — Voll-Mapping in `knowledge/system/e2e-ci-seed.md`. Bestand: 54 Dateien `tests/e2e_*.py`, davon 52 im Isolationslauf (Codemark `SKIP = {"e2e_harness.py", "e2e_isolation.py"}`; Zählung 19.10.2026, Gegenprobe `ls tests/e2e_*.py | wc -l` = 54 — +`e2e_einladen_flow.py` aus Iteration „Einladungen" · +`e2e_board_passiv_filter.py` aus Iteration „Hiring-Board Passiv-Filter" · +`e2e_password_reset.py` aus Iteration „Passwort vergessen?", Messdatum 18.10.2026).
-- **pytest-Grundkonfiguration (nicht verschieben):** `pytest_plugins = ["nicegui.testing.user_plugin"]` muss in der **Root**-`conftest.py` stehen (pytest 8+); `pytest.ini` verlangt das Projekt-Root (`main_file = tests/nicegui_main.py`) — NiceGUI-`user_simulation` braucht `config.inipath`.
+- Unit: `.venv-streamlit/bin/python3 -m pytest -q` (639 collected, 25.10.2026; Volllauf 634 passed, 5 skipped, 1 bekannte NiceGUI-RuntimeWarning `Outbox.loop`). Die Passed-Zahl schwankt, weil netzabhängige Language-Tests skippen — keine feste Zahl als Ziel nehmen.
+- Einzeltest: `.venv-streamlit/bin/python3 -m pytest tests/test_x.py::test_name -q`.
+- `pytest.ini` setzt `asyncio_mode = auto` und `main_file = tests/nicegui_main.py`. `pytest_plugins = ["nicegui.testing.user_plugin"]` muss in der **Root**-`conftest.py` stehen (pytest 8+).
+- NiceGUI-UI-Tests: Demo-Routen (`@ui.page`) gehören in `tests/nicegui_main.py`, **nicht** ins Testmodul (sonst 404/Global-Reset); Funktionsnamen dort nicht mit `test_` beginnen.
+- `tests/conftest.py` spiegelt `tests/fixtures/seed.db` (Fallback: Live-DB) nach `/tmp/opencode` und leitet alle `sqlite3.connect`-Zugriffe dorthin um; `KMHR_LOG_FILE` zeigt auf ein Temp-Log. Nicht umgehen. Der Spiegel bekommt zusätzlich `init_notifications_table` + `init_candidates_migrations`; neue Migrationen, die UI-Tests brauchen, in `webui/main.py` **und** dort nachziehen.
+- `tests/fixtures/seed.db` ist **handgepflegt** (6 Jobs/18 Bewerbungen/2 Arbeitgeber). Nicht mit `scripts/seed_ci_db.py` blind neu erzeugen — das verschiebt E2E-Baselines und ~10 Unit-Tests; nur chirurgisch ändern (`knowledge/system/e2e-ci-seed.md`).
+- **CI-Parität** (`ci.yml`): `data/feedback.db` ← `tests/fixtures/seed.db`, `.env` mit Dummy-Secrets, `mkdir /tmp/opencode`, dann `pytest -q --ignore=tests/test_r33_compliance_reports.py --deselect tests/test_ui_fixes_p0.py::test_profile_display_name_kein_dateiname`. Beide Ausschlüsse brauchen Daten, die nicht im Repo liegen (DSGVO); CI zählt daher systematisch weniger Tests als lokal.
+- **E2E (Playwright)** nur über `python3 tests/e2e_isolation.py --port <N>` (Default 8081; `--port` ist ein Flag). Vorher `ss -ltn | grep :<N>` prüfen, sonst testet man einen Alt-Server. Einzelskript: `--only e2e_<name>`; Logs bleiben unter `/tmp/opencode/e2e-iso-*`. Nie gegen Port 8080. Einzelskripte direkt brauchen `KMHR_E2E_BASE` (der Isolation-Harness setzt es selbst). CI-Parität: `KMHR_E2E_SEED=1`, `KMHR_E2E_SKIP=e2e_m07_row_click`, Port 8097; Seed-Lauf lokal zusätzlich `KMHR_E2E_LIVE_DB=tests/fixtures/seed.db`. Bekanntes Problem: `goto` auf `/employer/stellen` hängt unter WSL (Einladen über den Match-Dialog nutzen, s. `knowledge/system/i18n-runner-chain.md` §5).
 
-## CI-Gates (verbindlich)
+## Prüfkette vor jedem Commit
 
-- **`ci.yml`:** `pyflakes` über `webui/ scripts/ connectors/ tests/` + Root-MCP-Server mit Ausnahmen-Liste (nur blockierende Fehler; `app.py` und `docs/sphinxats-github-app.py` ausgenommen) · `python -m compileall -q` · Secret-Scan (grep) · i18n-Katalog-Gleichheit (Key-Menge je Sprache == DE) · `pytest` mit den beiden DSGVO-Exklusionen (siehe Tests) · `staledocs check --gate strict`.
-- **`security.yml`:** bandit (SAST — nur hohe Schwere als Warning, GHAS-freier Ersatz für CodeQL) + pip-audit (Warning) + **gitleaks** (blockiert). Umfang gitleaks: **ein Commit je Push**, kein Full-History-Scan — Log-Beleg `gh run view 38601649975 --log` (14.10.2026): `git log -p -U0 -1` → „1 commits scanned"; Allowlist `.gitleaks.toml` (u. a. staledocs-Content-Hash, siehe Commit `a8b11f0`).
-- **Pfad-getriggerte Workflows (leicht übersehbar — sie laufen nicht bei jedem Push):** `docs.yml` (u. a. **`AGENTS.md`** — Doku-Änderungen hier triggern CI), `e2e.yml`, `i18n.yml`, `mcp.yml`, `scripts.yml` in `.github/workflows/`; die `paths:`-Muster stehen in den YMLs — `ci.yml`, `security.yml`, `docrot.yml` laufen ohne Pfadfilter. Locales Äquivalent: `python3 scripts/ci/checks.py docs|legal|mcp|i18n|schema` · `python3 scripts/ci/mcp_handshake.py` (mcp.yml) · shellcheck (scripts.yml) · `python3 tests/e2e_isolation.py --port <frei>` (e2e.yml). Alle fünf `checks.py`-Bereiche am 18.10.2026 erneut: je rc=0, 0 Fehler, 0 Warnungen (Ausgaben: „14 Server", „17 Tabellen" — seit `password_resets` — „4 Kataloge"; Vorgänger-Messung 15.10.2026 stand bei 16 Tabellen).
-- **Doc-Gates:** `./.venv-streamlit/bin/staledocs check` (PyPI **2.1.0** — **nicht** `npx staledocs`: das ist ein anderes npm-Paket, Version `0.4.0-beta.1`, `npm view staledocs version`) + `npx -y docrot-cli`; Config `.staledocs.yaml` (`gate: strict`), Workflow `.github/workflows/docrot.yml`. **`staledocs check --gate strict` muss `rc=0` liefern, bevor gepusht wird** — seit 11.10.2026 **in der CI erzwungen**: Job „Doku↔Code (staledocs)" (`ci.yml`, `pip install staledocs==2.1.0` + `staledocs check --gate strict`, `fetch-depth: 0`).
-- **Kein Formatter konfiguriert** — die CI-Gates oben sind verbindlich.
-- **Deploy (lokal → GitHub → Contabo VPS):** `git push` (RefSpec `remote.origin.push = master:main`) → GitHub-`CI` grün → `deploy-contabo.yml` → VPS-Restart + Health-Check. Spec: `knowledge/system/deploy-pipeline.md`. **Nie als synchron** (gitignored): `.env*`, `data/`, `testdaten/`, `ergebnisse/`, `.venv-*/`. Rollback = SSH `git reset --hard <SHA>`.
+Alle Punkte mit rc=0. Ein roter Punkt ⇒ kein Commit/Push.
 
-## Doku-Tools — korrekte Nutzung & Verifikation (offiziell)
+1. `.venv-streamlit/bin/staledocs check --gate strict` (PyPI 2.1.0; **nicht** `npx staledocs`, das ist ein anderes Paket)
+2. `npx -y docrot-cli --fail-on=error` (Soll: Grade A+)
+3. `.venv-streamlit/bin/python3 -m pytest -q`
+4. `.venv-streamlit/bin/python3 -m compileall -q webui/ scripts/ connectors/`
+5. `.venv-streamlit/bin/python3 -m pyflakes webui/ scripts/ connectors/ tests/ mcp-pdf-server.py mcp-meeting-server.py mcp-email-server.py` · **rc ist 1 sobald es Hinweise gibt.** Gewertet werden nur blockierende Fehler; CI filtert „imported but unused", f-string-Hinweise u. a. heraus. `app.py` und `docs/` sind bewusst ausgenommen.
+6. Doku-Änderung: `ergebnisse/entscheidungen.md` ergänzen (Was/Warum/Quelle). Dann `git status` auf gewollte Dateien prüfen.
 
-> **Quellen:** `staledocs` **2.1.0** (PyPI `Synforforger/staledocs` → `Synforger/staledocs`, Apache-2.0, Python ≥3.11) · `docrot-cli` **0.2.5** (npm `getdocrot/docrot`, MIT, Node ≥18.17). Verifikation immer **read-only** (kein `ack`/`init`/`--fix`), **ein Befehl pro Call**, Soll `rc=0`.
+Doku-Gates gezielt: `python3 scripts/ci/checks.py docs|legal|mcp|i18n|schema|mdguard` (je ein Bereich). `docs.yml` triggert auch bei Änderungen an `webui/**`, `scripts/**`, `tests/**`, weil `mdguard` Laufzeit-Schreiber prüft.
 
-**staledocs (Doku↔Code-Drift):**
-- **Kanonische Verifikation:** `staledocs --version` → `2.1.0`; `staledocs check --gate strict --json` (Soll: `red 0 / amber 0 / green 56` — grüne Zahl == Anzahl Paare in `.staledocs/pairs/`, wächst mit jedem neuen Paar — Stand 15.10.2026; `coverage` alle Kategorien **leer**; `config.weakenings: []`; `anchor_status.baseline_missing: []`); `staledocs pairs --health`; `staledocs unarmed`; `staledocs explain` (nur wenn rot).
-- **Ack — zweistufig, vom Tool erzwungen:** `staledocs ack <doc>` → Evidence + Token → `staledocs ack <doc> --confirm <token> -m '<was geprüft>'` (die Note muss etwas aus der Evidence benennen; „looks fine" wird abgelehnt). **Bulk ist offiziell:** `ack --all` / `ack --broken` (Onboarding/Refactor). **Aufweichungen** (Pair/Gate/`ignore`) sind rot bis `staledocs ack --config -m '<warum>'`. Ledger `.staledocs/pairs/` **wird committet**. Exit-Codes: `0` ok · `1` Gate · `2` Usage · `3` ack pending.
-- **Regel:** Prüfen stets mit den **offiziellen** Befehlen + `rc=0`. **Verboten:** unbelegtes `ack` (ohne Evidence-Lesen) oder das Umgehen der Weakenings-Sperre — das Tool erzwingt Evidence und meldet jede Aufweichung (`config.weakenings`).
+## Gotchas
 
-**docrot (Markdown gegen Code):**
-- **Kanonische Verifikation:** `npx -y docrot-cli --json --fail-on=error` (Soll: `grade: A+`, `errors: 0`, `findings: []`). Flags: `--fail-on error|warning|never`, `--reporter pretty|github|json`, `--fix`, `--only`, `--exclude`, `--include-changelogs`.
-- **CI-Action (offizielles Snippet):** `uses: getdocrot/docrot@v0` mit `with: fail-on: error` (s. `.github/workflows/docrot.yml`).
+- **`ergebnisse/` ist gitignored und nichts darin ist getrackt.** `entscheidungen.md` landet also nie im Commit. Lokal pflegen, nicht als Teil des Diffs erwarten.
+- **staledocs-Ack** ist zweistufig (`ack <doc>` → `ack <doc> --confirm <token> -m '<Prüfung>'`). Ack nur mit gelesener Evidence; das Tool lehnt pauschale Notizen ab. Falle: ein zweiter Analyse-Lauf über bereits ackte Paare liefert `claims=0`. Vorher `.staledocs/` sichern, Paar-Ledger leeren, frisch analysieren. Aufweichungen (`config.weakenings`) nicht umgehen.
+- **Handler-Connection**: ein NiceGUI-Callback darf nie eine `conn` nutzen, die der Seitenaufbau geschlossen hat. Jeder Callback öffnet seine eigene `conn` und schließt sie in `try/finally` (Muster `visa_info_section` in `webui/components.py`; Test `tests/test_conn_closure.py`).
+- **i18n**: kein f-String in `_()`, sondern `_('… {x}').format(x=…)` (Ruff INT001). Modul-Konstanten mit UI-Strings erst zur Renderzeit übersetzen, sonst ist die Babel-Extraktion kaputt.
+- **Laufzeit-Schreiber** (Reports, Mails, MD-Artefakte): Ziel ist die Datei des heutigen Datums. Nie die „neueste existierende" Datei nehmen, nichts aus anderen Dateien übernehmen, nichts abschneiden, nichts in `knowledge/**`/`skills/**` schreiben (`tests/test_md_writer_discipline.py`).
+- **`.bak`-Dateien**: bei jedem App-Start bleiben nur Sicherungen der letzten 2 Kalendertage (`run_bak_retention_once`, `webui/logic.py`).
+- **Zitate in Doku**: `Datei:Zeile` driftet. Stattdessen Codemarke (`PAGE_MAP`, `def berechne_match_score`) oder Messdatum nennen, vorher mit `grep -n` prüfen.
+- **ASGI-Guard**: `webui/asgi_guard.py::SocketioAbortGuard` wird in `webui/main.py` vor `ui.run` registriert. Client-Abbrüche vor dem ersten Event liefern 400 statt 500. Nicht entfernen.
+- **Kein Formatter/Linter-Config**: nur die Prüfkette oben zählt; nicht nach `ruff`/`black`/`mypy`-Konfiguration suchen.
 
-## Gotchas & Tool-Fallen
+## Lab-Prinzipien (bindend, aus CONTRIBUTING.md)
 
-- **staledocs-Ack-Falle (10.10.2026):** die Analyse liefert Claims **nur bei UNACKED-Paaren** — ein zweiter Analyse-Lauf über bereits ackte Paare schreibt `claims=0` und erzeugt Ack-Notes ohne Beleg. Vor jedem Re-Ack: `.staledocs/` sichern, betroffene Paar-Ledger leeren, Claims frisch analysieren, dann zweistufig acken. Prosa-Docs ohne Pfad-/Ident-Claims (`knowledge/language-tests.md`, `knowledge/notification-log.md`, `knowledge/onboarding-default.md`) brauchen manuellen Beleg im Note.
-- **anysearch braucht keinen Schlüssel (01.10.2026):** nur `X-Anysearch-Client` in `opencode.json`; die Auth-Zeile war 24.09.2026 defekt (`invalid_auth_header`) und entfernt. Wirksam erst nach OpenCode-Neustart; Arbeits-Ersatz bis dahin `fetch`.
-- **E2E-Sleep-Falle (WSL):** `goto` auf `/employer/stellen` hängt den Playwright-Driver — Einladen über den Match-Seiten-Dialog (`knowledge/system/i18n-runner-chain.md` §5).
-- **ASGI-Socket.IO-Guard (10.10.2026):** engineio wirft bei Client-Abbruch/Probe vor dem 1. Event `KeyError: 'REQUEST_METHOD'` (leeres Request-Dict bei Erst-Event ≠ `http.request`/`websocket.connect`) → `webui/asgi_guard.py::SocketioAbortGuard` (registriert in `webui/main.py` **vor** `ui.run`) antwortet **400 statt 500**; Spec `knowledge/system/asgi-guard.md`.
+1. **Quelle finden** vor jeder Zahl oder Regel (Gesetz, Studie, offizielle Doku). Ohne Quelle: explizit als „Design-Entscheidung" kennzeichnen.
+2. **MD-first**: Logik in `skills/*/SKILL.md` und `knowledge/`, nicht in Python. Python nur, wenn MD nicht reicht (UI, DB, API).
+3. **Konsistenz**: bei Widerspruch zwischen MD und Code das **MD** korrigieren.
+4. **Transparenz**: Entscheidungen in `ergebnisse/entscheidungen.md` (Was, Warum, Quelle).
+5. **Iteration**: einen Skill nach dem anderen.
 
-## Conventions (verbindlich)
+## Git & Deploy
 
-- **Zitate mit Codemarke + Messdatum:** `Datei:Zeile` ist **kein** stabiler Verweis (Regel ab 01.10.2026; Befund alle 78 Code-Refs in `ergebnisse/reports/*.md` gedriftet, `ergebnisse/zeilenangaben-drift-2026-10-01.md`). Zitate mit **Codemarke** (`PAGE_MAP`, `_TAB_MAP`, `def berechne_match_score`) und/oder Messdatum; vor dem Zitat `grep -n "<marke>" <datei>` prüfen. Alt-Reports in `ergebnisse/` bleiben unangetastet.
-- **`.bak`-Retention (ab 27.09.2026, Design-Entscheidung auf Nutzerbefehl):** von Sicherungskopien bleiben nur die der **letzten 2 Kalendertage** (Datum-Stempel im Namen); alles ältere und alles ohne Datum wird gelöscht. Ausführung `run_bak_retention_once` (`webui/logic.py`, Codemark `_bak_timestamp`) bei jedem App-Start, fehlerresistent, mit Rollback-Archiv; Nachweis `tests/test_bak_retention.py`. Nach dem Löschen: `pytest` + Live-DB-Snapshot prüfen.
-- **Changelog-Pflicht:** datierte Änderungsnarrative gehören nach `ergebnisse/entscheidungen.md` (Lab-Schritt 4) — **nicht** in diese Datei. `git log --oneline -10` liefert den Commit-Verlauf.
-- **Doku-Authority:** ein Fakt steht an genau einem Ort; normativ/deskriptiv/historisch/tot + Konflikt-Hierarchie → `knowledge/system/doku-authority.md`.
-- **i18n im UI-Code:** kein f-String in `_()` → `_('{x} …').format(x=…)`; Modul-Konstanten mit UI-Strings erst zur **Renderzeit** übersetzen (Babel-Extraktion sonst defekt). Norm + Guard (Ruff INT001): `knowledge/system/i18n.md`.
-- **Patterns:** NiceGUI-App (frameworkfreie Layer `db.py`/`logic.py`), deutsche UI, MCP-Connectoren für externe Dienste, Lab-Prinzip (Skill + Knowledge + Connector, keine separate Codebasis). **Tool-Namen-Pflicht:** nur MCP-Server-Namen aus `opencode.json` (kein websearch/webfetch) — `knowledge/system/mcp-connector-config.md`.
-- **Nicht tun / Pflicht:** Tests immer über den venv-Interpreter (`.venv-streamlit/bin/python3`); Live-DB `data/feedback.db` nie direkt schreiben (Tests nutzen den Spiegel aus `tests/conftest.py`); **Netz-Restrisiko:** das Live-Admin-Konto trägt weiterhin das frühere Seed-Passwort → bis zur Rotation darf die App **nicht aus dem lokalen Netz erreichbar** sein (Fakt + Begründung stehen in der Spec, Abschnitt „Bekanntes Restrisiko": `knowledge/system/configuration-secrets.md`).
-
-## Zeiger auf die Specs (Quelle-der-Wahrheit je Gebiet)
-
-| Gebiet | Spec (maßgeblich) |
-|---|---|
-| Doku-Authority, Doku↔Code | `knowledge/system/doku-authority.md` |
-| Access Control (Agent-/Portal-Ebene + ADMIN) | `knowledge/system/access-control.md` |
-| Scoring, Gewichte, Feedback-Loop | `knowledge/lifecycle/matching-criteria.md`, `knowledge/lifecycle/feedback-schema.md` |
-| Bewerbungs-Status, Status-Automatik | `knowledge/lifecycle/application-status.md`, `knowledge/lifecycle/status-automation.md` |
-| Arbeitgeber-Portal (Felder, Matching-Filter, Bewerber) | `knowledge/portal/employer-portal-fields.md`, `knowledge/portal/matching-filter.md`, `knowledge/portal/applicants-first.md`, `skills/job-application/SKILL.md` |
-| Candidate-Portal, CV-Pflicht | `knowledge/portal/candidate-portal-fields.md`, `knowledge/portal/cv-pflicht.md` |
-| Agent-Automation (Runner, Trigger, Mails, Gatekeeper) | `knowledge/system/agent-automation.md`; Fehlerstatistik `knowledge/error-statistics.md` |
-| DSGVO (Dokumenten-Gate, Löschfristen) | `knowledge/legal/dsgvo-gate.md`, `knowledge/legal/gdpr-policy.md` |
-| Meetings (VDO.Ninja, Aufnahme-Einwilligung) | `knowledge/system/vdo-ninja-migration.md`, `knowledge/legal/recording-consent.md` |
-| HR-/MCP-Connectoren | `connectors/hr-api-connectors.md`, `knowledge/system/mcp-connector-config.md` |
-| i18n (DE/EN/FR/AR), Runner-Texte | `knowledge/system/i18n.md`, `knowledge/system/i18n-runner-chain.md` |
-| E2E/CI-Seed, Test-Konten | `knowledge/system/e2e-ci-seed.md` |
-| Config/Secrets, Deploy | `knowledge/system/configuration-secrets.md`, `knowledge/system/deploy-pipeline.md` |
-| Hardcodierte Werte & Quellen | `knowledge/lifecycle/matching-criteria.md`, `knowledge/legal/contract-management.md`, `knowledge/legal/visa-rules.md`, `knowledge/legal/compliance-rules.md` |
-| Sprachtests | `knowledge/language-tests.md`, `knowledge/language-courses.md` |
-| Skill-Specs (23) | `skills/*/SKILL.md`, Übersicht `skills/README.md` |
-
-Datierte Entwicklungsstände der früheren AGENTS.md (Phase-Archive, Messreihen, Research-Notizen) liegen in `ergebnisse/entscheidungen.md` (Abschnitt „S3: Von AGENTS.md übernommene datierte Blöcke").
+- Commits: kurz, imperativ, ein Thema, Spec-Bezug (Beispiel in `CONTRIBUTING.md` §6).
+- Deploy: lokal ist der Branch `master`, Push-RefSpec `origin.push = master:main` — einfach `git push` → CI grün → `deploy-contabo.yml` (`workflow_run`) → SSH auf `176.57.189.201`, `git reset --hard <CI-SHA>`, `systemctl restart km-hr-agent`, Health-Check auf `127.0.0.1:8080`. Spec `knowledge/system/deploy-pipeline.md`. Rollback: `git reset --hard <SHA>` auf dem VPS.
+- Nie synchronisieren oder committen: `.env*`, `data/`, `testdaten/`, `ergebnisse/`, `.venv-*/`. Keine personenbezogenen Daten (CVs, Bewerbungen, Reports) ins Repo.

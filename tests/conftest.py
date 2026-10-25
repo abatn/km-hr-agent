@@ -67,6 +67,26 @@ _PTR = Path("/tmp/opencode/kmhr-mirror-last.txt")
 _KEEP_MIRRORS = 3
 _PRUNE_LOG: list[str] = []
 
+# ─── V-17 (21.10.2026): Produktionslog NICHT mit Testfehlern fuellen ─────
+# Der Runner schreibt seine Fehler nach logs/agent-errors.log. Ohne Umleitung
+# landete JEDE pytest-Zeile dort (Beleg 21.10.2026: 540 alte pytest-Fehlerzeilen
+# im Produktionslog). Der Pfad kommt aus der Env-Variablen KMHR_LOG_FILE
+# (Codemark scripts/agent-runner.py::LOG_FILE) — die Umleitung passiert im
+# Speicher, die Produktionsdatei wird nicht angefasst.
+_TEST_LOG = Path(tempfile.mkdtemp(prefix="kmhr-testlog-", dir="/tmp/opencode")) / "agent-errors.log"
+os.environ["KMHR_LOG_FILE"] = str(_TEST_LOG)
+
+# Fallback: laeuft der Runner schon im Speicher, wird sein Attribut
+# nachgezogen (sonst bliebe die alte Produktionsdatei aktiv).
+try:  # pragma: no cover - defensive
+    import sys as _sys
+
+    _runner_mod = _sys.modules.get("agent_runner") or _sys.modules.get("scripts.agent_runner")
+    if _runner_mod is not None and hasattr(_runner_mod, "LOG_FILE"):
+        _runner_mod.LOG_FILE = _TEST_LOG
+except Exception:  # pragma: no cover
+    pass
+
 
 def _prune_old_mirrors() -> None:
     """Begrenzt eigene kmhr-mirror-* Reste auf die _KEEP neuesten."""

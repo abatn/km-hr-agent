@@ -20,21 +20,23 @@
       "prescreen_recruiting_section",
       "scripts/agent-runner.py",
       "self-presentation-[code]",
+      "selfpresentation[code]",
+      "vdo-ninja-migration.md",
       "vdo_ninja_gast_url",
       "vdo_ninja_url",
       "video_url",
       "webui/components.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-20T11:26:53+00:00",
+    "at": "2026-10-23T10:43:58+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
-      "webui/components.py": "3bf2e03d156af3b507269bfce3b446f4364f8140",
-      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
+      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
+      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
-    "doc_blob": "97fa40ff230048e7d68e00da9714dad93d4907c0",
-    "note": ""
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "doc_blob": "9c058641c56917045c13dc1712d5f6d3bf7fe355",
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/pre-screen/SKILL.md"
   },
   "doc": "skills/pre-screen/SKILL.md",
   "schema": 1

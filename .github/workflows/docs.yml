@@ -4,9 +4,15 @@ name: Docs & Schema
 on:
   push:
     branches: [main]
-    paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/fixtures/**", "scripts/ci/**"]
+    # V-11 (21.10.2026): webui/**, scripts/**, tests/** ergaenzt — sonst loest
+    # eine Aenderung an einem SCHREIBER den mdguard-Gate nicht aus (er laeuft
+    # bisher nur bei Doku-Aenderungen).
+    paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/**", "scripts/**", "webui/**", "connectors/**", ".github/workflows/docs.yml"]
   pull_request:
-    paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/fixtures/**", "scripts/ci/**"]
+    # V-11 (21.10.2026): webui/**, scripts/**, tests/** ergaenzt — sonst loest
+    # eine Aenderung an einem SCHREIBER den mdguard-Gate nicht aus (er laeuft
+    # bisher nur bei Doku-Aenderungen).
+    paths: ["knowledge/**", "skills/**", "docs/**", "AGENTS.md", "CONTRIBUTING.md", "README.md", "tests/**", "scripts/**", "webui/**", "connectors/**", ".github/workflows/docs.yml"]
 
   workflow_dispatch:
 
@@ -27,6 +33,8 @@ jobs:
         run: python3 scripts/ci/checks.py legal
       - name: DB-Schema ↔ erwartete Tabellen
         run: python3 scripts/ci/checks.py schema
+      - name: Markdown-Schreib-Disziplin (mdguard)
+        run: python3 scripts/ci/checks.py mdguard
       - name: Markdown-Struktur (Markdownlint)
         uses: DavidAnson/markdownlint-cli2-action@v17
         continue-on-error: true

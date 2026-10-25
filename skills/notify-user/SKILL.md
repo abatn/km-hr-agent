@@ -99,11 +99,16 @@ KM-HR-Agent v3.0 | Automatische Benachrichtigung
 
 ### 4. Protokollierung
 
-Speichere Benachrichtigung in `knowledge/notification-log.md`:
+Speichere Benachrichtigung **redaktionell** in `knowledge/notification-log.md`
+(Schema der Zieldatei: | Datum | Typ | Empfänger | Betreff | Status | — die
+normative Datei wird nicht automatisiert beschrieben; Spec
+`knowledge/system/md-schreib-konvention.md` §0, R-S4). Der Beispielblock folgt
+**demselben 5-Spalten-Schema** (Kandidat/Stelle/Score stehen in der
+**Portal-Benachrichtigung**, nicht in dieser Tabelle):
 ```markdown
-| Datum | Kandidat | Stelle | Score | Kanal | Empfänger | Status |
-|---|---|---|---|---|---|---|
-| 2026-09-10 | Julian Bergmann | DevOps Engineer | 100 | E-Mail | hr@firma.de | ✅ Gesendet |
+| Datum | Typ | Empfänger | Betreff | Status |
+|---|---|---|---|---|
+| 2026-09-10 | Einladung | hr@firma.de | Einladung DevOps Engineer | ✅ Gesendet |
 ```
 
 ### 5. Rückgabe

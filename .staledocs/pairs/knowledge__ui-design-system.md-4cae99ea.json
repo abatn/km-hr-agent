@@ -97,14 +97,14 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-20T11:29:29+00:00",
+    "at": "2026-10-21T22:15:37+00:00",
     "code_blobs": {
-      "webui/components.py": "3bf2e03d156af3b507269bfce3b446f4364f8140",
+      "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "741278cd86b17a954d7418d42196617e9f756234",
-    "note": "Re-Ack 20.10.2026: Evidence von knowledge/ui-design-system.md geprueft (state CODE_LAG, changed_code: ohne geaenderte Code-Dateien). Sidebar-Iteration 20.10.2026 (Nutzer-GO): SIDEBAR_KEYS 5->7 Punkte (+firmenprofil/+portal = die zwei Schreibaufgaben des Arbeitgebers), Reihenfolge aus PAGE_TITLES, _NON_SIDEBAR_KEYS 10->8, Icon-Post_add; Aussage von knowledge/ui-design-system.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
+    "note": "Geprueft 22.10.2026: `webui/components.py` (genannter Dateipfad) wurde geaendert (HR-Sicht: ein Eintrag je Kandidat + Hinweis auf aeltere Fassungen); Farben, Karten und Typografie (Theme) sind unveraendert."
   },
   "doc": "knowledge/ui-design-system.md",
   "schema": 1

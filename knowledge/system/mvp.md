@@ -31,9 +31,9 @@ Diese Abgrenzung selbst ist eine **Design-Entscheidung**: vor dieser Datei war k
 | 7 | **Phase 5** – Agent-Automatisierung (Queue + Hybrid-Runner, Pförtner-Regel, Variante A) | `knowledge/system/agent-automation.md` (60-s-Loop, LIMIT 5), Live-Run `ergebnisse/agent-automatisierung-live-run.md` |
 | 8 | **Zwei-Ebenen-Zugriff + ADMIN** (Candidate 7 Tabs / **Employer 15 Seiten, gemessen 19.10.2026, Codemark `PAGE_TITLES`** — Altstand „12 Seiten seit 13.10.2026 (vorher 11)" überholt / Admin 12 Seiten) | `knowledge/system/access-control.md` (v3.1) · Employer-Seitenzahl: Codemark `PAGE_TITLES` (gemessen 19.10.2026; früherer Beleg „Seitenzahlen zitiert in `knowledge.md`" dort ohne Treffer geprüft 19.10.2026) |
 | 9 | **6 E-Mail-Vorlagen + VDO.Ninja-only** (kein Google Meet, kein Jitsi) | `knowledge.md` „E-Mails \| 6 implementiert" · Spec `knowledge/system/vdo-ninja-migration.md` (Nutzer-Entscheidung 27.09.2026, ersetzt die Jitsi-Entscheidung vom 12.09.2026) |
-| 10 | **15 MCP-Server** (Stand 24.09.2026; Zählwerk bestätigt §G 26.09.2026: 49 dokumentiert (instructions.md, nach §G) / 181 live (Handshake 26.09.2026)) | `knowledge/system/mcp-connector-config.md` + Live-Befehl §2 |
+| 10 | **14 MCP-Server** (13 local + 1 remote, gemessen 21.10.2026; `jitsi-meeting` entfernt 27.09.2026, vorher 15; Zählwerk bestätigt §G 26.09.2026: 49 dokumentiert (instructions.md, nach §G) / 181 live (Handshake 26.09.2026)) | `knowledge/system/mcp-connector-config.md` + Live-Befehl §2 |
 | 11 | **Kandidaten-Dokumenten-Tab (v6.1)** `candidate_documents` + getippte Uploads | `knowledge.md` „v6.1: Dokumenten-Tab … ✅ implementiert (E2E T1–T5)" |
-| 12 | **23 Skills / 16 DB-Tabellen** als Umfang des Laufzeitsystems | Live-Befehle §2 |
+| 12 | **23 Skills / 17 DB-Tabellen** als Umfang des Laufzeitsystems (Tabellen gemessen 21.10.2026) | Live-Befehle §2 |
 
 ### 1.2 Out-of-Scope (nicht Teil des MVP)
 
@@ -64,7 +64,7 @@ Diese Abgrenzung selbst ist eine **Design-Entscheidung**: vor dieser Datei war k
 | Failed Task-IDs | `[20, 21, 23, 39, 105]` (Anzahl **5**) | `sqlite3 data/feedback.db "SELECT id FROM agent_tasks WHERE status='failed' ORDER BY id;"` | 24.09. ✅ · 25.09. ✅ identisch |
 | Agent-Tasks gesamt | done **118** / failed **5** | `sqlite3 data/feedback.db "SELECT status, COUNT(*) FROM agent_tasks GROUP BY status;"` | 25.09. (ergänzende Messung) |
 | Feedback-Zeilen | **8** | `sqlite3 data/feedback.db "SELECT COUNT(*) FROM feedback;"` | 24.09. ✅ · 25.09. ✅ identisch |
-| DB-Tabellen | **16** | `sqlite3 data/feedback.db "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"` | 24.09. ✅ · 25.09. ✅ identisch |
+| DB-Tabellen | **16** (Stand 24.09.2026) → **17** heute | `sqlite3 data/feedback.db "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"` | 24.09. ✅ · 25.09. ✅ identisch · **21.10.2026: 17** (gemessen per `scripts/ci/checks.py schema`: „DB-Schema OK: 17 Tabellen") |
 | Skills | **23** | `ls skills/*/SKILL.md \| wc -l` | 24.09. ✅ · 25.09. ✅ identisch |
 | Knowledge-MD (ohne `.bak`) | **37** (vor Anlegen) → **38** nach Anlegen dieser Datei | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` | 24.09. = 37 ✅ · 25.09. vor Anlegen = 37 ✅; **+1 durch `knowledge/system/mvp.md` → 38** (Zähler-Nachtrag, keine Doku-Fälschung) |
 | MCP-Server | **14** (13 local + 1 remote, seit 27.09.2026 ohne `jitsi-meeting`) | `python3 -c "import json;print(len(json.load(open('opencode.json'))['mcp']))"` | 27.09.2026 gemessen: 14 |
@@ -84,8 +84,8 @@ Diese Abgrenzung selbst ist eine **Design-Entscheidung**: vor dieser Datei war k
 | E2 | Portal erreichbar | HTTP **200** auf `/login`, `/candidate`, `/employer`, `/admin` | `curl -o /dev/null -w "%{http_code}" …` | **Design-Entscheidung** (200 = Standard-HTTP-Erfolg, Schwelle 200 festgelegt) |
 | E3 | Runner-Kardinalität | **exakt 1** `agent-runner.py`-Prozess (kein Doppelstarter) | `cat data/agent-runner.pid` + `ps -p <pid>` | **Design-Entscheidung** (pidfile-Konvention, `knowledge.md` „PID-File `data/agent-runner.pid`") |
 | E4 | Queue-Gesundheit | failed-Tasks ≤ **5** (Baseline) und keine *neuen* Fehler-IDs außerhalb `[20,21,23,39,105]` | `SELECT id FROM agent_tasks WHERE status='failed' ORDER BY id;` | **Design-Entscheidung** (Baseline-Wert 24.09.2026 als Limit gewählt) |
-| E5 | Connector-Bestand | **15** MCP-Server in `opencode.json` (kein stiller Verlust) | `python3 -c "import json;…['mcp'])"` | **Design-Entscheidung** (Sollwert = Stand 24.09.2026) |
-| E6 | Skill-/Tabellenbestand | **23** Skills, **16** DB-Tabellen | `ls skills/*/SKILL.md \| wc -l` · `sqlite_master`-COUNT | **Design-Entscheidung** (Sollwert = Stand 24.09.2026) |
+| E5 | Connector-Bestand | **14** MCP-Server in `opencode.json` (kein stiller Verlust; `jitsi-meeting` entfernt 27.09.2026) | `python3 -c "import json;…['mcp'])"` | **Design-Entscheidung** (Sollwert = Stand 24.09.2026) |
+| E6 | Skill-/Tabellenbestand | **23** Skills, **17** DB-Tabellen | `ls skills/*/SKILL.md \| wc -l` · `sqlite_master`-COUNT | **Design-Entscheidung** (Sollwert = Stand 24.09.2026) |
 | E7 | Datenhaltung DSGVO | Feedback-Löschpfad greift weiterhin (183 Tage, `dsgvo_cleanup()` definiert) | `knowledge/lifecycle/application-status.md` | **Design-Entscheidung** (Zahl 183 = Umsetzung von „6 Monate", Quelle in `AGENTS.md` „DSGVO 183 Tage · Art. 17 DSGVO" als offiziell markiert) |
 | E8 | Score-Validierung (NICHT MVP-Kriterium) | erfordert **20+ Einstellungsentscheidungen** — belegte Hürde, erst danach Aussage zur Schwelle 60 | `knowledge/system/agent-automation.md` | **belegte Hürde** (Zahl mit Quelle, kein Entwurf) — bewusst NICHT als MVP-Gate gesetzt |
 

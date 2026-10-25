@@ -14,7 +14,7 @@ import sqlite3
 import pymupdf as fitz  # PyMuPDF (fitz deprecated)
 import sys
 import subprocess
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone
 from pathlib import Path
 import asyncio
 
@@ -425,7 +425,12 @@ AGENT_TASKS_DB = DATA_DIR / "feedback.db"
 def init_agent_tasks_table() -> None:
     """Legt die agent_tasks-Tabelle an (idempotent, bei App-Start).
     Erweitertes Schema (v3): result_json speichert Runner-Ausgaben (Jitsi-URL,
-    ICS-Pfad, Mail-Status) für die Portal-Sichten."""
+    ICS-Pfad, Mail-Status) für die Portal-Sichten.
+
+    Parität zu `webui/db.py::init_agent_tasks_table` (21.10.2026): die
+    idempotente Spalten-Ergänzung (ALTER) fehlte hier — ein Altbestand ohne
+    `started_at` wäre im Runner-Claim gescheitert. `CREATE TABLE IF NOT EXISTS`
+    ändert eine bestehende Tabelle nicht."""
     conn = sqlite3.connect(str(AGENT_TASKS_DB))
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS agent_tasks (
@@ -442,6 +447,13 @@ def init_agent_tasks_table() -> None:
         finished_at TIMESTAMP
     )""")
     c.execute("CREATE INDEX IF NOT EXISTS idx_agent_tasks_status ON agent_tasks(status)")
+    # Idempotente Spalten-Ergänzung (Altbestand) — Parität zu webui/db.py.
+    vorhanden = {r[1] for r in c.execute("PRAGMA table_info(agent_tasks)")}
+    for spalte, typ in (("started_at", "TIMESTAMP"), ("finished_at", "TIMESTAMP"),
+                        ("result_json", "TEXT"), ("result_path", "TEXT"),
+                        ("error_text", "TEXT"), ("attempts", "INTEGER DEFAULT 0")):
+        if spalte not in vorhanden:
+            c.execute(f"ALTER TABLE agent_tasks ADD COLUMN {spalte} {typ}")
     conn.commit()
     conn.close()
 
@@ -454,7 +466,10 @@ def queue_agent_task(task_type: str, payload: dict) -> int | None:
         conn = sqlite3.connect(str(AGENT_TASKS_DB))
         c = conn.cursor()
         app_id = payload.get("application_id")
-        heute = datetime.now().strftime("%Y-%m-%d")
+        # ZEITZONEN-FIX (22.10.2026): Paritaet zu webui/db.py - `created_at`
+        # ist UTC (SQLite CURRENT_TIMESTAMP), die Dedupe-Grenze nutzt jetzt
+        # ebenfalls UTC (sonst Doppel-Insert im Fenster 00:00-02:00 lokal).
+        heute = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         if app_id is not None:
             c.execute("""SELECT id FROM agent_tasks
                 WHERE task_type = ? AND payload LIKE ?

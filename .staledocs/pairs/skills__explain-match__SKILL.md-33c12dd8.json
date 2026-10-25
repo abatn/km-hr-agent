@@ -1,14 +1,14 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-20T11:26:50+00:00",
+    "at": "2026-10-22T06:33:06+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
+      "scripts/agent-runner.py": "05b88485d633da8a26322054b79f76621ee9a973",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "7cb5aab4147181e8e528f829676bbef664ee1d56",
-    "note": ""
+    "note": "Geprueft 22.10.2026: geaendert wurde `scripts/agent-runner.py` \u2014 ausschliesslich die distinct-Stellen-Zaehlung in `_score_from_ergebnisse` (V-13(c): zwei Reports derselben Stelle = eine Stelle; Kandidat 2 / job=None liefert jetzt 90 statt 'unbekannt'). Die in diesem Doc beschriebenen Task-Typen, Trigger und Pfade bleiben unveraendert."
   },
   "doc": "skills/explain-match/SKILL.md",
   "schema": 1

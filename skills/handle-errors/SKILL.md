@@ -105,15 +105,34 @@ Alternative: [Workaround falls vorhanden]
 
 ### 6. Fehlerstatistiken aktualisiere
 
-**Connector:** `filesystem`
-**Tool:** `write_file`
-**Pfad:** `~/mimo-agents/km-hr-agent/knowledge/error-statistics.md`
+**Laufzeit-Schreibziel (Code):** `ergebnisse/error-statistik-{JJJJ-MM-TT}.md`
+**Schreibweg:** Der Task-Typ `handle_errors` (Codemarke `def handle_errors`,
+`scripts/agent-runner.py`) schreibt die Fehlerzeile — **nicht** der Agent.
 
-Erstelle/aktualisiere:
+> **Kein Schreibziel in `knowledge/**` (21.10.2026, verbindlich):** Die normative
+> Datei `knowledge/error-statistics.md` ist **kein** Laufzeit-Schreibziel — sie darf
+> vom Agenten **nicht** beschrieben werden (Spec
+> `knowledge/system/md-schreib-konvention.md` §0, R-S4: kein Schreiben in
+> `knowledge/**`/`skills/**` aus Laufzeitcode; Read-Modify-Write ohne Lock +
+> abweichendes Spaltenschema).
+>
+> **Laufzeit-Fehlerzeilen** (Spaltenschema **5 Spalten**:
+> `Datum | Typ | Schwere | Skill | Meldung`) schreibt der Runner nach
+> `ergebnisse/error-statistik-{JJJJ-MM-TT}.md` (historischer Bereich, Anhang
+> erlaubt — Spec R-S1-Ausnahme `MDGUARD_APPEND_ERLAUBT`).
+> Die normative Datei bleibt **aggregiert** und wird **redaktionell/MCP**
+> gepflegt (nicht durch Read-Modify-Write des Agenten).
+
+Erstelle/aktualisiere (nur durch den **Runner**-Task `handle_errors`):
 - Gesamtzahl Fehler (nach Typ)
 - Häufigste Fehler
 - Durchschnittliche Lösungszeit
 - Erfolgsrate der Fallbacks
+
+**Rückmeldung ehrlich (21.10.2026):** Der Task liefert `{"logged": <bool>,
+"log_ok": <bool>, "stats_ok": <bool>, …}`. `logged` ist nur `true`, wenn **beide**
+Schreibvorgänge tatsächlich gelangen sind — der Task meldet **kein**
+Erfolgsversprechen (Spec R4.6, `knowledge/system/md-schreib-konvention.md` §2).
 
 ### 7. Rückgabe
 - Gib Fehlermeldung für Nutzer zurück

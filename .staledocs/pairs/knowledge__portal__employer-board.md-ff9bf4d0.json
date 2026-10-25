@@ -43,8 +43,14 @@
       "_page_stellen",
       "_passive_best",
       "_pf_*",
+      "_pf_app_ids",
+      "_pf_berechne",
+      "_pf_exp",
+      "_pf_job",
       "_pf_jobs",
+      "_pf_lang",
       "_pf_pool",
+      "_pf_score",
       "_pf_view",
       "admin.py",
       "anzeige_name",
@@ -97,13 +103,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-20T11:36:05+00:00",
+    "at": "2026-10-23T10:43:38+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "9e01e67191ce135571ca9b002500e78d9edcd60a"
+      "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
-    "doc_blob": "ac1c18a166e7722df1c2b89cf50b7410337a2ff9",
-    "note": "Sidebar-Erweiterung 7 Punkte (20.10.2026, Nutzer-GO): doc moved knowledge/portal/employer-board.md \u00a76 (7 Punkte + neue Design-Entscheidung + neu gemessene Klickzahl 1), SIDEBAR_KEYS = dashboard/firmenprofil/portal/stellen/board/einladen/mehr, Icon portal=post_add; Index-/Zugriffs-/Inventar-Doku nachgezogen (access-control.md, employer-portal-fields.md, skills/README.md, nicegui-migration, employer-portal, ui-design-system \u00a78.2); pytest 524/5 + Paritaet 520/1, E2E board_actions + einladen_flow rc=0."
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "doc_blob": "86a54a56488a18ce7eafada8e4aee5a26b8b2eb5",
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/portal/employer-board.md"
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

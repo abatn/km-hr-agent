@@ -3585,3 +3585,6 @@ msgstr "The checklist is saved locally in ergebnisse/ — no automatic email is 
 
 msgid "Freigabe-Report"
 msgstr "Release report"
+
+msgid "Einladung wird vorbereitet"
+msgstr "Invitation is being prepared"

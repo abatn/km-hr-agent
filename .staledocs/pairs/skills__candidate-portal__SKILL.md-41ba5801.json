@@ -13,13 +13,13 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-20T11:26:47+00:00",
+    "at": "2026-10-21T19:36:56+00:00",
     "code_blobs": {
-      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
+      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
-    "note": ""
+    "note": "Nacharbeit md-Disziplin 21.10.2026: code moved scripts/agent-runner.py (handle_errors meldet echten Status statt Erfolgsversprechen, claim_task/finish_task/write_pid fehlertolerant, _score_from_ergebnisse job-genau + Dezimal-Scores, _parse_score/_report_stelle neu, _gatekeeper_signature mit Score-Basis, Kultur-Fit explizit neuester, _ergebnis_pfad mkdir), webui/db.py (init_agent_tasks_table ALTER-Migration), webui/pages/candidate.py (load_video_link Leser-Fallback, write_prescreen_md/persist_video_link Anker-Replace), scripts/ci/checks.py (mdguard AST-basiert: R4.1-R4.6, R-S1, R-S6, Auto-Discovery, Positiv-/Negativproben), Doku: md-schreib-konvention.md (Leser-Regel, R3.2, Datumsrollen, Allowlist), agent-automation.md, handle-errors/notify-user SKILL.md, instructions.md, mvp.md, skills/README.md, vdo-ninja-migration.md \u00a72.3, AGENTS.md (sechs checks.py-Bereiche). Gates: mdguard rc=0, docrot A+, checks x5 rc=0, compileall rc=0, pyflakes 0 blockierende."
   },
   "doc": "skills/candidate-portal/SKILL.md",
   "schema": 1

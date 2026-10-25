@@ -3590,3 +3590,6 @@ msgstr "Checkliste wird lokal in ergebnisse/ gespeichert — kein automatischer 
 
 msgid "Freigabe-Report"
 msgstr "Freigabe-Report"
+
+msgid "Einladung wird vorbereitet"
+msgstr "Einladung wird vorbereitet"

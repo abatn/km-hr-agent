@@ -72,13 +72,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-20T11:29:24+00:00",
+    "at": "2026-10-23T10:43:39+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "9e01e67191ce135571ca9b002500e78d9edcd60a"
+      "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "66e216c561c57249ee814c4cdbd6f3777090b6a2",
-    "note": "Re-Ack 20.10.2026: Evidence von knowledge/portal/employer-portal-fields.md geprueft (state AMBER, changed_code: `webui/pages/employer.py`). Sidebar-Iteration 20.10.2026 (Nutzer-GO): SIDEBAR_KEYS 5->7 Punkte (+firmenprofil/+portal = die zwei Schreibaufgaben des Arbeitgebers), Reihenfolge aus PAGE_TITLES, _NON_SIDEBAR_KEYS 10->8, Icon-Post_add; Aussage von knowledge/portal/employer-portal-fields.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/portal/employer-portal-fields.md"
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

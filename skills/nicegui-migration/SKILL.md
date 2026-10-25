@@ -19,7 +19,7 @@ Migration des Streamlit-Monoliths (`app.py`, 4040 Zeilen) zu einer modularen Nic
 ```
 webui/
 ├── main.py              # Entry Point, Routing, Boot-Sequenz
-├── db.py                # Framework-unabhängiger DB-Layer (16 Tabellen, Stand 24.09.2026)
+├── db.py                # Framework-unabhängiger DB-Layer (16 Tabellen, Stand 24.09.2026 — heute 17, gemessen 21.10.2026)
 ├── logic.py             # Framework-unabhängige Business-Logik (Scoring, DSGVO, Auth)
 ├── theme.py             # Design Tokens, CSS, Tailwind-Klassen
 ├── components.py        # Wiederverwendbare UI-Komponenten (28 `def`, `grep -c '^def '` 24.09.2026)
@@ -431,3 +431,40 @@ python3 -m webui.main  # → http://localhost:8080
 - **Report:** `ergebnisse/paritaets-matrix-final-2026-09-23.md` (212 Z.) — 86 Zeilen = Schritt-0 (7) + C1–C7 + D1–D29 + #1–#9 + Bestands-Matrix A–D (34); Zähler final **67 portiert / 12 D-entschieden / 0 offen / 7 Sonderfälle** (O1-Nachzählung 23.09. + O2/O3: C1 `send_rejection`-Guard `scripts/agent-runner.py` (Codemarke `def send_rejection`, gemessen 10.10.2026) behoben, C4 Option „Vorgemerkt" `webui/pages/employer.py` (gemessen 10.10.2026) behoben → Offene-Liste leer; Zählweg + Sonderfälle-Liste im Report; alte Zahlen 72/12/2 unbelegt, O1-Zwischenstand 65/12/2/7). Klassen a/b/c = abgeleitet (Schritt-0-Befund C: Schema nicht im Repo).
 - **Quellen:** paritaets-matrix-final.md (20.09.) + C1–C7/D1–D29/#1–#9 (diese Datei) + nicegui-phase-2-rest-portierung.md (E2E) + entscheidungen.md Schritt-2/F1-F3.
 - **Beweis-Appendix:** entscheidungen.md „2026-09-23: Schritt 4 – finale Paritäts-Matrix + Nachzügler A/B/C" (Schritt-0-Befundtabelle A/B/C + C2-Abschlusschecks py_compile 11/11, drawer 4/4, HTTP 200×4, Runner==pidfile, ID=1, failed=[20,21,23,39,105], F3=0). Log-Beweissicherung: knowledge/system/agent-automation.md §4 Zeile „Log-Beweissicherung".
+
+---
+
+## C8: Handler-Connection-Falle (21.10.2026, ABGESCHLOSSEN)
+
+> **Regel (normativ, ab 21.10.2026):** Ein Callback (NiceGUI-Handler-Closure) darf **nie** eine DB-Verbindung benutzen, die der Seitenaufbau geschlossen hat — und **nie** eine Seiten-Scope-`conn` erben. Jeder Callback öffnet seine **eigene** Verbindung (`db.get_conn()`) und schließt sie in `try/finally`.
+> **Codemarke der Regel:** `Handler-Connection-Falle`.
+> **Referenzmuster (Muster-Implementierung):** `visa_info_section` (Codemarke `visa_info_section`, Datei `webui/components.py`) — der Klick-Handler `_send_visa` öffnet seine eigene `conn` und schließt sie in `try/finally`; der Docstring dort nennt die Falle bereits.
+
+### Warum (Befund + Beleg)
+
+NiceGUI-Callbacks laufen **nach** dem Seitenaufbau (Event-Handler, `nicegui/events.py::handle_event`). Eine `conn`, die am Ende der Seitenfunktion geschlossen wurde, ist zu diesem Zeitpunkt eine geschlossene SQLite-Verbindung → `sqlite3.ProgrammingError: Cannot operate on a closed database.` (Beweis: Live-Log `/tmp/opencode/webui-start-20261021.log`, Messdatum 21.10.2026 — Stackfolge `nicegui events.handle_event` → `employer.py` `create_job` → `employer.py` `refresh_jobs` → `conn.execute`).
+
+Dieselbe Fehlerklasse war bereits zweimal belegt: **D12** (admin `conn.close()` zu früh) und **D20** (`_page_feedback`: Seiten-`conn.close()` entfernt, Handler-Closures liefen nach Close). D20 hat den Fehler an **einer** Stelle behoben, aber die Seiten-Scope-`conn` dort weiterhin **offen gehalten** — das ist ein **Conn-Leak pro Render** und eine Latenzfalle: wer das Muster „Close am Seitenende" später nachzieht, zündet denselben Fehler erneut.
+
+### Migration-Entscheidungen
+
+| # | Entscheidung | Warum | Quelle |
+|---|---|---|---|
+| D30 | **Normative Regel:** Callback = eigene `conn` + `try/finally`; eine vom Seitenaufbau geschlossene `conn` darf nie von einem Callback gelesen werden | Der Fehler ist nicht sporadisch, sondern strukturell (Callback-Zeitpunkt ≠ Build-Zeitpunkt) | Live-Beleg 21.10.2026 (Log wie oben) + D12/D20 (diese Datei) + Referenzmuster `visa_info_section` (`webui/components.py`) |
+| D31 | `_page_portal` (Arbeitgeber-Portal): Seiten-`conn` **entfernt**; `refresh_jobs` öffnet ihre eigene `conn` (try/finally) | Aktiver Defekt: „Stelle ausschreiben" / „Status speichern" → `create_job` → `refresh_jobs` → `conn.execute` auf geschlossene DB | Log 21.10.2026; Codemarke `refresh_jobs` in `webui/pages/employer.py` |
+| D32 | `_page_stellen` + `_page_firmenprofil`: die Seiten-`conn` dient **nur** dem Build-Read und wird **direkt danach** in `try/finally` geschlossen; kein Callback liest sie | Latent: heute liest kein Callback die `conn`, aber das Muster (Close am Seitenende + Callback im Scope) ist eingebaut → die Falle zündet beim nächsten Callback | Codemarken `_page_stellen`, `_page_firmenprofil` in `webui/pages/employer.py` (Messdatum 21.10.2026) |
+| D33 | `_page_feedback`: `refresh_cands` / `refresh_list` / `save_feedback` öffnen je eigene `conn` (try/finally); die Seiten-`conn` wird direkt nach dem Build-Read geschlossen | Behebt den **Conn-Leak pro Render** (D20-Sonderfall) und macht die Doku deckungsgleich mit dem Code (kein „conn bewusst NICHT schließen" mehr) | Codemarke `_page_feedback` (C4-Fix-Kommentar 22.09.2026, `webui/pages/employer.py`), Messdatum 21.10.2026 |
+| D34 | Regressionstest `tests/test_conn_closure.py`: (a) Muster-Test (AST) über `webui/pages/*.py` — findet „Seiten-Scope-`conn` + Close am Seitenende + Callback liest sie"; (b) Fokus-Test auf `_page_portal` — Callback **nach** dem Seitenaufbau auslösen, kein `sqlite3.ProgrammingError` | Der Fehler ist beim Lesen des Codes nicht sichtbar (der Callback wird erst zur Klick-Zeit ausgeführt) → nur ein Test auf Verhaltensebene deckt ihn ab | D30–D33 (diese Datei); Messdatum 21.10.2026 |
+
+### Prüfregel für Reviewer (21.10.2026)
+
+1. Jede `def`/`async def` **innerhalb** einer Seitenfunktion, die DB-Zugriffe macht, holt ihre `conn` **selbst** (`db.get_conn()`) und schließt sie in `try/finally`.
+2. Eine Seiten-Scope-`conn` wird **nach** dem Build-Read geschlossen (nicht am Seitenende, wenn zwischenzeitlich Callbacks definiert wurden) — bzw. gar nicht gehalten, wenn sie nur einen Build-Read bedient.
+3. `ui.timer`-Refresh und `on_click`-Handler gelten als Callbacks (selbe Regel).
+4. Muster-Test `tests/test_conn_closure.py` läuft im normalen `pytest`-Lauf mit (kein E2E nötig).
+
+### Geänderte Dateien (C8)
+
+1. `skills/nicegui-migration/SKILL.md` — dieser Eintrag (P1 MD-first)
+2. `webui/pages/employer.py` — `_page_portal` (D31), `_page_stellen`/`_page_firmenprofil` (D32), `_page_feedback` (D33)
+3. `tests/test_conn_closure.py` — NEU (Muster-Test + Fokus-Test)

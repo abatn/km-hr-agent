@@ -18,7 +18,7 @@ Minimal-Prototyp für 23 HR-Recruiting-Skills: Profil-Extraktion aus PDF/TXT, Ma
 | `knowledge/` | Wissensbasis (Specs) — siehe Wissens-Index unten |
 | `tests/` | pytest (Unit/Integration) + E2E (Playwright, `tests/e2e_*.py`) |
 | `ergebnisse/` | Berichte + Entscheidungslog (`entscheidungen.md`, Lab-Schritt 4) |
-| `data/feedback.db` | SQLite (17 Tabellen, gemessen per `checks.py schema` 18.10.2026) — **Live-DB nie direkt beschreiben** |
+| `data/feedback.db` | SQLite (17 Tabellen, gemessen per `checks.py schema` 21.10.2026) — **Live-DB nie direkt beschreiben** |
 | `app.py` | Streamlit-Archiv (Paritäts-Referenz, seit 23.09.2026 abgeschaltet) |
 
 ## Befehle (Auszug — maßgeblich: `AGENTS.md`)
@@ -62,17 +62,17 @@ Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindl
 - **ASGI-Socket.IO-Guard (10.10.2026):** `webui/asgi_guard.py::SocketioAbortGuard` antwortet 400 statt 500 bei Client-Abbruch/Probe (`knowledge/system/asgi-guard.md`).
 - **Nicht tun:** Session-State-Auth nicht produktionsfähig; keine Secrets/Personendaten ins Repo (`.gitignore` deckt `.env*`, `data/`, `ergebnisse/`, `testdaten/`).
 
-## Inventar (Messung 10.10.2026)
+## Inventar (Messung 21.10.2026)
 
 | Merkmal | Wert | Befehl |
 |---|---|---|
 | Skills | 23 | `ls skills/*/SKILL.md \| wc -l` |
-| Knowledge-MD | 73 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (Verlauf: 72 am 10.10.2026 früh, 47 am 01.10.2026) |
-| DB-Tabellen | 16 | `data/feedback.db` |
+| Knowledge-MD | 76 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (gemessen 21.10.2026; Verlauf: 73 am 10.10.2026, 72 am 10.10.2026 früh, 47 am 01.10.2026) |
+| DB-Tabellen | 17 | `data/feedback.db` (gemessen 21.10.2026) |
 | MCP-Server | 14 | `opencode.json` (Key `mcp`) |
-| i18n-msgid je Sprache | 993 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` |
+| i18n-msgid je Sprache | 1193 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` (gemessen 21.10.2026; vorher 993) |
 | Unit-Tests | siehe `AGENTS.md` | `.venv-streamlit/bin/python3 -m pytest -q` |
-| E2E-Dateien | 50 (48 lauffähig) | `ls tests/e2e_*.py \| wc -l` |
+| E2E-Dateien | 54 (52 lauffähig) | `ls tests/e2e_*.py \| wc -l` (gemessen 21.10.2026; `e2e_harness.py` + `e2e_isolation.py` sind keine E2E-Skripte) |
 
 ## Wissens-Index (`knowledge/**`)
 

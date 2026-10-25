@@ -3585,3 +3585,6 @@ msgstr "يتم حفظ قائمة التحقق محلياً في ergebnisse/ — 
 
 msgid "Freigabe-Report"
 msgstr "تقرير الإفراج"
+
+msgid "Einladung wird vorbereitet"
+msgstr "جارٍ تجهيز الدعوة"

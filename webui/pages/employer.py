@@ -486,13 +486,19 @@ def _page_firmenprofil(s: dict) -> None:
     section_header(title=_('Firmenprofil'), icon="business")
 
     employer_id = s.get("employer_id")
+    # Handler-Connection-Falle (21.10.2026): die conn dient NUR dem Build-Read
+    # und wird direkt danach geschlossen — kein Callback erbt sie.
+    # Spec: skills/nicegui-migration/SKILL.md, Codemarke `Handler-Connection-Falle`.
     conn = db.get_conn()
 
-    # Firmenprofil (13.10.2026: eigene Seite, vormals Tab in „Portal“)
-    emp = conn.execute(
-        "SELECT firma, kontaktperson, branche, groesse, standort, website, beschreibung, telefon FROM employers WHERE id = ?",
-        (employer_id,),
-    ).fetchone()
+    # Firmenprofil (13.10.2026: eigene Seite, vormals Tab in „Portal")
+    try:
+        emp = conn.execute(
+            "SELECT firma, kontaktperson, branche, groesse, standort, website, beschreibung, telefon FROM employers WHERE id = ?",
+            (employer_id,),
+        ).fetchone()
+    finally:
+        conn.close()
 
     with ui.column().classes("w-full"):
             branchen = ["IT", "Consulting", "Industrie", "Handel", "Gesundheit", "Finanzen", "Sonstiges"]
@@ -578,14 +584,22 @@ def _page_firmenprofil(s: dict) -> None:
 
                 ui.button(_('Passwort aendern'), on_click=do_change_pw_emp).classes(C.BTN_PRIMARY + " mt-2")
 
-    conn.close()
+    # conn bereits nach dem Build-Read geschlossen (Handler-Connection-Falle,
+    # 21.10.2026) — kein Close am Seitenende.
 
 
 def _page_portal(s: dict) -> None:
     section_header(title=_('Stelle ausschreiben'), icon="work")
 
     employer_id = s.get("employer_id")
-    conn = db.get_conn()
+    # Handler-Connection-Falle (21.10.2026): KEINE Seiten-Scope-conn. Die
+    # Callbacks (`create_job` → `refresh_jobs`, `save_status` → `refresh_jobs`)
+    # laufen NACH dem Seitenaufbau; eine hier geoeffnete und am Seitenende
+    # geschlossene conn waere dann eine geschlossene DB
+    # (sqlite3.ProgrammingError, Live-Beleg 21.10.2026). `refresh_jobs`
+    # oeffnet deshalb ihre EIGENE conn (try/finally) — Muster
+    # `visa_info_section` (webui/components.py).
+    # Spec: skills/nicegui-migration/SKILL.md, Codemarke `Handler-Connection-Falle`.
 
     with ui.column().classes("w-full"):
 
@@ -681,10 +695,16 @@ def _page_portal(s: dict) -> None:
             def refresh_jobs():
                 jobs_container.clear()
                 with jobs_container:
-                    jobs = conn.execute(
-                        "SELECT id, titel, standort, stellentyp, status, erstellt_am FROM jobs WHERE employer_id = ? ORDER BY id DESC",
-                        (employer_id,),
-                    ).fetchall()
+                    # Eigene conn (try/finally) — Handler-Connection-Falle
+                    # (21.10.2026, skills/nicegui-migration/SKILL.md).
+                    conn = db.get_conn()
+                    try:
+                        jobs = conn.execute(
+                            "SELECT id, titel, standort, stellentyp, status, erstellt_am FROM jobs WHERE employer_id = ? ORDER BY id DESC",
+                            (employer_id,),
+                        ).fetchall()
+                    finally:
+                        conn.close()
                     if not jobs:
                         empty_state(icon="work_off", title=_('Noch keine Stellen ausgeschrieben'))
                         return
@@ -709,7 +729,8 @@ def _page_portal(s: dict) -> None:
 
             refresh_jobs()
 
-    conn.close()
+    # Kein conn.close() am Seitenende: es gibt keine Seiten-Scope-conn mehr
+    # (Handler-Connection-Falle, 21.10.2026).
 
 
 # ─── 2b. Stellenangebote (HR-write, Port admin.py:459-554) ──────────
@@ -718,18 +739,25 @@ def _page_stellen(s: dict) -> None:
     section_header(title=_('Stellenangebote'), subtitle=_('Bewerber-Status verwalten'), icon="work")
 
     employer_id = s.get("employer_id")
+    # Handler-Connection-Falle (21.10.2026): die conn dient NUR dem Build-Read
+    # und wird direkt danach geschlossen — kein Callback erbt sie
+    # (`make_transition`/`_do` oeffnen ihre eigene conn).
+    # Spec: skills/nicegui-migration/SKILL.md, Codemarke `Handler-Connection-Falle`.
     conn = db.get_conn()
 
     # Bewerbungen ueber ALLE Stellen dieses Employers (Muster: app.py:3083-3088)
-    applications = conn.execute("""
-        SELECT a.id, a.candidate_id, a.status, a.bewerbungstext, a.erstellungsdatum,
-               j.titel, j.id, e.firma, COALESCE(c.name, '')
-        FROM applications a
-        JOIN jobs j ON a.job_id = j.id
-        JOIN employers e ON j.employer_id = e.id
-        LEFT JOIN candidates c ON c.id = a.candidate_id
-        WHERE e.id = ? ORDER BY a.erstellungsdatum DESC
-    """, (employer_id,)).fetchall()
+    try:
+        applications = conn.execute("""
+            SELECT a.id, a.candidate_id, a.status, a.bewerbungstext, a.erstellungsdatum,
+                   j.titel, j.id, e.firma, COALESCE(c.name, '')
+            FROM applications a
+            JOIN jobs j ON a.job_id = j.id
+            JOIN employers e ON j.employer_id = e.id
+            LEFT JOIN candidates c ON c.id = a.candidate_id
+            WHERE e.id = ? ORDER BY a.erstellungsdatum DESC
+        """, (employer_id,)).fetchall()
+    finally:
+        conn.close()
 
     AKTIV = ("eingegangen", "angesehen", "eingeladen")
     apps_aktiv = [r for r in applications if r[2] in AKTIV]
@@ -878,7 +906,8 @@ def _page_stellen(s: dict) -> None:
             with ui.row().classes("items-center gap-2 w-full py-1"):
                 ui.label(_('{0} {1} – {2} ({3}, {4})').format(badge.get(a_status, '📄'), anzeige_name(k_name, k_id, a_status), j_titel, status_label(a_status), str(a_dat)[:10])).classes(C.BODY)
 
-    conn.close()
+    # conn bereits nach dem Build-Read geschlossen (Handler-Connection-Falle,
+    # 21.10.2026) — kein Close am Seitenende.
 
 
 # ─── 3. Kandidaten-Suche ────────────────────────────────────────────
@@ -1646,6 +1675,13 @@ def _page_match(s: dict) -> None:
                                                           icon="event", on_click=_dl_ics).classes("mt-1").props("color=primary flat")
                                             else:
                                                 ui.label(_('ℹ️ ICS-Datei noch nicht vorhanden.')).classes("text-xs text-gray-500")
+                                    elif db.get_invitation_task_status(app_id) in ("pending", "running"):
+                                        # 22.10.2026 (Vorfall Bewerbung #42): Der
+                                        # create_invitation-Task haengt noch in der
+                                        # Queue (gemessen 63 min Wartezeit) — vorher
+                                        # schwieg die Seite komplett: weder Termin
+                                        # noch Link noch Hinweis.
+                                        ui.label(_('Einladung wird vorbereitet')).classes("text-xs text-blue-700")
 
             # ── Sprachtests (S3d) ──────────────────────────────────────────────
             # A4 (16.10.2026): leerer Kandidaten-Pfad (Fokus-Filter ohne Bewerber,
@@ -2149,6 +2185,10 @@ def _page_einladen(s: dict) -> None:
                                       icon="event", on_click=_ein_dl).classes("mt-1").props("color=primary flat")
                         else:
                             ui.label(_('ℹ️ ICS-Datei noch nicht vorhanden.')).classes("text-xs text-gray-500")
+                elif db.get_invitation_task_status(_ap) in ("pending", "running"):
+                    # 22.10.2026 (Vorfall #42): Task noch in der Queue — Hinweis
+                    # statt stiller Anzeige (gleicher Block wie in _page_match).
+                    ui.label(_('Einladung wird vorbereitet')).classes("text-xs text-blue-700")
 
     _ein_state["sig"] = _ein_sig()
     einladen_view()
@@ -2782,15 +2822,24 @@ def _page_feedback(s: dict) -> None:
     employer_id = s.get("employer_id")
 
     # ── Kandidaten-Picker: echtes Ranking (Bewerber zuerst, dann passive) ──
+    # Handler-Connection-Falle (21.10.2026): die Seiten-conn dient NUR dem
+    # Build-Read (Stellenliste) und wird DIREKT danach geschlossen. Die
+    # Callbacks `refresh_cands`/`refresh_list`/`save_feedback` oeffnen je
+    # EIGENE conn (try/finally). Vorher (C4-Fix 22.09.2026): conn bewusst
+    # NICHT geschlossen, damit die Handler-Closures sie nutzen koennen —
+    # das war ein Conn-Leak pro Render und dieselbe Fehlerklasse wie D12/D20.
+    # Spec: skills/nicegui-migration/SKILL.md, Codemarke `Handler-Connection-Falle`.
     conn = db.get_conn()
 
     # Stellen dieses Employers
-    jobs = conn.execute(
-        "SELECT id, titel FROM jobs WHERE employer_id = ?", (employer_id,)
-    ).fetchall()
+    try:
+        jobs = conn.execute(
+            "SELECT id, titel FROM jobs WHERE employer_id = ?", (employer_id,)
+        ).fetchall()
+    finally:
+        conn.close()
 
     if not jobs:
-        conn.close()
         empty_state(icon="work_off", title=_('Keine Stellen vorhanden'), description=_('Erstelle zuerst eine Stelle.'))
         return
 
@@ -2812,34 +2861,42 @@ def _page_feedback(s: dict) -> None:
                 sel_job = job_select.value
                 if not sel_job:
                     return
-                # Bewerber dieser Stelle
-                applicants = conn.execute("""
-                    SELECT c.id, c.name, a.id as app_id
-                    FROM candidates c
-                    JOIN applications a ON a.candidate_id = c.id
-                    WHERE a.job_id = ? AND a.status IN ('eingegangen', 'angesehen', 'eingeladen')
-                    ORDER BY a.erstellungsdatum ASC
-                """, (sel_job,)).fetchall()
-                # Passive Matches (B2-2 (c)2: Score-Filter, Paritaet app.py:3911-3914)
-                _p_rows = conn.execute("""
-                    SELECT c.id, c.name, c.hard_skills, c.soft_skills,
-                           c.berufserfahrung_jahre, c.abschluss, c.deutsch, c.englisch,
-                           c.standort, c.lebenslauf_text
-                    FROM candidates c
-                    WHERE c.status IN ('lebenslauf_hochgeladen', 'zugeordnet', 'aktiv')
-                    AND c.id NOT IN (
-                        SELECT candidate_id FROM applications
-                        WHERE job_id = ? AND status IN ('eingegangen', 'angesehen', 'eingeladen')
-                    )
-                    ORDER BY c.id DESC LIMIT 20
-                """, (sel_job,)).fetchall()
-                _p_job = conn.execute("""
-                    SELECT j.hard_skills, j.soft_skills, j.berufserfahrung_jahre,
-                           j.deutsch_level, j.englisch_level, j.standort, j.stellentyp,
-                           e.branche
-                    FROM jobs j JOIN employers e ON e.id = j.employer_id
-                    WHERE j.id = ?
-                """, (sel_job,)).fetchone()
+                # Eigene conn (try/finally) — Handler-Connection-Falle
+                # (21.10.2026). Wird VOR dem Scoring geschlossen: die
+                # Match-Berechnung dauert Sekunden, die conn darf sie nicht
+                # offen halten.
+                conn_c = db.get_conn()
+                try:
+                    # Bewerber dieser Stelle
+                    applicants = conn_c.execute("""
+                        SELECT c.id, c.name, a.id as app_id
+                        FROM candidates c
+                        JOIN applications a ON a.candidate_id = c.id
+                        WHERE a.job_id = ? AND a.status IN ('eingegangen', 'angesehen', 'eingeladen')
+                        ORDER BY a.erstellungsdatum ASC
+                    """, (sel_job,)).fetchall()
+                    # Passive Matches (B2-2 (c)2: Score-Filter, Paritaet app.py:3911-3914)
+                    _p_rows = conn_c.execute("""
+                        SELECT c.id, c.name, c.hard_skills, c.soft_skills,
+                               c.berufserfahrung_jahre, c.abschluss, c.deutsch, c.englisch,
+                               c.standort, c.lebenslauf_text
+                        FROM candidates c
+                        WHERE c.status IN ('lebenslauf_hochgeladen', 'zugeordnet', 'aktiv')
+                        AND c.id NOT IN (
+                            SELECT candidate_id FROM applications
+                            WHERE job_id = ? AND status IN ('eingegangen', 'angesehen', 'eingeladen')
+                        )
+                        ORDER BY c.id DESC LIMIT 20
+                    """, (sel_job,)).fetchall()
+                    _p_job = conn_c.execute("""
+                        SELECT j.hard_skills, j.soft_skills, j.berufserfahrung_jahre,
+                               j.deutsch_level, j.englisch_level, j.standort, j.stellentyp,
+                               e.branche
+                        FROM jobs j JOIN employers e ON e.id = j.employer_id
+                        WHERE j.id = ?
+                    """, (sel_job,)).fetchone()
+                finally:
+                    conn_c.close()
                 passive = []
                 if _p_job:
                     (_j_hard, _j_soft, _j_exp, _j_de, _j_en, _j_st, _j_typ, _j_br) = _p_job
@@ -2917,72 +2974,79 @@ def _page_feedback(s: dict) -> None:
             standort = int(standort_input.value or 4)
             empfehlung = int(empfehlung_input.value or 4)
 
-            # Kandidat-Name
-            cand_row = conn.execute("SELECT name FROM candidates WHERE id = ?", (c_id,)).fetchone()
-            kandidat_name = cand_row[0] if cand_row else f"Kandidat #{c_id}"
+            # Eigene conn (try/finally) — Handler-Connection-Falle
+            # (21.10.2026): der Handler laeuft NACH dem Seitenaufbau; eine
+            # Seiten-Scope-conn waere dort geschlossen (D12/D20-Fehlerklasse).
+            conn_f = db.get_conn()
+            try:
+                # Kandidat-Name
+                cand_row = conn_f.execute("SELECT name FROM candidates WHERE id = ?", (c_id,)).fetchone()
+                kandidat_name = cand_row[0] if cand_row else f"Kandidat #{c_id}"
 
-            # Stellenprofil
-            job_row = conn.execute("SELECT titel FROM jobs WHERE id = ?", (j_id,)).fetchone()
-            stellenprofil = job_row[0] if job_row else "Unbekannt"
+                # Stellenprofil
+                job_row = conn_f.execute("SELECT titel FROM jobs WHERE id = ?", (j_id,)).fetchone()
+                stellenprofil = job_row[0] if job_row else "Unbekannt"
 
-            # Kategorie berechnen (M-16-Reststelle 01.10.2026: lokale ZYTHR-Schwelle
-            # statt hr-benchmark-Subprozess - eine Quelle: logic.get_score_category_lokal)
-            # C4 (22.09.2026): Cat-Map Employer-Tab-4 Parität (app.py:3939-3944:
-            # default 'Schwach', Weak→'Schwach'; 'Nicht passend' war die ADMIN-
-            # Map app.py:2598-2603 — falsche Quelle hier)
-            _cat_map = {"Strong": "Hervorragend", "Consider": "Bedingt", "Weak": "Schwach"}
-            kategorie = _cat_map.get(logic.get_score_category_lokal(score), "Schwach")
-            if kategorie == "Bedingt" and score >= 75:
-                kategorie = "Gut"
+                # Kategorie berechnen (M-16-Reststelle 01.10.2026: lokale ZYTHR-Schwelle
+                # statt hr-benchmark-Subprozess - eine Quelle: logic.get_score_category_lokal)
+                # C4 (22.09.2026): Cat-Map Employer-Tab-4 Parität (app.py:3939-3944:
+                # default 'Schwach', Weak→'Schwach'; 'Nicht passend' war die ADMIN-
+                # Map app.py:2598-2603 — falsche Quelle hier)
+                _cat_map = {"Strong": "Hervorragend", "Consider": "Bedingt", "Weak": "Schwach"}
+                kategorie = _cat_map.get(logic.get_score_category_lokal(score), "Schwach")
+                if kategorie == "Bedingt" and score >= 75:
+                    kategorie = "Gut"
 
-            # match_id: employer-job-{id}-cand-{id}-{date} (Muster: app.py:3952)
-            from datetime import datetime
-            match_id = f"employer-job-{j_id}-cand-{c_id}-{datetime.now().strftime('%Y-%m-%d')}"
+                # match_id: employer-job-{id}-cand-{id}-{date} (Muster: app.py:3952)
+                from datetime import datetime
+                match_id = f"employer-job-{j_id}-cand-{c_id}-{datetime.now().strftime('%Y-%m-%d')}"
 
-            # Idempotenz: gleicher Tag = UPDATE, neuer Tag = INSERT (Muster: app.py:2596-2614)
-            existing = conn.execute(
-                "SELECT id FROM feedback WHERE match_id = ?", (match_id,)
-            ).fetchone()
+                # Idempotenz: gleicher Tag = UPDATE, neuer Tag = INSERT (Muster: app.py:2596-2614)
+                existing = conn_f.execute(
+                    "SELECT id FROM feedback WHERE match_id = ?", (match_id,)
+                ).fetchone()
 
-            if existing:
-                conn.execute("""UPDATE feedback SET
-                    kandidat_name=?, stellenprofil=?, score=?, kategorie=?,
-                    fachlich_korrekt=?, skills_richtig=?, standort_zutreffend=?,
-                    empfehlung_hilfreich=?, eingeladen=?, anmerkungen=?
-                    WHERE match_id=?""",
-                    (kandidat_name, stellenprofil, score, kategorie,
-                     fachlich, skills, standort, empfehlung,
-                     eingeladen, anmerkungen, match_id))
-                conn.commit()
-                ui.notify(_('Feedback aktualisiert (heute bereits vorhanden).'), type="info")
-                is_new = False
-            else:
-                conn.execute("""INSERT INTO feedback
-                    (match_id, kandidat_name, stellenprofil, score, kategorie,
-                     fachlich_korrekt, skills_richtig, standort_zutreffend,
-                     empfehlung_hilfreich, eingeladen, anmerkungen)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                    (match_id, kandidat_name, stellenprofil, score, kategorie,
-                     fachlich, skills, standort, empfehlung,
-                     eingeladen, anmerkungen))
-                conn.commit()
-                is_new = True
-                ui.notify(_('Feedback gespeichert!'), type="positive")
+                if existing:
+                    conn_f.execute("""UPDATE feedback SET
+                        kandidat_name=?, stellenprofil=?, score=?, kategorie=?,
+                        fachlich_korrekt=?, skills_richtig=?, standort_zutreffend=?,
+                        empfehlung_hilfreich=?, eingeladen=?, anmerkungen=?
+                        WHERE match_id=?""",
+                        (kandidat_name, stellenprofil, score, kategorie,
+                         fachlich, skills, standort, empfehlung,
+                         eingeladen, anmerkungen, match_id))
+                    conn_f.commit()
+                    ui.notify(_('Feedback aktualisiert (heute bereits vorhanden).'), type="info")
+                    is_new = False
+                else:
+                    conn_f.execute("""INSERT INTO feedback
+                        (match_id, kandidat_name, stellenprofil, score, kategorie,
+                         fachlich_korrekt, skills_richtig, standort_zutreffend,
+                         empfehlung_hilfreich, eingeladen, anmerkungen)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                        (match_id, kandidat_name, stellenprofil, score, kategorie,
+                         fachlich, skills, standort, empfehlung,
+                         eingeladen, anmerkungen))
+                    conn_f.commit()
+                    is_new = True
+                    ui.notify(_('Feedback gespeichert!'), type="positive")
 
-            # Phase 4: Gewichtungsanpassung (nur bei NEUEM Feedback, Muster: app.py:2617-2624)
-            if is_new:
-                grund = f"{'Erfolgreicher' if eingeladen == 'Ja' else 'Gescheiterter'} Match {kandidat_name}: Score {score}/100"
-                gewichtung_msg = logic.adjust_weights_from_feedback(eingeladen, score, grund, conn)
-                if gewichtung_msg:
-                    ui.notify(gewichtung_msg, type="info")
+                # Phase 4: Gewichtungsanpassung (nur bei NEUEM Feedback, Muster: app.py:2617-2624)
+                if is_new:
+                    grund = f"{'Erfolgreicher' if eingeladen == 'Ja' else 'Gescheiterter'} Match {kandidat_name}: Score {score}/100"
+                    gewichtung_msg = logic.adjust_weights_from_feedback(eingeladen, score, grund, conn_f)
+                    if gewichtung_msg:
+                        ui.notify(gewichtung_msg, type="info")
 
-                # export_report Trigger (Muster: app.py:2666-2669)
-                db.queue_agent_task("export_report", {
-                    "application_id": None,
-                    "candidate_id": c_id,
-                    "job_id": None,
-                    "match_id": match_id,
-                })
+                    # export_report Trigger (Muster: app.py:2666-2669)
+                    db.queue_agent_task("export_report", {
+                        "application_id": None,
+                        "candidate_id": c_id,
+                        "job_id": None,
+                        "match_id": match_id,
+                    })
+            finally:
+                conn_f.close()
 
             refresh_list()
 
@@ -2993,7 +3057,12 @@ def _page_feedback(s: dict) -> None:
 
     def refresh_list():
         # Klarnamen-Mapping fuer alte Feedback-Zeilen (P1, 28.09.2026) + M-07-Resolver
-        _cands = conn.execute("SELECT id, name FROM candidates").fetchall()
+        # Eigene conn (try/finally) — Handler-Connection-Falle (21.10.2026).
+        conn_l = db.get_conn()
+        try:
+            _cands = conn_l.execute("SELECT id, name FROM candidates").fetchall()
+        finally:
+            conn_l.close()
         _name_by_id = {cid: nm for cid, nm in _cands}
         _name_to_id: dict = {}
         _token_ids: dict = {}
@@ -3029,14 +3098,19 @@ def _page_feedback(s: dict) -> None:
 
         feedback_container.clear()
         with feedback_container:
-            # M-07: zusaetzlich id (Zeilen-Schluessel fuer die Auswahl) + Stelle +
-            # die 4 Bewertungen (Detail-Dialog der nicht aufloesbaren Alt-Zeilen).
-            feedbacks = conn.execute(
-                "SELECT id, match_id, kandidat_name, stellenprofil, score, kategorie, "
-                "eingeladen, anmerkungen, datum, fachlich_korrekt, skills_richtig, "
-                "standort_zutreffend, empfehlung_hilfreich "
-                "FROM feedback ORDER BY id DESC LIMIT 20"
-            ).fetchall()
+            # Eigene conn (try/finally) — Handler-Connection-Falle (21.10.2026).
+            conn_l2 = db.get_conn()
+            try:
+                # M-07: zusaetzlich id (Zeilen-Schluessel fuer die Auswahl) + Stelle +
+                # die 4 Bewertungen (Detail-Dialog der nicht aufloesbaren Alt-Zeilen).
+                feedbacks = conn_l2.execute(
+                    "SELECT id, match_id, kandidat_name, stellenprofil, score, kategorie, "
+                    "eingeladen, anmerkungen, datum, fachlich_korrekt, skills_richtig, "
+                    "standort_zutreffend, empfehlung_hilfreich "
+                    "FROM feedback ORDER BY id DESC LIMIT 20"
+                ).fetchall()
+            finally:
+                conn_l2.close()
             if not feedbacks:
                 empty_state(icon="feedback", title=_('Noch kein Feedback'))
                 return
@@ -3102,9 +3176,10 @@ def _page_feedback(s: dict) -> None:
                 ''')
 
     refresh_list()
-    # C4-Fix (22.09.2026): conn bewusst NICHT hier schließen — save_feedback/
-    # refresh_cands/refresh_list sind Handler-Closures nach dem Page-Build und
-    # nutzten eine geschlossene DB (sqlite3.ProgrammingError im E2E sichtbar).
+    # Handler-Connection-Falle (21.10.2026): die Seiten-conn wurde bereits
+    # direkt nach dem Build-Read geschlossen; `refresh_cands`/`refresh_list`/
+    # `save_feedback` oeffnen je EIGENE conn (try/finally). Vorher (C4-Fix
+    # 22.09.2026): conn bewusst NICHT geschlossen — Conn-Leak pro Render.
 
     # C7 (22.09.2026): Skill 8 unter Tab4 (shared Section, eigener Conn)
     ui.separator().classes("my-6")

@@ -971,13 +971,17 @@ def _dokumente_section(s: dict) -> None:
     refresh_docs()
 
 
-# ─── Selbstpräsentation-Datei: Video-Abschnitt (A4, 30.09.2026) ──────
+# ─── Selbstpräsentation-Datei: Video-Abschnitt (A4, 30.09.2026; md-Disziplin 21.10.2026) ──
 # Beide Tabs schreiben dieselbe Datei ergebnisse/self-presentation-kandidat-{id}-{datum}.md:
 # Pre-Screen (Meeting-Raum + Leitfragen) und Sprachtest-Tab (Abschnitt "## Video-Vorstellung").
-# Befund: start_prescreen schrieb die Tagesdatei komplett neu und löschte dabei den
-# Video-Abschnitt (bzw. legte an einem neuen Tag eine Datei OHNE Abschnitt an, sodass
-# der Link-Lookup über die neueste Datei ihn nicht mehr fand). Fix: Abschnitt beim
-# Schreiben mergen. Reine Funktionen (Verzeichnis als Parameter) → testbar ohne UI.
+# A4 (30.09.2026): start_prescreen schrieb die Tagesdatei komplett neu und löschte dabei
+# den Video-Abschnitt. md-Disziplin (21.10.2026, Spec knowledge/system/md-schreib-konvention.md):
+#   R-S2 kein Carry-over über Tagesgrenzen (der alte 24-Tage-Link war im Portal sichtbar),
+#   R-S3 Zieldatei = HEUTIGES Datum (nie „neueste existierende"),
+#   R-S5 kein Abschneiden (nur der per Anker adressierte Abschnitt wird ersetzt).
+# Der Video-Abschnitt ist damit **Zustand des heutigen Tages**: er wird per Heading-Anker
+# in der Zieldatei ersetzt, nicht aus einer Vortagesdatei übernommen.
+# Reine Funktionen (Verzeichnis als Parameter) → testbar ohne UI.
 
 VIDEO_HEADING = "## Video-Vorstellung"
 
@@ -991,7 +995,11 @@ def video_section_md(video_url: str) -> str:
 
 
 def self_presentation_files(ergebnisse: Path, cand_id) -> list:
-    """Alle Selbstpräsentations-Dateien des Kandidaten, älteste zuerst (Datum im Namen)."""
+    """Alle Selbstpräsentations-Dateien des Kandidaten, älteste zuerst (Datum im Namen).
+
+    Leser-Helfer (z. B. HR-Ansicht). Für die Auswahl „heutige Datei" NICHT verwenden —
+    siehe Spec R-S3 (Datumsrollen: `self-presentation-*` = heutiges Datum).
+    """
     return sorted(Path(ergebnisse).glob(f"self-presentation-kandidat-{cand_id}-*.md"))
 
 
@@ -1005,53 +1013,92 @@ def extract_video_section(text: str) -> str:
     return abschnitt.rstrip() + "\n\n"
 
 
-def find_video_section(ergebnisse: Path, cand_id) -> str:
-    """Neuester vorhandener Video-Abschnitt über alle Dateien des Kandidaten ('' = keiner)."""
-    for p in reversed(self_presentation_files(ergebnisse, cand_id)):
-        abschnitt = extract_video_section(p.read_text(encoding="utf-8", errors="replace"))
-        if abschnitt:
-            return abschnitt
-    return ""
+def replace_video_section(text: str, section: str) -> str:
+    """Ersetzt den Abschnitt '## Video-Vorstellung' per Heading-Anker (Spec R-S1/R-S5).
+
+    Alles außerhalb des Abschnitts bleibt **unverändert und in Reihenfolge**: der
+    Abschnitt wird an seiner Position ersetzt (nicht abgeschnitten, nicht
+    angehängt). `section` == '' entfernt ihn.
+    """
+    basis = (text or "").rstrip()
+    prefix, suffix = basis, ""
+    i = basis.find(VIDEO_HEADING)
+    if i >= 0:
+        rest_start = basis.find("\n## ", i + len(VIDEO_HEADING))
+        suffix = "" if rest_start < 0 else basis[rest_start + 1:].strip("\n")
+        prefix = basis[:i].rstrip()
+    neu = (section or "").strip("\n")
+    teile = [t for t in (prefix, neu, suffix) if t]
+    return ("\n\n".join(teile) + "\n") if teile else ""
 
 
-def load_video_link(ergebnisse: Path, cand_id):
+def load_video_link(ergebnisse: Path, cand_id, now=None):
+    """Liest den Video-Link des Kandidaten: **heutige** Datei bevorzugt,
+    sonst die neueste Datei **mit** Abschnitt (Leser-Fallback).
+
+    Schreiber-Regel (Spec R-S2/R-S3, `knowledge/system/md-schreib-konvention.md`):
+    Der **Schreiber** schreibt nur in die heutige Datei (kein Carry-over).
+    Der **Leser** greift dagegen auf den letzten bekannten Stand zurück — der
+    Kandidat soll seinen bereits erzeugten Link sehen, auch wenn er gestern
+    erzeugt wurde (Messung 21.10.2026: Kandidaten 2 und 20 sahen ihren Link
+    im Portal nicht mehr; der HR-Recruiting-Modus zeigte die Altdatei weiter).
+    """
     import re
-    abschnitt = find_video_section(ergebnisse, cand_id)
-    m = re.search(r"https://vdo\.ninja/\?[^\s)\]]+", abschnitt) if abschnitt else None
-    return m.group(0) if m else None
+    from datetime import datetime
+    jetzt = now or datetime.now()
+    basis = Path(ergebnisse)
+    heute = basis / f"self-presentation-kandidat-{cand_id}-{jetzt.strftime('%Y-%m-%d')}.md"
+    kandidaten = [heute] + [p for p in reversed(self_presentation_files(basis, cand_id))
+                            if p != heute]
+    for pfad in kandidaten:
+        if not pfad.is_file():
+            continue
+        abschnitt = extract_video_section(pfad.read_text(encoding="utf-8", errors="replace"))
+        m = re.search(r"https://vdo\.ninja/\?[^\s)\]]+", abschnitt) if abschnitt else None
+        if m:
+            return m.group(0)
+    return None
 
 
 def write_prescreen_md(ergebnisse: Path, cand_id, filename: str, md: str) -> str:
-    """Schreibt die Pre-Screen-Datei und übernimmt einen vorhandenen Video-Abschnitt.
+    """Schreibt die Pre-Screen-Datei des **heutigen** Tages (Spec R-S3).
 
-    Rückgabe: der tatsächlich geschriebene Text (inkl. gemergtem Abschnitt).
+    Der Video-Abschnitt wird **per Heading-Anker in derselben Datei** erhalten
+    (kein Carry-over aus Vortagesdateien, Spec R-S2; kein Abschneiden, Spec R-S5).
+    `cand_id` bleibt aus API-Kompatibilität erhalten (kein glob mehr).
+    Rückgabe: der tatsächlich geschriebene Text.
     """
-    if VIDEO_HEADING not in md:
-        vorhanden = find_video_section(ergebnisse, cand_id)
-        if vorhanden:
-            md = md.rstrip() + "\n\n" + vorhanden
-    (Path(ergebnisse) / filename).write_text(md, encoding="utf-8")
+    ziel = Path(ergebnisse) / filename
+    if ziel.is_file():
+        vorhanden = extract_video_section(ziel.read_text(encoding="utf-8", errors="replace"))
+        if vorhanden and VIDEO_HEADING not in md:
+            md = replace_video_section(md, vorhanden)
+    ziel.parent.mkdir(parents=True, exist_ok=True)
+    ziel.write_text(md, encoding="utf-8")
     return md
 
 
 def persist_video_link(ergebnisse: Path, cand_id, video_url: str, now=None) -> Path:
-    """Schreibt/ersetzt den Video-Abschnitt in der neuesten Selbstpräsentations-Datei."""
+    """Schreibt/ersetzt den Video-Abschnitt in der Datei des **heutigen** Tages.
+
+    Spec knowledge/system/md-schreib-konvention.md: R-S3 (Ziel = heutiges Datum, nie
+    „neueste existierende"), R-S5 (nur der per Anker adressierte Abschnitt wird
+    ersetzt — der übrige Inhalt der Datei bleibt erhalten).
+    """
     from datetime import datetime
     now = now or datetime.now()
-    dateien = self_presentation_files(ergebnisse, cand_id)
-    if dateien:
-        p = dateien[-1]
-        head = p.read_text(encoding="utf-8", errors="replace") \
-            .split(VIDEO_HEADING)[0].rstrip() + "\n\n"
+    p = Path(ergebnisse) / f"self-presentation-kandidat-{cand_id}-{now.strftime('%Y-%m-%d')}.md"
+    if p.is_file():
+        text = p.read_text(encoding="utf-8", errors="replace")
     else:
-        p = Path(ergebnisse) / f"self-presentation-kandidat-{cand_id}-{now.strftime('%Y-%m-%d')}.md"
-        head = (
+        text = (
             _("# Selbstpräsentation: Kandidat #{0}").format(cand_id) + "\n\n"
             + _("**Datum:** {0}").format(now.strftime('%d.%m.%Y')) + "\n\n"
             + _("## Ihr Meeting-Raum") + "\n\n"
             + _("- Noch kein Raum generiert (Tab 📹 Pre-Screen).") + "\n\n"
         )
-    p.write_text(head + video_section_md(video_url), encoding="utf-8")
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(replace_video_section(text, video_section_md(video_url)), encoding="utf-8")
     return p
 
 
@@ -1115,7 +1162,9 @@ def _tab_prescreen(s: dict) -> None:
     def start_prescreen():
         import random, string
         room_code = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-        room_name = f"self-presentation-{room_code}"
+        # Fix 20.10.2026 (Spec §2.6): Stream-ID alphanumerisch — VDO sanitzt non-alphanumeric
+        # Zeichen zu "_" (auch "_" selbst ist non-alphanumeric), deshalb KEIN Bindestrich/Unterstrich.
+        room_name = f"selfpresentation{room_code}"
         # VDO.Ninja statt Jitsi (27.09.2026, Spec: knowledge/system/vdo-ninja-migration.md).
         # Fix 03.10.2026 (Spec §2.3): Selbstpräsentation = SOLO-SENDER -> `?push=` (NICHT
         # `?director=`; der Regieraum sendet kein eigenes Bild). Offizielle Doku:
@@ -1514,7 +1563,9 @@ def _tab_sprachtest(s: dict) -> None:
 
     def _gen_video_link() -> None:
         import uuid
-        video_code = f"vorstellung-{s['user_cand_id']}-{str(uuid.uuid4())[:8]}"
+        # Fix 20.10.2026 (Spec §2.6): Stream-ID alphanumerisch — keine Bindestriche/Unterstriche
+        # (VDO sanitzt non-alphanumeric zu "_"). Eindeutigkeit über uuid8, Zufälligkeit unverändert.
+        video_code = f"vorstellung{s['user_cand_id']}{str(uuid.uuid4())[:8]}"
         # Fix 03.10.2026 (Spec §2.3): Solo-Selbstpräsentation = `?push=` (Sender), nicht
         # `?director=` (Regieraum ohne eigenes Bild). Ohne Aufnahme-Parameter (rechtlich).
         video_url = f"https://vdo.ninja/?push={video_code}&record=6000"

@@ -3585,3 +3585,6 @@ msgstr "La checkliste est enregistrée localement dans ergebnisse/ — aucun env
 
 msgid "Freigabe-Report"
 msgstr "Rapport de validation"
+
+msgid "Einladung wird vorbereitet"
+msgstr "L'invitation est en cours de préparation"

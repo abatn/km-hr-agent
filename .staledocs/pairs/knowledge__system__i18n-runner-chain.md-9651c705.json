@@ -10,6 +10,7 @@
       "DRY_RUN=True",
       "Erfahrung:",
       "Gesamtstatus:",
+      "KMHR_DB_PATH",
       "KMHR_RUNNER_AUTOSTART=0",
       "Kultur-Fit:",
       "Match-Score:",
@@ -111,14 +112,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-20T11:26:43+00:00",
+    "at": "2026-10-23T10:43:43+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
+      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
-    "note": ""
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/i18n-runner-chain.md"
   },
   "doc": "knowledge/system/i18n-runner-chain.md",
   "schema": 1

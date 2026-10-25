@@ -33,14 +33,14 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-20T11:26:38+00:00",
+    "at": "2026-10-23T10:43:38+00:00",
     "code_blobs": {
-      "webui/db.py": "d8a602653dff6cb6b4d9fa437a6d4f2f80bb93e0",
-      "webui/pages/candidate.py": "72b9b3821584f6cabcd3e52bead69dff751cf4bf"
+      "webui/db.py": "4843e33d71d9d9a249d826e01f58380cebb9ac22",
+      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
-    "note": ""
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/portal/candidate-portal-fields.md"
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

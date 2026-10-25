@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-20T11:29:32+00:00",
+    "at": "2026-10-23T10:43:58+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "198ffd928ab467661768145b309ae4bddd3c2d95",
-      "webui/pages/employer.py": "9e01e67191ce135571ca9b002500e78d9edcd60a"
+      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
-    "doc_blob": "c5e0838102e9ae9709e5686317dcafbed5d3a703",
-    "note": "Re-Ack 20.10.2026: Evidence von skills/verify-documents/SKILL.md geprueft (state DOC_STALE, changed_code: `webui/pages/employer.py`). Visa/Onboarding-Vorarbeit des Nutzers (uncommittet, 20.10.2026): VISA_INFO_STATUS, onboarding_generator_section(candidates=,firma=), _page_onboarding DB-Quelle, 4 neue i18n-Keys; Aussage von skills/verify-documents/SKILL.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "doc_blob": "d540129a5c16be5461b860668bc11511fc8e43f4",
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/verify-documents/SKILL.md"
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

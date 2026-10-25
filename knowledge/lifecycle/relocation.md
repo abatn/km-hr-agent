@@ -20,7 +20,7 @@
 |---|---|
 | `ergebnisse/bipperz-konkurrenz-analyse.md` | Bipperz hat laut Doku **3 Vorteile** (E-Mail, Video, DE-TN-Kultur-Matching) — **Relocation ist KEIN Bipperz-Vorteil** |
 | `ergebnisse/bipperz-konkurrenz-analyse.md` | „Vorteile Bipperz (nicht im KM-HR-Agent)": 3 Zeilen, Relocation nicht enthalten → **kein Wettbewerbs-gap gegenüber Bipperz** |
-| `ergebnisse/bipperz-konkurrenz-analyse.md` | Punkt **7** der Tabelle „Vorteile KM-HR-Agent": „17 Skills, 13 DB-Tabellen, DSGVO-6-Monats-Löschung" — **Zitat-Stand 13.09.2026; Abgleich 24.09.2026: 23 Skills, 16 DB-Tabellen** (Zieltext unverändert) — relocation.md wäre ein Knowledge-/Skill-Beitrag jenseits dieser Liste |
+| `ergebnisse/bipperz-konkurrenz-analyse.md` | Punkt **7** der Tabelle „Vorteile KM-HR-Agent": „17 Skills, 13 DB-Tabellen, DSGVO-6-Monats-Löschung" — **Zitat-Stand 13.09.2026; Abgleich 24.09.2026: 23 Skills, 16 DB-Tabellen** (Zieltext unverändert; Tabellenwert heute **17**, gemessen 21.10.2026) — relocation.md wäre ein Knowledge-/Skill-Beitrag jenseits dieser Liste |
 | `ergebnisse/bipperz-konkurrenz-analyse.md` | Punkt 3 (DE-TN-Spezialisierung, ⚠️ offen): Relocation **stärkt indirekt** diesen Punkt — Nicht-EU-Kandidaten (z.B. TN) müssen exakt diese Behördenkette (Meldebehörde → Ausländerbehörde) durchlaufen |
 
 **Lesart „Punkt 7" (Design-Entscheidung):** Der Report-Dateiname `phase-d-p7-relocation.md` positioniert diese Spec als **Phase-D-Arbeitspunkt 7**. Die Phase-D-Entscheidungstabelle (`ergebnisse/entscheidungen.md`) listet Optionen (a)–(d5) — Relocation ta dort **nicht** auf; diese Spec ist ein eigener, noch nicht entschiedener Punkt.

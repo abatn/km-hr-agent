@@ -97,6 +97,79 @@ def p2_emp_error():
         _ep._page_agent_details(s)
 
 
+# ── 22.10.2026 (Einladungs-Hinweis, Vorfall Bewerbung #42): „Einladung wird
+# ── vorbereitet", wenn der Status 'eingeladen' ist, der create_invitation-Task
+# ── aber noch pending/running haengt. EIGENE Temp-DB je Route (kein
+# ── Spiegel-Zustand, der andere Tests beeinflusst); drei Faelle parallel:
+#   (1) pending  -> Hinweis,
+#   (2) done     -> Einladungskarte mit Termin (Altverhalten),
+#   (3) kein Task-> gar nichts (kein Versprechen ohne Task).
+
+def _p3_inv_db(datei: str, task_status: str) -> None:
+    """Temp-DB mit 3 eingeladenen Bewerbungen:
+    (1) create_invitation-Task mit `task_status`, (2) done, (3) ohne Task."""
+    import sqlite3 as _sq
+    _conn = _sq.connect(datei)
+    _conn.executescript("""
+        CREATE TABLE employers (id INTEGER PRIMARY KEY, firma TEXT, branche TEXT);
+        CREATE TABLE jobs (id INTEGER PRIMARY KEY, titel TEXT, employer_id INTEGER,
+            hard_skills TEXT, soft_skills TEXT, berufserfahrung_jahre INTEGER,
+            deutsch_level TEXT, englisch_level TEXT, standort TEXT, stellentyp TEXT, status TEXT);
+        CREATE TABLE candidates (id INTEGER PRIMARY KEY, name TEXT, hard_skills TEXT,
+            soft_skills TEXT, berufserfahrung_jahre INTEGER, abschluss TEXT,
+            deutsch TEXT, englisch TEXT, standort TEXT, lebenslauf_text TEXT);
+        CREATE TABLE applications (id INTEGER PRIMARY KEY, status TEXT,
+            erstellungsdatum TEXT, aktualisiert_am TEXT, candidate_id INTEGER, job_id INTEGER);
+        CREATE TABLE agent_tasks (id INTEGER PRIMARY KEY, task_type TEXT, status TEXT,
+            payload TEXT, result_json TEXT);
+        INSERT INTO employers VALUES (1,'Test GmbH','Industrie');
+        INSERT INTO jobs VALUES (1,'Élektriker',1,'Python','Team',3,'B1','A2','Koeln','Vollzeit','aktiv');
+        INSERT INTO candidates VALUES (1,'Kandidat Pending','Python','Team',3,'Master','B1','A2','Koeln','');
+        INSERT INTO applications VALUES (1,'eingeladen','2026-10-22','2026-10-22 10:00:00',1,1);
+        INSERT INTO candidates VALUES (2,'Kandidat Fertig','Python','Team',3,'Master','B1','A2','Koeln','');
+        INSERT INTO applications VALUES (2,'eingeladen','2026-10-21','2026-10-21 10:00:00',2,1);
+        INSERT INTO agent_tasks VALUES (2,'create_invitation','done',
+            '{"application_id": 2}',
+            '{"vdo_ninja_url": "https://vdo.ninja/?director=prescreeningtest1", "termin": "2026-10-23 10:00 (15 Min.)"}');
+        INSERT INTO candidates VALUES (3,'Kandidat Ohne Task','Python','Team',3,'Master','B1','A2','Koeln','');
+        INSERT INTO applications VALUES (3,'eingeladen','2026-10-20','2026-10-20 10:00:00',3,1);
+    """)
+    _conn.execute("""INSERT INTO agent_tasks (id, task_type, status, payload)
+        VALUES (1, 'create_invitation', ?, '{"application_id": 1}')""", (task_status,))
+    _conn.commit()
+    _conn.close()
+
+
+def _p3_inv_render(task_status: str) -> None:
+    """Temp-DB anlegen und _page_einladen dagegen rendern (eigene Verbindungen)."""
+    import tempfile as _tmp
+    from unittest.mock import patch as _p
+    from webui import db as _db
+    from webui.pages import employer as _ep
+
+    _dir = _tmp.mkdtemp(prefix=f"inv-{task_status}-", dir="/tmp/opencode")
+    _dbf = f"{_dir}/inv.db"
+    _p3_inv_db(_dbf, task_status)
+    with _p.object(_db, "DB_PATH", _dbf), _p.object(_db, "AGENT_TASKS_DB", _dbf):
+        _ep._page_einladen({"employer_id": 1, "employer_logged_in": True,
+                            "employer_firma": "Test GmbH"})
+
+
+@ui.page('/p3-inv-pending')
+def p3_inv_pending():  # bewusst NICHT test_* benannt (sonst sammelt pytest sie ein)
+    _p3_inv_render("pending")
+
+
+@ui.page('/p3-inv-running')
+def p3_inv_running():  # bewusst NICHT test_* benannt
+    _p3_inv_render("running")
+
+
+@ui.page('/p3-inv-kein-hinweis')
+def p3_inv_kein_hinweis():  # Negativfall: failed + done + kein Task => KEIN Hinweis
+    _p3_inv_render("failed")
+
+
 # R5-5: Dialog-Semantik (Abbrechen/Bestätigen). Pro Test EIGENE Route +
 # EIGENE Liste (Gemessen: zwei Tests auf einer Route teilen sich im
 # Sammellauf die nicegui-App; die zweite Simulation schrieb in die Liste

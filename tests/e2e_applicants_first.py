@@ -121,10 +121,14 @@ def check_a(failures) -> None:
     emp_src = (ROOT / "webui" / "pages" / "employer.py").read_text(encoding="utf-8")
     app_src = (ROOT / "app.py").read_text(encoding="utf-8")
 
+    # 21.10.2026 (Handler-Connection-Falle): die Callbacks in employer.py
+    # oeffnen ihre EIGENE conn (`conn_c`, `conn_f`, `conn_l`) — die Regex
+    # darf den Conn-Namen nicht festnageln, sonst schlaegt sie nur wegen
+    # der Variablennamen fehl. Geprueft wird weiterhin der SQL-INHALT.
     m_applicants = re.search(
-        r"applicants = conn\.execute\(\"\"\"(.*?)\"\"\"", emp_src, re.S)
+        r"applicants = conn\w*\.execute\(\"\"\"(.*?)\"\"\"", emp_src, re.S)
     m_passive = re.search(
-        r"(?:passive|_p_rows) = conn\.execute\(\"\"\"(.*?)\"\"\"", emp_src, re.S)
+        r"(?:passive|_p_rows) = conn\w*\.execute\(\"\"\"(.*?)\"\"\"", emp_src, re.S)
     fb_idx = app_src.find("fb_bewerber")
     fb_window = app_src[max(0, fb_idx - 600):fb_idx] if fb_idx > 0 else ""
     if not (m_applicants and m_passive and fb_window):

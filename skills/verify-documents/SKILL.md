@@ -106,7 +106,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"evaluate_p
   🇫🇷 `ansvar-french-law`: Code de l'entrée et du séjour (Titre de séjour, autorisation de travail)
   🇨🇭 `ansvar-swiss-law`: AuG (Bewilligung, Kontingente), ArG
   Alle: DSGVO/RGPD/DSG Art. 6-Zulässigkeit der Verarbeitung (Bewerbungsverfahren)
-- **Nicht prüfbar vom Agenten:** Sicherheitsmerkmale (Wasserzeichen, Hologramme, QR-Codes), Registerabgleich (Anerkennungsstellen, ZAB, amazoni-check) → Bericht markiert diese als `MANUELLE_PRIEFUNG_ERFORDERLICH`
+- **Nicht prüfbar vom Agenten:** Sicherheitsmerkmale (Wasserzeichen, Hologramme, QR-Codes), Registerabgleich (Anerkennungsstellen, ZAB, amazoni-check) → Bericht markiert diese als `MANUELLE_PRUEFUNG_ERFORDERLICH`
 
 ### 5. Ergebnis speichern
 

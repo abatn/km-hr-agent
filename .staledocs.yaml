@@ -19,7 +19,10 @@ source:
 docs:
   include:
     - "**/*.md"
-  exclude: []
+  exclude:
+    # Test-Fixtures des Wächters `mdguard` (22.10.2026): bewusst verstoßende
+    # Musterdateien — keine Doku, daher nicht klassifizierbar.
+    - "tests/fixtures/md-guard/**"
 
 # Explicit pairs (CODEOWNERS-style): a doc owns the code matched by its globs.
 # Paar-Regel (Lab, 10.10.2026, C1): MD-first — die Doku beschreibt den Code,
@@ -49,6 +52,8 @@ pairs:
   # --- System / Betrieb
   - doc: knowledge/system/agent-automation.md
     code: ["scripts/agent-runner.py", "scripts/agent-test.sh"]
+  - doc: knowledge/system/md-schreib-konvention.md
+    code: ["scripts/ci/checks.py", "scripts/agent-runner.py", "webui/pages/candidate.py", "webui/components.py", "webui/logic.py", "tests/test_md_writer_discipline.py", "tests/test_video_section.py"]
   - doc: knowledge/system/e2e-ci-seed.md
     code: ["tests/**", "scripts/seed_ci_db.py", "scripts/ci/checks.py"]
   - doc: knowledge/system/i18n.md

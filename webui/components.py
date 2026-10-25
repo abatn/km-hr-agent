@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import io
 import json
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable, Optional
@@ -617,6 +618,70 @@ def _md_result_card(container, title: str, filename: str, md: str) -> None:
             ).classes(C.BTN_PRIMARY + " mt-2")
 
 
+def _video_link_aus_abschnitt(abschnitt: str) -> str | None:
+    """Nutzbarer Video-Link aus einem Video-Abschnitt.
+
+    V-19 (21.10.2026): `?director=`-Links sind **veraltet** (Spec R2.2,
+    `knowledge/system/vdo-ninja-migration.md` §2.3 — der Director-Link wurde
+    durch den Push-Link abgelöst) und werden **nicht** als nutzbarer Link
+    ausgegeben. Der erste `?push=`/`?room=`-Link gewinnt.
+    """
+    for m in re.finditer(r"https://vdo\.ninja/\?[^\s)\]]+", abschnitt or ""):
+        url = m.group(0)
+        if "director=" in url:
+            continue
+        return url
+    return None
+
+
+def selbstpraesentation_je_kandidat(ergebnisse: Path) -> dict[int, dict]:
+    """Pro Kandidat die **neueste** Selbstpräsentation mit nutzbarem Video-Link.
+
+    Leser-Regel — identisch zum Kandidatenportal
+    (`webui/pages/candidate.py::load_video_link`): die **heutige** Datei zuerst,
+    sonst die neueste Datei **mit** Video-Abschnitt. Aeltere Fassungen werden
+    nicht als nutzbare Eintraege ausgegeben (V-19, 21.10.2026) — HR sieht
+    dadurch je Kandidat genau **einen** aktuellen Stand.
+
+    Rueckgabe: `{kandidat_id: {"pfad": Path, "video_url": str | None,
+    "aeltere": int}}` — `aeltere` = Anzahl der nicht angezeigten Versionen.
+    """
+    from webui.pages.candidate import extract_video_section  # lokal: Kreisimport
+
+    basis = Path(ergebnisse)
+    heute = datetime.now().strftime("%Y-%m-%d")
+    je_kandidat: dict[int, list[Path]] = {}
+    for p in sorted(basis.glob("self-presentation-kandidat-*.md")):
+        m = re.search(r"self-presentation-kandidat-(\d+)-", p.name)
+        if not m:
+            continue
+        je_kandidat.setdefault(int(m.group(1)), []).append(p)
+    ergebnis: dict[int, dict] = {}
+    for cid, dateien in je_kandidat.items():
+        # Reihenfolge: heutige Datei zuerst, dann die uebrigen (neueste zuerst).
+        heute_datei = [p for p in dateien if p.name.endswith(f"-{heute}.md")]
+        rest = [p for p in reversed(dateien) if p not in heute_datei]
+        gewaehlt: Path | None = None
+        video_url: str | None = None
+        for p in heute_datei + rest:
+            abschnitt = extract_video_section(
+                p.read_text(encoding="utf-8", errors="replace"))
+            url = _video_link_aus_abschnitt(abschnitt)
+            if url:
+                gewaehlt, video_url = p, url
+                break
+        if gewaehlt is None:
+            # Kein nutzbarer Video-Link ⇒ die neueste Datei als **Dokument**
+            # anzeigen (Inhalt bleibt sichtbar, ohne erfundenen Link).
+            gewaehlt = (heute_datei + rest)[0] if (heute_datei + rest) else None
+        if gewaehlt is None:
+            continue
+        angezeigt = 1
+        ergebnis[cid] = {"pfad": gewaehlt, "video_url": video_url,
+                          "aeltere": max(0, len(dateien) - angezeigt)}
+    return ergebnis
+
+
 def prescreen_recruiting_section() -> None:
     """Skill 6 Recruiting-Modus (Employer/Admin). Paritaet: app.py:2238-2361.
 
@@ -630,10 +695,15 @@ def prescreen_recruiting_section() -> None:
     ui.label(_('Modus: 🔍 Recruiting – Screening für ausgewählten Kandidaten.')).classes(C.BODY + " mb-4")
 
     # ── #8 Einsicht: Selbstpräsentationen der Kandidaten ──
-    self_pres = sorted(logic.ERGEBNISSE.glob("self-presentation-kandidat-*.md"))
+    # V-19 (21.10.2026): pro Kandidat wird **nur der neueste Stand mit
+    # Video-Abschnitt** angezeigt (Leser-Regel wie im Kandidatenportal,
+    # `webui/pages/candidate.py::load_video_link`). Veraltete `?director=`-Links
+    # werden nicht als nutzbarer Link ausgegeben (Spec R2.2,
+    # `knowledge/system/vdo-ninja-migration.md` §2.3).
+    selbstpraes = selbstpraesentation_je_kandidat(logic.ERGEBNISSE)
     with ui.card().classes(C.CARD + " w-full mb-4"):
-        ui.label(_('Selbstpräsentationen der Kandidaten ({0})').format(len(self_pres))).classes(C.CARD_TITLE)
-        if not self_pres:
+        ui.label(_('Selbstpräsentationen der Kandidaten ({0})').format(len(selbstpraes))).classes(C.CARD_TITLE)
+        if not selbstpraes:
             # P1-3 (29.09.2026): Wegweiser statt toter Endpunkt — HR kann hier
             # nichts auslösen; Selbstpräsentationen entstehen im Kandidaten-
             # Sprachtest-Tab (Spec: skills/pre-screen/SKILL.md, P1-3-Regel)
@@ -641,7 +711,9 @@ def prescreen_recruiting_section() -> None:
                 _('Keine Selbstpräsentationen vorhanden. Kandidaten können ihre Video-Vorstellung im eigenen Portal (Tab 🗣️ Sprachtest) generieren.')
             ).classes(C.MUTED)
         else:
-            for sp in self_pres:
+            for cid in sorted(selbstpraes):
+                eintrag = selbstpraes[cid]
+                sp = eintrag["pfad"]
                 content = sp.read_text(encoding="utf-8", errors="replace")
                 with ui.row().classes("items-center gap-3 w-full mb-1"):
                     ui.label(sp.name).classes(C.SMALL + " flex-1")
@@ -657,6 +729,11 @@ def prescreen_recruiting_section() -> None:
                         _('Ansehen'), icon="visibility",
                         on_click=lambda _c=content, _n=sp.name: _show_file(_c, _n),
                     ).props("flat dense")
+                    if eintrag["aeltere"]:
+                        # Aeltere Fassungen bleiben sichtbar **als Hinweis** (kein
+                        # nutzbarer Link, keine Zweit-Ausgabe).
+                        ui.label(_('{0} ältere Version(en) ohne aktuellen Video-Link').format(
+                            eintrag["aeltere"])).classes(C.MUTED)
 
     # ── #9 Generator ──
     # P1-3 (29.09.2026): kein hartes `return` mehr — der Rest der Section

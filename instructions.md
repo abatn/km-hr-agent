@@ -101,7 +101,7 @@ Regel: Matching (Skill 2) und alle darauf aufbauenden Skills (3–8) nur bei Kan
 1. **Job-API auswählen** → arbeitnow (kein Key) oder arbeitsamt (OAuth)
 2. **API-Aufruf** → HTTP GET (REST)
 3. **Stellen abrufen** → Jobs aus dem API-Feed
-4. **Daten speichern** → write_file → knowledge/jobs/
+4. **Daten speichern** → write_file → ergebnisse/jobs/{JJJJ-MM-TT}.md (Laufzeit-Artefakt; `knowledge/**` ist normativ und wird nur redaktionell gepflegt — Spec `knowledge/system/md-schreib-konvention.md` §0, R-S4)
 5. **Profil erstellen** → extract-profile (aus Lebenslauf)
 6. **Matching** → match-candidate (Profil vs. Stelle)
 7. **Ergebnis speichern** → write_file → ergebnisse/

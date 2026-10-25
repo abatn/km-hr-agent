@@ -36,7 +36,9 @@
       "include_fenced": false,
       "min_length": 3
     },
-    "docs_exclude": [],
+    "docs_exclude": [
+      "tests/fixtures/md-guard/**"
+    ],
     "docs_include": [
       "**/*.md"
     ],
@@ -76,6 +78,7 @@
       "knowledge/system/i18n-runner-chain.md",
       "knowledge/system/i18n.md",
       "knowledge/system/mcp-connector-config.md",
+      "knowledge/system/md-schreib-konvention.md",
       "knowledge/system/vdo-ninja-migration.md",
       "knowledge/ui-design-system.md",
       "skills/README.md",
@@ -109,7 +112,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-20T13:48:54+00:00",
+  "at": "2026-10-25T13:53:51+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

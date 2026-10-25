@@ -163,13 +163,32 @@ def _pdf_forensic_pre_scan(cand_id: int) -> str:
         return "\n\n".join(ergebnisse_parts)
     return "(pdf-verify-mcp nicht verfügbar – forensischer Pre-Scan übersprungen)"
 
-DB_PATH = PROJECT_ROOT / "data" / "feedback.db"
+# V-18 (21.10.2026): KMHR_DB_PATH respektieren — sonst schreibt der Runner in
+# isolierten/E2E-Läufen in die Live-DB (Beleg: webui/db.py::DB_PATH nutzt denselben
+# Override; ohne ihn laufen Runner und WebUI auf verschiedenen Dateien).
+DB_PATH = Path(os.environ.get("KMHR_DB_PATH") or (PROJECT_ROOT / "data" / "feedback.db"))
 PID_FILE = PROJECT_ROOT / "data" / "agent-runner.pid"
-LOG_FILE = PROJECT_ROOT / "logs" / "agent-errors.log"
+# V-17 (21.10.2026): KMHR_LOG_FILE ermoeglicht die Umleitung des Fehlerlogs in
+# Tests (tests/conftest.py) — ohne den Override schreibt jeder pytest-Lauf in
+# das PRODUKTIONSlog logs/agent-errors.log (Beleg: 540 alte pytest-Zeilen).
+LOG_FILE = Path(os.environ.get("KMHR_LOG_FILE")
+                or (PROJECT_ROOT / "logs" / "agent-errors.log"))
 # R6-1 (30.09.2026): Logrotation (Design-Entscheidung): 5 MB × 3 Altdateien
 LOG_MAX_BYTES = 5 * 1024 * 1024
 LOG_BACKUPS = 3
 ERGEBNISSE = PROJECT_ROOT / "ergebnisse"
+
+
+def _ergebnis_pfad(name: str) -> Path:
+    """Pfad unter ergebnisse/ — legt das Verzeichnis bei Bedarf an.
+
+    md-Disziplin (21.10.2026, Spec knowledge/system/md-schreib-konvention.md §1):
+    `ergebnisse/` ist gitignored und fehlt in einem frischen Checkout ⇒ ohne dieses
+    `mkdir` schlägt der erste Schreibvorgang mit FileNotFoundError fehl
+    (Server-Befund 20.10.2026: die Einladungsmail ging dadurch nicht raus).
+    """
+    ERGEBNISSE.mkdir(parents=True, exist_ok=True)
+    return ERGEBNISSE / name
 
 # .env-runner laden (falls Umgebungsvariable nicht gesetzt)
 _env_runner = PROJECT_ROOT / ".env-runner"
@@ -243,17 +262,28 @@ def _llm_complete(prompt: str) -> str:
                         break
                     else:
                         last_error = f"Agent ohne Text-Antwort ({model_name}, HTTP 200, content leer)"
+                        # 22.10.2026 (Fehlversuch-Transparenz): leere Antwort war
+                        # bisher still (nur last_error, kein Log-Eintrag).
+                        log(f"   ⚠️ Leere Antwort von {model_name} (Versuch {attempt+1}/3, HTTP 200)")
                 elif resp.status_code == 503:
                     last_error = f"HTTP 503 ({model_name}, Versuch {attempt+1}/3)"
                     log(f"   ⚠️ 503 von {model_name} (Versuch {attempt+1}/3)")
                 else:
                     last_error = f"HTTP {resp.status_code} ({model_name}): {resp.text[:100]}"
+                    # 22.10.2026 (Fehlversuch-Transparenz): stilles break -> Fehlursache
+                    # loggen (HTTP-Status + Body-Ausschnitt). Beleg fuer die Notwendig-
+                    # keit: HTTP 410 von moonshotai/kimi-k3 (22.10.2026, Bewerbung #42)
+                    # landete NUR im Task-Fehler, nicht im Runner-Log.
+                    log(f"   ⚠️ HTTP {resp.status_code} von {model_name} (Versuch {attempt+1}/3): {resp.text[:100]}")
                     break  # Bei anderen Fehlern: nächstes Modell
             except requests.Timeout:
                 last_error = f"Timeout nach {model_timeout}s ({model_name})"
                 log(f"   ⚠️ Timeout bei {model_name} (Versuch {attempt+1}/3)")
             except Exception as e:
                 last_error = f"{type(e).__name__}: {e}"
+                # 22.10.2026 (Fehlversuch-Transparenz): stilles break -> Exception
+                # loggen (Typ + Meldung), sonst ist der Modellwechsel unauffindbar.
+                log(f"   ⚠️ {type(e).__name__} bei {model_name} (Versuch {attempt+1}/3): {e}")
                 break
         else:
             log(f"   ❌ Alle 3 Versuche für {model_name} fehlgeschlagen")
@@ -292,8 +322,10 @@ def log(msg: str) -> None:
             LOG_FILE.replace(_l1)
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             f.write(line + "\n")
-    except Exception:
-        pass
+    except Exception as e:
+        # L1 (21.10.2026): der Logger darf seinen eigenen Ausfall NICHT
+        # verschlucken — sonst ist der "ehrliche Status" nicht belastbar.
+        print(f"[Agent-Runner] LOG-Datei nicht schreibbar: {e!r}", flush=True)
 
 # ─── MCP-Connector-Aufrufe (stdio JSON-RPC, Muster: Handshake-Test) ─────
 
@@ -552,9 +584,15 @@ def _dokumente_block(cand_id: int) -> str:
 
 
 def _visum_auswertung_from_ergebnisse(cand_id: int) -> dict | None:
-    """Spec v6: Liest die Visum-Auswertung (WAS/WIE/WO) aus dem letzten
-    verify_documents-Bericht. None = nicht relevant / kein Bericht."""
-    for p in sorted(ERGEBNISSE.glob(f"verify_documents-kandidat-{cand_id}-*.md")):
+    """Spec v6: Liest die Visum-Auswertung (WAS/WIE/WO) aus dem **neuesten**
+    verify_documents-Bericht. None = nicht relevant / kein Bericht.
+
+    md-Disziplin (21.10.2026, Spec knowledge/system/md-schreib-konvention.md R5.1):
+    Auswahl = neuester Report (`sorted(...)[::-1]`). Vorher wurde der älteste
+    gelesen (Docstring sagte „letzten", Code las den ältesten) — der Kandidat
+    bekam dadurch die Visum-Schritte eines veralteten Standes.
+    """
+    for p in sorted(ERGEBNISSE.glob(f"verify_documents-kandidat-{cand_id}-*.md"))[::-1]:
         try:
             txt = p.read_text(encoding="utf-8")
         except Exception:
@@ -822,14 +860,17 @@ def create_invitation(payload: dict) -> dict:
     _hr_datum = payload.get("termin_datum")
     _hr_zeit = payload.get("termin_uhrzeit")
     _hr_dauer = payload.get("termin_dauer_min")
+    _hr_datum_ok = False
     if _hr_datum:
         try:
             from datetime import datetime as _dt
-            _d = _dt.strptime(str(_hr_datum), "%Y-%m-%d")
-            if _d.date() >= _dt.now().date():  # nicht in der Vergangenheit
-                datum = str(_hr_datum)
-            else:
-                log(f"   HR-Termin {_hr_datum} liegt in der Vergangenheit → Fallback {datum}")
+            _dt.strptime(str(_hr_datum), "%Y-%m-%d")
+            datum = str(_hr_datum)
+            _hr_datum_ok = True
+            # 22.10.2026 (Terminprüfung): das alte „Datum vergangen → Fallback
+            # morgen 10:00 + senden" ist ENTFERNT — ein vergangener HR-Termin
+            # wird jetzt unten abgebrochen, statt mit Ersatztermin verschickt
+            # zu werden (Grund: Vorfall Bewerbung #42, Einladung 11:16 für 11:00).
         except ValueError:
             log(f"   HR-Termin-Datum ungültig ({_hr_datum}) → Fallback {datum}")
     if _hr_zeit:
@@ -846,6 +887,21 @@ def create_invitation(payload: dict) -> dict:
             log(f"   HR-Dauer ungültig ({_hr_dauer}) → Fallback {dauer}")
     if _hr_datum or _hr_zeit:
         log(f"   Einladungstermin (HR-gewählt): {datum} {uhrzeit} ({dauer} Min.)")
+    # Terminprüfung Datum+Uhrzeit (22.10.2026, Vorfall Bewerbung #42): Ein Task
+    # kann in der Queue lange warten (FIFO, gemessen 63 min) – die Einladung ging
+    # dann 11:16 für den Termin 11:00 raus. Ein HR-Termin, der bei Verarbeitung in
+    # der Vergangenheit liegt, wird NICHT versendet (weder Mail noch ICS): Grund
+    # im Log, Task faellt mit RuntimeError (error_text im Agent-Task sichtbar).
+    # Vorher verglich nur das DATUM, nicht die Uhrzeit – vergangene Uhrzeiten am
+    # selben Tag liefen ohne Warnung durch.
+    if _hr_datum_ok:
+        _termin_dt = datetime.strptime(f"{datum} {uhrzeit}", "%Y-%m-%d %H:%M")
+        if _termin_dt < datetime.now():
+            log(f"   ⛔ HR-Termin {datum} {uhrzeit} liegt in der Vergangenheit "
+                "→ Einladung NICHT versendet (neuen Termin setzen)")
+            raise RuntimeError(
+                f"HR-Termin {datum} {uhrzeit} liegt in der Vergangenheit – "
+                "Einladung nicht versendet (neuen Termin setzen)")
     # 2) Screening-Fragen (mit echtem Match-Score aus der DB, Spec: Lücke aus Phase-A-Analyse)
     score = _last_match_score(app_id)
     fragen = mcp_call(MEETING_SERVER, "generate_screening_questions",
@@ -859,7 +915,7 @@ def create_invitation(payload: dict) -> dict:
                         {"topic": tr("Vorstellungsgespräch: {0}", lang).format(titel), "date": datum,
                          "time": uhrzeit, "duration_minutes": dauer, "meet_url": vdo_ninja_gast_url,
                          "description": tr("Online-Interview im Rahmen des Bewerbungsverfahrens.", lang)})
-    ics_path = ERGEBNISSE / f"einladung-ics-bewerbung-{app_id}.ics"
+    ics_path = _ergebnis_pfad(f"einladung-ics-bewerbung-{app_id}.ics")
     if not DRY_RUN and not ics_text.startswith("FEHLER"):
         ics_path.write_text(ics_text, encoding="utf-8")
     # 3b) ICS für HR – enthält den DIRECTOR-Link (Rollentrennung, seit 28.09.2026);
@@ -868,7 +924,7 @@ def create_invitation(payload: dict) -> dict:
                         {"topic": tr("Vorstellungsgespräch: {0} (HR)", lang).format(titel), "date": datum,
                          "time": uhrzeit, "duration_minutes": dauer, "meet_url": vdo_ninja_url,
                          "description": tr("Online-Interview (HR/Director-Ansicht).", lang)})
-    ics_path_hr = ERGEBNISSE / f"einladung-ics-hr-bewerbung-{app_id}.ics"
+    ics_path_hr = _ergebnis_pfad(f"einladung-ics-hr-bewerbung-{app_id}.ics")
     if not DRY_RUN and not ics_hr_text.startswith("FEHLER"):
         ics_path_hr.write_text(ics_hr_text, encoding="utf-8")
     # 4) Einladungs-Mail
@@ -894,6 +950,9 @@ def _last_match_score(app_id: int) -> int:
         return 70
     cand, job = row
     score, _ = _score_from_ergebnisse(cand, job)
+    # V-13 (21.10.2026): unbekannter Score (kein Bericht zur Stelle) ⇒ der
+    # bestehende neutrale Fallback 70 (Design-Entscheidung 15.09.2026) bleibt;
+    # erfunden wird **kein** Score aus einer fremden Stelle.
     return score if score and score > 0 else 70
 
 
@@ -1329,7 +1388,7 @@ def run_llm_task(task_type: str, payload: dict) -> dict:
                "der Rest deiner Antwort eine andere Sprache ist. Ebenso bleiben "
                "die festen Label-Praefixe 'Compliance-Status:' und 'Match-Score:' "
                "IMMER unveraendert (deutsch), da sie maschinell ausgewertet werden.")
-    result_path = str(ERGEBNISSE / f"{task_type}-kandidat-{cid}-{datum}.md")
+    result_path = str(_ergebnis_pfad(f"{task_type}-kandidat-{cid}-{datum}.md"))
     # ─── Hybrid: ansvar-Law als Rechtsquelle für check_visa/check_compliance ───
     if task_type in ("check_visa", "check_compliance"):
         try:
@@ -1473,6 +1532,14 @@ def gatekeeper_decision(app_id: int) -> tuple[bool, int, str]:
         return False, 0, "unbekannt"
     cand, job = row
     score, kategorie = _score_from_ergebnisse(cand, job)
+    if score is None:
+        # V-13 (21.10.2026): unbekannter Score ⇒ KEINE automatische
+        # Einladungs-/Ablehnungsentscheidung (ein Schwellen-Vergleich mit 0
+        # wäre eine erfundene Entscheidung). Der Pförtner bleibt zu, die
+        # Ergebnisberichte bleiben für HR sichtbar.
+        log(f"   Pförtner: kein Score zur Stelle (Bewerbung #{app_id}) — keine "
+            f"automatische Entscheidung, HR prüft manuell")
+        return False, 0, "unbekannt — kein Bericht zur Stelle"
     compliant = _compliance_from_ergebnisse(cand)
     # Connector-Ersatz (R6-1, 30.09.2026): `logic.get_score_category_lokal`
     # liefert dieselben Werte wie hr-benchmark-server.py::get_score_category
@@ -1503,7 +1570,15 @@ def _gatekeeper_signature(c, app_id: int, gen: int) -> str:
     task_id+status je task_type (neuester Stand = hoechste id): Aenderung einer
     Berichts-Generierung (neue task-ids oder status) erzeugt eine neue
     Signatur → der Pförtner bewertet erneut; unveraenderte Signatur → Merkbuch
-    greift, KEINE Neubewertung, KEINE Log-Zeile, KEIN Subprozess."""
+    greift, KEINE Neubewertung, KEINE Log-Zeile, KEIN Subprozess.
+
+    **Score-Basis (21.10.2026):** Die Signatur enthält zusätzlich den
+    **verwendeten Score + dessen Quelldatei**. Vorher erfasste die Signatur nur
+    `task:id:status` ⇒ ein Wechsel der Score-Basis (z. B. Report-Auswahl von
+    „ältester" auf „neuester/stellengenau") löste **keine** Neubewertung aus
+    ⇒ die alte Entscheidung blieb stehen. Design-Entscheidung: die Signatur
+    bildet die **tatsächlich gelesene Grundlage** ab.
+    """
     c.execute("""SELECT task_type, id, status FROM agent_tasks
                  WHERE json_extract(payload, '$.application_id') = ?
                    AND COALESCE(json_extract(payload, '$.gen'), 0) = ?
@@ -1513,7 +1588,18 @@ def _gatekeeper_signature(c, app_id: int, gen: int) -> str:
     latest: dict = {}
     for t, tid, st in c.fetchall():
         latest[t] = (tid, st)  # ORDER BY id → spaeter = neuester Stand
-    return "|".join(f"{t}:{latest[t][0]}:{latest[t][1]}" for t in sorted(latest))
+    basis = "|".join(f"{t}:{latest[t][0]}:{latest[t][1]}" for t in sorted(latest))
+    # Score-Basis: die tatsächlich gelesene Grundlage (Score + Kandidaten/Stelle)
+    score_q = ""
+    try:
+        c.execute("SELECT candidate_id, job_id FROM applications WHERE id = ?", (app_id,))
+        _row = c.fetchone()
+        if _row:
+            _score, _kat = _score_from_ergebnisse(_row[0], _row[1])
+            score_q = f"|score:{_score if _score is not None else 'unbekannt'}"
+    except Exception as e:
+        score_q = f"|score:fehler({e!r})"
+    return basis + score_q
 
 
 def _maybe_gatekeeper(conn, app_id, payload: dict) -> None:
@@ -1619,36 +1705,123 @@ def _maybe_gatekeeper(conn, app_id, payload: dict) -> None:
     conn.commit()
 
 
-def _score_from_ergebnisse(cand: int, job: int) -> tuple[int, str]:
-    for p in sorted(ERGEBNISSE.glob(f"match_candidate-kandidat-{cand}-*.md")):
+def _report_stelle(txt: str) -> int | None:
+    """Stellen-ID aus der Report-Kopfzeile („# Match Candidate – Kandidat #13 / Stelle #12").
+
+    Der Dateiname enthält **keine** Job-ID (Muster `match_candidate-kandidat-{id}-{datum}.md`),
+    die Stelle steht nur im Inhalt (Sprachmarker wie `webui/pages/employer.py::_BERICHT_STELLE`).
+    Altbestand vor der P9.5b-Korrektur (09.10.2026) nutzt „Poste #N" (FR) — wird
+    deshalb mitgelesen. `None` = keine Stelle im Kopf.
+    """
+    m = re.search(r"Stelle #(\d+)", txt) or re.search(r"Poste #(\d+)", txt)
+    return int(m.group(1)) if m else None
+
+
+def _parse_score(txt: str, marker: str = "Match-Score") -> int | None:
+    """Liest „<marker>: 84/100“ bzw. „61.5/100“ (Dezimal erlaubt).
+
+    Vorher: `tok.isdigit()` ⇒ Dezimal-Scores wurden **übersprungen** (der Report
+    galt als „kein Bericht" ⇒ der Pförtner nutzte einen älteren Score).
+    Dezimalwerte werden **gekürzt** (61.5 → 61) — Design-Entscheidung: die
+    Kategorie-Schwellen (60/80) sind dadurch nicht betroffen.
+    """
+    for line in txt.splitlines():
+        if marker in line and "/100" in line:
+            for tok in line.replace("**", " ").split():
+                tok = tok.strip("/")
+                if "/100" in tok:
+                    tok = tok.split("/")[0]
+                try:
+                    wert = float(tok)
+                except ValueError:
+                    continue
+                if 0 <= wert <= 100:
+                    return int(wert)
+    return None
+
+
+def _score_from_ergebnisse(cand: int, job: int) -> tuple[int | None, str]:
+    """Match-Score + Kategorie **für die Stelle `job`** — oder `(None, Grund)`.
+
+    **Regel (V-13, 21.10.2026, Design-Entscheidung):**
+    (a) NIEMALS den Score einer **anderen** Stelle verwenden (das war der
+        Ursprungsfehler: Kandidat 13 / Bewerbung #39 / Stelle #12 ⇒ 84/100 von
+        Stelle #5).
+    (b) Gibt es einen **job-genauen** Report ⇒ dieser (neuester).
+    (c) Gibt es keinen job-genauen Report, aber der Kandidat hat **genau eine
+        Stelle** ⇒ der Report dieser Stelle.
+    (d) Sonst ⇒ **kein Score** (`None`), Status „unbekannt — kein Bericht zur
+        Stelle" — **nicht** `0` (0 wäre ein erfundener Score).
+
+    **V-13(c) präzisiert (22.10.2026):** „genau **eine Stelle**" heißt **ein
+    distinct Stellen-ID**, nicht **ein Report** — zwei Reports derselben Stelle
+    (z. B. Kandidat 2: `…-2026-09-15.md` und `…-2026-09-22.md`, beide „Stelle #1")
+    sind **eine** Stelle ⇒ der **neueste** Report dieser Stelle zählt (90/100).
+    Vorher wurde die Report-Anzahl geprüft ⇒ Rückgabe „unbekannt" obwohl ein
+    belastbarer Score der einzigen Stelle vorlag.
+
+    `job=None` (z. B. `export_report` ohne `job_id`) ⇒ Regel (c)/(d).
+    md-Disziplin (21.10.2026, Spec knowledge/system/md-schreib-konvention.md R5.1):
+    Auswahl = neuester Report; Stellenbindung über die Kopfzeile („Stelle #N",
+    `_report_stelle`).
+    """
+    reports = sorted(ERGEBNISSE.glob(f"match_candidate-kandidat-{cand}-*.md"))[::-1]
+    job_spezifisch: list[tuple[int, str]] = []
+    ohne_stelle: list[tuple[int, str]] = []
+    andere_stelle: list[tuple[int, str, int]] = []
+    for p in reports:
         try:
             txt = p.read_text(encoding="utf-8")
         except Exception:
             continue
-        score = None
+        score = _parse_score(txt, "Match-Score")
+        if score is None:
+            continue
+        stelle = _report_stelle(txt)
+        eintrag = (score, txt)
+        if stelle is None:
+            ohne_stelle.append(eintrag)
+        elif job and stelle == int(job):
+            job_spezifisch.append(eintrag)
+        else:
+            andere_stelle.append((score, txt, stelle))
+    if job_spezifisch:
+        kandidaten = job_spezifisch
+    elif not job:
+        # (c) Kandidat mit **genau einer Stelle** ⇒ der neueste Report dieser
+        # Stelle. Gezählt werden die **distinct Stellen-IDs**, NICHT die Reports
+        # (V-13(c), 22.10.2026 — Beleg: Kandidat 2, zwei Reports / eine Stelle).
+        stellen_ids = {s for (_score, _txt, s) in andere_stelle}
+        if len(stellen_ids) == 1 and not ohne_stelle:
+            # `andere_stelle` ist nach „neuester Report zuerst" sortiert ⇒ [0] ist
+            # der neueste Report der einzigen Stelle.
+            kandidaten = [(andere_stelle[0][0], andere_stelle[0][1])]
+        elif not andere_stelle:
+            kandidaten = ohne_stelle
+        else:
+            kandidaten = []
+    else:
+        kandidaten = ohne_stelle
+    for score, txt in kandidaten:
+        kategorie = "passend"
         for line in txt.splitlines():
-            if "Match-Score" in line and "/100" in line:
-                for tok in line.replace("**", " ").split():
-                    tok = tok.strip("/")
-                    # Live-Fix 12.09.2026: Token kann '8/100' sein (nicht nur '8')
-                    if "/100" in tok:
-                        tok = tok.split("/")[0]
-                    if tok.isdigit() and 0 <= int(tok) <= 100:
-                        score = int(tok); break
-            if score:
+            if "Kategorie" in line:
+                # V-13 (21.10.2026): die Auszeichnung ("**Kategorie:** passend")
+                # wird mitentfernt — vorher blieb "** passend" im Export-Report.
+                kategorie = line.split(":", 1)[-1].replace("**", " ").strip()[:40]
                 break
-        if score is not None:
-            kategorie = "passend"
-            for line in txt.splitlines():
-                if "Kategorie" in line:
-                    kategorie = line.split(":", 1)[-1].strip()[:40]; break
-            return score, kategorie
-    # Fallback: kein Bericht -> Pförtner bleibt zu (sicherer Default)
-    return 0, "kein Bericht"
+        return score, kategorie
+    # (d) kein Score — ehrlich „unbekannt" statt 0.
+    return None, "unbekannt — kein Bericht zur Stelle"
 
 
 def _compliance_from_ergebnisse(cand: int) -> bool:
-    for p in sorted(ERGEBNISSE.glob(f"check_compliance-kandidat-{cand}-*.md")):
+    """Compliance-Status aus dem **neuesten** check_compliance-Report.
+
+    md-Disziplin (21.10.2026, Spec knowledge/system/md-schreib-konvention.md R5.1):
+    Auswahl = neuester Report (vorher: ältester).
+    """
+    for p in sorted(ERGEBNISSE.glob(f"check_compliance-kandidat-{cand}-*.md"))[::-1]:
         try:
             txt = p.read_text(encoding="utf-8").lower()
         except Exception:
@@ -1671,22 +1844,19 @@ def export_report(payload: dict) -> dict:
     # Match-Bericht lesen
     score, kategorie = _score_from_ergebnisse(cid, jid)
     compliant = _compliance_from_ergebnisse(cid)
-    # Kultur-Fit lesen
+    # Kultur-Fit lesen — **explizit der neueste** Report (R5.1: Auswahl benannt,
+    # nicht implizit „last-wins"). Dezimal-Scores werden vom gemeinsamen
+    # `_parse_score` gelesen (vorher: `isdigit()` ⇒ 61.5 wurde übersprungen).
     kultur_score = None
-    for p in sorted(ERGEBNISSE.glob(f"assess_culture_fit-kandidat-{cid}-*.md")):
+    for p in sorted(ERGEBNISSE.glob(f"assess_culture_fit-kandidat-{cid}-*.md"))[::-1]:
         try:
             txt = p.read_text(encoding="utf-8")
-            for line in txt.splitlines():
-                if "Culture-Fit-Score" in line and "/100" in line:
-                    for tok in line.replace("**", " ").split():
-                        tok = tok.strip("/")
-                        if "/100" in tok:
-                            tok = tok.split("/")[0]
-                        if tok.isdigit() and 0 <= int(tok) <= 100:
-                            kultur_score = int(tok)
-                            break
         except Exception:
             continue
+        _wert = _parse_score(txt, "Culture-Fit-Score")
+        if _wert is not None:
+            kultur_score = _wert
+            break
     # Bericht erstellen (P4c 07.10.2026: nutzersichtbare Strings via tr(), Spec §7)
     siehe = tr("siehe Match-Bericht", lang)
     zeilen = "\n".join(
@@ -1696,7 +1866,11 @@ def export_report(payload: dict) -> dict:
     compliance_token = "COMPLIANT" if compliant else "NICHT COMPLIANT"
     bericht = (tr("# Match-Export – Kandidat #{0} / Stelle #{1}", lang).format(cid, jid) + "\n\n"
                + tr("**Datum:** {0}", lang).format(datum) + "\n"
-               + tr("**Score:** {0}/100 ({1})", lang).format(score, tr(kategorie, lang)) + "\n"
+               + (tr("**Score:** {0}/100 ({1})", lang).format(score, tr(kategorie, lang))
+                  if score is not None else
+                  # V-13 (21.10.2026): kein Score zur Stelle ⇒ "unbekannt" statt
+                  # "0/100" (0 waere ein erfundener Score).
+                  tr("**Score:** unbekannt ({0})", lang).format(tr(kategorie, lang))) + "\n"
                + tr("**Compliance:** {0}", lang).format(compliance_token) + "\n"
                + tr("**Kultur-Fit:** {cultural_fit_score}/100", lang,
                     cultural_fit_score=kultur_score) + "\n\n"
@@ -1706,7 +1880,7 @@ def export_report(payload: dict) -> dict:
                + "|---|---|\n"
                + zeilen + "\n\n"
                + tr("*Exportiert am {0} von Skill export-report.*", lang).format(datum) + "\n")
-    pfad = ERGEBNISSE / f"export-kandidat-{cid}-job-{jid}-{datum}.md"
+    pfad = _ergebnis_pfad(f"export-kandidat-{cid}-job-{jid}-{datum}.md")
     pfad.write_text(bericht, encoding="utf-8")
     return {"result_path": str(pfad), "score": score, "kategorie": kategorie}
 
@@ -1714,7 +1888,16 @@ def export_report(payload: dict) -> dict:
 # ─── Skill 18: handle-errors (deterministisch) ────────────────────────
 
 def handle_errors(payload: dict) -> dict:
-    """Protokolliert einen Fehler in logs/agent-errors.log und knowledge/error-statistics.md."""
+    """Protokolliert einen Fehler in logs/agent-errors.log und in der Tagesdatei
+    ergebnisse/error-statistik-{JJJJ-MM-TT}.md.
+
+    md-Disziplin (21.10.2026, Spec knowledge/system/md-schreib-konvention.md R-S4
+    + §5 Ziffer 2): Der Laufzeitcode schreibt **nicht** mehr nach
+    `knowledge/error-statistics.md` (normativer Bereich, Read-Modify-Write ohne
+    Lock, abweichendes Spaltenschema). Die normative Datei bleibt aggregiert und
+    wird redaktionell/MCP gepflegt (`skills/handle-errors/SKILL.md` §6);
+    die Laufzeitzeilen landen im historischen Bereich mit eigenem Schema.
+    """
     fehler_typ = payload.get("typ", "TECHNISCH")
     schwere = payload.get("schwere", "MITTEL")
     skill = payload.get("skill", "unbekannt")
@@ -1725,26 +1908,38 @@ def handle_errors(payload: dict) -> dict:
     log_eintrag = f"[{timestamp}] [{schwere}] [{fehler_typ}] {skill}: {meldung}"
     if kontext:
         log_eintrag += f" | Kontext: {kontext}"
+    log_ok = True
     try:
         LOG_FILE.parent.mkdir(exist_ok=True)
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             f.write(log_eintrag + "\n")
-    except Exception:
-        pass
-    # In error-statistics.md aktualisieren
-    stats_pfad = PROJECT_ROOT / "knowledge" / "error-statistics.md"
+    except Exception as e:
+        log_ok = False
+        print(f"[Agent-Runner] Fehler-Log nicht schreibbar: {e!r}")
+    # In die Tagesdatei unter ergebnisse/ schreiben (eigenes 5-Spalten-Schema).
+    # KEIN Erfolgsversprechen: `logged` ist True nur, wenn die Zeile tatsächlich
+    # geschrieben wurde (21.10.2026: der Handler meldete `{"logged": True}`,
+    # obwohl beide Schreibvorgänge per `except: pass` verschluckt wurden).
+    stats_pfad = _ergebnis_pfad(f"error-statistik-{datetime.now().strftime('%Y-%m-%d')}.md")
+    result_path = str(stats_pfad)
+    stats_ok = True
+    fehler_text = ""
     try:
         if stats_pfad.exists():
             stats = stats_pfad.read_text(encoding="utf-8")
         else:
-            stats = "# Fehlerstatistik\n\n| Datum | Typ | Schwere | Skill | Meldung |\n"
+            stats = "# Fehlerstatistik (Laufzeit)\n\n| Datum | Typ | Schwere | Skill | Meldung |\n"
             stats += "|---|---|---|---|---|\n"
         stats += f"| {timestamp} | {fehler_typ} | {schwere} | {skill} | {meldung[:80]} |\n"
-        stats_pfad.parent.mkdir(exist_ok=True)
         stats_pfad.write_text(stats, encoding="utf-8")
-    except Exception:
-        pass
-    return {"logged": True, "typ": fehler_typ, "schwere": schwere, "skill": skill}
+    except Exception as e:
+        stats_ok = False
+        fehler_text = f"error-statistik: {e!r}"
+        log(f"   ⚠️ Fehlerstatistik nicht geschrieben: {e!r}")
+    return {"logged": bool(log_ok and stats_ok), "log_ok": log_ok, "stats_ok": stats_ok,
+            "typ": fehler_typ, "schwere": schwere, "skill": skill,
+            "result_path": result_path if stats_ok else None,
+            **({"error": fehler_text} if fehler_text else {})}
 
 
 # ─── Skill 23: contract-management – Contract Preflight (Phase D P8) ────
@@ -1944,7 +2139,7 @@ def contract_preflight(payload: dict) -> dict:
            "Signatur-Optionen A–F: knowledge/legal/contract-management.md §4.*", lang),
         "",
     ]
-    rep = ERGEBNISSE / f"contract-preflight-bewerbung-{app_id}.md"
+    rep = _ergebnis_pfad(f"contract-preflight-bewerbung-{app_id}.md")
     rep.write_text("\n".join(lines), encoding="utf-8")
     return {"result_path": str(rep), "gehalt_status": gehalt_status,
             "mindestlohn": mindestlohn, "quellen": len(urls)}
@@ -1960,29 +2155,121 @@ def fetch_pending(conn) -> list:
 
 
 def claim_task(conn, task_id: int) -> bool:
+    """Reserviert einen Task. Schema-Lücke (fehlende `started_at`-Spalte) darf den
+    Runner **nicht** beenden, aber **nicht** in einen stillen Endlos-Retry führen
+    (L1, 21.10.2026): der Task wird nach `MAX_ATTEMPTS` Versuchen auf `failed`
+    gesetzt (mit `error_text`), damit die Eskalation sichtbar wird.
+    Codemark: `def claim_task` · Konstante `MAX_ATTEMPTS`."""
     c = conn.cursor()
-    c.execute("""UPDATE agent_tasks SET status = 'running', started_at = CURRENT_TIMESTAMP,
-                 attempts = attempts + 1 WHERE id = ? AND status = 'pending'""", (task_id,))
-    conn.commit()
-    return c.rowcount == 1
+    try:
+        c.execute("""UPDATE agent_tasks SET status = 'running', started_at = CURRENT_TIMESTAMP,
+                     attempts = attempts + 1 WHERE id = ? AND status = 'pending'""", (task_id,))
+        conn.commit()
+        return c.rowcount == 1
+    except sqlite3.Error as e:
+        conn.rollback()
+        log(f"   ⚠️ claim_task fehlgeschlagen (Schema ohne started_at?): {e}")
+        # Eskalation: Versuche zählen und nach MAX_ATTEMPTS als 'failed' markieren,
+        # damit der 60-s-Loop nicht endlos auf denselben Task wartet. Die
+        # Eskalation ist **robust gegen fehlende Spalten** (Schemalücken können
+        # auch `attempts`/`error_text` betreffen) ⇒ absteigende Versuche.
+        fehlertext = f"claim_task: {e}"[:200]
+        last_eskalationsfehler: sqlite3.Error | None = None
+        for _stmt, _params in (
+            ("""UPDATE agent_tasks SET attempts = attempts + 1, error_text = ?
+                 WHERE id = ? AND status = 'pending'""", (fehlertext, task_id)),
+            ("""UPDATE agent_tasks SET error_text = ? WHERE id = ? AND status = 'pending'""",
+             (fehlertext, task_id)),
+            ("""UPDATE agent_tasks SET status = 'failed', error_text = ?
+                 WHERE id = ? AND status = 'pending'""", (fehlertext, task_id)),
+            # Notnagel: nur der Status ist schreibbar (Extrem-Schema ohne
+            # attempts/error_text) — der Task darf nicht endlos pending bleiben.
+            ("""UPDATE agent_tasks SET status = 'failed' WHERE id = ? AND status = 'pending'""",
+             (task_id,)),
+        ):
+            try:
+                c.execute(_stmt, _params)
+                conn.commit()
+                break
+            except sqlite3.Error as e2:
+                conn.rollback()
+                last_eskalationsfehler = e2
+        else:
+            log(f"   ⚠️ Eskalation des Tasks #{task_id} fehlgeschlagen: {last_eskalationsfehler}")
+            return False
+        # Versuchsstand lesen (Spalte kann fehlen ⇒ 0).
+        try:
+            c.execute("SELECT attempts FROM agent_tasks WHERE id = ?", (task_id,))
+            _row = c.fetchone()
+            _attempts = (_row or [0])[0] or 0
+        except sqlite3.Error:
+            _attempts = 0
+        if _attempts >= MAX_ATTEMPTS:
+            try:
+                c.execute("""UPDATE agent_tasks SET status = 'failed', error_text = ?
+                             WHERE id = ? AND status = 'pending'""",
+                          (f"claim_task nach {_attempts} Versuchen gescheitert: {e}"[:200],
+                           task_id))
+                conn.commit()
+                log(f"   ⚠️ Task #{task_id} nach {_attempts} Versuchen als 'failed' "
+                    f"markiert (Schema-Lücke?) — bitte Migration prüfen "
+                    f"(webui/db.py::init_agent_tasks_table)")
+            except sqlite3.Error as e3:
+                conn.rollback()
+                log(f"   ⚠️ Eskalation des Tasks #{task_id} fehlgeschlagen: {e3}")
+        return False
 
 
 def finish_task(conn, task_id: int, ok: bool, result: dict | None = None,
-                result_path: str | None = None, error: str | None = None) -> None:
+                result_path: str | None = None, error: str | None = None) -> str:
+    """Schreibt das Task-Ende und meldet **ehrlich**, was persistiert wurde.
+
+    L1 (21.10.2026): Rückgabe ist der **Status-String**, den die Datenbank jetzt
+    trägt — `"done"` | `"failed"` | `"pending"` | `"nicht_persistiert"`.
+    (Vorher: `None` — der Aufrufer konnte einen stillen Fehlschlag nicht von
+    einem Erfolg unterscheiden.)
+    Schema-Lücken dürfen den Runner nicht abbrechen (dann `"nicht_persistiert"`).
+    Ein nicht serialisierbares `result` ist ein **deterministischer** Fehler ⇒
+    Status `"failed"` (kein Retry, kein „done")."""
     c = conn.cursor()
-    c.execute("SELECT attempts FROM agent_tasks WHERE id = ?", (task_id,))
-    attempts = (c.fetchone() or [1])[0]
-    if ok:
-        c.execute("""UPDATE agent_tasks SET status = 'done', finished_at = CURRENT_TIMESTAMP,
-                     result_path = ?, result_json = ?, error_text = NULL WHERE id = ?""",
-                  (result_path, json.dumps(result or {}, ensure_ascii=False) if result else None, task_id))
-    else:
-        if attempts >= MAX_ATTEMPTS:
+    try:
+        # Ergebnis-JSON absichern: ein nicht serialisierbares Ergebnis darf NICHT
+        # den „done"-Pfad nehmen (L1, 21.10.2026).
+        result_json = None
+        terminal = False
+        if result:
+            try:
+                result_json = json.dumps(result, ensure_ascii=False)
+            except (TypeError, ValueError) as e:
+                result_json = None
+                error = f"{error or 'Ergebnis nicht serialisierbar'}: {e!r}"[:400]
+                ok = False
+                terminal = True
+        # Versuchsstand lesen (Spalte kann in alten Schemata fehlen).
+        try:
+            c.execute("SELECT attempts FROM agent_tasks WHERE id = ?", (task_id,))
+            attempts = (c.fetchone() or [1])[0] or 1
+        except sqlite3.Error:
+            attempts = 1
+        if ok:
+            status = "done"
+            c.execute("""UPDATE agent_tasks SET status = 'done', finished_at = CURRENT_TIMESTAMP,
+                         result_path = ?, result_json = ?, error_text = NULL WHERE id = ?""",
+                      (result_path, result_json, task_id))
+        elif terminal or attempts >= MAX_ATTEMPTS:
+            status = "failed"
             c.execute("""UPDATE agent_tasks SET status = 'failed', finished_at = CURRENT_TIMESTAMP,
                          error_text = ? WHERE id = ?""", (error, task_id))
         else:
-            c.execute("UPDATE agent_tasks SET status = 'pending', error_text = ? WHERE id = ?", (error, task_id))
-    conn.commit()
+            status = "pending"
+            c.execute("UPDATE agent_tasks SET status = 'pending', error_text = ? WHERE id = ?",
+                      (error, task_id))
+        conn.commit()
+        return status
+    except sqlite3.Error as e:
+        conn.rollback()
+        log(f"   ⚠️ finish_task fehlgeschlagen (Schema-Lücke?): {e}")
+        return "nicht_persistiert"
 
 
 def _relocation_txt(bewerbung: dict) -> str:
@@ -2034,7 +2321,7 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
             result = create_invitation(payload)
             # Einladungs-Bericht ablegen (Nachweispflicht, Spec §9)
             _langval = _lang(payload)
-            rep = ERGEBNISSE / f"einladung-bewerbung-{app_id}.md"
+            rep = _ergebnis_pfad(f"einladung-bewerbung-{app_id}.md")
             rep.write_text(tr("# Einladung – Bewerbung #{0}", _langval).format(app_id) + "\n\n"
                            + tr("- Meeting (HR/Director): {0}", _langval).format(result['vdo_ninja_url']) + "\n"
                            + tr("- Meeting (Kandidat/Gast, Gate 8): {0}", _langval).format(
@@ -2098,7 +2385,7 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
             result = {"released": True,
                       "hinweis": tr("Checkliste via 7️⃣ Generate Onboarding freigeben (HR)", _langval),
                       **({"visum": _visum} if _visum else {})}
-            rep = ERGEBNISSE / f"onboarding-freigabe-bewerbung-{app_id}.md"
+            rep = _ergebnis_pfad(f"onboarding-freigabe-bewerbung-{app_id}.md")
             rep.write_text(tr("# Onboarding-Freigabe – Bewerbung #{0}", _langval).format(app_id) + "\n\n"
                            + tr("Kandidat #{0} eingestellt – HR erstellt die "
                                 "Checkliste mit 7️⃣ Generate Onboarding und gibt sie frei.",
@@ -2144,8 +2431,23 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
         ok, error = False, f"Timeout ({LLM_TIMEOUT if task_type in ('extract_profile','match_candidate','check_compliance','assess_culture_fit','verify_documents','check_visa','notify_user','check_gdpr','explain_match') else MCP_TIMEOUT} s)"
     except Exception as e:
         ok, error = False, f"{type(e).__name__}: {e}"
-    finish_task(conn, task_id, ok, result=result, result_path=result_path, error=error)
-    log(f"✓ Task #{task_id} ({task_type}) {'done' if ok else 'FEHLER: ' + (error or '?')[:120]}")
+    # L1 (21.10.2026): `finish_task` in eigenem try/except; der Erfolg wird NUR
+    # gemeldet, wenn wirklich persistiert wurde (kein „done" ohne DB-Schreibvorgang).
+    # `finish_task` liefert den **Status-String** der Datenbank
+    # ("done"/"failed"/"pending"/"nicht_persistiert").
+    try:
+        _status = finish_task(conn, task_id, ok, result=result,
+                              result_path=result_path, error=error)
+    except Exception as e:
+        _status = "nicht_persistiert"
+        log(f"   ⚠️ finish_task-Ausnahme bei Task #{task_id}: {e!r}")
+    if _status == "done":
+        log(f"✓ Task #{task_id} ({task_type}) done")
+    elif _status == "nicht_persistiert":
+        log(f"⚠️ Task #{task_id} ({task_type}) nicht persistiert — kein 'done' gemeldet")
+    else:
+        log(f"✗ Task #{task_id} ({task_type}) FEHLER: {(error or '?')[:120]} "
+            f"(Status: {_status})")
     # Pförtner-Regel (v3): NACH finish_task evaluieren, sobald alle 3 Kette-Berichte
     # done sind (idempotent via notify_hr-Marker); JA → notify_hr-Task, NEIN → still
     if ok and task_type in ("match_candidate", "check_compliance", "assess_culture_fit"):
@@ -2157,7 +2459,12 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
 # ─── Main-Loop ───────────────────────────────────────────────────────────
 
 def write_pid() -> None:
-    PID_FILE.write_text(str(os.getpid()))
+    """Schreibt die PID-Datei. Ein Fehler (Rechte/voll) darf den Runner-Start
+    nicht abbrechen (21.10.2026: `write_pid` lief ungeschützt im `main()`)."""
+    try:
+        PID_FILE.write_text(str(os.getpid()))
+    except OSError as e:
+        print(f"[Agent-Runner] PID-Datei nicht schreibbar: {e}")
 
 
 def cleanup_pid(*_) -> None:
@@ -2193,6 +2500,13 @@ def sweep_gatekeeper(conn) -> None:
 
 def main() -> None:
     write_pid()
+    # V-00h.7 (21.10.2026): Migration auch ohne laufende WebUI — sonst läuft der
+    # Runner auf einem Altbestand ohne `started_at` in die Endlos-Retry-Falle.
+    try:
+        from webui import db as _db
+        _db.init_agent_tasks_table()
+    except Exception as e:
+        log(f"Schema-Migration (agent_tasks) fehlgeschlagen: {e!r}")
     signal.signal(signal.SIGTERM, cleanup_pid)
     signal.signal(signal.SIGINT, cleanup_pid)
     log(f"Agent-Runner gestartet (PID {os.getpid()}, Modell {LLM_MODEL}, "
@@ -2203,7 +2517,12 @@ def main() -> None:
             sweep_gatekeeper(conn)
             tasks = fetch_pending(conn)
             for task_id, task_type, payload, attempts in tasks:
-                process_task(conn, task_id, task_type, payload, attempts)
+                # L1 (21.10.2026): try/except je Task — ein fehlgeschlagener Task
+                # darf nicht den Rest des Stapels verwerfen.
+                try:
+                    process_task(conn, task_id, task_type, payload, attempts)
+                except Exception as e:
+                    log(f"Task #{task_id} ({task_type}) Ausnahme: {e!r}")
             conn.close()
         except Exception as e:
             log(f"Loop-Fehler (Runner läuft weiter): {e}")

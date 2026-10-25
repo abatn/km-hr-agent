@@ -116,24 +116,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-20T11:29:28+00:00",
+    "at": "2026-10-23T10:43:45+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "3013579f88faa059d0d85155db93aa6ae0e8ef2d",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "bb1d996114b5abb22b3762cbfaf6903020919ea3",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "6b4eb96f590477d9fe7c73d709a0d3f8e12169bf",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "7e67e25f4b6170478824f5c63ba5de8e8727a114",
-      "webui/locales/de/LC_MESSAGES/messages.po": "2bdd4f058ab89d5ea211ee09795f7438f3043a88",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "50ebb0a1f73ad6140023d09e28191b3fa78cf665",
-      "webui/locales/en/LC_MESSAGES/messages.po": "d17ee724d5eae8b8d661299367613a0530eafa5b",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "33fac6f72cc96c23c74398065f7f97224fb09613",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "cfd59eaf72baa25b45f5872b0b3c73d203b449d2"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "ad73d11b1d66e12d2028a7785986a2fd981c5dcf",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "cf94d0dd5fcd308e50b7064e84840b9c80080273",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "456541459e43bc87bdd620635d3fbbda0e687c3d",
+      "webui/locales/de/LC_MESSAGES/messages.po": "549205d2cf92d058ee5da588f2135078428b36f6",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "486d9263276f141da679fc32611260691c8ff393",
+      "webui/locales/en/LC_MESSAGES/messages.po": "eaf11d20ee49388589f3231067e61fe1349a5457",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "76cc380e3fe40257061ad098beb6997178b5ba9f",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "401ce389798a85a093a4c976fa71941ce3178ab8"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
     "doc_blob": "55475c787d901d8540185cd395dd44c330066199",
-    "note": "Re-Ack 20.10.2026: Evidence von knowledge/system/i18n.md geprueft (state DOC_STALE, changed_code: `tests/test_i18n.py`). Visa/Onboarding-Vorarbeit des Nutzers (uncommittet, 20.10.2026): VISA_INFO_STATUS, onboarding_generator_section(candidates=,firma=), _page_onboarding DB-Quelle, 4 neue i18n-Keys; Aussage von knowledge/system/i18n.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
+    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/i18n.md"
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

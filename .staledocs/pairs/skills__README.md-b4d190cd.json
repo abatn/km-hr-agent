@@ -64,7 +64,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-20T11:29:30+00:00",
+    "at": "2026-10-21T22:41:32+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -78,21 +78,21 @@
       "skills/export-report/SKILL.md": "d4def615f1b1ff09f90114929204bdb6753695eb",
       "skills/extract-profile/SKILL.md": "50f95c7d4161ae020d90a5e18ea55257e7e3a5df",
       "skills/generate-onboarding/SKILL.md": "cd8d31adb6119c3a242eeba50cf39683e6f8c306",
-      "skills/handle-errors/SKILL.md": "25bd9aa94f9804a6833bd64fdacaf9d2b5522c1e",
+      "skills/handle-errors/SKILL.md": "54200514a84b70085a1063c1072c2c1c8279f19d",
       "skills/housing-search/SKILL.md": "492beb73cfc470c0ef89acfb653a5e4a053ee91a",
       "skills/job-application/SKILL.md": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
       "skills/language-course/SKILL.md": "872156c64e0bfdf6073afbf6a23fd3acf97bc416",
       "skills/match-candidate/SKILL.md": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
       "skills/mentoring/SKILL.md": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-      "skills/nicegui-migration/SKILL.md": "5d6bf104650544b2e6f5ad15e14e0d7a2a230e9d",
-      "skills/notify-user/SKILL.md": "ff04f1dee74617c5a3c9af2049369a6974252d88",
-      "skills/pre-screen/SKILL.md": "97fa40ff230048e7d68e00da9714dad93d4907c0",
+      "skills/nicegui-migration/SKILL.md": "969f836a67b9a4ae92604cf5e5f6c36398193c0d",
+      "skills/notify-user/SKILL.md": "4fb3b459fb8894ef5144b456ea01a86f500270ed",
+      "skills/pre-screen/SKILL.md": "9c058641c56917045c13dc1712d5f6d3bf7fe355",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
-      "skills/verify-documents/SKILL.md": "c5e0838102e9ae9709e5686317dcafbed5d3a703"
+      "skills/verify-documents/SKILL.md": "d540129a5c16be5461b860668bc11511fc8e43f4"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
-    "doc_blob": "ff9f6a98333bb8052b63a06d32fba4cce052914c",
-    "note": "Re-Ack 20.10.2026: Evidence von skills/README.md geprueft (state AMBER, changed_code: `skills/employer-portal/SKILL.md`, `skills/nicegui-migration/SKILL.md`). Sidebar-Iteration 20.10.2026 (Nutzer-GO): SIDEBAR_KEYS 5->7 Punkte (+firmenprofil/+portal = die zwei Schreibaufgaben des Arbeitgebers), Reihenfolge aus PAGE_TITLES, _NON_SIDEBAR_KEYS 10->8, Icon-Post_add; Aussage von skills/README.md gegen PAGE_TITLES/SIDEBAR_KEYS abgeglichen."
+    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "doc_blob": "8fefce42f6edb0bbb4d985fafbc3224f9ab8397b",
+    "note": "Geprueft 22.10.2026: skills/README.md wurde nach der letzten Bestaetigung bewegt (Testzahl auf 615 collected / 610 passed nachgezogen) \u2014 die gelisteten 23 Skills, Tools (email-sender, pdf-reader, extract-profile) und Connectoren bleiben unveraendert."
   },
   "doc": "skills/README.md",
   "schema": 1

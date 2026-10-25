@@ -63,7 +63,10 @@ def main() -> int:
             page.goto(f"{BASE}/candidate/sprachtest", wait_until="load")
             page.get_by_role("button", name=re.compile("Video-Link generieren")).click()
             page.get_by_text("Video-Link:").first.wait_for()
-            link = re.search(r"https://vdo\.ninja/\?push=vorstellung-\d+-\w+",
+            # URL-Muster: Stream-ID alphanumerisch seit 20.10.2026 (Spec
+            # knowledge/system/vdo-ninja-migration.md §2.6). Alt-Muster bis 19.10.2026:
+            # r"https://vdo\.ninja/\?push=vorstellung-\d+-\w+" (mit Bindestrichen).
+            link = re.search(r"https://vdo\.ninja/\?push=vorstellung\d+\w+",
                              page.locator("body").inner_text())
             link = link.group(0) if link else None
             print("1 Video-Link:", link)
