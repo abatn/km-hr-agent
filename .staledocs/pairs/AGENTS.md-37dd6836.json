@@ -116,7 +116,7 @@
       "webui/pages/",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-25T22:42:37+00:00",
+    "at": "2026-10-25T22:56:24+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -138,7 +138,7 @@
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
-      "scripts/social_agent.py": "cc69b1cd727d389721a12ef4f9b7b1a868edefc2",
+      "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
       "scripts/social_oauth.py": "0b692a653cbb43cd391bbb39c023496eab6639a0",
       "scripts/visual_audit.py": "5c1c47adfa1e22bc690abf0031529b8c6684fede",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
@@ -300,9 +300,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "333dc8534956ae84b88a9ea6ef8800adbf541cdc",
+    "commit": "e94e277b69d74ed320c8c3f63581f92b581c19f9",
     "doc_blob": "c1a92486c3610dd5842981db4ba6aa9cd7140290",
-    "note": "AGENTS.md: LinkedIn openid/profile-Autor-URN und OAuth-Pfad; 658 passed"
+    "note": "AGENTS.md: LinkedIn-Version 202610/Social-OAuth; 658 passed"
   },
   "doc": "AGENTS.md",
   "schema": 1

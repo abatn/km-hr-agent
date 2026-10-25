@@ -28,6 +28,7 @@
       "LINKEDIN_VERSION",
       "agent_tasks.payload",
       "assert_no_pii",
+      "candidate_documents",
       "candidate_id",
       "candidate_tips",
       "deploy/systemd/kmhr-social.timer",
@@ -37,29 +38,34 @@
       "hiring_stats",
       "instagram_business_account",
       "kmhr-social.timer",
+      "lebenslauf_text",
       "marketing/ENTSCHEIDUNG.md",
       "marketing/social-agent.md",
       "media_publish",
       "mode=live",
       "new_jobs",
       "pages_show_list,pages_manage_posts,pages_read_engagement",
+      "password_resets",
       "post_id",
       "reason=approval_required",
+      "result_json",
       "scripts/social_agent.py",
-      "status='aktiv'"
+      "status='aktiv'",
+      "w_member_social"
     ],
-    "at": "2026-10-25T22:20:33+00:00",
+    "at": "2026-10-25T22:56:26+00:00",
     "code_blobs": {
       "deploy/systemd/kmhr-social.service": "9d5a1ed292d4e26fc86b042c1439c3b818481572",
       "deploy/systemd/kmhr-social.timer": "a7ab8fe8115b45cd37f7efe674c0e18512cddd96",
-      "scripts/social_agent.py": "cc69b1cd727d389721a12ef4f9b7b1a868edefc2",
-      "scripts/social_oauth.py": "51f7f5b87f05159616a2404cba048500c9c8248e",
+      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
+      "scripts/social_oauth.py": "0b692a653cbb43cd391bbb39c023496eab6639a0",
       "tests/test_social_agent.py": "b19f7ae02090f5895298a73f9bb8b3af3b302546",
-      "tests/test_social_oauth.py": "a14d309a0904d2f5b7d74860b3533c67a7f53eba"
+      "tests/test_social_oauth.py": "42b62141b071d7c58d41741aab20a66d8a2503e1"
     },
-    "commit": "454c6ce82a23d045e3a8352283f04480ec42ce31",
-    "doc_blob": "fc015c30aa2646e7155ff05da34f9fdd067511a5",
-    "note": "social-automation.md: Facebook Page-Token-Scopes/App-Token-Fehler und Dedupe-Verhalten dokumentiert"
+    "commit": "e94e277b69d74ed320c8c3f63581f92b581c19f9",
+    "doc_blob": "fee19b4dbefcd9c1978e8426d93f4bbd1ec60fbd",
+    "note": "social-automation.md: LinkedIn-Version 202610, logs-Pair-Scope, Tests 658 passed"
   },
   "doc": "knowledge/system/social-automation.md",
   "schema": 1

@@ -41,11 +41,11 @@ pairs:
   - doc: marketing/ENTSCHEIDUNG.md
     code: ["scripts/social_agent.py", "scripts/social_oauth.py", "tests/test_social_agent.py", "tests/test_social_oauth.py", "deploy/systemd/kmhr-social.service", "deploy/systemd/kmhr-social.timer"]
   - doc: marketing/social-agent.md
-    code: ["scripts/social_agent.py", "scripts/social_oauth.py", "tests/test_social_agent.py", "tests/test_social_oauth.py"]
+    code: ["scripts/social_agent.py", "scripts/social_oauth.py", "scripts/agent-runner.py", "tests/test_social_agent.py", "tests/test_social_oauth.py"]
   - doc: skills/social-agent/SKILL.md
     code: ["scripts/social_agent.py", "scripts/social_oauth.py", "tests/test_social_agent.py", "tests/test_social_oauth.py"]
   - doc: knowledge/system/social-automation.md
-    code: ["scripts/social_agent.py", "scripts/social_oauth.py", "tests/test_social_agent.py", "tests/test_social_oauth.py", "deploy/systemd/kmhr-social.service", "deploy/systemd/kmhr-social.timer"]
+    code: ["scripts/social_agent.py", "scripts/social_oauth.py", "scripts/agent-runner.py", "tests/test_social_agent.py", "tests/test_social_oauth.py", "deploy/systemd/kmhr-social.service", "deploy/systemd/kmhr-social.timer"]
   - doc: instructions.md
     code: ["webui/**", "scripts/**"]
   - doc: knowledge.md

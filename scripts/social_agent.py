@@ -273,7 +273,7 @@ class DryRunAdapter:
             return {
                 "url": "https://api.linkedin.com/rest/posts",
                 "headers": {"Authorization": "Bearer <LINKEDIN_ACCESS_TOKEN>",
-                            "LinkedIn-Version": os.environ.get("LINKEDIN_VERSION", "202506"),
+                            "LinkedIn-Version": os.environ.get("LINKEDIN_VERSION", "202610"),
                             "X-Restli-Protocol-Version": "2.0.0"},
                 "json": linkedin_body(post),
             }
@@ -307,7 +307,7 @@ class LinkedInAdapter:
     def __init__(self) -> None:
         self.token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
         self.author = os.environ.get("LINKEDIN_AUTHOR_URN", "").strip()
-        self.version = os.environ.get("LINKEDIN_VERSION", "202506")
+        self.version = os.environ.get("LINKEDIN_VERSION", "202610")
 
     def publish(self, post: dict[str, Any]) -> dict[str, Any]:
         if not self.token or not self.author:
