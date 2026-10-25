@@ -18,7 +18,7 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
   - `.env`: `start-webui.sh` (`KMHR_STORAGE_SECRET`, `KMHR_ADMIN_SEED_PASSWORD`); Vorlage `.env.example`, danach `chmod 600`.
   - `.env-runner`: `scripts/agent-runner.py`, `scripts/language-test-server.py` (`NVIDIA_API_KEY`, `KMHR_LLM_MODEL`).
   - `.env-email`: `mcp-email-server.py` (`SMTP_*`).
-- Start: `./start-webui.sh` verweigert ohne die beiden `.env`-Secrets den Start (rc=1); andere Env-Datei per `KMHR_ENV_FILE`. Ohne Secrets nur lokal: `KMHR_DEV=1 ./start-webui.sh`. `python3 -m webui.main` braucht dieselben Secrets.
+- Start: `./start-webui.sh` verweigert ohne die beiden `.env`-Secrets den Start (rc=1); andere Env-Datei per `KMHR_ENV_FILE`. Ohne Secrets nur lokal: `KMHR_DEV=1 ./start-webui.sh`. `python3 -m webui.main` braucht dieselben Secrets. `KMHR_HOST` steuert die Bindung (Default `127.0.0.1`; `0.0.0.0` nur bewusst für LAN); `KMHR_COOKIE_SECURE=1` setzt das Session-Cookie hinter HTTPS auf `Secure`.
 - Live-Admin-Konto trägt noch das alte Seed-Passwort: App **nicht aus dem lokalen Netz erreichbar machen**, bis rotiert ist (Details `knowledge/system/configuration-secrets.md`).
 - DB: `data/feedback.db` (SQLite). Pfad-Override nur über `KMHR_DB_PATH` (Runner und WebUI teilen ihn). **Live-DB nie direkt beschreiben.**
 - i18n: `.venv-streamlit/bin/pybabel compile -d webui/locales`. Es gibt **kein** `babel.cfg`/`.pot` — Kataloge werden gepflegt, nicht extrahiert. Babel stempelt die aktuelle Zeit in die `.mo`-Header und macht alle 4 (de/en/fr/ar) dreckig; ohne Inhaltsänderung `git checkout -- webui/locales`. Key-Gleichheit: `python3 scripts/ci/checks.py i18n`.
@@ -70,5 +70,5 @@ Doku-Gates gezielt: `python3 scripts/ci/checks.py docs|legal|mcp|i18n|schema|mdg
 ## Git & Deploy
 
 - Commits: kurz, imperativ, ein Thema, Spec-Bezug (Beispiel in `CONTRIBUTING.md` §6).
-- Deploy: lokal ist der Branch `master`, Push-RefSpec `origin.push = master:main` — einfach `git push` → CI grün → `deploy-contabo.yml` (`workflow_run`) → SSH auf `176.57.189.201`, `git reset --hard <CI-SHA>`, `systemctl restart km-hr-agent`, Health-Check auf `127.0.0.1:8080`. Spec `knowledge/system/deploy-pipeline.md`. Rollback: `git reset --hard <SHA>` auf dem VPS.
+- Deploy: lokal ist der Branch `master`, Push-RefSpec `origin.push = master:main` — einfach `git push` → CI grün → `deploy-contabo.yml` (`workflow_run`) → SSH auf `176.57.189.201`, `git reset --hard <CI-SHA>`, `systemctl restart km-hr-agent`, Health-Check auf `127.0.0.1:8080`. Öffentlich: Cloudflare → Caddy → `127.0.0.1:8080` auf `https://jobs.hanibal-ai.com`; Caddy-Site `deploy/caddy/jobs.hanibal-ai.com.caddy`, Spec `knowledge/system/cloudflare-deployment.md`. Rollback: `git reset --hard <SHA>` auf dem VPS.
 - Nie synchronisieren oder committen: `.env*`, `data/`, `testdaten/`, `ergebnisse/`, `.venv-*/`. Keine personenbezogenen Daten (CVs, Bewerbungen, Reports) ins Repo.

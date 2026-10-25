@@ -19,12 +19,14 @@
       "CONTRIBUTING.md",
       "Datei:Zeile",
       "KMHR_ADMIN_SEED_PASSWORD",
+      "KMHR_COOKIE_SECURE=1",
       "KMHR_DB_PATH",
       "KMHR_E2E_BASE",
       "KMHR_E2E_LIVE_DB=tests/fixtures/seed.db",
       "KMHR_E2E_SEED=1",
       "KMHR_E2E_SKIP=e2e_m07_row_click",
       "KMHR_ENV_FILE",
+      "KMHR_HOST",
       "KMHR_LLM_MODEL",
       "KMHR_LOG_FILE",
       "KMHR_PORT",
@@ -45,6 +47,7 @@
       "data/agent-runner.pid",
       "data/feedback.db",
       "deploy-contabo.yml",
+      "deploy/caddy/jobs.hanibal-ai.com.caddy",
       "docs.yml",
       "docs/",
       "entscheidungen.md",
@@ -57,8 +60,8 @@
       "knowledge/**",
       "knowledge/system/access-control.md",
       "knowledge/system/agent-automation.md",
+      "knowledge/system/cloudflare-deployment.md",
       "knowledge/system/configuration-secrets.md",
-      "knowledge/system/deploy-pipeline.md",
       "knowledge/system/doku-authority.md",
       "knowledge/system/e2e-ci-seed.md",
       "knowledge/system/i18n-runner-chain.md",
@@ -102,7 +105,7 @@
       "webui/pages/",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-25T16:04:06+00:00",
+    "at": "2026-10-25T16:50:52+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -268,7 +271,7 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "601343954bb9ca6ed7e96450ba283255f7f0bce5",
       "webui/locales/fr/LC_MESSAGES/messages.po": "b8231a71ad851e4a68d62ce6f6750e18e015f14e",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
-      "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
+      "webui/main.py": "0f2d280388a7b6cbfb652176bb7575789eeadd5e",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "e30dc44f8abf9e8c39e206d1910dbdb1fa019ef4",
       "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4",
@@ -282,9 +285,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
-    "doc_blob": "5d04b04000270ff4fa58cce58dfaefd3a8870377",
-    "note": "AGENTS.md: Landingpage-Animation auf 5 Kapitel + ui/ANIMATION_ENTSCHEIDUNG.md verlinkt; E2E rc=0, pytest 635 passed"
+    "commit": "e5d2156cc4e1752bd95babcbdf54b72d6c795244",
+    "doc_blob": "2a3a4d55b5151f97c1022513d32061d3aca1666e",
+    "note": "webui/main.py: KMHR_HOST/Cookie-Secure + Cloudflare-Deploypfad dokumentiert; E2E- und Deploy-Aussagen weiter korrekt"
   },
   "doc": "AGENTS.md",
   "schema": 1

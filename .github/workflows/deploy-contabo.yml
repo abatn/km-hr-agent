@@ -60,6 +60,22 @@ jobs:
           else
             echo "requirements.txt unveraendert -> pip uebersprungen"
           fi
+
+          # Cloudflare-Origin: Systemd-Unit (Loopback-Bindung) + Caddy-Site.
+          if [ -f deploy/systemd/km-hr-agent.service ]; then
+            install -m 644 deploy/systemd/km-hr-agent.service /etc/systemd/system/km-hr-agent.service
+            systemctl daemon-reload
+          fi
+          if [ -f deploy/caddy/jobs.hanibal-ai.com.caddy ] && command -v caddy >/dev/null 2>&1; then
+            install -d -m 755 /etc/caddy/conf.d
+            install -m 644 deploy/caddy/jobs.hanibal-ai.com.caddy \
+              /etc/caddy/conf.d/jobs.hanibal-ai.com.caddy
+            grep -Fq 'import /etc/caddy/conf.d/*.caddy' /etc/caddy/Caddyfile \
+              || echo 'import /etc/caddy/conf.d/*.caddy' >> /etc/caddy/Caddyfile
+            caddy validate --config /etc/caddy/Caddyfile
+            systemctl reload caddy
+          fi
+
           systemctl restart km-hr-agent
           for i in $(seq 1 12); do
             if curl -fsS http://127.0.0.1:8080/ >/dev/null 2>&1; then
@@ -85,3 +101,17 @@ jobs:
             echo "SHA-MISMATCH"; exit 1
           fi
           echo "SHA-Abgleich OK"
+
+      - name: Externer Cloudflare-Health-Check
+        # Erst nach Caddy-Zertifikat/Proxy prüfen; 60 s Toleranz für ACME.
+        run: |
+          for i in $(seq 1 12); do
+            if curl -fsSL --max-time 10 https://jobs.hanibal-ai.com/ >/dev/null 2>&1; then
+              echo "externer Health-Check ok (try $i)"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "EXTERNAL HEALTH FAIL"
+          curl -sS -I --max-time 10 https://jobs.hanibal-ai.com/ || true
+          exit 1

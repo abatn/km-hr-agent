@@ -53,7 +53,7 @@
       "skills/README.md",
       "testdaten/"
     ],
-    "at": "2026-10-25T15:42:25+00:00",
+    "at": "2026-10-25T16:51:39+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
@@ -84,7 +84,7 @@
       "webui/locales/fr/LC_MESSAGES/messages.mo": "601343954bb9ca6ed7e96450ba283255f7f0bce5",
       "webui/locales/fr/LC_MESSAGES/messages.po": "b8231a71ad851e4a68d62ce6f6750e18e015f14e",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
-      "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
+      "webui/main.py": "0f2d280388a7b6cbfb652176bb7575789eeadd5e",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "e30dc44f8abf9e8c39e206d1910dbdb1fa019ef4",
       "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4",
@@ -98,9 +98,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
     },
-    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
+    "commit": "e5d2156cc4e1752bd95babcbdf54b72d6c795244",
     "doc_blob": "9a5b94620ceec0f2f6125c68df409b5fa64d4f16",
-    "note": "webui/pages/landing.py nutzt pdf-reader weiterhin; 5-Kapitel-Umbau ber\u00fchrt keine Connector-Aussage"
+    "note": "webui/main.py: KMHR_HOST/Cookie-Secure erg\u00e4nzt; MCP-Connector-Census unver\u00e4ndert"
   },
   "doc": "instructions.md",
   "schema": 1

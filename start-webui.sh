@@ -12,6 +12,8 @@
 #     nicht ausdruecklich gesetzt, verweigert der Starter den Start (rc=1);
 #     webui/main.py bricht zusaetzlich selbst ab (R3-4, fail-closed).
 #   * Entwicklung ohne Secrets: bewusst `KMHR_DEV=1 ./start-webui.sh`.
+#   * Host: Default 127.0.0.1 (loopback). Für LAN bewusst KMHR_HOST=0.0.0.0 setzen;
+#     öffentlich nur über den Reverse-Proxy (Caddy/Cloudflare).
 # Spec: knowledge/system/configuration-secrets.md (Abschnitt (f)).
 cd "$(dirname "$0")" || exit 1
 source .venv-streamlit/bin/activate

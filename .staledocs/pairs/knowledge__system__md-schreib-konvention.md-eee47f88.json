@@ -101,7 +101,7 @@
       "write_prescreen_md",
       "x[-1]"
     ],
-    "at": "2026-10-23T10:43:46+00:00",
+    "at": "2026-10-25T16:50:10+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/ci/checks.py": "49dd1309477e0d26014c2684d4982f9d9eb83112",
@@ -111,9 +111,9 @@
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
       "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "b749503664fd36861125efef6de8818ba56ef593",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/md-schreib-konvention.md"
+    "commit": "e5d2156cc4e1752bd95babcbdf54b72d6c795244",
+    "doc_blob": "2e1185b241d40ac4797346b16650afb6219d4ff7",
+    "note": "md-schreib-konvention.md: Knowledge-MD-Z\u00e4hlwert auf 77 aktualisiert (neue cloudflare-deployment.md), mdguard rc=0"
   },
   "doc": "knowledge/system/md-schreib-konvention.md",
   "schema": 1

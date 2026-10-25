@@ -9,6 +9,7 @@
 > **„Serverumzug 20.10.2026 → neuer Host `176.57.189.201`"** (unten). Letzter
 > **bekannter** Code-Stand auf dem alten Host: `f984168` (18.10.2026); `195fc69`
 > (20.10.2026) war **nicht** deployed.
+> **Cloudflare (25.10.2026):** Öffentliche URL `https://jobs.hanibal-ai.com` über Cloudflare (Proxy) → Caddy auf dem VPS → `127.0.0.1:8080`. Caddy-Site `deploy/caddy/jobs.hanibal-ai.com.caddy`; vollständige Spec `knowledge/system/cloudflare-deployment.md`.
 > **Ablauf:** lokal `git push` → GitHub CI grün → Deploy-Workflow (SSH) → Contabo `git reset --hard` → App-Neustart
 > **Quellen (GitHub-Doku, Abruf 06.10.2026):**
 > - Continuous deployment: Workflow läuft bei Push auf den Default-Branch

@@ -67,18 +67,18 @@ Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindl
 | Merkmal | Wert | Befehl |
 |---|---|---|
 | Skills | 23 | `ls skills/*/SKILL.md \| wc -l` |
-| Knowledge-MD | 76 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (gemessen 21.10.2026; Verlauf: 73 am 10.10.2026, 72 am 10.10.2026 früh, 47 am 01.10.2026) |
-| DB-Tabellen | 17 | `data/feedback.db` (gemessen 21.10.2026) |
+| Knowledge-MD | 77 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (gemessen 25.10.2026; Verlauf: 76 am 21.10.2026, 73 am 10.10.2026, 47 am 01.10.2026) |
+| DB-Tabellen | 17 | `data/feedback.db` (gemessen 25.10.2026) |
 | MCP-Server | 14 | `opencode.json` (Key `mcp`) |
-| i18n-msgid je Sprache | 1193 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` (gemessen 21.10.2026; vorher 993) |
+| i18n-msgid je Sprache | 1221 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` (gemessen 25.10.2026; 1220 Keys im Katalog; vorher 1193) |
 | Unit-Tests | siehe `AGENTS.md` | `.venv-streamlit/bin/python3 -m pytest -q` |
-| E2E-Dateien | 54 (52 lauffähig) | `ls tests/e2e_*.py \| wc -l` (gemessen 21.10.2026; `e2e_harness.py` + `e2e_isolation.py` sind keine E2E-Skripte) |
+| E2E-Dateien | 55 (53 lauffähig) | `ls tests/e2e_*.py \| wc -l` (gemessen 25.10.2026; `e2e_harness.py` + `e2e_isolation.py` sind keine E2E-Skripte) |
 
 ## Wissens-Index (`knowledge/**`)
 
 | Bereich | Specs |
 |---|---|
-| `system/` | `access-control.md` (Rollen/Zugriff, Source of Truth) · `agent-automation.md` (Runner, Mails, Trigger) · `configuration-secrets.md` · `deploy-pipeline.md` · `doku-authority.md` (Doku-Regeln) · `e2e-ci-seed.md` (Test-Konten) · `i18n.md` + `i18n-runner-chain.md` · `mcp-connector-config.md` · `mcp-agent-backlog.md` · `mcp-tool-lazy-gating.md` · `vdo-ninja-migration.md` · `mvp.md` · `c2-service.md` · `event-loop-blockieren.md` · `p8-cloud-datenquellen.md` · `asgi-guard.md` |
+| `system/` | `access-control.md` (Rollen/Zugriff, Source of Truth) · `agent-automation.md` (Runner, Mails, Trigger) · `configuration-secrets.md` · `deploy-pipeline.md` · `cloudflare-deployment.md` (Cloudflare → Caddy → Loopback) · `doku-authority.md` (Doku-Regeln) · `e2e-ci-seed.md` (Test-Konten) · `i18n.md` + `i18n-runner-chain.md` · `mcp-connector-config.md` · `mcp-agent-backlog.md` · `mcp-tool-lazy-gating.md` · `vdo-ninja-migration.md` · `mvp.md` · `c2-service.md` · `event-loop-blockieren.md` · `p8-cloud-datenquellen.md` · `asgi-guard.md` |
 | `legal/` | `dsgvo-gate.md` · `gdpr-policy.md` · `recording-consent.md` · `compliance-rules.md` · `contract-management.md` · `contract-sources.md` · `visa-rules.md` · `document-types.md` · `datenschutz.md`/`impressum.md`/`agb.md`/`kontakt.md` (je + `.en`/`.fr`/`.ar`) |
 | `lifecycle/` | `matching-criteria.md` (Scoring) · `feedback-schema.md` · `application-status.md` · `status-automation.md` · `cultural-fit-criteria.md` · `explanation-templates.md` · `relocation.md` · `mentoring.md` · `referenz-sphinxats.md` |
 | `portal/` | `candidate-portal-fields.md` · `employer-portal-fields.md` · `employer-board.md` (Hiring-Board, Phase 1) · `matching-filter.md` · `cv-pflicht.md` · `applicants-first.md` · `housing-search.md` |

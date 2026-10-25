@@ -1,0 +1,22 @@
+[Unit]
+Description=KM-HR-Agent (NiceGUI Web-UI, Port 8080, loopback)
+Documentation=knowledge/system/deploy-pipeline.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/km-hr-agent
+Environment=KMHR_PORT=8080
+Environment=KMHR_HOST=127.0.0.1
+Environment=KMHR_COOKIE_SECURE=1
+EnvironmentFile=/opt/km-hr-agent/.env
+ExecStart=/opt/km-hr-agent/.venv-streamlit/bin/python -m webui.main
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+StandardOutput=append:/root/km-hr-agent.log
+StandardError=append:/root/km-hr-agent.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,32 @@
+# Caddy-Site für den KM-HR-Agenten hinter Cloudflare.
+# Installation: /etc/caddy/conf.d/jobs.hanibal-ai.com.caddy
+# Import in /etc/caddy/Caddyfile: import /etc/caddy/conf.d/*.caddy
+#
+# Cloudflare proxied (orange cloud) -> HTTP-01, TLS-ALPN terminiert an Cloudflare.
+# Caddy holt ein Let's-Encrypt-Zertifikat für den Origin; Cloudflare SSL/TLS
+# muss auf "Full (strict)" stehen. Der App-Port 8080 bleibt loopback-only.
+
+jobs.hanibal-ai.com {
+    encode gzip
+
+    tls {
+        issuer acme {
+            disable_tlsalpn_challenge
+        }
+    }
+
+    reverse_proxy 127.0.0.1:8080 {
+        header_up X-Real-IP {remote_host}
+        # NiceGUI/Socket.IO: keine Pufferung, lange WebSocket-Verbindungen.
+        flush_interval -1
+    }
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "geolocation=(), microphone=(), camera=()"
+        -Server
+    }
+}

@@ -10,6 +10,7 @@ gate: strict
 source:
   include:
     - "connectors/**"
+    - "deploy/**"
     - "docs/**"
     - "scripts/**"
     - "tests/**"
@@ -34,6 +35,8 @@ pairs:
     code: ["connectors/**", "docs/**", "scripts/**", "tests/**", "webui/**"]
   - doc: ui/ANIMATION_ENTSCHEIDUNG.md
     code: ["webui/pages/landing.py", "webui/static/three/**", "tests/test_landing_page.py", "tests/e2e_landing_chapters.py"]
+  - doc: knowledge/system/cloudflare-deployment.md
+    code: ["deploy/caddy/**", "deploy/systemd/**", "webui/main.py"]
   - doc: instructions.md
     code: ["webui/**", "scripts/**"]
   - doc: knowledge.md

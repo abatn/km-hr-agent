@@ -170,9 +170,9 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-25T15:42:29+00:00",
+    "at": "2026-10-25T16:42:06+00:00",
     "code_blobs": {
-      "webui/main.py": "21ab2d66d01d012b21f0494fee0c7a487a7cb954",
+      "webui/main.py": "0f2d280388a7b6cbfb652176bb7575789eeadd5e",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "e30dc44f8abf9e8c39e206d1910dbdb1fa019ef4",
       "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4",
@@ -182,9 +182,9 @@
       "webui/pages/login.py": "6332a9ee46718872ac81beee0e8f1cda311ef22a",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
+    "commit": "e5d2156cc4e1752bd95babcbdf54b72d6c795244",
     "doc_blob": "969f836a67b9a4ae92604cf5e5f6c36398193c0d",
-    "note": "webui/pages/landing.py auf 5 Kapitel umgebaut und alte Builder entfernt; Migration-Aussagen unber\u00fchrt"
+    "note": "webui/main.py: ui.run host/session_kwargs erg\u00e4nzt; App-Start-Hooks und Migration-Aussagen unver\u00e4ndert"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

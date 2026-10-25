@@ -50,6 +50,10 @@ if USING_DEFAULT_SECRET:
 # "1/true/yes" sind eine Design-Entscheidung (kein Gesetz/Standard).
 # Spec: knowledge/system/configuration-secrets.md (Abschnitt KMHR_DEV).
 KMHR_DEV = os.environ.get("KMHR_DEV", "").strip().lower() in ("1", "true", "yes")
+# Session-Cookies hinter HTTPS (Cloudflare/Caddy) nur über TLS senden.
+# Lokal (HTTP) bleibt das Flag aus, sonst wäre der Login dort cookie-los.
+COOKIE_SECURE = os.environ.get("KMHR_COOKIE_SECURE", "").strip().lower() in ("1", "true", "yes")
+_SESSION_MIDDLEWARE_KWARGS = {"https_only": True} if COOKIE_SECURE else None
 _missing = [k for k in ("KMHR_STORAGE_SECRET", "KMHR_ADMIN_SEED_PASSWORD")
             if not os.environ.get(k, "").strip()]
 if _missing and not KMHR_DEV:
@@ -140,5 +144,10 @@ app.add_middleware(SocketioAbortGuard)
 # ─── Run ──────────────────────────────────────────────────────────────
 # Port per Env KMHR_PORT übersteuerbar (E2E-Isolation 27.09.2026);
 # ohne Env weiterhin 8080. DB-Seite: webui/db.py (KMHR_DB_PATH).
-ui.run(title="KM-HR-Agent", port=int(os.environ.get("KMHR_PORT", "8080")),
-       storage_secret=STORAGE_SECRET, reload=False, show=False)
+# Host per KMHR_HOST: Default 127.0.0.1 (loopback). Öffentlich nur über den
+# Reverse-Proxy (Caddy/Cloudflare); 0.0.0.0 muss bewusst gesetzt werden.
+ui.run(title="KM-HR-Agent", host=os.environ.get("KMHR_HOST", "127.0.0.1"),
+       port=int(os.environ.get("KMHR_PORT", "8080")),
+       storage_secret=STORAGE_SECRET,
+       session_middleware_kwargs=_SESSION_MIDDLEWARE_KWARGS,
+       reload=False, show=False)
