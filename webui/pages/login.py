@@ -15,7 +15,7 @@ from nicegui import run, ui
 
 from webui import db, logic
 from webui.theme import C
-from webui.i18n import _, apply_direction, language_switcher
+from webui.i18n import _, apply_direction, get_language, language_switcher
 
 
 def _session() -> dict:
@@ -34,6 +34,46 @@ def _reset_token_param() -> str | None:
         return str(raw).strip() if raw else None
     except Exception:
         return None
+
+
+def _consent_checkbox() -> ui.checkbox:
+    """Pflicht-Einwilligung in AGB + Datenschutzerklaerung (Purposes `terms`/`privacy`).
+
+    NICHT vorangehakt: Art. 7 Abs. 2 DSGVO / Erwaegungsgrund 32+43 — ein bereits
+    angekreuztes Kaestchen ist keine Einwilligung, und AGB/Datenschutz duerfen
+    nicht mit der Aufnahme-Einwilligung gebuendelt werden (die holt
+    `webui/pages/candidate.py` separat vor dem Videolink ein).
+
+    Der Nachweis wird NACH dem INSERT vom Aufrufer geschrieben
+    (`db.record_consent(..., text_version=db.CONSENT_VERSION)`); die Checkbox
+    selbst speichert nichts.
+    """
+    cb = ui.checkbox(
+        _("Ich akzeptiere die AGB und die Datenschutzerklärung"),
+        value=False,
+    ).classes("text-sm text-gray-800 dark:text-gray-200")
+    with ui.row().classes("items-center gap-2 -mt-2 text-xs"):
+        ui.link(_("AGB"), "/agb").classes("text-amber-800 dark:text-amber-300")
+        ui.label("·").classes("text-gray-500")
+        ui.link(_("Datenschutz"), "/datenschutz").classes("text-amber-800 dark:text-amber-300")
+    return cb
+
+
+def _record_registration_consents(subject_type: str, subject_id: int, language: str) -> None:
+    """Schreibt die beiden Pflicht-Nachweise (`terms`, `privacy`) fuer ein neues Konto.
+
+    Eine Zeile je Zweck (Art. 7 Abs. 2 DSGVO: getrennte Einwilligungen).
+    `db.record_consent` committet selbst — der Aufrufer hat sein INSERT bereits
+    committet, damit `subject_id` (= cursor.lastrowid) gueltig ist.
+    """
+    for purpose in ("terms", "privacy"):
+        db.record_consent(
+            subject_type,
+            subject_id,
+            purpose,
+            text_version=db.CONSENT_VERSION,
+            language=language,
+        )
 
 
 def create() -> None:
@@ -197,11 +237,17 @@ def create() -> None:
                                 placeholder=_("Mindestens 8 Zeichen"),
                                 validation={_("Mindestens 8 Zeichen"): lambda v: len(v) >= 8},
                             ).classes("w-full")
+                            # Pflicht-Einwilligung (nicht vorangehakt) — Nachweis nach dem INSERT.
+                            r_consent = _consent_checkbox()
                             r_msg = ui.label("").classes("text-sm")
 
                             async def do_register():
                                 if not r_email.value or not r_pw.value:
                                     r_msg.text = _("E-Mail und Passwort sind Pflichtfelder.")
+                                    r_msg.classes(replace="text-red-400 text-sm")
+                                    return
+                                if not r_consent.value:
+                                    r_msg.text = _("Bitte akzeptieren Sie AGB und Datenschutzerklärung, um sich zu registrieren.")
                                     r_msg.classes(replace="text-red-400 text-sm")
                                     return
                                 if len(r_pw.value) < 8:
@@ -211,7 +257,7 @@ def create() -> None:
                                 conn = db.get_conn()
                                 try:
                                     _pw_hash = await run.io_bound(logic.hash_password_argon2id, r_pw.value)
-                                    conn.execute(
+                                    cur = conn.execute(
                                         "INSERT INTO candidates (email, name, password_hash, status) VALUES (?, ?, ?, 'registriert')",
                                         (
                                             r_email.value.strip().lower(),
@@ -220,6 +266,8 @@ def create() -> None:
                                         ),
                                     )
                                     conn.commit()
+                                    _record_registration_consents(
+                                        "candidate", cur.lastrowid, get_language())
                                     r_msg.text = _("Registriert! Jetzt einloggen.")
                                     r_msg.classes(replace="text-green-400 text-sm")
                                 except sqlite3.IntegrityError:
@@ -279,11 +327,17 @@ def create() -> None:
                                 placeholder=_("Mindestens 8 Zeichen"),
                                 validation={_("Mindestens 8 Zeichen"): lambda v: len(v) >= 8},
                             ).classes("w-full")
+                            # Pflicht-Einwilligung (nicht vorangehakt) — Nachweis nach dem INSERT.
+                            er_consent = _consent_checkbox()
                             er_msg = ui.label("").classes("text-sm")
 
                             async def do_employer_register():
                                 if not er_email.value or not er_firma.value or not er_kontakt.value or not er_pw.value:
                                     er_msg.text = _("Alle Felder sind Pflichtfelder.")
+                                    er_msg.classes(replace="text-red-400 text-sm")
+                                    return
+                                if not er_consent.value:
+                                    er_msg.text = _("Bitte akzeptieren Sie AGB und Datenschutzerklärung, um sich zu registrieren.")
                                     er_msg.classes(replace="text-red-400 text-sm")
                                     return
                                 if len(er_pw.value) < 8:
@@ -293,7 +347,7 @@ def create() -> None:
                                 conn = db.get_conn()
                                 try:
                                     _er_pw_hash = await run.io_bound(logic.hash_password_argon2id, er_pw.value)
-                                    conn.execute(
+                                    cur = conn.execute(
                                         "INSERT INTO employers (email, password_hash, firma, kontaktperson) VALUES (?, ?, ?, ?)",
                                         (
                                             er_email.value.strip().lower(),
@@ -303,6 +357,8 @@ def create() -> None:
                                         ),
                                     )
                                     conn.commit()
+                                    _record_registration_consents(
+                                        "employer", cur.lastrowid, get_language())
                                     er_msg.text = _("Registriert! Jetzt einloggen.")
                                     er_msg.classes(replace="text-green-400 text-sm")
                                 except sqlite3.IntegrityError:

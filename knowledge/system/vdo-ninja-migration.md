@@ -97,6 +97,9 @@ Parameter fehlt der Knopf (DOM `display:none`), die Aufnahme bleibt nur über Re
 erreichbar.
 - **Fix:** beide Kandidaten-Links tragen jetzt **`&record=6000`**
   (`webui/pages/candidate.py`: „Selbstpräsentation starten" + „Video-Link generieren").
+- **Update 26.10.2026 (Consent-Gate):** `&record=6000` wird **nur** nach der separaten,
+  nicht vorangehakten Aufnahme-Checkbox und `db.record_consent(..., 'recording')` erzeugt; ohne
+  Haken bleibt die URL aufnahmefrei (`?push=<id>`). Siehe `knowledge/legal/recording-consent.md`.
 - **Aufnahme-Ablage:** lokal beim Kandidaten (WebM, Download-Ordner) — VDO kann **nicht** in die App
   schreiben.
 - **Upload ermöglicht:** Dokumente-Tab (`_dokumente_section`) akzeptiert jetzt **`.webm/.mp4`**
@@ -105,7 +108,7 @@ erreichbar.
 - ~~**Offen: Stream-ID alphanumerisch**~~ → **✅ erledigt 20.10.2026 (§2.6):** beide Kandidaten-
   `?push=`-IDs sind alphanumerisch (`selfpresentation{code}` bzw. `vorstellung{cand_id}{uuid8}`).
 - **Offen (nicht umgesetzt):** Server-RAM bei großen Uploads (`await file.read()` lädt komplett);
-  UI-Hinweis zum Aufnahme-Ablauf.
+  technische Löschfrist und Datei-Registrierung der Aufnahme.
 
 ### 2.5 Raumname alphanumerisch: `prescreening{code}` (04.10.2026, Lab Schritt 1–3)
 

@@ -5,6 +5,14 @@
 > **IST 09.10.2026 (Code-Angleichung):** Die Kandidaten-**Selbstpräsentation** trägt jetzt
 > `https://vdo.ninja/?push=<id>&record=6000` (`webui/pages/candidate.py` (gemessen 10.10.2026)) — die frühere
 > Vorgabe „ohne `&record`" ist durch den 04.10.2026-Fix (`vdo-ninja-migration.md` §2.4) überholt.
+> **Update 26.10.2026 (umgesetzt):** Die Selbstpräsentation ist jetzt an eine eigene, **nicht vorab
+> angehakte** Einwilligungs-Checkbox gebunden. `&record=6000` wird nur nach
+> `db.record_consent(..., "recording")` erzeugt; ohne Haken entsteht eine aufnahmefreie `?push=`-URL.
+> Der Nachweis liegt in der generischen Tabelle `consents` (`purpose='recording'`), nicht in einer
+> separaten `recording_consents`-Tabelle. Die Einwilligung wird **vor der Selbstpräsentation**
+> eingeholt, nicht bei der Registrierung — dort entsteht der Zweck noch nicht.
+> **Weiter offen:** technische Löschfrist/Datei-Registrierung, HR-Gate 1–7/11–12, DSB-Bestätigung;
+> der fertige Einwilligungstext steht in (e3).
 > Das 12-Punkte-Gate (d) + (i) Punkt 8 gelten **weiterhin für den HR-Aufnahme-Fall** (Meeting-Raum,
 > Director-/Gast-Link).
 > **Zweck:** Verbindliche Bedingungen, **unter welchen** ein Aufnahme-Parameter in die Meeting-URL
@@ -164,10 +172,9 @@ Parameter **nicht** gesetzt — auch nicht „vorsorglich". Der Ist-Zustand des 
    Gespräch oder Ihre Bewerbung nachteilig ist." — Erwägungsgrund 42
 10. **Hinweis auf Mitwirkende**: Gesprächspartner und ggf. weitere Personen im Raum werden mit erfasst.
 
-> **Offen (i) Punkt 1:** Ist dieser Text zweisprachig (DE/EN/FR) zu führen? Das Portal ist mehrsprachig
-> (`knowledge/language-tests.md`, Sprachaufzeichnungs-Regel aus (a)). **Nicht entschieden** — die
+> **Sprache (Stand 26.10.2026):** Der Text liegt in **DE/EN/FR/AR** vor (siehe (e3)). Die
 > Einwilligungssprache muss **dem Kandidaten verständlich** sein, sonst ist die „informierte"
-> Einwilligung angreifbar.
+> Einwilligung angreifbar. Die anwaltliche Prüfung der vier Fassungen steht aus.
 
 ### (e2) Nachweis (Art. 7 Abs. 1 DSGVO — Nachweispflicht)
 
@@ -184,12 +191,188 @@ Der Arbeitgeber muss **belegen** können, dass eingewilligt wurde. Das ist eine
 | `widerrufen_am` | nullable | Art. 7 Abs. 3 |
 | `beleg_dokument_id` | Verweis auf die Datei | Projekt (Vorschlag, **Design-Entscheidung**) |
 
-> **Vorschlag (Design-Entscheidung, nicht entschieden):** neue Tabelle
-> `recording_consents`. **Nicht implementiert** — diese Spec ändert keinen Code.
+> **Umsetzung 26.10.2026 (Design-Entscheidung):** Der Nachweis liegt in der generischen Tabelle
+> `consents` (`subject_type='candidate'`, `purpose='recording'`, `text_version`, `granted_at`,
+> `withdrawn_at`). Eine separate `recording_consents`-Tabelle ist nicht nötig; die generische Tabelle
+> ist versioniert und widerrufsfähig. Die Datei-/Sitzungszuordnung (`application_id`, `sitzung_id`)
+> wird im `evidence_json` geführt.
+
+### (e3) Fertiger Einwilligungstext (DE/EN/FR/AR) — Vorlage, anwaltlich zu prüfen
+
+> **Status:** Entwurf 26.10.2026. Der Text deckt die Pflichtinhalte aus (e1) ab (Zweck, Empfänger,
+> Speicherdauer, Widerruf, Freiwilligkeit, Mitwirkende, Rechte). Er ist **kein Rechtsrat** und
+> ersetzt **keine** anwaltliche/DSB-Freigabe (Gate 12). Die **Rollenabgrenzung** zwischen Anbieter
+> und Arbeitgeber (wer ist Verantwortlicher der Aufnahme?) ist vor dem ersten Einsatz festzulegen —
+> sie hängt davon ab, wessen System die Datei empfängt ((i) Punkt 4).
+
+**Einbauregeln (gelten für alle vier Sprachen):**
+
+- Nur **eine** Erklärung pro Aufnahme, **getrennt** von AGB, Einladungsmail und Terminbestätigung
+  (Art. 7 Abs. 2 DSGVO).
+- Kästchen **nicht vorab angehakt** (Erwägungsgrund 32); Pflichtfeld `value=False` (Gate 4).
+- **Ablehnung ist folgenlos** (Gate 5, (h)); der Text sagt das ausdrücklich.
+- Version und Datum des Textes werden beim Nachweis gespeichert (Feld `text_version`, (e2)).
+- Sprache: die dem Kandidaten verständliche Fassung; DE/EN/FR/AR liegen vor ((i) Punkt 1).
+
+#### Deutsch (verbindliche Fassung)
+
+**Einwilligung in die Aufzeichnung des Video-Vorstellungsgesprächs**
+
+Verantwortlich für die Aufzeichnung ist der Arbeitgeber, der sie veranlasst; die technische
+Bereitstellung erfolgt durch die Agic Tunisie GmbH, 13 rue des Usines, ZI Sidi Rezig, 2033 Ben
+Arous, Tunesien, E-Mail batniniabdelkader@yahoo.com, Telefon +216 52 369 325. Die Rollenabgrenzung
+wird vor dem Einsatz bestätigt.
+
+1. **Zweck.** Die Bild- und Tonaufzeichnung dient ausschließlich dazu, den Gesprächsverlauf für die
+   Auswahlentscheidung nachvollziehbar zu machen. Sie ist für die Durchführung des Gesprächs nicht
+   erforderlich.
+2. **Empfänger.** Die Aufzeichnung erhalten ausschließlich die interviewenden Personen und die für
+   die Auswahl zuständige Personalabteilung des jeweiligen Arbeitgebers. Eine Weitergabe darüber
+   hinaus erfolgt nicht. Speicherort und Übermittlungsweg: [zu ergänzen].
+3. **Speicherdauer.** Die Aufzeichnung wird **6 Monate nach Ende des Verfahrens** gelöscht. Der
+   Nachweis über diese Einwilligung wird **36 Monate** aufbewahrt.
+4. **Widerruf.** Sie können diese Einwilligung **jederzeit ohne Angabe von Gründen** widerrufen,
+   per E-Mail an batniniabdelkader@yahoo.com. Nach dem Widerruf wird die Aufzeichnung gelöscht,
+   soweit sie noch vorhanden ist. Der Widerruf ist so einfach wie die Erteilung.
+5. **Freiwilligkeit.** Die Einwilligung ist **freiwillig**. Wenn Sie sie nicht erteilen oder später
+   widerrufen, findet das Gespräch **statt** und Ihre Bewerbung wird **genau so** bearbeitet wie bei
+   allen anderen. Es entstehen Ihnen **keine Nachteile**.
+6. **Mitwirkende.** Gesprächspartner und weitere Personen im Raum werden mit aufgezeichnet. Alle
+   Teilnehmenden werden vor dem Gespräch darüber informiert.
+7. **Ihre Rechte.** Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung,
+   Datenübertragbarkeit und Widerspruch (Art. 15–22 DSGVO) sowie auf Beschwerde bei einer
+   Aufsichtsbehörde (Art. 77 DSGVO). Ein Datenschutzbeauftragter ist nicht bestellt; Anfragen
+   richten Sie an die oben genannte E-Mail-Adresse.
+
+☐ **Ich willige in die Aufzeichnung des Gesprächs zu den oben genannten Bedingungen ein.**
+(Ich kann diese Einwilligung jederzeit ohne Nachteile widerrufen.)
+
+Ort, Datum, Name, Unterschrift bzw. elektronische Bestätigung: ______________________
+Textversion: 26.10.2026
+
+#### English (translation; the German version prevails)
+
+**Consent to the recording of the video interview**
+
+The controller of the recording is the employer who arranges it; the technical provision is made by
+Agic Tunisie GmbH, 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisia, email
+batniniabdelkader@yahoo.com, phone +216 52 369 325. The allocation of roles will be confirmed before
+use.
+
+1. **Purpose.** The video and audio recording serves exclusively to make the course of the interview
+   comprehensible for the selection decision. It is not required to conduct the interview.
+2. **Recipients.** The recording is received only by the interviewing persons and the HR department
+   responsible for selection at the respective employer. It is not passed on beyond that. Storage
+   location and transmission path: [to be added].
+3. **Storage period.** The recording is deleted **6 months after the process ends**. The record of
+   this consent is kept for **36 months**.
+4. **Withdrawal.** You may withdraw this consent **at any time without giving reasons** by email to
+   batniniabdelkader@yahoo.com. After withdrawal the recording is deleted insofar as it still
+   exists. Withdrawal is as easy as giving consent.
+5. **Voluntariness.** Consent is **voluntary**. If you do not give it or withdraw it later, the
+   interview **takes place** and your application is processed **in exactly the same way** as for
+   everyone else. You suffer **no disadvantages**.
+6. **Participants.** Interviewers and other persons in the room are recorded as well. All
+   participants are informed before the interview.
+7. **Your rights.** You have the right to access, rectification, erasure, restriction, data
+   portability and objection (Art. 15–22 GDPR) and to lodge a complaint with a supervisory
+   authority (Art. 77 GDPR). No Data Protection Officer has been appointed; please address requests
+   to the email address above.
+
+☐ **I consent to the recording of the interview under the conditions stated above.**
+(I may withdraw this consent at any time without disadvantages.)
+
+Place, date, name, signature or electronic confirmation: ______________________
+Text version: 26.10.2026
+
+#### Français (traduction ; la version allemande prévaut)
+
+**Consentement à l'enregistrement de l'entretien vidéo**
+
+Le responsable de l'enregistrement est l'employeur qui le demande ; la mise à disposition technique
+est assurée par Agic Tunisie GmbH, 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisie,
+e-mail batniniabdelkader@yahoo.com, téléphone +216 52 369 325. La répartition des rôles sera
+confirmée avant utilisation.
+
+1. **Finalité.** L'enregistrement audio-vidéo sert exclusivement à rendre le déroulement de
+   l'entretien compréhensible pour la décision de sélection. Il n'est pas nécessaire à la tenue de
+   l'entretien.
+2. **Destinataires.** L'enregistrement est reçu uniquement par les personnes qui mènent l'entretien
+   et le service RH chargé de la sélection chez l'employeur concerné. Aucune transmission
+   supplémentaire n'a lieu. Lieu de stockage et voie de transmission : [à compléter].
+3. **Durée de conservation.** L'enregistrement est supprimé **6 mois après la fin de la procédure**.
+   La preuve de ce consentement est conservée **36 mois**.
+4. **Retrait.** Vous pouvez retirer ce consentement **à tout moment et sans motif**, par e-mail à
+   batniniabdelkader@yahoo.com. Après le retrait, l'enregistrement est supprimé dans la mesure où il
+   existe encore. Le retrait est aussi simple que le consentement.
+5. **Liberté.** Le consentement est **libre**. Si vous ne le donnez pas ou le retirez plus tard,
+   l'entretien **a lieu** et votre candidature est traitée **exactement comme** celle de toutes les
+   autres personnes. Vous ne subissez **aucun désavantage**.
+6. **Participants.** Les interlocuteurs et d'autres personnes présentes dans la salle sont également
+   enregistrés. Tous les participants en sont informés avant l'entretien.
+7. **Vos droits.** Vous disposez des droits d'accès, de rectification, d'effacement, de limitation,
+   de portabilité et d'opposition (art. 15–22 RGPD) ainsi que du droit d'introduire une réclamation
+   auprès d'une autorité de contrôle (art. 77 RGPD). Aucun délégué à la protection des données n'est
+   désigné ; adressez vos demandes à l'adresse e-mail ci-dessus.
+
+☐ **Je consens à l'enregistrement de l'entretien aux conditions indiquées ci-dessus.**
+(Je peux retirer ce consentement à tout moment sans désavantage.)
+
+Lieu, date, nom, signature ou confirmation électronique : ______________________
+Version du texte : 26.10.2026
+
+#### العربية (ترجمة؛ النسخة الألمانية هي المعتمدة)
+
+**الموافقة على تسجيل مقابلة الفيديو**
+
+الجهة المسؤولة عن التسجيل هي صاحب العمل الذي يطلبه؛ ويتم التوفير التقني من قبل
+Agic Tunisie GmbH، 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous، تونس،
+البريد الإلكتروني batniniabdelkader@yahoo.com، الهاتف +216 52 369 325. وسيتم تأكيد توزيع الأدوار
+قبل الاستخدام.
+
+1. **الغرض.** يُستخدم التسجيل الصوتي والمرئي حصريًا لجعل سير المقابلة مفهومًا لقرار الاختيار. وهو
+   ليس ضروريًا لإجراء المقابلة.
+2. **الجهات المستلمة.** لا يتلقى التسجيل إلا الأشخاص الذين يجروون المقابلة وإدارة الموارد البشرية
+   المسؤولة عن الاختيار لدى صاحب العمل المعني. ولا يتم نقلها إلى أبعد من ذلك. مكان التخزين ومسار
+   النقل: [يُستكمل].
+3. **مدة التخزين.** يُحذف التسجيل **بعد 6 أشهر من انتهاء العملية**. ويُحفظ إثبات هذه الموافقة
+   **36 شهرًا**.
+4. **السحب.** يمكنك سحب هذه الموافقة **في أي وقت ودون ذكر أسباب** عبر البريد الإلكتروني
+   batniniabdelkader@yahoo.com. وبعد السحب يُحذف التسجيل إن كان لا يزال موجودًا. وسحب الموافقة
+   بسيط مثل منحها.
+5. **الطوعية.** الموافقة **طوعية**. وإذا لم تمنحها أو سحبتها لاحقًا، فستُجرى المقابلة **وستتم
+   معالجة طلبك بالطريقة نفسها تمامًا** كجميع الآخرين. ولن تتعرض **لأي أضرار**.
+6. **المشاركون.** يُسجَّل أيضًا المحاورون والأشخاص الآخرون الموجودون في الغرفة. ويُبلَّغ جميع
+   المشاركين بذلك قبل المقابلة.
+7. **حقوقك.** لك الحق في الوصول والتصحيح والمحو والتقييد ونقل البيانات والاعتراض (المواد 15–22
+   GDPR)، وفي تقديم شكوى إلى جهة رقابية (المادة 77 GDPR). لا يوجد مسؤول حماية بيانات معيّن؛
+   يُرجى توجيه الطلبات إلى البريد الإلكتروني أعلاه.
+
+☐ **أوافق على تسجيل المقابلة وفق الشروط المذكورة أعلاه.**
+(يمكنني سحب هذه الموافقة في أي وقت دون أضرار.)
+
+المكان والتاريخ والاسم والتوقيع أو التأكيد الإلكتروني: ______________________
+نسخة النص: 26.10.2026
+
+#### Umsetzungsstand und Lücke (26.10.2026)
+
+| Punkt | Ist-Zustand | Bewertung |
+|---|---|---|
+| Einwilligungs-Checkbox vor Selbstpräsentation | **umgesetzt 26.10.2026** (`_recording_consent_ui`, nicht vorab angehakt) | erfüllt Gate 1–4 für die Selbstpräsentation |
+| Nachweis `consents` (`purpose='recording'`) | **umgesetzt 26.10.2026** | erfüllt Art. 7 Abs. 1 (Version/Zeitpunkt/Widerruf) |
+| Selbstpräsentation `?push=…&record=6000` | **nur nach Haken**; ohne Haken `?push=` ohne Aufnahme | entspricht Gate 1–4 |
+| HR-Raumfall | kein aktivierender Parameter; Gast-Link `&record=off` | entspricht Gate 8 |
+| Löschfrist technisch | **nicht umgesetzt** | Lücke zu Gate 7 / (f) |
+| Aufnahme-Ablage beim Arbeitgeber | **nicht definiert** | Lücke zu (i) Punkt 4 / Gate 11 |
+
+> **Klartext:** Die Selbstpräsentation ist jetzt ohne dokumentierte Einwilligung nicht mehr
+> aufnahmefähig; der Aufnahme-Parameter wird nur im Consent-Zweig erzeugt. Offen bleiben die
+> technische Löschfrist, die Datei-Registrierung und die HR-Gate-Punkte 1–7/11–12.
 
 ---
 
 ## (f) Löschfristen
+
 
 | Daten | Frist | Quelle |
 |---|---|---|
@@ -252,8 +435,9 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 
 ## (i) Offene Punkte — vor jeder Freigabe zu klären
 
-1. **Sprache der Einwilligung** — mehrsprachig (DE/EN/FR) verpflichtend, weil das Portal mehrsprachig
-   ist? Ohne für den Kandidaten verständlichen Text ist „informiert" nicht erfüllt.
+1. **Sprache der Einwilligung** — **gelöst durch (e3):** vier Fassungen (DE/EN/FR/AR) liegen vor;
+   offen ist nur die anwaltliche Prüfung. Ohne für den Kandidaten verständlichen Text ist
+   „informiert" nicht erfüllt.
 2. **DSB-Bestätigung** der Löschfristen (6 / 36 Monate) und des Aufbewahrungsorts der Aufnahme.
 3. **Hosting-Frage VDO.Ninja:** fremder Dienst (fremde TURN-Server) oder selbst gehostet — betrifft
    Art. 13 Abs. 1 lit. e (Drittlandtransfer) und Art. 44 ff. Offen seit
@@ -313,7 +497,9 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 | `&autorecordremote` nimmt entfernte Videos automatisch beim Laden auf | docs.vdo.ninja/…/and-autorecordremote | Anbieter-Doku |
 | Aufnahmefunktion „experimental" / „maturing" | `knowledge/system/vdo-ninja-migration.md` §3 (T4) + `&record`-Doku | Anbieter-Doku |
 | **HR-Raumfall: kein aktivierender Parameter; Gast-Link mit `&record=off` (Härtung, seit 28.09.2026)** · **Kandidaten-Selbstpräsentation: `?push=…&record=6000` (seit 04.10.2026, Nutzerauftrag)** | Codemarken `vdo_ninja_url`/`vdo_ninja_gast_url` in `scripts/agent-runner.py` bzw. `meet_url`/`video_url` in `webui/pages/candidate.py` (Code-Messung 10.10.2026) | Code-Messung |
-| Tabelle `recording_consents` | **Design-Entscheidung** (Vorschlag, nicht implementiert) | Projekt |
+| Tabelle `consents` (`purpose='recording'`) | **umgesetzt 26.10.2026** (`webui/db.py`, `record_consent`/`withdraw_consent`) | Code + Tests |
+| Einwilligungstext DE/EN/FR/AR (e3) | **Design-Entscheidung** (Entwurf 26.10.2026, Pflichtinhalte aus (e1)); anwaltlich zu prüfen | Projekt |
+| Selbstpräsentation `&record=6000` **nur nach** Consent | **umgesetzt 26.10.2026** (`webui/pages/candidate.py`, `_recording_consent_ui`; Test `test_consent_ui.py`) | Code + Test |
 | Härtung `&record=off` als Bedingung 8 | **Design-Entscheidung** (aus Anbieter-Doku abgeleitet, dort nicht als Empfehlung ausgewiesen) | Projekt |
 
 ---
@@ -323,7 +509,12 @@ in der Lage ist, abzulehnen *„ohne Nachteile zu erleiden"*.
 - **Code-Änderung 28.09.2026 (Nutzer-GO, Schritt 2):** Härtung + Rollentrennung — Gast-Link `vdo_ninja_gast_url` = `?room=…&record=off`, Director-Link `vdo_ninja_url` ohne Parameter; **im HR-Raumfall** gibt es weiterhin keine Aufnahme-*Aktivierung*. **Ausnahme (Nutzerauftrag 04.10.2026, Codemarken `meet_url`/`video_url` in `webui/pages/candidate.py`):** die Kandidaten-Selbstpräsentation trägt `?push=…&record=6000` — Aufnahme landet lokal im Download-Ordner des Kandidaten.
 - **Kein Aufnahme-Parameter wurde im HR-Raum aktiviert.** Das Gate (d) ist zu 12/12 offen; es betrifft Director-/Gast-Links des Arbeitgebers, **nicht** die Kandidaten-Selbstpräsentation.
 - **Keine Löschfrist wurde technisch umgesetzt.** § 12 (d) Punkt 7 bleibt offen.
-- **Keine Einwilligungs-Tabelle wurde angelegt.** § (e2) ist Vorschlag.
+- **Einwilligungs-Tabelle ist angelegt** (`consents`, generisch) und wird für
+  `purpose='recording'` genutzt; die frühere 12-Punkte-Gate-Liste (d) gilt weiter für den HR-Raumfall.
+- **Selbstpräsentation (26.10.2026):** `&record=6000` wird nur nach der separaten Checkbox und
+  `record_consent(..., 'recording')` erzeugt; ohne Haken bleibt die URL aufnahmefrei. Offen sind
+  Löschfrist, Datei-Registrierung und die HR-Gate-Punkte 1–7/11–12. Übersicht: (e3)
+  „Umsetzungsstand und Lücke".
 - Es wurde **kein** Vertragstext erstellt; der Einwilligungstext ist als **Pflichtinhalt**
   beschrieben (e1), nicht als juristisch fertiges Formular. Fertigung durch Rechtsabteilung/DSB.
 

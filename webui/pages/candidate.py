@@ -16,7 +16,7 @@ from pathlib import Path
 from nicegui import background_tasks, run, ui
 
 from webui import db, logic
-from webui.i18n import _  # i18n Phase 5 (03.10.2026); Spec: knowledge/system/i18n.md
+from webui.i18n import _, get_language  # i18n Phase 5 (03.10.2026); Spec: knowledge/system/i18n.md
 
 _log = logging.getLogger("kmhr.candidate")
 from webui.theme import C, PRIMARY, SECONDARY, ACCENT, score_color, score_label, score_badge_class
@@ -1102,6 +1102,49 @@ def persist_video_link(ergebnisse: Path, cand_id, video_url: str, now=None) -> P
     return p
 
 
+# ─── Aufnahme-Einwilligung (Selbstpräsentation / Video-Vorstellung) ───
+
+def selbstpraesentation_url(room_name: str, *, recording_consent: bool) -> str:
+    """VDO.Ninja-Sender-URL (`?push=`) — `&record=6000` NUR mit Einwilligung.
+
+    Die Aufnahme ist ein zusätzlicher Verarbeitungsschritt und braucht eine
+    eigene, vorherige, freiwillige Einwilligung (Art. 7 Abs. 2/4 DSGVO,
+    Erwägungsgrund 32/42/43; § 26 Abs. 2 BDSG). Ohne Einwilligung bleibt die
+    URL aufnahmefrei — die Vorstellung ist dann trotzdem möglich (die Aufnahme
+    darf nicht Bedingung sein). Freigegeben ist bewusst nur die
+    Kandidaten-Selbstpräsentation; der HR-Raumfall bleibt bei `record=off`.
+    Quelle: knowledge/legal/recording-consent.md (i) Punkt 8, (g).
+    """
+    url = f"https://vdo.ninja/?push={room_name}"
+    if recording_consent:
+        return url + "&record=6000"
+    return url
+
+
+def _recording_consent_ui() -> ui.checkbox:
+    """Separate Aufnahme-Einwilligung — NICHT vorangehakt, nicht mit AGB gebündelt.
+
+    Pflichtinhalt (Zweck, Empfänger, Speicherdauer, Widerruf, Freiwilligkeit)
+    nach Art. 13 Abs. 1/2 DSGVO und § 26 Abs. 2 BDSG; siehe
+    knowledge/legal/recording-consent.md (e1). Der Nachweis wird erst beim
+    Erzeugen des Links geschrieben (`db.record_consent(..., "recording", ...)`).
+    """
+    cb = ui.checkbox(
+        _('Ich willige in die Aufzeichnung meiner Video-Vorstellung ein.'),
+        value=False,
+    ).classes("text-sm text-gray-800 dark:text-gray-200")
+    ui.markdown(
+        _('**Zweck:** Prüfung meiner Bewerbung durch die Personalabteilung. **Empfänger:** das einstellende Unternehmen. **Speicherung:** 6 Monate nach Abschluss des Bewerbungsverfahrens, danach Löschung.')
+    ).classes(C.SMALL + " text-xs")
+    ui.markdown(
+        _('**Widerruf:** jederzeit ohne Angabe von Gründen über die im Portal genannten Kontaktwege. **Freiwillig:** Die Aufzeichnung ist nicht Voraussetzung für meine Bewerbung oder ein Gespräch.')
+    ).classes(C.SMALL + " text-xs")
+    ui.markdown(
+        _('Details: [Datenschutzerklärung](/datenschutz).')
+    ).classes(C.SMALL + " text-xs")
+    return cb
+
+
 # ─── Tab 5: Pre-Screen (Selbstpräsentation) ─────────────────────────
 
 def _tab_prescreen(s: dict) -> None:
@@ -1159,6 +1202,11 @@ def _tab_prescreen(s: dict) -> None:
 
     prescreen_container = ui.column().classes("w-full")
 
+    # Aufnahme-Einwilligung (separat, nicht vorangehakt) — gilt nur für den
+    # erzeugten Link; ohne Häkchen entsteht die URL ohne `&record=6000`.
+    ui.label(_('🎬 Aufzeichnung der Selbstpräsentation (optional)')).classes(C.CARD_TITLE + " mt-4")
+    rec_consent = _recording_consent_ui()
+
     def start_prescreen():
         import random, string
         room_code = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
@@ -1169,9 +1217,15 @@ def _tab_prescreen(s: dict) -> None:
         # Fix 03.10.2026 (Spec §2.3): Selbstpräsentation = SOLO-SENDER -> `?push=` (NICHT
         # `?director=`; der Regieraum sendet kein eigenes Bild). Offizielle Doku:
         # docs.vdo.ninja (Solo-Selbstpräsentation = `&push`).
-        # Kein Aufnahme-Parameter (`&record`) – erst nach dokumentierter Einwilligung
-        # (knowledge/legal/recording-consent.md (i) Punkt 8).
-        meet_url = f"https://vdo.ninja/?push={room_name}&record=6000"
+        # Aufnahme-Parameter NUR mit der oben erteilten Einwilligung; der Nachweis
+        # (`recording`) wird VOR dem Link geschrieben (knowledge/legal/recording-consent.md).
+        if rec_consent.value:
+            db.record_consent(
+                "candidate", cand_id, "recording",
+                text_version=db.CONSENT_VERSION, language=get_language())
+        else:
+            ui.notify(_('Ohne Einwilligung wird der Link ohne Aufnahme erzeugt.'), type="info")
+        meet_url = selbstpraesentation_url(room_name, recording_consent=bool(rec_consent.value))
 
         eigene_fragen = []
         if skills:
@@ -1543,6 +1597,11 @@ def _tab_sprachtest(s: dict) -> None:
     ).classes(C.SMALL + " mb-2")
     video_box = ui.column().classes("w-full")
 
+    # Aufnahme-Einwilligung (separat, nicht vorangehakt, nicht mit AGB gebündelt):
+    # ohne Häkchen entsteht der Link ohne `&record=6000` und es wird KEIN
+    # Einwilligungs-Nachweis geschrieben (knowledge/legal/recording-consent.md).
+    video_rec_consent = _recording_consent_ui()
+
     # A4 (30.09.2026): Logik in Modulfunktionen (load_video_link / persist_video_link,
     # getestet in tests/test_video_section.py); hier nur dünne Wrapper.
     def _load_video_link():
@@ -1567,8 +1626,16 @@ def _tab_sprachtest(s: dict) -> None:
         # (VDO sanitzt non-alphanumeric zu "_"). Eindeutigkeit über uuid8, Zufälligkeit unverändert.
         video_code = f"vorstellung{s['user_cand_id']}{str(uuid.uuid4())[:8]}"
         # Fix 03.10.2026 (Spec §2.3): Solo-Selbstpräsentation = `?push=` (Sender), nicht
-        # `?director=` (Regieraum ohne eigenes Bild). Ohne Aufnahme-Parameter (rechtlich).
-        video_url = f"https://vdo.ninja/?push={video_code}&record=6000"
+        # `?director=` (Regieraum ohne eigenes Bild).
+        # Aufnahme nur MIT Einwilligung; Nachweis (`recording`) VOR dem Link speichern.
+        if video_rec_consent.value:
+            db.record_consent(
+                "candidate", s["user_cand_id"], "recording",
+                text_version=db.CONSENT_VERSION, language=get_language())
+        else:
+            ui.notify(_('Ohne Einwilligung wird der Link ohne Aufnahme erzeugt.'), type="info")
+        video_url = selbstpraesentation_url(
+            video_code, recording_consent=bool(video_rec_consent.value))
         _persist_video_link(video_url)
         _show_video(video_url)
         ui.notify(_('Video-Link generiert und mit Ihrer Bewerbung gespeichert.'), type="positive")

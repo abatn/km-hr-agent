@@ -3669,3 +3669,30 @@ msgstr "Les outils – connecteurs MCP pour PDF, droit, e-mail, réunion et test
 
 msgid "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
 msgstr "Le résultat – score, invitation via VDO.Ninja et onboarding ; l'humain décide."
+
+msgid "Ich akzeptiere die AGB und die Datenschutzerklärung"
+msgstr "J'accepte les conditions générales (CGV) et la politique de confidentialité"
+
+msgid "Datenschutzerklärung"
+msgstr "Politique de confidentialité"
+
+msgid "Bitte akzeptieren Sie AGB und Datenschutzerklärung, um sich zu registrieren."
+msgstr "Veuillez accepter les CGV et la politique de confidentialité pour vous inscrire."
+
+msgid "Ich willige in die Aufzeichnung meiner Video-Vorstellung ein."
+msgstr "Je consens à l'enregistrement de ma présentation vidéo."
+
+msgid "**Zweck:** Prüfung meiner Bewerbung durch die Personalabteilung. **Empfänger:** das einstellende Unternehmen. **Speicherung:** 6 Monate nach Abschluss des Bewerbungsverfahrens, danach Löschung."
+msgstr "**Finalité :** examen de ma candidature par le service RH. **Destinataires :** l'entreprise qui recrute. **Conservation :** 6 mois après la fin de la procédure de candidature, puis suppression."
+
+msgid "**Widerruf:** jederzeit ohne Angabe von Gründen über die im Portal genannten Kontaktwege. **Freiwillig:** Die Aufzeichnung ist nicht Voraussetzung für meine Bewerbung oder ein Gespräch."
+msgstr "**Retrait :** à tout moment, sans justification, via les canaux de contact indiqués dans le portail. **Volontaire :** l'enregistrement n'est pas une condition de ma candidature ni d'un entretien."
+
+msgid "Details: [Datenschutzerklärung](/datenschutz)."
+msgstr "Détails : [Politique de confidentialité](/datenschutz)."
+
+msgid "🎬 Aufzeichnung der Selbstpräsentation (optional)"
+msgstr "🎬 Enregistrement de la présentation personnelle (facultatif)"
+
+msgid "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
+msgstr "Sans consentement, le lien est généré sans enregistrement."

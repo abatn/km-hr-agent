@@ -1,6 +1,6 @@
 # Conditions Générales (CGU/CGV)
 
-> **Statut : PROJET (02.10.2026)** — texte juridique, **à faire vérifier par un avocat**. Pas de conseil juridique.
+> **Statut : PROJET (état au 26.10.2026)** — texte juridique, **à faire vérifier par un avocat**. Pas de conseil juridique.
 > Structure inspirée des CGU de plateformes courantes (modèle : Bipperz T&C) — **texte propre**,
 > non repris mot pour mot. **FR = traduction de l'original allemand** (non contraignante ; la version
 > allemande prévaut). Informations manquantes : **« [à compléter] »** (principe du labo : aucune invention).
@@ -9,8 +9,9 @@
 
 Les présentes Conditions Générales (CG) s'appliquent à l'utilisation de la plateforme
 **KM-HR-Agent** (application web), exploitée par **Agic Tunisie GmbH** (ci-après « le
-fournisseur »), sise 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisie. Elles s'appliquent à
-tous les utilisateurs (candidats, employeurs, admin).
+fournisseur »), sise 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisie, numéro
+d'enregistrement (matricule fiscal) **1096754W**. Elles s'appliquent à tous les utilisateurs
+(candidats, employeurs, admin).
 
 ## 2. Description du service et rôle d'intermédiaire
 
@@ -25,6 +26,10 @@ d'embauche, les contrats, les salaires ainsi que les décisions de visa/titre de
 exclusivement des employeurs et des autorités compétentes.
 
 2.3 Il n'existe **aucune garantie** de placement, de place de formation ou de visa.
+
+2.4 Le matching et le scoring sont établis **avec l'assistance de l'IA** ; la décision finale
+d'invitation, de rejet et d'embauche est prise exclusivement par des personnes. Détails : Politique
+de confidentialité (`/datenschutz`), section 3.
 
 ## 3. Inscription et compte
 
@@ -69,8 +74,10 @@ l'exactitude des contenus des utilisateurs ou des actions des employeurs.
 ## 7. Protection des données
 
 Le traitement des données personnelles est effectué conformément à la **Politique de
-confidentialité** (`/datenschutz`) et au RGPD. Les coordonnées des candidats ne sont communiquées
-aux employeurs **qu'après l'invitation**.
+confidentialité** (`/datenschutz`) et au RGPD. Les **coordonnées et documents** des candidats ne
+sont communiqués aux employeurs **qu'après l'invitation**. L'affichage des noms est actuellement
+converti en pseudonymes ; dans certaines vues, le nom réel peut encore être visible (lacune du code
+documentée, marque de code `anzeige_name`).
 
 ## 8. Droit d'auteur
 
@@ -87,7 +94,7 @@ d'auteur. Toute utilisation au-delà de l'usage prévu nécessite l'accord du fo
 
 Le fournisseur n'est **pas obligé** et **pas disposé** à participer à une procédure de règlement des
 litiges devant un organisme de médiation des consommateurs (§ 36 VSBG). Les réclamations doivent
-être adressées à **contact@zedintek.com**.
+être adressées à **batniniabdelkader@yahoo.com**.
 
 ## 11. Droit applicable et juridiction compétente
 
@@ -102,7 +109,15 @@ restent inchangées.
 Si une disposition est invalide, le reste du contrat demeure valable ; la disposition invalide est
 remplacée par la disposition valable économiquement la plus proche (§ 306 BGB).
 
-## 13. Contact
+## 13. Fournisseur et contact
 
-Agic Tunisie GmbH · 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisie
-E-mail : **contact@zedintek.com**
+Agic Tunisie GmbH
+13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisie
+Numéro d'enregistrement (matricule fiscal) : **1096754W**
+E-mail : **batniniabdelkader@yahoo.com**
+Téléphone : **+216 52 369 325**
+Site web : **https://jobs.hanibal-ai.com**
+Représentant autorisé : **Mohamed Larbi Nakti**
+
+**Représentant dans l'UE selon l'art. 27 RGPD :** Batnini Abdelkader, **+49 1577 7774764**,
+**batniniabdelkader@yahoo.com** (adresse UE : **[à compléter]**).

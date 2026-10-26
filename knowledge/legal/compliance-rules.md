@@ -1,9 +1,9 @@
 # Compliance-Regeln – Länderspezifische Arbeitsgesetze
 
-> **Stand:** September 2026  
-> **Geltungsbereich:** Automatische Prüfung bei jedem Match  
-> **Voraussetzung:** Login + Lebenslauf-Upload (Jobportal-Prinzip)  
-> **Connectors:** ansvar-german-law (DE), ansvar-french-law (FR), ansvar-swiss-law (CH)  
+> **Stand:** September 2026
+> **Geltungsbereich:** Automatische Prüfung bei jedem Match
+> **Voraussetzung:** Login + Lebenslauf-Upload (Jobportal-Prinzip)
+> **Connectors:** ansvar-german-law (DE), ansvar-french-law (FR), ansvar-swiss-law (CH)
 > **Gateway:** https://gateway.ansvar.eu/mcp (gemeinsamer Ansvar Gateway)
 
 ---

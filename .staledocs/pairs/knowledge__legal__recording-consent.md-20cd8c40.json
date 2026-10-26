@@ -6,18 +6,24 @@
       "&record=false",
       "&record=off",
       "?director=",
+      "?push=",
+      "_recording_consent_ui",
       "agent-runner.py",
       "application_id",
       "candidate_documents",
       "ergebnisse/",
       "ergebnisse/browser-recording-plan-2026-09-27.md",
-      "knowledge/language-tests.md",
       "knowledge/legal/gdpr-policy.md",
       "knowledge/system/vdo-ninja-migration.md",
       "meet_url",
       "pre-screen",
+      "record_consent",
       "result_json",
       "scripts/agent-runner.py",
+      "test_consent_ui.py",
+      "text_version",
+      "ui.checkbox(value=False)",
+      "value=False",
       "vdo-ninja-migration.md",
       "vdo_ninja_gast_url",
       "vdo_ninja_url",
@@ -27,14 +33,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-23T10:43:34+00:00",
+    "at": "2026-10-26T13:59:38+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
-      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
+      "webui/pages/candidate.py": "f6f88923654be2ceb4fae350e737356e1674a916"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "1af7a67f13a2afdbcd2ada676dc22c18beb9dede",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/legal/recording-consent.md"
+    "commit": "8b54885cd55702fed7f6cfd1427c1edcefb46940",
+    "doc_blob": "fd015dee92234fc42568bdd67a9a3eaff46eefcf",
+    "note": "knowledge/legal/recording-consent.md: Consent-Datenmodell/UI und Rechtsdaten 26.10.2026 gepr\u00fcft; 701 collected/696 passed"
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1

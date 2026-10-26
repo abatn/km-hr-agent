@@ -197,6 +197,12 @@ _db.init_notifications_table()
 # webui/db.py, hier wird nur die bestehende Funktion aufgerufen.
 _db.init_candidates_migrations()
 
+# 26.10.2026 (Consent-Nachweise): dieselbe App-Start-Parität für die
+# consents-Tabelle (webui/db.py::init_consents_table) — Tests, die die
+# Einwilligungs-Funktionen ohne `main.py` aufrufen, finden die Tabelle damit
+# im Spiegel vor. Idempotent (CREATE ... IF NOT EXISTS + ALTER nur bei Bedarf).
+_db.init_consents_table()
+
 
 def pytest_sessionfinish(session, exitstatus):
     """Endwerte in die Pointer-Datei — UND ERST DANACH das eigene Spiegel-

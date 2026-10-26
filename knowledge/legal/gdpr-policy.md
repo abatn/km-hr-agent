@@ -1,8 +1,8 @@
 # DSGVO-Strategie – KM-HR-Agent
 
-> **Stand:** September 2026  
-> **Rechtsgrundlage:** Verordnung (EU) 2016/679 (Datenschutz-Grundverordnung)  
-> **Geltungsbereich:** Alle Verarbeitungen personenbezogener Daten im Recruiting-Prozess  
+> **Stand:** September 2026
+> **Rechtsgrundlage:** Verordnung (EU) 2016/679 (Datenschutz-Grundverordnung)
+> **Geltungsbereich:** Alle Verarbeitungen personenbezogener Daten im Recruiting-Prozess
 > **Voraussetzung:** Login + Lebenslauf-Upload (Jobportal-Prinzip)
 
 ---

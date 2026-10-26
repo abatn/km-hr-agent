@@ -1,6 +1,6 @@
 # Terms and Conditions (T&C)
 
-> **Status: DRAFT (02.10.2026)** — legal text, **to be reviewed by a lawyer**. Not legal advice.
+> **Status: DRAFT (as of 26.10.2026)** — legal text, **to be reviewed by a lawyer**. Not legal advice.
 > Structure modelled on common platform T&Cs (template: Bipperz T&C) — **own text**, not copied
 > verbatim. **EN = translation of the German original** (not legally binding; the German version
 > prevails). Missing details: **"[to be added]"** (lab principle: no inventions).
@@ -9,8 +9,8 @@
 
 These Terms and Conditions (T&C) apply to the use of the **KM-HR-Agent** platform (web
 application), operated by **Agic Tunisie GmbH** (hereinafter "provider"), registered at
-13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisia. They apply to all users (candidates,
-employers, admin).
+13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisia, registration number (matricule fiscal)
+**1096754W**. They apply to all users (candidates, employers, admin).
 
 ## 2. Service description and intermediary role
 
@@ -25,6 +25,10 @@ salaries and visa/residence permit decisions lie solely with the employers and t
 authorities.
 
 2.3 There is **no guarantee** of placement, a training position or a visa.
+
+2.4 Matching and scoring are produced with **AI assistance**; the final decision on invitation,
+rejection and hiring is taken exclusively by humans. Details: Privacy Policy (`/datenschutz`),
+section 3.
 
 ## 3. Registration and account
 
@@ -69,7 +73,9 @@ content or actions of employers.
 ## 7. Data protection
 
 Personal data is processed in accordance with the **Privacy Policy** (`/datenschutz`) and the
-GDPR. Candidate contact data is released to employers **only after the invitation**.
+GDPR. **Contact data and documents** of candidates are released to employers **only after the
+invitation**. The display of names is currently being switched to pseudonyms; in individual views
+the real name may still be visible (documented code gap, code mark `anzeige_name`).
 
 ## 8. Copyright
 
@@ -86,7 +92,7 @@ purpose requires the provider's consent.
 
 The provider is **not obliged** and **not willing** to participate in dispute resolution proceedings
 before a consumer arbitration board (§ 36 VSBG). Complaints should be addressed to
-**contact@zedintek.com**.
+**batniniabdelkader@yahoo.com**.
 
 ## 11. Applicable law and place of jurisdiction
 
@@ -100,7 +106,15 @@ mandatory consumer protection provisions of the country of residence remain unaf
 Should any provision be invalid, the remainder of the contract remains valid; the invalid provision
 is replaced by the economically closest valid provision (§ 306 BGB).
 
-## 13. Contact
+## 13. Provider and contact
 
-Agic Tunisie GmbH · 13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisia
-Email: **contact@zedintek.com**
+Agic Tunisie GmbH
+13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisia
+Registration number (matricule fiscal): **1096754W**
+Email: **batniniabdelkader@yahoo.com**
+Phone: **+216 52 369 325**
+Website: **https://jobs.hanibal-ai.com**
+Authorised representative: **Mohamed Larbi Nakti**
+
+**EU representative under Art. 27 GDPR:** Batnini Abdelkader, **+49 1577 7774764**,
+**batniniabdelkader@yahoo.com** (EU address: **[to be added]**).

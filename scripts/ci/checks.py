@@ -137,9 +137,9 @@ def check_i18n() -> None:
 ERWARTETE_TABELLEN = {
     "admins", "agent_tasks", "application_status_history", "applications",
     "candidate_documents", "candidate_status_history", "candidates",
-    "compliance_protokoll", "employers", "feedback", "gewichtung_historie",
-    "job_status_history", "jobs", "language_tests", "mentoring", "notifications",
-    "password_resets",
+    "compliance_protokoll", "consents", "employers", "feedback",
+    "gewichtung_historie", "job_status_history", "jobs", "language_tests",
+    "mentoring", "notifications", "password_resets",
 }
 
 

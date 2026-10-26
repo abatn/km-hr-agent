@@ -76,6 +76,7 @@ db.init_mentoring_table()  # Phase D P10, User-GO 24.09.2026 (Spec §3C)
 db.init_compliance_protokoll_table()  # N-K, 01.10.2026 (Writer + Berichte, application_id)
 db.init_password_resets_table()  # Passwort-Reset, 18.10.2026 (Spec configuration-secrets.md §(g))
 db.init_candidates_migrations()  # FR-Filter Hiring-Board, 18.10.2026 (Spec employer-board.md)
+db.init_consents_table()  # Consent-Nachweise, 26.10.2026 (DSGVO Art. 6/7/9, § 26 BDSG)
 
 
 # ─── Session Helper ──────────────────────────────────────────────────

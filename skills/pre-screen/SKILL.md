@@ -58,7 +58,7 @@ Jeder Leerzustand in Pre-Screen/Onboarding enthält **mindestens einen klickbare
 - **Weg:** String-Bildung im Code, **kein** MCP-Aufruf
 - **Ort:** `scripts/agent-runner.py` (`create_invitation`), `webui/components.py` (`prescreen_recruiting_section`), `webui/pages/candidate.py` (Selbstpräsentation) — Codemarken `vdo_ninja_url`/`vdo_ninja_gast_url` (gemessen 591/594 ⓘ09.10.2026), `meet_url` (components.py, gemessen 704), `meet_url`/`video_url` (candidate.py, gemessen 1117/1512)
 - **Muster:** HR/Director `https://vdo.ninja/?director=prescreening{code}` · Kandidat/Gast `?room=…&record=off` · **Selbstpräsentation = Solo-Sender `?push={code}&record=6000`** — Raumname **alphanumerisch, ohne Bindestrich** seit 04.10.2026 (Quelle: docs.vdo.ninja/advanced-settings/setup-parameters/room: *„1 to 49-characters long: aLphaNumEric-characters; case sensitive."*)
-- **Aufnahmeparameter:** Einladungsraum **ohne** aufnahme-aktivierenden Parameter (Director parameterfrei, Gast `&record=off`); die **Selbstpräsentation** trägt seit 04.10.2026 `&record=6000` (`webui/pages/candidate.py`, gemessen 1117/1512 ⓘ09.10.2026). Aufzeichnung nur nach bestätigter Einwilligung, § 26 Abs. 2 BDSG. Spec: `knowledge/system/vdo-ninja-migration.md`
+- **Aufnahmeparameter:** Einladungsraum **ohne** aufnahme-aktivierenden Parameter (Director parameterfrei, Gast `&record=off`); die **Selbstpräsentation** trägt `&record=6000` **nur nach** separater, nicht vorangehakter Consent-Checkbox und `db.record_consent(..., 'recording')` (seit 26.10.2026; ohne Haken `?push=` ohne Aufnahme). Aufzeichnung nur nach bestätigter Einwilligung, § 26 Abs. 2 BDSG. Specs: `knowledge/system/vdo-ninja-migration.md`, `knowledge/legal/recording-consent.md`
 - **Rückgabe:** Meeting-URL (VDO.Ninja)
 
 ### 3. Screening-Fragen generieren
@@ -103,7 +103,7 @@ vdo_ninja_url = f"https://vdo.ninja/?director=prescreening{code}"
 | Muster (HR/Director) | `https://vdo.ninja/?director=prescreening{code}` |
 | Muster (Kandidat/Gast) | `https://vdo.ninja/?room=prescreening{code}&record=off` |
 | `code` | 8 Zeichen (Kleinbuchstaben + Ziffern) — `random.choices(string.ascii_lowercase + string.digits, k=8)`, gemessen `scripts/agent-runner.py` (gemessen 10.10.2026) ⓘ09.10.2026 — **Design-Entscheidung**, keine externe Quelle |
-| Aufnahme | `&record` speichert beim **Gast** (WebM, mit Einwilligung). `&autorecord`/`&autorecordremote` zeichnen **automatisch beim Laden** → § 26 Abs. 2 BDSG. **Nicht verwenden.** |
+| Aufnahme | `&record` speichert beim **Gast** (WebM) **nur nach** separater Consent-Checkbox/`consents`-Nachweis; `&autorecord`/`&autorecordremote` zeichnen **automatisch beim Laden** → § 26 Abs. 2 BDSG. **Nicht verwenden.** |
 | Anbieter-Status | Aufnahme = „experimental" (vdo.ninja) |
 
 ### Fragen generieren

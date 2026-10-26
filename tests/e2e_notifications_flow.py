@@ -101,6 +101,12 @@ def register_and_login(page) -> int:
     panel.get_by_label("E-Mail").fill(EMAIL)
     panel.get_by_label("Name").fill(NAME)
     panel.get_by_label("Passwort", exact=True).fill(PW)
+    # Consent (26.10.2026): Pflicht-Checkbox "Ich akzeptiere die AGB und die
+    # Datenschutzerklärung" — bewusst NICHT vorangehakt, muss also erst gesetzt
+    # werden, sonst blockiert do_register() das INSERT.
+    consent = panel.get_by_role("checkbox").first
+    assert consent.get_attribute("aria-checked") in ("false", None), "Consent war vorangehakt"
+    consent.click()
     panel.get_by_role("button", name="Registrieren").click()
     page.get_by_text("Registriert! Jetzt einloggen.").wait_for(timeout=15000)
     print(f"A1 Registrierung OK: {EMAIL} / {NAME}")

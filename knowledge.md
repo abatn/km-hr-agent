@@ -18,7 +18,7 @@ Minimal-Prototyp für 24 HR-Recruiting-Skills: Profil-Extraktion aus PDF/TXT, Ma
 | `knowledge/` | Wissensbasis (Specs) — siehe Wissens-Index unten |
 | `tests/` | pytest (Unit/Integration) + E2E (Playwright, `tests/e2e_*.py`) |
 | `ergebnisse/` | Berichte + Entscheidungslog (`entscheidungen.md`, Lab-Schritt 4) |
-| `data/feedback.db` | SQLite (17 Tabellen, gemessen per `checks.py schema` 21.10.2026) — **Live-DB nie direkt beschreiben** |
+| `data/feedback.db` | SQLite (18 Tabellen, gemessen per `checks.py schema` 26.10.2026) — **Live-DB nie direkt beschreiben** |
 | `app.py` | Streamlit-Archiv (Paritäts-Referenz, seit 23.09.2026 abgeschaltet) |
 
 ## Befehle (Auszug — maßgeblich: `AGENTS.md`)
@@ -68,7 +68,7 @@ Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindl
 |---|---|---|
 | Skills | 24 | `ls skills/*/SKILL.md \| wc -l` |
 | Knowledge-MD | 78 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (gemessen 25.10.2026; Verlauf: 77 vor Social-Automation, 76 am 21.10.2026, 47 am 01.10.2026) |
-| DB-Tabellen | 17 | `data/feedback.db` (gemessen 25.10.2026) |
+| DB-Tabellen | 18 | `data/feedback.db` (gemessen 26.10.2026) |
 | MCP-Server | 14 | `opencode.json` (Key `mcp`) |
 | i18n-msgid je Sprache | 1221 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` (gemessen 25.10.2026; 1220 Keys im Katalog; vorher 1193) |
 | Unit-Tests | siehe `AGENTS.md` | `.venv-streamlit/bin/python3 -m pytest -q` |

@@ -3,7 +3,7 @@ KM-HR-Agent – db.py (framework-unabhängiger Datenbank-Layer)
 ============================================================
 Phase 0 der NiceGUI-Migration (ergebnisse/nicegui-phase-0.md).
 
-Enthält NUR SQLite-Zugriff (14 Tabellen in data/feedback.db).
+Enthält NUR SQLite-Zugriff (18 Tabellen in data/feedback.db, inkl. consents).
 Keine Streamlit- oder NiceGUI-Importe — von beiden Apps nutzbar.
 
 Quelle der extrahierten Funktionen: app.py (Zeilen siehe
@@ -979,3 +979,170 @@ def init_candidates_migrations() -> None:
         c.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")
     conn.commit()
     conn.close()
+
+
+# ─── Consent-Nachweise (26.10.2026) ────────────────────────────────────
+# Einwilligungen nach Art. 6/7 DSGVO + Art. 9 Abs. 2 lit. a (besondere
+# Kategorien) + § 26 BDSG: je Subjekt (Bewerber/Arbeitgeber) und Zweck wird
+# **ein** Nachweis geführt, welche Textversion wann, in welcher Sprache, über
+# welchen Kanal und mit welchem Beleg (z. B. Checkbox-ID, IP-Hash) akzeptiert
+# wurde. Widerruf löscht nichts, sondern setzt `withdrawn_at` (Rechenschafts-
+# pflicht Art. 5 Abs. 2 DSGVO — Nachweis muss den Widerruf überleben).
+#
+# Design-Entscheidungen (keine externe Quelle nötig, Verhalten):
+#   * Ein Fakt = das Schema steht NUR hier (`init_consents_table`), WebUI und
+#     Tests rufen nur diese Funktion auf (Muster `init_notifications_table`).
+#   * `text_version` ist Teil des Unique-Keys: eine neue Fassung erzeugt eine
+#     **neue** Zeile, die Historie der alten Fassung bleibt erhalten.
+#   * Keine personenbezogenen Inhalte in der Tabelle — nur IDs, Zweck,
+#     Metadaten. `evidence_json` ist für technische Belege gedacht, nicht für
+#     Namen, Adressen oder CV-Daten (Datenminimierung Art. 5 Abs. 1 lit. c).
+
+CONSENT_VERSION = "2026-10-26"
+CONSENT_FORM_DEFAULT = "electronic"
+# Vertrag mit der UI (webui/pages/*): nur diese Werte werden angenommen.
+CONSENT_SUBJECT_TYPES = ("candidate", "employer")
+CONSENT_PURPOSES = ("terms", "privacy", "talent_pool", "special_category",
+                    "language_test", "recording", "marketing")
+CONSENT_LANGUAGES = ("de", "en", "fr", "ar")
+
+
+def init_consents_table(db_path: Path | None = None) -> None:
+    """Legt die consents-Tabelle an (idempotent) + ergänzt fehlende Spalten.
+
+    `db_path` nur für Tests (Default: DB_PATH, damit der conftest-Spiegel
+    greift). Altbestands-DBs (kein `form`/`language`/`channel`/`evidence_json`)
+    werden per ALTER TABLE geheilt — `CREATE TABLE IF NOT EXISTS` ändert eine
+    bestehende Tabelle nicht (Muster `init_agent_tasks_table`).
+    """
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    try:
+        c = conn.cursor()
+        c.execute("""CREATE TABLE IF NOT EXISTS consents (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            subject_type TEXT NOT NULL,
+            subject_id INTEGER NOT NULL,
+            purpose TEXT NOT NULL,
+            text_version TEXT NOT NULL,
+            granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            form TEXT NOT NULL DEFAULT 'electronic',
+            language TEXT,
+            channel TEXT,
+            withdrawn_at TIMESTAMP,
+            evidence_json TEXT,
+            UNIQUE(subject_type, subject_id, purpose, text_version)
+        )""")
+        # ALTER-safe: nur fehlende Spalten ergänzen, nie bestehende ändern.
+        vorhanden = {r[1] for r in c.execute("PRAGMA table_info(consents)").fetchall()}
+        for spalte, typ in (
+            ("form", "TEXT NOT NULL DEFAULT 'electronic'"),
+            ("language", "TEXT"),
+            ("channel", "TEXT"),
+            ("withdrawn_at", "TIMESTAMP"),
+            ("evidence_json", "TEXT"),
+        ):
+            if spalte not in vorhanden:
+                c.execute(f"ALTER TABLE consents ADD COLUMN {spalte} {typ}")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_consents_subject "
+                  "ON consents(subject_type, subject_id)")
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def _consent_check(subject_type: str, subject_id: int, purpose: str) -> None:
+    """Prüft die Vertragswerte der UI (Fehler früh, statt stiller Falschdaten)."""
+    if subject_type not in CONSENT_SUBJECT_TYPES:
+        raise ValueError(f"consents: unbekannter subject_type {subject_type!r}")
+    if not isinstance(subject_id, int) or isinstance(subject_id, bool) or subject_id < 1:
+        raise ValueError(f"consents: ungültige subject_id {subject_id!r}")
+    if purpose not in CONSENT_PURPOSES:
+        raise ValueError(f"consents: unbekannter purpose {purpose!r}")
+
+
+def record_consent(subject_type: str, subject_id: int, purpose: str,
+                   text_version: str = CONSENT_VERSION, language: str = "de",
+                   channel: str = "ui", evidence: dict | None = None,
+                   db_path: Path | None = None) -> int:
+    """Erteilt/erneuert eine Einwilligung und gibt die Zeilen-id zurück.
+
+    Upsert auf dem Unique-Key `(subject_type, subject_id, purpose,
+    text_version)`: erneutes Akzeptieren derselben Textversion setzt
+    `granted_at` auf jetzt, hebt einen früheren Widerruf auf (`withdrawn_at`
+    = NULL) und aktualisiert Sprache/Kanal/Beleg. Ein neuer `text_version`-
+    Wert erzeugt eine neue Zeile (Historie bleibt).
+    `evidence` wird als JSON gespeichert (dict oder None).
+    """
+    _consent_check(subject_type, subject_id, purpose)
+    if language not in CONSENT_LANGUAGES:
+        raise ValueError(f"consents: unbekannte language {language!r}")
+    evidence_json = (json.dumps(evidence, ensure_ascii=False, sort_keys=True)
+                     if evidence is not None else None)
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    try:
+        conn.execute(
+            """INSERT INTO consents
+                   (subject_type, subject_id, purpose, text_version, form,
+                    language, channel, evidence_json)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+               ON CONFLICT(subject_type, subject_id, purpose, text_version)
+               DO UPDATE SET
+                   granted_at = CURRENT_TIMESTAMP,
+                   withdrawn_at = NULL,
+                   form = excluded.form,
+                   language = excluded.language,
+                   channel = excluded.channel,
+                   evidence_json = COALESCE(excluded.evidence_json,
+                                            consents.evidence_json)""",
+            (subject_type, subject_id, purpose, text_version,
+             CONSENT_FORM_DEFAULT, language, channel, evidence_json))
+        # lastrowid ist beim UPDATE-Pfad nicht verlässlich -> nachlesen.
+        row = conn.execute(
+            "SELECT id FROM consents WHERE subject_type = ? AND subject_id = ? "
+            "AND purpose = ? AND text_version = ?",
+            (subject_type, subject_id, purpose, text_version)).fetchone()
+        conn.commit()
+        return int(row[0])
+    finally:
+        conn.close()
+
+
+def withdraw_consent(subject_type: str, subject_id: int, purpose: str,
+                     db_path: Path | None = None) -> bool:
+    """Widerruft alle aktiven Nachweise eines Zwecks. True = Zeile geändert.
+
+    Die Zeile bleibt erhalten (Rechenschaftspflicht), nur `withdrawn_at` wird
+    gesetzt. Mehrfacher Aufruf ist ein No-op (False).
+    """
+    _consent_check(subject_type, subject_id, purpose)
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    try:
+        c = conn.execute(
+            "UPDATE consents SET withdrawn_at = CURRENT_TIMESTAMP "
+            "WHERE subject_type = ? AND subject_id = ? AND purpose = ? "
+            "AND withdrawn_at IS NULL",
+            (subject_type, subject_id, purpose))
+        geaendert = c.rowcount
+        conn.commit()
+        return geaendert > 0
+    finally:
+        conn.close()
+
+
+def get_consents(subject_type: str, subject_id: int,
+                 db_path: Path | None = None) -> list[dict]:
+    """Alle Nachweise eines Subjekts als dicts (neueste Fassung zuletzt).
+
+    Zusätzlich zu den Spalten enthält jedes dict `active` (bool) — abgeleitet
+    aus `withdrawn_at`, damit die UI nicht selbst NULL prüfen muss.
+    """
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    try:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT * FROM consents WHERE subject_type = ? AND subject_id = ? "
+            "ORDER BY purpose, text_version, id",
+            (subject_type, subject_id)).fetchall()
+        return [{**dict(r), "active": r["withdrawn_at"] is None} for r in rows]
+    finally:
+        conn.close()

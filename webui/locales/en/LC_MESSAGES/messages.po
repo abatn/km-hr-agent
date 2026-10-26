@@ -3669,3 +3669,30 @@ msgstr "The tools – MCP connectors for PDF, law, email, meetings and language 
 
 msgid "Das Ergebnis – Score, Einladung per VDO.Ninja und Onboarding; der Mensch entscheidet."
 msgstr "The result – score, invitation via VDO.Ninja and onboarding; the human decides."
+
+msgid "Ich akzeptiere die AGB und die Datenschutzerklärung"
+msgstr "I accept the Terms and Conditions and the Privacy Policy"
+
+msgid "Datenschutzerklärung"
+msgstr "Privacy Policy"
+
+msgid "Bitte akzeptieren Sie AGB und Datenschutzerklärung, um sich zu registrieren."
+msgstr "Please accept the Terms and Conditions and the Privacy Policy to register."
+
+msgid "Ich willige in die Aufzeichnung meiner Video-Vorstellung ein."
+msgstr "I consent to the recording of my video presentation."
+
+msgid "**Zweck:** Prüfung meiner Bewerbung durch die Personalabteilung. **Empfänger:** das einstellende Unternehmen. **Speicherung:** 6 Monate nach Abschluss des Bewerbungsverfahrens, danach Löschung."
+msgstr "**Purpose:** Review of my application by the HR department. **Recipients:** the hiring company. **Storage:** 6 months after the application process ends, then deletion."
+
+msgid "**Widerruf:** jederzeit ohne Angabe von Gründen über die im Portal genannten Kontaktwege. **Freiwillig:** Die Aufzeichnung ist nicht Voraussetzung für meine Bewerbung oder ein Gespräch."
+msgstr "**Withdrawal:** at any time without giving reasons via the contact channels named in the portal. **Voluntary:** The recording is not a prerequisite for my application or an interview."
+
+msgid "Details: [Datenschutzerklärung](/datenschutz)."
+msgstr "Details: [Privacy Policy](/datenschutz)."
+
+msgid "🎬 Aufzeichnung der Selbstpräsentation (optional)"
+msgstr "🎬 Recording of the self-presentation (optional)"
+
+msgid "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
+msgstr "Without consent, the link is generated without recording."
