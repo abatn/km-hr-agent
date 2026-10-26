@@ -3906,5 +3906,17 @@ msgstr "Termin bereits gebucht"
 msgid "Bruttojahresgehalt muss positiv sein"
 msgstr "Bruttojahresgehalt muss positiv sein"
 
+msgid "Seite nicht gefunden"
+msgstr "Seite nicht gefunden"
+
+msgid "Zurueck zum Dashboard"
+msgstr "Zurueck zum Dashboard"
+
+msgid "Öffnen"
+msgstr "Öffnen"
+
+msgid "{0} ältere Version(en) ohne aktuellen Video-Link"
+msgstr "{0} ältere Version(en) ohne aktuellen Video-Link"
+
 msgid "Bewerbung nicht gefunden"
 msgstr "Bewerbung nicht gefunden"

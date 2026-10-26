@@ -3901,5 +3901,17 @@ msgstr "Rendez-vous déjà réservé"
 msgid "Bruttojahresgehalt muss positiv sein"
 msgstr "Le salaire brut annuel doit être positif"
 
+msgid "Seite nicht gefunden"
+msgstr "Page introuvable"
+
+msgid "Zurueck zum Dashboard"
+msgstr "Retour au tableau de bord"
+
+msgid "Öffnen"
+msgstr "Ouvrir"
+
+msgid "{0} ältere Version(en) ohne aktuellen Video-Link"
+msgstr "{0} version(s) plus ancienne(s) sans lien vidéo actuel"
+
 msgid "Bewerbung nicht gefunden"
 msgstr "Candidature introuvable"

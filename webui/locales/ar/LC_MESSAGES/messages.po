@@ -3901,5 +3901,17 @@ msgstr "الموعد محجوز بالفعل"
 msgid "Bruttojahresgehalt muss positiv sein"
 msgstr "يجب أن يكون الراتب السنوي الإجمالي موجباً"
 
+msgid "Seite nicht gefunden"
+msgstr "الصفحة غير موجودة"
+
+msgid "Zurueck zum Dashboard"
+msgstr "العودة إلى لوحة التحكم"
+
+msgid "Öffnen"
+msgstr "فتح"
+
+msgid "{0} ältere Version(en) ohne aktuellen Video-Link"
+msgstr "{0} نسخة أقدم بدون رابط فيديو حالٍ"
+
 msgid "Bewerbung nicht gefunden"
 msgstr "لم يتم العثور على طلب التوظيف"

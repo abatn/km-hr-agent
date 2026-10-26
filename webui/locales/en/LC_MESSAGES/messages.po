@@ -3901,5 +3901,17 @@ msgstr "Appointment already booked"
 msgid "Bruttojahresgehalt muss positiv sein"
 msgstr "Gross annual salary must be positive"
 
+msgid "Seite nicht gefunden"
+msgstr "Page not found"
+
+msgid "Zurueck zum Dashboard"
+msgstr "Back to the dashboard"
+
+msgid "Öffnen"
+msgstr "Open"
+
+msgid "{0} ältere Version(en) ohne aktuellen Video-Link"
+msgstr "{0} older version(s) without a current video link"
+
 msgid "Bewerbung nicht gefunden"
 msgstr "Application not found"

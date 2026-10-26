@@ -2601,7 +2601,7 @@ def _page_dokumente(s: dict) -> None:
                 doc_search.bind_value(table, "filter")
                 table.add_slot("body-cell-aktion", r'''
                     <q-td :props="props">
-                        <q-btn flat dense no-caps color="primary" icon="download" label="Öffnen"
+                        <q-btn flat dense no-caps color="primary" icon="download" label="''' + _("Öffnen") + r'''"
                                @click="() => $parent.$emit('open_doc', {id: props.row.id})" />
                     </q-td>
                 ''')
