@@ -6,14 +6,14 @@
       "pdf-reader",
       "read_pdf_text"
     ],
-    "at": "2026-10-23T10:43:51+00:00",
+    "at": "2026-10-26T22:59:22+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
-      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "50f95c7d4161ae020d90a5e18ea55257e7e3a5df",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/extract-profile/SKILL.md"
+    "note": "Gepr\u00fcft 26.10.2026: Verweis auf candidate.py betrifft die Profil-Extraktion; candidate.py ist im Diff nicht ge\u00e4ndert."
   },
   "doc": "skills/extract-profile/SKILL.md",
   "schema": 1

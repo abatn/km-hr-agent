@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T19:28:57+00:00",
+    "at": "2026-10-26T23:11:37+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "2c813d72634aacf75f192c07abd453c00bac7114"
+      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Geprueft: def _page_dokumente und Sektion 6. Dokumente in webui/pages/employer.py unveraendert vorhanden; nur additive Billing-Sektion ergaenzt."
+    "note": "Gepr\u00fcft 26.10.2026: Zeilen 14-15 zitieren _page_dokumente/refresh_docs in webui/pages/employer.py; im Diff \u00e4ndert sich dort nur das Slot-Label (Konkatenation mit _(\"\u00d6ffnen\")), die Gate-Logik bleibt unber\u00fchrt."
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

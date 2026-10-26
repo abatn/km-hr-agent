@@ -12,15 +12,15 @@
       "knowledge/system/configuration-secrets.md",
       "reverse_proxy"
     ],
-    "at": "2026-10-25T19:45:22+00:00",
+    "at": "2026-10-26T22:59:18+00:00",
     "code_blobs": {
       "deploy/caddy/jobs.hanibal-ai.com.caddy": "0b409295a8493c94521ca183f3ab221be25e7352",
       "deploy/systemd/km-hr-agent.service": "96c4a2f0e6947f1e5cceb736bf089753c1fbe53b",
-      "webui/main.py": "0f2d280388a7b6cbfb652176bb7575789eeadd5e"
+      "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c"
     },
-    "commit": "7a01fc40f5c0406787c0e5b598bb524c6527451b",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "6c4cef6bd843fe3f0eab4efc0eab1a97a62c0406",
-    "note": "cloudflare-deployment.md: deploy/caddy/jobs.hanibal-ai.com.caddy um /oauth/callback -> 127.0.0.1:8765 erg\u00e4nzt"
+    "note": "Gepr\u00fcft 26.10.2026: Doku beschreibt Caddy/Cloudflare und den Start \u00fcber webui/main.py; main.py ist im Diff nicht ge\u00e4ndert."
   },
   "doc": "knowledge/system/cloudflare-deployment.md",
   "schema": 1

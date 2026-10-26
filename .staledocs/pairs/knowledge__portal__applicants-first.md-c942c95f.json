@@ -22,13 +22,13 @@
       "webui/db.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T19:29:14+00:00",
+    "at": "2026-10-26T22:59:14+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "2c813d72634aacf75f192c07abd453c00bac7114"
+      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
-    "note": "Geprueft: def refresh_cands und Kommentar Bewerber dieser Stelle in webui/pages/employer.py unveraendert."
+    "note": "Gepr\u00fcft 26.10.2026: Zeilen 15-16 zitieren refresh_cands und den Kommentar \"Bewerber dieser Stelle\" in employer.py; diese Stellen sind im Diff nicht enthalten."
   },
   "doc": "knowledge/portal/applicants-first.md",
   "schema": 1

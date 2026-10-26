@@ -11,15 +11,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-26T19:30:28+00:00",
+    "at": "2026-10-26T22:59:22+00:00",
     "code_blobs": {
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
-      "webui/pages/employer.py": "2c813d72634aacf75f192c07abd453c00bac7114"
+      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
-    "note": "Geprueft: Doku referenziert webui/pages/candidate.py bzw. webui/pages/employer.py; Zugriffsregel und applications/application_status_history unveraendert."
+    "note": "Gepr\u00fcft 26.10.2026: employer.py-Verweis betrifft den Bewerbungsstatus, nicht den Dokumente-Slot oder die 404-Seite; beides im Diff unver\u00e4ndert im Verhalten."
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

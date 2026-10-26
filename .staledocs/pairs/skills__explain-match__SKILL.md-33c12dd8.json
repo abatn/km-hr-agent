@@ -1,14 +1,14 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-22T06:33:06+00:00",
+    "at": "2026-10-26T22:59:21+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "05b88485d633da8a26322054b79f76621ee9a973",
+      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "7cb5aab4147181e8e528f829676bbef664ee1d56",
-    "note": "Geprueft 22.10.2026: geaendert wurde `scripts/agent-runner.py` \u2014 ausschliesslich die distinct-Stellen-Zaehlung in `_score_from_ergebnisse` (V-13(c): zwei Reports derselben Stelle = eine Stelle; Kandidat 2 / job=None liefert jetzt 90 statt 'unbekannt'). Die in diesem Doc beschriebenen Task-Typen, Trigger und Pfade bleiben unveraendert."
+    "note": "Gepr\u00fcft 26.10.2026: Skill-Logik liegt in scripts/agent-runner.py, im Diff nicht enthalten."
   },
   "doc": "skills/explain-match/SKILL.md",
   "schema": 1

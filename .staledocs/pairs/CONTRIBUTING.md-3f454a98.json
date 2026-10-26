@@ -26,13 +26,13 @@
       "tests/e2e_isolation.py",
       "webui/"
     ],
-    "at": "2026-10-21T22:15:14+00:00",
+    "at": "2026-10-26T22:59:09+00:00",
     "code_blobs": {
-      "scripts/ci/checks.py": "49dd1309477e0d26014c2684d4982f9d9eb83112"
+      "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "c189b6060ebaa0252acaf0d0ea280865659bb46c",
-    "note": "Geprueft 22.10.2026: die zitierten Tokens `db.py`, `logic.py`, `webui/` und `knowledge/` stammen aus der Beschreibung der NiceGUI-Struktur, nicht aus `scripts/ci/checks.py`; dort wurde nur der Waechter `mdguard` geaendert (Auto-Discovery, Fixtures) \u2014 die im Doc beschriebene Projektstruktur bleibt unveraendert."
+    "note": "Gepr\u00fcft 26.10.2026: CONTRIBUTING.md verweist auf scripts/ci/checks.py (Gate-Befehle), das unver\u00e4ndert ist; die ge\u00e4nderten Dateien (not_found.py, employer.py, Kataloge) werden dort nicht genannt."
   },
   "doc": "CONTRIBUTING.md",
   "schema": 1

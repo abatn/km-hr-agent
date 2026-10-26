@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-23T10:43:58+00:00",
+    "at": "2026-10-26T22:59:23+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
-      "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d"
+      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
     "doc_blob": "d540129a5c16be5461b860668bc11511fc8e43f4",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/verify-documents/SKILL.md"
+    "note": "Gepr\u00fcft 26.10.2026: Dokumentenpr\u00fcfung in employer.py bleibt unver\u00e4ndert; \u00fcbersetzt wurde nur das Anzeige-Label \u00d6ffnen im Slot."
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1
