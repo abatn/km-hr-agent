@@ -78,7 +78,7 @@ def _application_context(conn, application_id: int) -> dict:
            JOIN employers e ON e.id = j.employer_id
            WHERE a.id = ?""", (application_id,)).fetchone()
     if not row:
-        raise ValueError(f"billing: Bewerbung {application_id} nicht gefunden")
+        raise ValueError("Bewerbung nicht gefunden")
     return {"candidate_id": row[0], "employer_id": row[1], "stellentyp": row[2] or "",
             "job_titel": row[3] or "", "candidate_name": row[4] or "",
             "employer_firma": row[5] or "", "ist_ausbildung": (row[2] == AUSBILDUNG_TYP)}

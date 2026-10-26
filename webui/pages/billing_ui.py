@@ -165,7 +165,7 @@ def candidate_billing_section(cand_id: int) -> None:
                             billing.create_termin(conn, application_id=int(app_select.value),
                                                   candidate_id=cand_id, slot_at=slot)
                         except ValueError as ex:
-                            ui.notify(_("Termin konnte nicht gebucht werden: {0}").format(ex),
+                            ui.notify(_("Termin konnte nicht gebucht werden: {0}").format(_(str(ex))),
                                       type="negative")
                             return
                         finally:
@@ -248,7 +248,7 @@ def admin_billing_section() -> None:
         # ── Schritt 4: Visumgebühr erfassen ────────────────────────────
         with ui.card().classes(C.CARD + " w-full mb-4"):
             ui.label(_("Visumgebühr erfassen (nach Visum-Genehmigung)")).classes(C.CARD_TITLE + " mb-2")
-            ui.label(_("Kandidat: 1.000 € · Arbeitgeber: 20 % des Bruttojahresgehalts "
+            ui.label(_("Kandidat: 1.000 € · Arbeitgeber: 20 Prozent des Bruttojahresgehalts "
                        "(gedeckelt auf 2.000 €) · Ausbildung: nur Arbeitgeber.")).classes(
                 "text-sm text-gray-500 mb-3")
             if not eingestellt:
@@ -278,7 +278,7 @@ def admin_billing_section() -> None:
                                 conn, application_id=int(app_select.value),
                                 brutto_jahr_cents=brutto * 100)
                         except ValueError as ex:
-                            ui.notify(_("Visumgebühr fehlgeschlagen: {0}").format(ex),
+                            ui.notify(_("Visumgebühr fehlgeschlagen: {0}").format(_(str(ex))),
                                       type="negative")
                             return
                         finally:

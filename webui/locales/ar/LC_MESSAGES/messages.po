@@ -3873,3 +3873,33 @@ msgstr "موجود مسبقاً"
 
 msgid "entfällt (Ausbildung)"
 msgstr "لا ينطبق (التدريب المهني)"
+
+msgid "Bankdaten sind noch nicht konfiguriert. Bitte keine Rechnung ohne gültige Bankdaten versenden."
+msgstr "لم يتم إعداد البيانات المصرفية بعد. يرجى عدم إرسال أي فاتورة دون بيانات مصرفية صالحة."
+
+msgid "Für eine Beratung brauchst du zuerst eine Bewerbung. Sobald du dich beworben hast, kannst du hier einen Termin buchen."
+msgstr "لحجز استشارة تحتاج أولاً إلى طلب توظيف. بمجرد تقديم طلبك يمكنك حجز موعد هنا."
+
+msgid "Die Beratung ist eine separate Leistung und wird nicht auf eine spätere Vermittlungsgebühr angerechnet."
+msgstr "الاستشارة خدمة منفصلة ولا تُخصم من أي رسم توظيف لاحق."
+
+msgid "Gebühren für Vermittlung und Visa entstehen, sobald eine Bewerbung eingestellt bzw. das Visum genehmigt wurde."
+msgstr "تنشأ رسوم التوظيف والتأشيرة بمجرد اعتماد طلب التوظيف أو الموافقة على التأشيرة."
+
+msgid "Kandidat: 1.000 € · Arbeitgeber: 20 Prozent des Bruttojahresgehalts (gedeckelt auf 2.000 €) · Ausbildung: nur Arbeitgeber."
+msgstr "المرشح: 1.000 € · صاحب العمل: 20 بالمئة من الراتب السنوي الإجمالي (بحد أقصى 2.000 €) · التدريب المهني: صاحب العمل فقط."
+
+msgid "Bewerbung gehört nicht zu diesem Kandidaten"
+msgstr "طلب التوظيف لا ينتمي إلى هذا المرشح"
+
+msgid "Für diese Bewerbung ist bereits ein Beratungstermin gebucht."
+msgstr "تم حجز موعد استشارة لهذا الطلب بالفعل."
+
+msgid "Termin bereits gebucht"
+msgstr "الموعد محجوز بالفعل"
+
+msgid "Bruttojahresgehalt muss positiv sein"
+msgstr "يجب أن يكون الراتب السنوي الإجمالي موجباً"
+
+msgid "Bewerbung nicht gefunden"
+msgstr "لم يتم العثور على طلب التوظيف"

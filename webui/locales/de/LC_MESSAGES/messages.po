@@ -3878,3 +3878,33 @@ msgstr "bereits vorhanden"
 
 msgid "entfällt (Ausbildung)"
 msgstr "entfällt (Ausbildung)"
+
+msgid "Bankdaten sind noch nicht konfiguriert. Bitte keine Rechnung ohne gültige Bankdaten versenden."
+msgstr "Bankdaten sind noch nicht konfiguriert. Bitte keine Rechnung ohne gültige Bankdaten versenden."
+
+msgid "Für eine Beratung brauchst du zuerst eine Bewerbung. Sobald du dich beworben hast, kannst du hier einen Termin buchen."
+msgstr "Für eine Beratung brauchst du zuerst eine Bewerbung. Sobald du dich beworben hast, kannst du hier einen Termin buchen."
+
+msgid "Die Beratung ist eine separate Leistung und wird nicht auf eine spätere Vermittlungsgebühr angerechnet."
+msgstr "Die Beratung ist eine separate Leistung und wird nicht auf eine spätere Vermittlungsgebühr angerechnet."
+
+msgid "Gebühren für Vermittlung und Visa entstehen, sobald eine Bewerbung eingestellt bzw. das Visum genehmigt wurde."
+msgstr "Gebühren für Vermittlung und Visa entstehen, sobald eine Bewerbung eingestellt bzw. das Visum genehmigt wurde."
+
+msgid "Kandidat: 1.000 € · Arbeitgeber: 20 Prozent des Bruttojahresgehalts (gedeckelt auf 2.000 €) · Ausbildung: nur Arbeitgeber."
+msgstr "Kandidat: 1.000 € · Arbeitgeber: 20 Prozent des Bruttojahresgehalts (gedeckelt auf 2.000 €) · Ausbildung: nur Arbeitgeber."
+
+msgid "Bewerbung gehört nicht zu diesem Kandidaten"
+msgstr "Bewerbung gehört nicht zu diesem Kandidaten"
+
+msgid "Für diese Bewerbung ist bereits ein Beratungstermin gebucht."
+msgstr "Für diese Bewerbung ist bereits ein Beratungstermin gebucht."
+
+msgid "Termin bereits gebucht"
+msgstr "Termin bereits gebucht"
+
+msgid "Bruttojahresgehalt muss positiv sein"
+msgstr "Bruttojahresgehalt muss positiv sein"
+
+msgid "Bewerbung nicht gefunden"
+msgstr "Bewerbung nicht gefunden"

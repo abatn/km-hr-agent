@@ -3873,3 +3873,33 @@ msgstr "already present"
 
 msgid "entfällt (Ausbildung)"
 msgstr "not applicable (apprenticeship)"
+
+msgid "Bankdaten sind noch nicht konfiguriert. Bitte keine Rechnung ohne gültige Bankdaten versenden."
+msgstr "Bank details are not yet configured. Please do not send any invoice without valid bank details."
+
+msgid "Für eine Beratung brauchst du zuerst eine Bewerbung. Sobald du dich beworben hast, kannst du hier einen Termin buchen."
+msgstr "To book a consultation you first need an application. Once you have applied, you can book an appointment here."
+
+msgid "Die Beratung ist eine separate Leistung und wird nicht auf eine spätere Vermittlungsgebühr angerechnet."
+msgstr "The consultation is a separate service and is not offset against any later placement fee."
+
+msgid "Gebühren für Vermittlung und Visa entstehen, sobald eine Bewerbung eingestellt bzw. das Visum genehmigt wurde."
+msgstr "Fees for placement and visa arise once an application has been hired or the visa has been approved."
+
+msgid "Kandidat: 1.000 € · Arbeitgeber: 20 Prozent des Bruttojahresgehalts (gedeckelt auf 2.000 €) · Ausbildung: nur Arbeitgeber."
+msgstr "Candidate: €1,000 · Employer: 20 percent of the gross annual salary (capped at €2,000) · Apprenticeship: employer only."
+
+msgid "Bewerbung gehört nicht zu diesem Kandidaten"
+msgstr "Application does not belong to this candidate"
+
+msgid "Für diese Bewerbung ist bereits ein Beratungstermin gebucht."
+msgstr "A consultation appointment has already been booked for this application."
+
+msgid "Termin bereits gebucht"
+msgstr "Appointment already booked"
+
+msgid "Bruttojahresgehalt muss positiv sein"
+msgstr "Gross annual salary must be positive"
+
+msgid "Bewerbung nicht gefunden"
+msgstr "Application not found"

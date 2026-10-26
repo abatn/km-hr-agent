@@ -3873,3 +3873,33 @@ msgstr "déjà présent"
 
 msgid "entfällt (Ausbildung)"
 msgstr "non applicable (apprentissage)"
+
+msgid "Bankdaten sind noch nicht konfiguriert. Bitte keine Rechnung ohne gültige Bankdaten versenden."
+msgstr "Les coordonnées bancaires ne sont pas encore configurées. Veuillez ne pas envoyer de facture sans coordonnées bancaires valides."
+
+msgid "Für eine Beratung brauchst du zuerst eine Bewerbung. Sobald du dich beworben hast, kannst du hier einen Termin buchen."
+msgstr "Pour réserver un conseil, vous avez d'abord besoin d'une candidature. Dès que vous avez postulé, vous pouvez réserver un rendez-vous ici."
+
+msgid "Die Beratung ist eine separate Leistung und wird nicht auf eine spätere Vermittlungsgebühr angerechnet."
+msgstr "Le conseil est une prestation distincte et n'est pas imputé sur une éventuelle rémunération de placement ultérieure."
+
+msgid "Gebühren für Vermittlung und Visa entstehen, sobald eine Bewerbung eingestellt bzw. das Visum genehmigt wurde."
+msgstr "Des frais de placement et de visa s'appliquent dès qu'une candidature est embauchée ou que le visa est approuvé."
+
+msgid "Kandidat: 1.000 € · Arbeitgeber: 20 Prozent des Bruttojahresgehalts (gedeckelt auf 2.000 €) · Ausbildung: nur Arbeitgeber."
+msgstr "Candidat : 1 000 € · Employeur : 20 pour cent du salaire brut annuel (plafonné à 2 000 €) · Apprentissage : employeur uniquement."
+
+msgid "Bewerbung gehört nicht zu diesem Kandidaten"
+msgstr "La candidature n'appartient pas à ce candidat"
+
+msgid "Für diese Bewerbung ist bereits ein Beratungstermin gebucht."
+msgstr "Un rendez-vous de conseil a déjà été réservé pour cette candidature."
+
+msgid "Termin bereits gebucht"
+msgstr "Rendez-vous déjà réservé"
+
+msgid "Bruttojahresgehalt muss positiv sein"
+msgstr "Le salaire brut annuel doit être positif"
+
+msgid "Bewerbung nicht gefunden"
+msgstr "Candidature introuvable"
