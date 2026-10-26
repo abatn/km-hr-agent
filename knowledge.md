@@ -26,8 +26,8 @@ Minimal-Prototyp für 24 HR-Recruiting-Skills: Profil-Extraktion aus PDF/TXT, Ma
 ```bash
 # Setup
 python3 -m venv .venv-streamlit && source .venv-streamlit/bin/activate
-pip install -r requirements.txt
-cp .env.example .env        # KMHR_STORAGE_SECRET + KMHR_ADMIN_SEED_PASSWORD setzen
+pip install -r requirements.txt -r requirements-dev.txt   # dev: pytest, pyflakes, playwright
+cp .env.example .env        # KMHR_STORAGE_SECRET + KMHR_ADMIN_SEED_PASSWORD setzen; danach chmod 600
 
 # Dev (einzige UI → http://localhost:8080)
 ./start-webui.sh            # verweigert Start ohne Secrets (rc=1)
@@ -87,6 +87,15 @@ Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindl
 | top-level | `language-tests.md` · `language-courses.md` · `error-statistics.md` · `notification-log.md` · `onboarding-default.md` · `ui-design-system.md` · `team-profile.md` |
 
 Skill-Definitionen: `skills/README.md` (Übersicht) + `skills/*/SKILL.md` (je Skill eine Spec).
+
+## Secrets & Test-Setup (Kurzfassung)
+
+- **Vier getrennte Env-Dateien:** `.env` (WebUI), `.env-runner` (Runner, `NVIDIA_API_KEY`), `.env-email` (`SMTP_*`), `.env-social` (Social-Agent, Default Dry-Run). Falsche Datei ⇒ Fehler. Details: `knowledge/system/configuration-secrets.md`.
+- **Bindung:** `KMHR_HOST` (Default `127.0.0.1`; `0.0.0.0` nur bewusst für LAN). Live-Admin trägt noch das alte Seed-Passwort — nicht aus dem LAN erreichbar machen, bis rotiert ist.
+- **pytest:** `pytest.ini` setzt `asyncio_mode = auto`; `pytest_plugins` für NiceGUI steht in der Root-`conftest.py`. NiceGUI-Demo-Routen gehören nach `tests/nicegui_main.py`, nicht ins Testmodul.
+- **Test-DB:** `tests/conftest.py` spiegelt `tests/fixtures/seed.db` nach `/tmp/opencode` und leitet `sqlite3.connect` dorthin um. `tests/fixtures/seed.db` ist handgepflegt — nicht mit `scripts/seed_ci_db.py` neu erzeugen.
+- **Handler-Connection:** Ein NiceGUI-Callback nutzt nie eine `conn`, die der Seitenaufbau geschlossen hat; jeder Callback öffnet seine eigene `conn` und schließt sie in `try/finally` (Test `tests/test_conn_closure.py`).
+- **i18n-Kataloge** werden gepflegt, nicht extrahiert (kein `.pot`). Ohne Inhaltsänderung nach `pybabel compile` `git checkout -- webui/locales`.
 
 ## Dependencies
 
