@@ -13,7 +13,7 @@
 | Datei:Zeile | Befund |
 |---|---|
 | `webui/pages/candidate.py` (gemessen 10.10.2026) | `show_scores = bool(cand and (cand[7] or "").strip())` – **CV-Gate nur für Scores/Badges** (Kommentar, „CV-Gate (§6, Design-Entscheidung): ohne lebenslauf_text keine Scores/Badges") |
-| `webui/pages/candidate.py` (gemessen 10.10.2026) | `erlaubt = ("lebenslauf_hochgeladen", "profil_geprueft", "match_berechnet", "eingeladen")` |
+| `webui/pages/candidate.py` (Codemarke `def _tab_prescreen`, gemessen 26.10.2026) | `non_app_allowed = status in ("lebenslauf_hochgeladen", "profil_geprueft", "match_berechnet")` + `app_allowed` (Status `eingeladen`/`eingestellt` in `applications`) |
 | `webui/pages/candidate.py` (Codemarke `def _tab_prescreen`, gemessen 10.10.2026) | `if status not in erlaubt:` → `⚠️ CV-Pflicht: Laden Sie zuerst Ihren Lebenslauf hoch (Status: …)` – **in `_tab_prescreen()`**, mit `return` (Blockiert den Pre-Screen-Tab) |
 
 ### Was NICHT gate ist (die Lücke)

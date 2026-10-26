@@ -33,14 +33,14 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-26T13:59:39+00:00",
+    "at": "2026-10-26T19:29:15+00:00",
     "code_blobs": {
-      "webui/db.py": "eac90d19b071fa208603d4094bc5b4988c920131",
-      "webui/pages/candidate.py": "f6f88923654be2ceb4fae350e737356e1674a916"
+      "webui/db.py": "52ca558a49f9475a5e9acdc71912a99774801bb9",
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "8b54885cd55702fed7f6cfd1427c1edcefb46940",
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
     "doc_blob": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
-    "note": "knowledge/portal/candidate-portal-fields.md: Consent-Datenmodell/UI und Rechtsdaten 26.10.2026 gepr\u00fcft; 701 collected/696 passed"
+    "note": "Geprueft: _TAB_MAP in webui/pages/candidate.py weiter 7 Tabs; _PROFIL_SPALTEN unveraendert; Billing-Sektion nur im Profil-Tab ergaenzt."
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

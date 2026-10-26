@@ -49,7 +49,21 @@ Bases juridiques (art. 6 RGPD) :
 | Enregistrement d'entretiens vidéo (facultatif) | uniquement avec consentement distinct | Art. 6(1)(a), § 26 al. 2 BDSG |
 | Onboarding | Accompagnement après l'embauche | Art. 6(1)(b) |
 | Notifications / e-mails | Gestion, information | Art. 6(1)(b), art. 6(1)(f) — intérêt légitime |
+| Facturation et décompte | Étapes de rémunération 2–4 (conseil, placement, visa) | Art. 6(1)(b) — exécution du contrat ; art. 6(1)(c) — obligation comptable |
 | Exploitation et sécurisation du site | Diffusion, lutte contre les abus | Art. 6(1)(f) — intérêt légitime |
+
+### 2.1 Données de facturation (modèle de rémunération)
+
+Pour facturer le modèle de rémunération (CGV § 5), nous traitons les données suivantes
+lorsqu'une rémunération est due : nom et coordonnées du payeur, numéro de facture, type de
+prestation, montant, date d'échéance, statut de paiement et — pour la facturation du visa — le
+salaire brut annuel comme base de calcul. **Aucune** donnée de paiement telle que numéro de
+carte ou données d'accès bancaire n'est traitée ; le paiement s'effectue exclusivement par
+virement bancaire sur nos coordonnées bancaires indiquées dans le texte de la facture.
+
+La demande d'une facture, l'enregistrement d'un paiement et l'annulation sont effectués
+**manuellement par l'équipe**. Il n'y a pas de détection automatique des paiements ni de
+transmission des données de facturation à des tiers, sauf obligation comptable ou légale.
 
 ## 3. Matching assisté par IA et décision humaine
 
@@ -113,6 +127,8 @@ titre du cadre de protection des données UE-États-Unis, lorsque le fournisseur
 - **Enregistrements d'entretiens vidéo :** **6 mois après la fin de la procédure** (décision de
   conception, voir `knowledge/legal/recording-consent.md`).
 - **Preuves de consentement :** **36 mois** (valeur de projet, `knowledge/legal/gdpr-policy.md`).
+- **Données de facturation et de décompte :** **10 ans** après la fin de l'année civile de la
+  facture (§ 147 AO, § 257 HGB) — obligation de conservation comptable.
 - **Données de matching/score :** **12 mois**, puis anonymisées (`knowledge/legal/gdpr-policy.md`).
 - **Journaux serveur/proxy :** durée à confirmer. **[À compléter.]**
 

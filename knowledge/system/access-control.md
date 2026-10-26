@@ -71,9 +71,9 @@ Konsequenz: Die Agent-Ausgaben (`ergebnisse/*.md`, DB-Scores, E-Mail-Entwürfe) 
 
 Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgeber-Registrieren, Admin). Die Tabs **Login** (Kandidat) und **Arbeitgeber** tragen seit 18.10.2026 einen Link „Passwort vergessen?" → E-Mail-Dialog → Agent-Runner verschickt einen Link `/login?reset=<token>` → Dialog „Neues Passwort (2×)". Der **Admin**-Tab hat bewusst **keinen** Reset (Nutzerentscheidung R6-2.1 abgelehnt). Ablauf/Sicherheits-Regeln: `knowledge/system/configuration-secrets.md` §(g).
 
-### 2.4 ADMIN – 12 Seiten (v3.1 + NiceGUI-Dashboard, Stand 20.09.2026)
+### 2.4 ADMIN – 13 Seiten (v3.1 + NiceGUI-Dashboard, Stand 26.10.2026)
 
-> **NiceGUI-Umsetzung** = `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) (PAGE_MAP, 12 Einträge inkl. 📊 Dashboard).
+> **NiceGUI-Umsetzung** = `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 26.10.2026) (PAGE_MAP, 13 Einträge inkl. 📊 Dashboard; +Abrechnung seit 26.10.2026).
 
 | # | Seite | Modus | Regel |
 |---|---|---|---|
@@ -82,6 +82,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 | 3–7 | 1️⃣ Extract · 2️⃣ Match-Tool · 3️⃣ Compliance-Tool · 4️⃣ Contact · 5️⃣ Culture Fit | Tool (ausführbar) | Agent-Ebene-Werkzeuge im UI sichtbar und manuell ausführbar (Betrieb, Tests, Kontrolle) |
 | 8–10 | 6️⃣ Pre-Screen (Recruiting) · 7️⃣ Onboarding (HR) · 8️⃣ Feedback | wie EMPLOYER | Vollzugriff auf die Portal-Funktionen |
 | 11–12 | 💼 Stellenangebote (HR-write) · 🏢 Arbeitgeber-Portal | wie EMPLOYER | In NiceGUI als PAGE_MAP-Einträge „stellen“/„portal“ vorhanden. |
+| 13 | 🧾 Abrechnung (seit 26.10.2026) | Admin-only | Rechnungen aller Zahler, Visumgebühr erfassen (Schritt 4), Zahlungseingang bestätigen/stornieren; Flag `KMHR_BILLING_ENABLED`. |
 
 **ADMIN-Zugang zum 👤 Candidate Portal (Ist-Code, Design-Entscheidung ⓘ09.10.2026):** Der Code lässt die ADMIN-Rolle **durch** — `webui/pages/candidate.py` (gemessen 10.10.2026) (`if role != "candidate" and role != "admin":`) und `webui/main.py` (gemessen 10.10.2026) (`role == page_role or (role == "admin" and page_role in ("candidate", "employer"))`). Die frühere Regel „kein Zugang für ADMIN" ist damit **durch den Ist-Code überholt** (Abweichung vom ursprünglichen Rollenmodell bewusst als Ist dokumentiert = Design-Entscheidung).
 
@@ -145,7 +146,7 @@ Nur Login-Bildschirm (5 Tabs: Login, Registrieren, Arbeitgeber-Login, Arbeitgebe
 |---|---|
 | Admin-Login | Separater, geschützter Zugang (Umsetzungsdetail im Plan, z. B. eigener Login-Tab „🛡️ Admin"). Eine ADMIN-Session ist exklusiv – keine parallele Kandidaten-/Arbeitgeber-Identität. |
 | Zweck | Betrieb und Kontrolle der Agent-Ebene im UI: Ingestion, Extract/Match/Compliance/Contact/Culture-Fit manuell ausführen, Ergebnisse prüfen. Der reguläre Ablauf bleibt agent-gesteuert. |
-| Sichtbarkeit | ADMIN sieht die Vollansicht (12 Seiten, `webui/pages/admin.py` (gemessen 10.10.2026)) – die v4.3-Seiten + NiceGUI-Dashboard. |
+| Sichtbarkeit | ADMIN sieht die Vollansicht (13 Seiten, `webui/pages/admin.py` (gemessen 26.10.2026)) – die v4.3-Seiten + NiceGUI-Dashboard + Abrechnung. |
 | Abgrenzung | 👤 Candidate Portal **im Ist-Code zugänglich** (nicht ausgeschlossen): Gate `webui/pages/candidate.py` (gemessen 10.10.2026) (`role != "candidate" and role != "admin"`) + `webui/main.py` (gemessen 10.10.2026) erlauben `admin` für `page_role="candidate"` (ⓘ09.10.2026; Abweichung vom ursprünglichen „ausgeschlossen" = **Design-Entscheidung**). Der ADMIN ist kein Arbeitgeber-Account: keine `employers`-Zeile, kein `employer_id`-Kontext. |
 
 ### 3.5 Profil-Check bleibt
@@ -163,7 +164,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 | 3 | Candidate-Liste | Sidebar | 7 Tabs (NiceGUI, `_TAB_MAP` `webui/pages/candidate.py`, Stand 02.10.2026) |
 | 4 | Kandidat-Selector-Navigation | Sidebar | Selector erscheint auf: Match-Ergebnis, Compliance-Ergebnis, 6/7/8 (nicht mehr auf Upload/Extract) |
 | 5 | Defense-in-Depth | alle Skill-Blöcke | Blöcke 0️⃣–5️⃣ (Tool-Varianten) mit Rollen-Gate: nur Agent-Kontext (kein Browser-Session-Zugriff); Seiten außerhalb der Rollenliste → Blockierungsmeldung |
-| 6 | ADMIN-Rolle: `current_role()` → `"admin"`, geschützter Admin-Login, `_seiten_fuer_rolle("admin")` → 12 Seiten (v4.3-Liste + Dashboard, inkl. Tools 0–5) | Login + Sidebar | Betreiber betreibt die Agent-Ebene im UI |
+| 6 | ADMIN-Rolle: `current_role()` → `"admin"`, geschützter Admin-Login, `_seiten_fuer_rolle("admin")` → 13 Seiten (v4.3-Liste + Dashboard + Abrechnung, inkl. Tools 0–5) | Login + Sidebar | Betreiber betreibt die Agent-Ebene im UI |
 | 7 | Doku-Flags | alle `*_PENDING`-Marker | Nach Umsetzung → ✅ + E2E-Ergebnis |
 
 **Nicht geändert werden:** DB-Schema, Matching-Logik (Tab-3-Ranking nutzt DB-Scores, unabhängig vom Skill-2-Datei-Tool), Bewerbungs-Flow, Feedback-Loop (Phase 3/4), DSGVO-Cleanup, Pre-Screen-/Onboarding-Modi, Skill-Code selbst (nur Sichtbarkeit/Gates).
@@ -183,7 +184,7 @@ Der bestehende CV-Status-Check (Skills 6/7/8 + Ergebnis-Sichten nur mit Status �
 | 7 | GAST | Nur Login-Bildschirm |
 | 8 | Direkter Navigationssversuch auf entfernte Seite (manipulierte Session) | Defense-in-Depth-Blockierung |
 | 9 | Agent-Workflow | Skills 0–5 laufen regulär über opencode/MCP; im UI nur durch ADMIN ausführbar |
-| 10 | ADMIN-Login | Sidebar: 12 Seiten inkl. Tools 0–5; Tools ausführbar |
+| 10 | ADMIN-Login | Sidebar: 13 Seiten inkl. Tools 0–5; Tools ausführbar |
 | 11 | ADMIN öffnet 👤 Candidate Portal (direkt) | **Erlaubt** (Ist-Code: `webui/pages/candidate.py` (gemessen 10.10.2026) + `webui/main.py` (gemessen 10.10.2026), ⓘ09.10.2026, Design-Entscheidung — frühere Erwartung „blockiert" überholt) |
 
 ---

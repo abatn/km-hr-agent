@@ -52,10 +52,41 @@ Nutzer **berechtigt** einbringbar sein.
 
 ## 5. Vertragsschluss und Entgelte
 
-5.1 Die Nutzung ist für Kandidaten **kostenlos**. **[Entgelte für Arbeitgeber: zu ergänzen.]**
+5.1 Die Registrierung, die Profilpflege und die Stellensuche sind für Kandidaten **kostenlos**.
 
-5.2 Der Anbieter behält sich vor, das Leistungsangebot zu ändern; wesentliche Änderungen werden
-mit angemessener Frist mitgeteilt.
+5.2 **Entgelte** (Betreiberentscheidung 26.10.2026). Es fallen ausschließlich folgende
+Entgelte an, jeweils zzgl. der gesetzlichen Umsatzsteuer:
+
+| Leistung | Zahler | Entgelt | Auslöser |
+|---|---|---|---|
+| Registrierung und Profil | Kandidat | kostenlos | — |
+| Beratung / CV-Check | Kandidat | 99 € | Terminbuchung |
+| Vermittlung nach Vertragsschluss | Kandidat | 500 € | Unterschriebener Arbeitsvertrag |
+| Vermittlung nach Vertragsschluss | Arbeitgeber | 1.000 € | Unterschriebener Arbeitsvertrag |
+| Visumgenehmigung | Kandidat | 1.000 € | Visumgenehmigung |
+| Visumgenehmigung | Arbeitgeber | 20 % des Bruttojahresgehalts, gedeckelt auf 2.000 € | Visumgenehmigung |
+| Ausbildung (§ 296a SGB III) | nur Arbeitgeber | wie oben, ohne Kandidatenanteil | Vertrag bzw. Visum |
+
+5.3 Bei **Ausbildungsplätzen** entfallen die Kandidatenentgelte vollständig; es wird
+ausschließlich das Arbeitgeberentgelt berechnet.
+
+5.4 Die Zahlung erfolgt ausschließlich per **Banküberweisung** auf die im Rechnungstext
+genannten Bankdaten des Anbieters. Eine Online-Zahlung per Karte oder Zahlungsdienst wird
+nicht angeboten. Die Rechnung ist binnen 14 Tagen nach Zugang fällig. Der Anspruch des
+Anbieters auf ein Vermittlungsentgelt entsteht erst mit Zustandekommen des Arbeitsvertrags;
+eine **Erfolgsvergütung**, die von der Zustandekommen einer Arbeitsstelle abhängig gemacht
+wird, wird nicht erhoben (§ 299 SGB III).
+
+5.5 Stornierung: Ein bereits gebuchter Beratungstermin kann bis 24 Stunden vor Terminbeginn
+kostenlos storniert werden. Bereits erbrachte Leistungen und auf Grundlage eines
+zustandekommenen Arbeitsvertrags entstandene Entgeltansprüche bleiben unberührt.
+
+5.6 **Status: geklärt — Betreiberentscheidung 26.10.2026.** Das Entgeltmodell wurde vom
+Betreiber festgelegt und umgesetzt. Es ist keine anwaltliche Freigabe ersetzt worden; die
+finale Prüfung vor Aufnahme des Geschäftsbetriebs bleibt dem Betreiber vorbehalten.
+
+5.7 Der Anbieter behält sich vor, das Leistungsangebot zu ändern; wesentliche Änderungen der
+Entgelte werden mit angemessener Frist vor deren Inkrafttreten mitgeteilt.
 
 ## 6. Haftung
 

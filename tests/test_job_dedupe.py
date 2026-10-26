@@ -28,7 +28,8 @@ def _init_jobs_db(path: Path) -> Path:
         gehaltsrahmen_min INTEGER, gehaltsrahmen_max INTEGER,
         status TEXT DEFAULT 'aktiv',
         erstellt_am TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        land TEXT DEFAULT 'DE')""")
+        land TEXT DEFAULT 'DE',
+        bruttojahresgehalt_eur INTEGER)""")
     conn.execute("""CREATE TABLE job_status_history (
         id INTEGER PRIMARY KEY AUTOINCREMENT, job_id INTEGER, status TEXT,
         changed_by TEXT)""")

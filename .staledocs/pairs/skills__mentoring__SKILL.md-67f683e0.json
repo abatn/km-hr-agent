@@ -29,13 +29,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-23T10:43:55+00:00",
+    "at": "2026-10-26T19:29:28+00:00",
     "code_blobs": {
-      "webui/db.py": "4843e33d71d9d9a249d826e01f58380cebb9ac22"
+      "webui/db.py": "52ca558a49f9475a5e9acdc71912a99774801bb9"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
     "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/mentoring/SKILL.md"
+    "note": "Geprueft: mentoring-Schema unveraendert; webui/db.py nur um init_billing_migrations ergaenzt."
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

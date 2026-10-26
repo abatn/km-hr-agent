@@ -33,7 +33,7 @@ Diese Abgrenzung selbst ist eine **Design-Entscheidung**: vor dieser Datei war k
 | 9 | **6 E-Mail-Vorlagen + VDO.Ninja-only** (kein Google Meet, kein Jitsi) | `knowledge.md` „E-Mails \| 6 implementiert" · Spec `knowledge/system/vdo-ninja-migration.md` (Nutzer-Entscheidung 27.09.2026, ersetzt die Jitsi-Entscheidung vom 12.09.2026) |
 | 10 | **14 MCP-Server** (13 local + 1 remote, gemessen 21.10.2026; `jitsi-meeting` entfernt 27.09.2026, vorher 15; Zählwerk bestätigt §G 26.09.2026: 49 dokumentiert (instructions.md, nach §G) / 181 live (Handshake 26.09.2026)) | `knowledge/system/mcp-connector-config.md` + Live-Befehl §2 |
 | 11 | **Kandidaten-Dokumenten-Tab (v6.1)** `candidate_documents` + getippte Uploads | `knowledge.md` „v6.1: Dokumenten-Tab … ✅ implementiert (E2E T1–T5)" |
-| 12 | **23 Skills / 17 DB-Tabellen** als Umfang des Laufzeitsystems (Tabellen gemessen 21.10.2026) | Live-Befehle §2 |
+| 12 | **23 Skills / 20 DB-Tabellen** als Umfang des Laufzeitsystems (Tabellen gemessen 26.10.2026) | Live-Befehle §2 |
 
 ### 1.2 Out-of-Scope (nicht Teil des MVP)
 
@@ -64,7 +64,7 @@ Diese Abgrenzung selbst ist eine **Design-Entscheidung**: vor dieser Datei war k
 | Failed Task-IDs | `[20, 21, 23, 39, 105]` (Anzahl **5**) | `sqlite3 data/feedback.db "SELECT id FROM agent_tasks WHERE status='failed' ORDER BY id;"` | 24.09. ✅ · 25.09. ✅ identisch |
 | Agent-Tasks gesamt | done **118** / failed **5** | `sqlite3 data/feedback.db "SELECT status, COUNT(*) FROM agent_tasks GROUP BY status;"` | 25.09. (ergänzende Messung) |
 | Feedback-Zeilen | **8** | `sqlite3 data/feedback.db "SELECT COUNT(*) FROM feedback;"` | 24.09. ✅ · 25.09. ✅ identisch |
-| DB-Tabellen | **16** (Stand 24.09.2026) → **17** heute | `sqlite3 data/feedback.db "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"` | 24.09. ✅ · 25.09. ✅ identisch · **21.10.2026: 17** (gemessen per `scripts/ci/checks.py schema`: „DB-Schema OK: 17 Tabellen") |
+| DB-Tabellen | **16** (Stand 24.09.2026) → **20** heute | `sqlite3 data/feedback.db "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"` | 24.09. ✅ · 25.09. ✅ identisch · **21.10.2026: 17** · **26.10.2026: 20** (neu `billing_fees`, `termin_buchungen`, `consents`; gemessen per `scripts/ci/checks.py schema`: „DB-Schema OK: 20 Tabellen") |
 | Skills | **23** | `ls skills/*/SKILL.md \| wc -l` | 24.09. ✅ · 25.09. ✅ identisch |
 | Knowledge-MD (ohne `.bak`) | **37** (vor Anlegen) → **38** nach Anlegen dieser Datei | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` | 24.09. = 37 ✅ · 25.09. vor Anlegen = 37 ✅; **+1 durch `knowledge/system/mvp.md` → 38** (Zähler-Nachtrag, keine Doku-Fälschung) |
 | MCP-Server | **14** (13 local + 1 remote, seit 27.09.2026 ohne `jitsi-meeting`) | `python3 -c "import json;print(len(json.load(open('opencode.json'))['mcp']))"` | 27.09.2026 gemessen: 14 |

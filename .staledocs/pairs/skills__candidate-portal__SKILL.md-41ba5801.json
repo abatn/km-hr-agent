@@ -13,13 +13,13 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-26T13:59:45+00:00",
+    "at": "2026-10-26T19:30:27+00:00",
     "code_blobs": {
-      "webui/pages/candidate.py": "f6f88923654be2ceb4fae350e737356e1674a916"
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "8b54885cd55702fed7f6cfd1427c1edcefb46940",
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
     "doc_blob": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
-    "note": "skills/candidate-portal/SKILL.md: Consent-Datenmodell/UI und Rechtsdaten 26.10.2026 gepr\u00fcft; 701 collected/696 passed"
+    "note": "Geprueft: Doku referenziert webui/pages/candidate.py bzw. webui/pages/employer.py; Zugriffsregel und applications/application_status_history unveraendert."
   },
   "doc": "skills/candidate-portal/SKILL.md",
   "schema": 1

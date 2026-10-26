@@ -9,13 +9,13 @@
       "scripts/agent-runner.py",
       "webui/db.py"
     ],
-    "at": "2026-10-26T13:59:47+00:00",
+    "at": "2026-10-26T19:29:29+00:00",
     "code_blobs": {
-      "webui/db.py": "eac90d19b071fa208603d4094bc5b4988c920131"
+      "webui/db.py": "52ca558a49f9475a5e9acdc71912a99774801bb9"
     },
-    "commit": "8b54885cd55702fed7f6cfd1427c1edcefb46940",
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
     "doc_blob": "4fb3b459fb8894ef5144b456ea01a86f500270ed",
-    "note": "skills/notify-user/SKILL.md: Consent-Datenmodell/UI und Rechtsdaten 26.10.2026 gepr\u00fcft; 701 collected/696 passed"
+    "note": "Geprueft: notifications-Tabelle in webui/db.py unveraendert."
   },
   "doc": "skills/notify-user/SKILL.md",
   "schema": 1

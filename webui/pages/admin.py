@@ -666,6 +666,9 @@ def _page_stellen(s: dict) -> None:
                                     conn2.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, ?, 'admin')", (_a_id, _ns))
                                     conn2.commit()
                                     conn2.close()
+                                    if _ns == "eingestellt":
+                                        from webui import billing as _billing
+                                        _billing.billing_on_eingestellt(_a_id)  # Entgelt Schritt 3
                                     task = _hook_task.get(_ns)
                                     if task:
                                         _pl = {"application_id": _a_id, "candidate_id": _k_id,
@@ -812,6 +815,13 @@ def _page_employer_portal(s: dict) -> None:
                 ui.button(_("💾 Profil speichern"), on_click=save_employer).classes(C.BTN_PRIMARY + " mt-2")
 
 
+def _page_billing(s: dict) -> None:
+    """Abrechnung (Entgeltmodell 26.10.2026): alle Rechnungen, Visumgebühr,
+    Zahlungseingang. Rendert ohne Flag KMHR_BILLING_ENABLED=1 nur den Hinweis."""
+    from webui.pages.billing_ui import admin_billing_section
+    admin_billing_section()
+
+
 # ─── Page Router ─────────────────────────────────────────────────────
 
 PAGE_MAP = {
@@ -827,6 +837,7 @@ PAGE_MAP = {
     "feedback": ("Feedback", "feedback", _page_feedback),
     "stellen": ("Stellenangebote", "work", _page_stellen),
     "portal": ("Arbeitgeber-Portal", "business", _page_employer_portal),
+    "billing": ("Abrechnung", "receipt_long", _page_billing),
 }
 
 

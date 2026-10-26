@@ -46,7 +46,20 @@ process between North Africa and Germany, France and Switzerland. Legal bases (A
 | Recording of video interviews (optional) | only with separate consent | Art. 6(1)(a), § 26(2) BDSG |
 | Onboarding | Support after hiring | Art. 6(1)(b) |
 | Notifications / emails | Handling, information | Art. 6(1)(b), Art. 6(1)(f) — legitimate interest |
+| Invoicing and billing | Fee steps 2–4 (consultation, placement, visa) | Art. 6(1)(b) — performance of the contract; Art. 6(1)(c) — accounting obligation |
 | Operation and security of the website | Delivery, abuse defence | Art. 6(1)(f) — legitimate interest |
+
+### 2.1 Invoice data (fee model)
+
+To bill the fee model (Terms § 5) we process the following data where a fee applies: name and
+contact details of the payer, invoice number, type of service, amount, due date, payment status
+and — for visa billing — the gross annual salary as the calculation basis. **No** payment data
+such as card numbers or bank access data is processed; payment is made exclusively by bank
+transfer to our bank details provided in the invoice text.
+
+Requesting an invoice, recording a payment and cancelling are carried out **manually by the
+team**. There is no automatic payment detection and no disclosure of invoice data to third
+parties unless required for accounting or by law.
 
 ## 3. AI-assisted matching and human decision
 
@@ -108,6 +121,8 @@ where the provider is certified. **[Status per provider: to be confirmed.]**
 - **Recordings of video interviews:** **6 months after the process ends** (design decision, see
   `knowledge/legal/recording-consent.md`).
 - **Consent records:** **36 months** (project value, `knowledge/legal/gdpr-policy.md`).
+- **Invoice and billing data:** **10 years** after the end of the calendar year of the invoice
+  (§ 147 AO, § 257 HGB) — statutory accounting retention.
 - **Match/score data:** **12 months**, then anonymised (`knowledge/legal/gdpr-policy.md`).
 - **Server/proxy logs:** period to be confirmed. **[To be added.]**
 

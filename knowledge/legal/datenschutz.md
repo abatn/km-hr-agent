@@ -47,7 +47,22 @@ abzuwickeln. Rechtsgrundlagen (Art. 6 DSGVO):
 | Aufnahme von Video-Gesprächen (optional) | nur mit gesonderter Einwilligung | Art. 6(1)(a), § 26 Abs. 2 BDSG |
 | Onboarding | Begleitung nach Einstellung | Art. 6(1)(b) |
 | Benachrichtigungen / E-Mails | Abwicklung, Information | Art. 6(1)(b), Art. 6(1)(f) — berechtigtes Interesse |
+| Rechnungsstellung und Abrechnung | Entgelt-Schritte 2–4 (Beratung, Vermittlung, Visa) | Art. 6(1)(b) — Erfüllung des Vertrags; Art. 6(1)(c) — buchhalterische Pflicht |
 | Betrieb und Absicherung der Website | Auslieferung, Missbrauchsabwehr | Art. 6(1)(f) — berechtigtes Interesse |
+
+### 2.1 Rechnungsdaten (Entgeltmodell)
+
+Für die Abrechnung des Entgeltmodells (AGB § 5) verarbeiten wir folgende Daten, soweit eine
+Gebühr anfällt: Name und Kontaktdaten des Zahlers, Rechnungsnummer, Leistungsart, Betrag,
+Fälligkeitsdatum, Zahlungsstatus und — bei der Visa-Abrechnung — das Bruttojahresgehalt als
+Berechnungsgrundlage. Es werden **keine** Zahlungsdaten wie Kartennummern oder Bankzugangs-
+daten verarbeitet; die Zahlung erfolgt ausschließlich per Banküberweisung auf unsere
+Bankdaten, die wir im Rechnungstext bereitstellen.
+
+Das Anfordern einer Rechnung, das Erfassen eines Zahlungseingangs und die Stornierung
+erfolgen **manuell durch das Team**. Es gibt keine automatische Zahlungserkennung und keine
+Weitergabe der Rechnungsdaten an Dritte, soweit dies nicht buchhalterisch oder gesetzlich
+zwingend ist.
 
 ## 3. KI-gestütztes Matching und menschliche Entscheidung
 
@@ -111,6 +126,8 @@ bestätigen.]**
 - **Aufnahmen von Video-Gesprächen:** **6 Monate nach Prozessende** (Design-Entscheidung, siehe
   `knowledge/legal/recording-consent.md`).
 - **Einwilligungsnachweise:** **36 Monate** (Projektwert, `knowledge/legal/gdpr-policy.md`).
+- **Rechnungs- und Abrechnungsdaten:** **10 Jahre** nach Ende des Kalenderjahres der Rechnung
+  (§ 147 AO, § 257 HGB) — buchhalterische Aufbewahrungspflicht.
 - **Match-/Score-Daten:** **12 Monate**, danach anonymisiert (`knowledge/legal/gdpr-policy.md`).
 - **Server-/Proxy-Logs:** Frist wird bestätigt. **[Zu ergänzen.]**
 

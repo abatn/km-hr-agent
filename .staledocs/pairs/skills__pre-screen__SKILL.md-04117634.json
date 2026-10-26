@@ -3,6 +3,7 @@
     "anchors": [
       "&record=6000",
       "&record=off",
+      "?push=",
       "_tab_onboarding",
       "app.py",
       "candidate_name",
@@ -11,6 +12,7 @@
       "ergebnisse/ui-mvp-plan-v2.md",
       "generate_ics_file",
       "generate_screening_questions",
+      "knowledge/legal/recording-consent.md",
       "knowledge/system/access-control.md",
       "knowledge/system/vdo-ninja-migration.md",
       "match_score",
@@ -28,15 +30,15 @@
       "webui/components.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-23T10:43:58+00:00",
+    "at": "2026-10-26T19:29:30+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
-      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "9c058641c56917045c13dc1712d5f6d3bf7fe355",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/pre-screen/SKILL.md"
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "doc_blob": "c88e7f0b78983b06d67d55971f8d659f7d6e35bf",
+    "note": "Geprueft: Pre-Screen-Tab webui/pages/candidate.py unveraendert; nur Billing-Sektion im Profil-Tab."
   },
   "doc": "skills/pre-screen/SKILL.md",
   "schema": 1

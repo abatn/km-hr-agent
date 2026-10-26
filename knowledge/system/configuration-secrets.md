@@ -16,6 +16,11 @@ Diese Datei ist die MD-Wahrheit für die Laufzeit-Konfiguration des NiceGUI-Fron
 | `KMHR_ADMIN_SEED_EMAIL` | E-Mail des Admin-Seed-Kontos | `admin@km-hr-agent.local` | `webui/pages/login.py` (gemessen 10.10.2026) |
 | `KMHR_ADMIN_SEED_PASSWORD` | Passwort des Admin-Seed-Kontos — seit R3-4 **Pflicht** (ohne `KMHR_DEV`) | `admin-agent-2026` (**Entwicklung**, unsicher, nur noch unter `KMHR_DEV`) | `webui/pages/login.py` (gemessen 10.10.2026) |
 | `KMHR_DEV` | Schalter: hebt das Fail-closed-Gate für beide Pflicht-Variablen auf | nicht gesetzt → **Gate aktiv** | `webui/main.py` (Codemarke `KMHR_DEV`, gemessen 10.10.2026) |
+| `KMHR_BILLING_ENABLED` | Entgeltmodell ein-/ausschalten (`billing_on_eingestellt`, UI-Sektionen, Visum-/Termingebühren) | `0` (**aus**) | `webui/billing.py` `billing_enabled` (26.10.2026) |
+| `KMHR_BANK_HOLDER` | Kontoinhaber auf der Rechnung — Pflicht, sonst keine Zahlungsaufforderung | nicht gesetzt → Rechnung zeigt Warnhinweis | `webui/billing.py` `bank_details` (26.10.2026) |
+| `KMHR_BANK_IBAN` | IBAN für die Banküberweisung — Pflicht, kein Test-/Default-Wert | nicht gesetzt → `configured=False` | `webui/billing.py` `bank_details` (26.10.2026) |
+| `KMHR_BANK_NAME` | Bankname (optional, Anzeige) | leer → `—` | `webui/billing.py` `bank_details` (26.10.2026) |
+| `KMHR_BANK_BIC` | BIC (optional, Anzeige) | leer → `—` | `webui/billing.py` `bank_details` (26.10.2026) |
 
 **R3-4 (30.09.2026): fail closed.** Ohne `KMHR_DEV` startet die App nur, wenn
 `KMHR_STORAGE_SECRET` **und** `KMHR_ADMIN_SEED_PASSWORD` gesetzt und nicht-leer sind.
@@ -211,3 +216,31 @@ und `tests/e2e_password_reset.py` (isoliert). Code: `webui/db.py`
 (init_password_resets_table, hash_reset_token), `webui/logic.py` (apply_password_reset),
 `webui/pages/login.py` (Link „Passwort vergessen?" + Dialoge), `scripts/agent-runner.py`
 (Task send_password_reset).
+
+---
+
+## (h) Entgeltmodell: `KMHR_BILLING_ENABLED` und `KMHR_BANK_*` (26.10.2026)
+
+**Quelle: Betreiberentscheidung 26.10.2026** (Entgeltmodell, AGB § 5). Zahlung ausschließlich
+per **Banküberweisung**; es gibt bewusst **keinen** Karten- oder Online-Zahldienst.
+
+| Variable | Zweck | Default |
+|---|---|---|
+| `KMHR_BILLING_ENABLED` | Schaltet das Entgeltmodell (Gebühren bei Einstellung, Terminbuchung, Visum; UI-Sektionen) | `0` — **aus** |
+| `KMHR_BANK_HOLDER` | Kontoinhaber (Pflicht für eine Zahlungsaufforderung) | nicht gesetzt |
+| `KMHR_BANK_NAME` | Bankname (Anzeige, optional) | leer |
+| `KMHR_BANK_IBAN` | IBAN (Pflicht, **kein** Default/Testwert) | nicht gesetzt |
+| `KMHR_BANK_BIC` | BIC (Anzeige, optional) | leer |
+
+**Regeln (bindend):**
+1. **Keine erfundenen Bankdaten.** `bank_details()` liest ausschließlich aus der Umgebung.
+   Fehlen `HOLDER`/`IBAN`, zeigt die UI den Hinweis „Bankdaten sind noch nicht
+   konfiguriert" und die Rechnung darf nicht versendet werden (`configured=False`).
+2. **Kein Online-Payment.** Es gibt keinen Zahlungs-Provider, keine Kartenfelder und keine
+   automatische Zahlungserkennung. Der Zahlungseingang wird **manuell** durch das Team
+   bestätigt (`billing.mark_paid`).
+3. **Produktivschaltung nur mit echten Bankdaten und ausdrücklichem GO des Betreibers.**
+   Das Flag ist per Default aus; ein gesetztes Flag ohne Bankdaten ist ein Fehlzustand.
+
+**Nachweis:** `tests/test_billing.py` (31 Unit-Tests: Beträge, Deckel, Ausbildung,
+Idempotenz, Terminbuchung, Visum, Statuswechsel, Bankdaten aus ENV).

@@ -54,10 +54,44 @@ l'utilisateur doit être **habilité** à les soumettre.
 
 ## 5. Conclusion du contrat et rémunération
 
-5.1 L'utilisation est **gratuite** pour les candidats. **[Rémunération pour les employeurs : à compléter.]**
+5.1 L'inscription, l'entretien du profil et la recherche d'emploi sont **gratuits** pour les
+candidats.
 
-5.2 Le fournisseur se réserve le droit de modifier l'offre de services ; les modifications
-substantielles sont communiquées dans un délai raisonnable.
+5.2 **Rémunération** (décision de l'exploitant du 26 octobre 2026). Seules les
+rémunérations suivantes s'appliquent, chacune majorée de la TVA légale :
+
+| Prestation | Payeur | Rémunération | Déclencheur |
+|---|---|---|---|
+| Inscription et profil | Candidat | gratuit | — |
+| Conseil / vérification du CV | Candidat | 99 € | Réservation d'un rendez-vous |
+| Placement après conclusion du contrat | Candidat | 500 € | Contrat de travail signé |
+| Placement après conclusion du contrat | Employeur | 1 000 € | Contrat de travail signé |
+| Autorisation de visa | Candidat | 1 000 € | Autorisation de visa |
+| Autorisation de visa | Employeur | 20 % du salaire brut annuel, plafonné à 2 000 € | Autorisation de visa |
+| Apprentissage (§ 296a SGB III) | employeur uniquement | comme ci-dessus, sans part candidat | contrat ou visa |
+
+5.3 Pour les **postes d'apprentissage**, les rémunérations dues par le candidat sont
+intégralement supprimées ; seule la rémunération de l'employeur est facturée.
+
+5.4 Le paiement s'effectue exclusivement par **virement bancaire** sur les coordonnées
+bancaires de l'exploitant indiquées dans le texte de la facture. Le paiement par carte ou
+via un service de paiement en ligne n'est pas proposé. La facture est exigible dans les
+14 jours suivant sa réception. La créance de l'exploitant au titre de la rémunération de
+placement n'existe qu'à compter de la conclusion du contrat de travail ; aucune
+**rémunération aléatoire** subordonnée au succès d'un placement n'est facturée (§ 299 SGB III).
+
+5.5 Résiliation : un rendez-vous de conseil réservé peut être annulé gratuitement jusqu'à
+24 heures avant le début du rendez-vous. Les prestations déjà effectuées et les créances de
+rémunération nées sur la base d'un contrat de travail conclu restent inchangées.
+
+5.6 **Statut : clarifié — décision de l'exploitant du 26 octobre 2026.** Le modèle de
+rémunération a été arrêté par l'exploitant et mis en œuvre en conséquence. Il ne remplace
+pas un examen juridique ; la vérification finale avant le démarrage de l'activité reste
+réservée à l'exploitant.
+
+5.7 L'exploitant se réserve le droit de modifier l'offre de services ; les modifications
+substantielles de la rémunération sont communiquées avec un délai raisonnable avant leur
+entrée en vigueur.
 
 ## 6. Responsabilité
 

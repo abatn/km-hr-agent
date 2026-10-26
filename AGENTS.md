@@ -5,6 +5,7 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
 ## Architektur
 
 - **Einzige UI: NiceGUI** in `webui/` (Port 8080, Override `KMHR_PORT`). Einstieg `webui/main.py`: Secrets-Gate → DB-Bootstrap → Seiten `create_*()` → ASGI-Guard → `ui.run`. Frameworkfrei: `webui/db.py` (SQLite), `webui/logic.py`; Pages in `webui/pages/`.
+- **Entgeltmodell** (26.10.2026, AGB § 5): `webui/billing.py` (Beträge, Deckel, Ausbildung, Idempotenz, Bankdaten aus `KMHR_BANK_*`) + `webui/pages/billing_ui.py` (Sektionen in Kandidat/Arbeitgeber, Admin-Seite „Abrechnung"). Schritte: 99 € Beratung (Kandidat, bei Terminbuchung), 500/1.000 € nach Vertrag, 1.000 € + 20 % Bruttojahresgehalt (gedeckelt 2.000 €) nach Visum; Ausbildung nur Arbeitgeber (§ 296a SGB III). Zahlung **nur per Banküberweisung**, kein Karten-/Online-Zahlungsdienst; Flag `KMHR_BILLING_ENABLED` (Default 0), Schema in `init_billing_migrations`. Spec: `knowledge/system/configuration-secrets.md` §(h), `knowledge/legal/agb.md` §5.
 - **`app.py` ist archiviertes Streamlit** (seit 23.09.2026). Nur Paritäts-Referenz, nicht starten/erweitern; `start.sh` bricht bewusst mit rc=1 ab.
 - **`scripts/agent-runner.py`**: Hintergrund-Runner, Queue `agent_tasks`, 60-s-Loop, max. 3 Versuche pro Task. Startet mit der App (PID `data/agent-runner.pid`), Opt-out `KMHR_RUNNER_AUTOSTART=0`. Dry-Run: `.venv-streamlit/bin/python3 scripts/agent-runner.py --once --dry-run`.
 - **Social-Agent**: `scripts/social_agent.py` (7-Tage-Plan, LinkedIn/Facebook/Instagram, Dry-Run-Outbox, PII-Guard); OAuth-Bootstrap `scripts/social_oauth.py`; Spec `knowledge/system/social-automation.md`, Agent `marketing/social-agent.md`, Entscheidung `marketing/ENTSCHEIDUNG.md`.
@@ -27,7 +28,7 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
 
 ## Tests
 
-- Unit: `.venv-streamlit/bin/python3 -m pytest -q` (701 collected, 26.10.2026; Volllauf 696 passed, 5 skipped, 1 bekannte NiceGUI-RuntimeWarning `Outbox.loop`). Die Passed-Zahl schwankt, weil netzabhängige Language-Tests skippen — keine feste Zahl als Ziel nehmen.
+- Unit: `.venv-streamlit/bin/python3 -m pytest -q` (739 collected, 26.10.2026; Volllauf 725 passed, 5 skipped, 1 bekannte NiceGUI-RuntimeWarning `Outbox.loop`; mit CI-Ausschlüssen). Die Passed-Zahl schwankt, weil netzabhängige Language-Tests skippen — keine feste Zahl als Ziel nehmen.
 - Einzeltest: `.venv-streamlit/bin/python3 -m pytest tests/test_x.py::test_name -q`.
 - `pytest.ini` setzt `asyncio_mode = auto` und `main_file = tests/nicegui_main.py`. `pytest_plugins = ["nicegui.testing.user_plugin"]` muss in der **Root**-`conftest.py` stehen (pytest 8+).
 - NiceGUI-UI-Tests: Demo-Routen (`@ui.page`) gehören in `tests/nicegui_main.py`, **nicht** ins Testmodul (sonst 404/Global-Reset); Funktionsnamen dort nicht mit `test_` beginnen.

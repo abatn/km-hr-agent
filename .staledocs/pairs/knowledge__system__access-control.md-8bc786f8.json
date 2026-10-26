@@ -3,6 +3,7 @@
     "anchors": [
       "AGENTS.md",
       "ALLOWED_TRANSITIONS",
+      "KMHR_BILLING_ENABLED",
       "PAGE_MAP",
       "PAGE_TITLES",
       "README.md",
@@ -47,21 +48,22 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T13:59:41+00:00",
+    "at": "2026-10-26T19:38:15+00:00",
     "code_blobs": {
-      "webui/main.py": "d6739e08f08e6958eae7e5ee1203c4b273fff85f",
+      "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
-      "webui/pages/admin.py": "e30dc44f8abf9e8c39e206d1910dbdb1fa019ef4",
-      "webui/pages/candidate.py": "f6f88923654be2ceb4fae350e737356e1674a916",
-      "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d",
+      "webui/pages/admin.py": "864176a3c110681a992ca85df853913bd7aa8957",
+      "webui/pages/billing_ui.py": "dede4b0e95ff9c2e3f0acd55499349519faca960",
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
+      "webui/pages/employer.py": "2c813d72634aacf75f192c07abd453c00bac7114",
       "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "8ac28bebdb274095d054818fbe8ac3e2b41dc704",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "8b54885cd55702fed7f6cfd1427c1edcefb46940",
-    "doc_blob": "275f85bf06929da61e7a92d3573afd2c2502eccb",
-    "note": "knowledge/system/access-control.md: Consent-Datenmodell/UI und Rechtsdaten 26.10.2026 gepr\u00fcft; 701 collected/696 passed"
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "doc_blob": "bbd910508123611175eb16c0826f705c8f866672",
+    "note": "Geprueft: webui/pages/billing_ui.py (Admin-Seite Abrechnung) vorhanden; Admin-PAGE_MAP 13 Eintraege."
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

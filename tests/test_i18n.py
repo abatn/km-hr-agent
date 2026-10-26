@@ -479,7 +479,7 @@ def test_p9_3_select_options_gewrappt():
     for s in (
         "options={v: _(v) for v in branchen}",
         "options={v: _(v) for v in grossen}",
-        'options={v: _(v) for v in ["Vollzeit", "Teilzeit", "Freelance", "Hybrid", "Remote"]}',
+        'options={v: _(v) for v in ["Vollzeit", "Teilzeit", "Freelance", "Hybrid", "Remote", "Ausbildung"]}',
         'options={v: status_label(v) for v in ["aktiv", "pausiert", "besetzt", "abgelaufen"]}',
         'options={v: _(v) for v in ["Ja", "Nein", "Vorgemerkt"]}',
         '(_("Alle") if v == "alle" else _(v)) for v in DOC_TYP_OPTIONS',

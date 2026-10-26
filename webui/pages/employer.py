@@ -584,6 +584,11 @@ def _page_firmenprofil(s: dict) -> None:
 
                 ui.button(_('Passwort aendern'), on_click=do_change_pw_emp).classes(C.BTN_PRIMARY + " mt-2")
 
+    # Entgeltmodell (26.10.2026): Gebühren & Rechnungen im Firmenprofil.
+    # Rendert ohne Flag KMHR_BILLING_ENABLED=1 nichts (webui/billing.py).
+    from webui.pages.billing_ui import employer_billing_section
+    employer_billing_section(s.get("employer_id"))
+
     # conn bereits nach dem Build-Read geschlossen (Handler-Connection-Falle,
     # 21.10.2026) — kein Close am Seitenende.
 
@@ -614,7 +619,7 @@ def _page_portal(s: dict) -> None:
                     label=_('Land'),
                 ).classes("w-full")
                 typ_select = ui.select(
-                    options={v: _(v) for v in ["Vollzeit", "Teilzeit", "Freelance", "Hybrid", "Remote"]},
+                    options={v: _(v) for v in ["Vollzeit", "Teilzeit", "Freelance", "Hybrid", "Remote", "Ausbildung"]},
                     value="Vollzeit",
                     label=_('Stellentyp'),
                 ).classes("w-full")
@@ -643,6 +648,13 @@ def _page_portal(s: dict) -> None:
                 gehalt_min = ui.number(label=_('Gehaltsrahmen von (EUR)'), value=0, min=0, max=300000, step=1000).classes("w-full")
                 gehalt_max = ui.number(label=_('Gehaltsrahmen bis (EUR)'), value=0, min=0, max=300000, step=1000).classes("w-full")
 
+            # Entgeltmodell Schritt 4 (26.10.2026): Grundlage der Arbeitgeber-
+            # Visumgebühr (20 % des Bruttojahresgehalts, gedeckelt 2.000 €).
+            # Eigenes Feld statt Gehaltsrahmen, weil dort Monats- und
+            # Jahreswerte gemischt sind (Spec webui/db.py init_billing_migrations).
+            brutto_input = ui.number(label=_('Bruttojahresgehalt (EUR, für Visa-Abrechnung)'),
+                                     value=0, min=0, max=500000, step=1000).classes("w-full")
+
             def create_job():
                 if not titel_input.value or not beschreibung_input.value or not standort_input.value or not hard_input.value:
                     ui.notify(_('❌ Titel, Beschreibung, Arbeitsort und Must-Have-Skills sind Pflichtfelder.'), type="negative")
@@ -668,6 +680,7 @@ def _page_portal(s: dict) -> None:
                         abschluss=abschluss_select.value,
                         gehaltsrahmen_min=int(gehalt_min.value) if gehalt_min.value else None,
                         gehaltsrahmen_max=int(gehalt_max.value) if gehalt_max.value else None,
+                        bruttojahresgehalt_eur=int(brutto_input.value) if brutto_input.value else None,
                     )
                     if job_id:
                         ui.notify(_('✅ Stelle ausgeschrieben: {0}. Kandidaten-Matching ist jetzt möglich.').format(titel_input.value), type="positive")
@@ -679,6 +692,7 @@ def _page_portal(s: dict) -> None:
                         erfahrung_input.value = 3
                         gehalt_min.value = 0
                         gehalt_max.value = 0
+                        brutto_input.value = 0
                         refresh_jobs()
                     else:
                         ui.notify(_('❌ Fehler beim Erstellen der Stelle.'), type="negative")
@@ -850,6 +864,9 @@ def _page_stellen(s: dict) -> None:
                                     # (Stellen-Seite: eigener HR-Klick-Übergang)
                                     _notify_statuswechsel(conn2, _a_id, _ns)
                                     conn2.close()
+                                    if _ns == "eingestellt":
+                                        from webui import billing as _billing
+                                        _billing.billing_on_eingestellt(_a_id)  # Entgelt Schritt 3 (Flag-gesteuert)
                                     task = _hook_task.get(_ns)
                                     if task:
                                         _pl = {"application_id": _a_id, "candidate_id": _k_id,
@@ -1388,6 +1405,8 @@ def _page_match(s: dict) -> None:
                 conn.commit()
                 _notify_statuswechsel(conn, app_id, "eingestellt")  # R3-5 nach commit
                 conn.close()
+                from webui import billing as _billing
+                _billing.billing_on_eingestellt(app_id)  # Entgelt Schritt 3 (Flag-gesteuert)
                 db.queue_agent_task("onboarding_release", {"application_id": app_id, "candidate_id": cid,
                                                            "job_id": job_id, "trigger": "hr_klick_portal"})
                 ui.notify(_("Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."), type="positive")
@@ -3303,6 +3322,8 @@ def _page_board(s: dict) -> None:
                     _notify_statuswechsel(conn, app_id, "eingestellt")  # R3-5 nach commit
                 finally:
                     conn.close()
+                from webui import billing as _billing
+                _billing.billing_on_eingestellt(app_id)  # Entgelt Schritt 3 (Flag-gesteuert)
                 db.queue_agent_task("onboarding_release", {"application_id": app_id, "candidate_id": cid,
                                                            "job_id": job_id, "trigger": "hr_klick_portal"})
                 ui.notify(_("Bewerber eingestellt. Bitte Stellen-Status auf 'besetzt' setzen (Seite Stelle ausschreiben)."), type="positive")

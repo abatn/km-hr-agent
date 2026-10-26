@@ -53,10 +53,40 @@ third-party rights.
 
 ## 5. Conclusion of contract and fees
 
-5.1 Use is **free of charge** for candidates. **[Fees for employers: to be added.]**
+5.1 Registration, profile maintenance and job search are **free of charge** for candidates.
 
-5.2 The provider reserves the right to change the service offering; material changes will be
-communicated with reasonable notice.
+5.2 **Fees** (operator decision of 26 October 2026). Only the following fees apply, each
+plus statutory VAT:
+
+| Service | Payer | Fee | Trigger |
+|---|---|---|---|
+| Registration and profile | Candidate | free of charge | — |
+| Consultation / CV check | Candidate | €99 | Appointment booking |
+| Placement after conclusion of contract | Candidate | €500 | Signed employment contract |
+| Placement after conclusion of contract | Employer | €1,000 | Signed employment contract |
+| Visa approval | Candidate | €1,000 | Visa approval |
+| Visa approval | Employer | 20 % of gross annual salary, capped at €2,000 | Visa approval |
+| Apprenticeship (§ 296a SGB III) | employer only | as above, without candidate share | contract or visa |
+
+5.3 For **apprenticeship positions** the candidate fees are waived in full; only the
+employer fee is charged.
+
+5.4 Payment is made exclusively by **bank transfer** to the provider's bank details stated
+in the invoice text. Payment by card or via an online payment service is not offered. The
+invoice is due within 14 days of receipt. The provider's claim to a placement fee arises
+only upon conclusion of the employment contract; no **contingent fee** that is made
+dependent on successful employment is charged (§ 299 SGB III).
+
+5.5 Cancellation: a booked consultation appointment can be cancelled free of charge up to
+24 hours before it begins. Services already rendered and fee claims arising on the basis of
+a concluded employment contract remain unaffected.
+
+5.6 **Status: settled — operator decision of 26 October 2026.** The fee model was set by
+the operator and implemented accordingly. It has not replaced legal review; final
+verification before commencing operations remains reserved to the operator.
+
+5.7 The provider reserves the right to change the service offering; material changes to the
+fees are announced with reasonable notice before they take effect.
 
 ## 6. Liability
 

@@ -3701,3 +3701,180 @@ msgstr "🎬 Aufzeichnung der Selbstpräsentation (optional)"
 
 msgid "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
 msgstr "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
+
+msgid "Beratung / CV-Check"
+msgstr "Beratung / CV-Check"
+
+msgid "Vermittlung (Arbeitsvertrag)"
+msgstr "Vermittlung (Arbeitsvertrag)"
+
+msgid "Visumgenehmigung"
+msgstr "Visumgenehmigung"
+
+msgid "Rechnung gestellt"
+msgstr "Rechnung gestellt"
+
+msgid "Bezahlt"
+msgstr "Bezahlt"
+
+msgid "Storniert"
+msgstr "Storniert"
+
+msgid "Zahlung per Banküberweisung"
+msgstr "Zahlung per Banküberweisung"
+
+msgid "Kontoinhaber"
+msgstr "Kontoinhaber"
+
+msgid "Bank"
+msgstr "Bank"
+
+msgid "IBAN"
+msgstr "IBAN"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "Verwendungszweck"
+msgstr "Verwendungszweck"
+
+msgid "Rechnungsnummer"
+msgstr "Rechnungsnummer"
+
+msgid "Noch keine Rechnungen"
+msgstr "Noch keine Rechnungen"
+
+msgid "Rechnungen erscheinen hier nach der Buchung oder nach dem Auslöser."
+msgstr "Rechnungen erscheinen hier nach der Buchung oder nach dem Auslöser."
+
+msgid "Rechnung"
+msgstr "Rechnung"
+
+msgid "Leistung"
+msgstr "Leistung"
+
+msgid "Betrag"
+msgstr "Betrag"
+
+msgid "Fällig"
+msgstr "Fällig"
+
+msgid "Zahlungseingang wird durch das Team bestätigt; die Rechnung bleibt bis dahin offen."
+msgstr "Zahlungseingang wird durch das Team bestätigt; die Rechnung bleibt bis dahin offen."
+
+msgid "#{id} · {titel} · {firma}"
+msgstr "#{id} · {titel} · {firma}"
+
+msgid "Beratung / CV-Check buchen (99 €)"
+msgstr "Beratung / CV-Check buchen (99 €)"
+
+msgid "Termin (TT.MM.JJJJ HH:MM)"
+msgstr "Termin (TT.MM.JJJJ HH:MM)"
+
+msgid "Bitte Bewerbung wählen."
+msgstr "Bitte Bewerbung wählen."
+
+msgid "Bitte Termin im Format TT.MM.JJJJ HH:MM eingeben."
+msgstr "Bitte Termin im Format TT.MM.JJJJ HH:MM eingeben."
+
+msgid "Termin gebucht. Rechnung über 99 € wurde erstellt."
+msgstr "Termin gebucht. Rechnung über 99 € wurde erstellt."
+
+msgid "Termin buchen (99 €)"
+msgstr "Termin buchen (99 €)"
+
+msgid "Gebuchte Beratungstermine"
+msgstr "Gebuchte Beratungstermine"
+
+msgid "Gebühren & Rechnungen"
+msgstr "Gebühren & Rechnungen"
+
+msgid "Rechnungen und Banküberweisung"
+msgstr "Rechnungen und Banküberweisung"
+
+msgid "Abrechnung ist deaktiviert."
+msgstr "Abrechnung ist deaktiviert."
+
+msgid "Aktivieren mit KMHR_BILLING_ENABLED=1."
+msgstr "Aktivieren mit KMHR_BILLING_ENABLED=1."
+
+msgid "Visumgebühr erfassen (nach Visum-Genehmigung)"
+msgstr "Visumgebühr erfassen (nach Visum-Genehmigung)"
+
+msgid "Keine eingestellten Bewerbungen vorhanden."
+msgstr "Keine eingestellten Bewerbungen vorhanden."
+
+msgid "#{id} · {name} · {titel} · {firma}"
+msgstr "#{id} · {name} · {titel} · {firma}"
+
+msgid "Eingestellte Bewerbung"
+msgstr "Eingestellte Bewerbung"
+
+msgid "Bruttojahresgehalt (EUR)"
+msgstr "Bruttojahresgehalt (EUR)"
+
+msgid "Bitte Bruttojahresgehalt eingeben."
+msgstr "Bitte Bruttojahresgehalt eingeben."
+
+msgid "Visumgebühren: Kandidat {k}, Arbeitgeber {a}."
+msgstr "Visumgebühren: Kandidat {k}, Arbeitgeber {a}."
+
+msgid "Visumgebühren erstellen"
+msgstr "Visumgebühren erstellen"
+
+msgid "Zahlungseingang bestätigen / stornieren"
+msgstr "Zahlungseingang bestätigen / stornieren"
+
+msgid "Keine offenen Rechnungen."
+msgstr "Keine offenen Rechnungen."
+
+msgid "{} · {} · {}"
+msgstr "{} · {} · {}"
+
+msgid "Offene Rechnung"
+msgstr "Offene Rechnung"
+
+msgid "Bitte Rechnung wählen."
+msgstr "Bitte Rechnung wählen."
+
+msgid "Zahlungseingang bestätigt."
+msgstr "Zahlungseingang bestätigt."
+
+msgid "Admin-Storno"
+msgstr "Admin-Storno"
+
+msgid "Rechnung storniert."
+msgstr "Rechnung storniert."
+
+msgid "Stornieren"
+msgstr "Stornieren"
+
+msgid "Zahler"
+msgstr "Zahler"
+
+msgid "Abrechnung"
+msgstr "Abrechnung"
+
+msgid "Gebühren, Rechnungen und Zahlungseingang"
+msgstr "Gebühren, Rechnungen und Zahlungseingang"
+
+msgid "Bruttojahresgehalt (EUR, für Visa-Abrechnung)"
+msgstr "Bruttojahresgehalt (EUR, für Visa-Abrechnung)"
+
+msgid "Ausbildung"
+msgstr "Ausbildung"
+
+msgid "Termin konnte nicht gebucht werden: {0}"
+msgstr "Termin konnte nicht gebucht werden: {0}"
+
+msgid "Visumgebühr fehlgeschlagen: {0}"
+msgstr "Visumgebühr fehlgeschlagen: {0}"
+
+msgid "erstellt"
+msgstr "erstellt"
+
+msgid "bereits vorhanden"
+msgstr "bereits vorhanden"
+
+msgid "entfällt (Ausbildung)"
+msgstr "entfällt (Ausbildung)"

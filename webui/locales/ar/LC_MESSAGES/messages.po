@@ -3696,3 +3696,180 @@ msgstr "🎬 تسجيل العرض الذاتي (اختياري)"
 
 msgid "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
 msgstr "بدون موافقة، يتم إنشاء الرابط دون تسجيل."
+
+msgid "Beratung / CV-Check"
+msgstr "الاستشارة / فحص السيرة الذاتية"
+
+msgid "Vermittlung (Arbeitsvertrag)"
+msgstr "التوظيف (عقد العمل)"
+
+msgid "Visumgenehmigung"
+msgstr "موافقة التأشيرة"
+
+msgid "Rechnung gestellt"
+msgstr "تم إصدار الفاتورة"
+
+msgid "Bezahlt"
+msgstr "مدفوع"
+
+msgid "Storniert"
+msgstr "ملغى"
+
+msgid "Zahlung per Banküberweisung"
+msgstr "الدفع عن طريق التحويل المصرفي"
+
+msgid "Kontoinhaber"
+msgstr "صاحب الحساب"
+
+msgid "Bank"
+msgstr "البنك"
+
+msgid "IBAN"
+msgstr "IBAN"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "Verwendungszweck"
+msgstr "الغرض من التحويل"
+
+msgid "Rechnungsnummer"
+msgstr "رقم الفاتورة"
+
+msgid "Noch keine Rechnungen"
+msgstr "لا توجد فواتير بعد"
+
+msgid "Rechnungen erscheinen hier nach der Buchung oder nach dem Auslöser."
+msgstr "تظهر الفواتير هنا بعد الحجز أو بعد المشغّل."
+
+msgid "Rechnung"
+msgstr "الفاتورة"
+
+msgid "Leistung"
+msgstr "الخدمة"
+
+msgid "Betrag"
+msgstr "المبلغ"
+
+msgid "Fällig"
+msgstr "مستحق"
+
+msgid "Zahlungseingang wird durch das Team bestätigt; die Rechnung bleibt bis dahin offen."
+msgstr "يؤكد الفريق استلام الدفعة؛ تبقى الفاتورة مفتوحة حتى ذلك الحين."
+
+msgid "#{id} · {titel} · {firma}"
+msgstr "#{id} · {titel} · {firma}"
+
+msgid "Beratung / CV-Check buchen (99 €)"
+msgstr "احجز استشارة / فحص سيرة ذاتية (99 €)"
+
+msgid "Termin (TT.MM.JJJJ HH:MM)"
+msgstr "الموعد (يوم.شهر.سنة ساعة:دقيقة)"
+
+msgid "Bitte Bewerbung wählen."
+msgstr "يرجى اختيار طلب التوظيف."
+
+msgid "Bitte Termin im Format TT.MM.JJJJ HH:MM eingeben."
+msgstr "يرجى إدخال الموعد بالتنسيق يوم.شهر.سنة ساعة:دقيقة."
+
+msgid "Termin gebucht. Rechnung über 99 € wurde erstellt."
+msgstr "تم حجز الموعد. تم إنشاء فاتورة بقيمة 99 €."
+
+msgid "Termin buchen (99 €)"
+msgstr "احجز الموعد (99 €)"
+
+msgid "Gebuchte Beratungstermine"
+msgstr "مواعيد الاستشارة المحجوزة"
+
+msgid "Gebühren & Rechnungen"
+msgstr "الرسوم والفواتير"
+
+msgid "Rechnungen und Banküberweisung"
+msgstr "الفواتير والتحويل المصرفي"
+
+msgid "Abrechnung ist deaktiviert."
+msgstr "الفوترة معطلة."
+
+msgid "Aktivieren mit KMHR_BILLING_ENABLED=1."
+msgstr "التفعيل عبر KMHR_BILLING_ENABLED=1."
+
+msgid "Visumgebühr erfassen (nach Visum-Genehmigung)"
+msgstr "تسجيل رسم التأشيرة (بعد الموافقة على التأشيرة)"
+
+msgid "Keine eingestellten Bewerbungen vorhanden."
+msgstr "لا توجد طلبات توظيف معتمدة."
+
+msgid "#{id} · {name} · {titel} · {firma}"
+msgstr "#{id} · {name} · {titel} · {firma}"
+
+msgid "Eingestellte Bewerbung"
+msgstr "طلب التوظيف المعتمد"
+
+msgid "Bruttojahresgehalt (EUR)"
+msgstr "الراتب السنوي الإجمالي (EUR)"
+
+msgid "Bitte Bruttojahresgehalt eingeben."
+msgstr "يرجى إدخال الراتب السنوي الإجمالي."
+
+msgid "Visumgebühren: Kandidat {k}, Arbeitgeber {a}."
+msgstr "رسوم التأشيرة: المرشح {k}، صاحب العمل {a}."
+
+msgid "Visumgebühren erstellen"
+msgstr "إنشاء رسوم التأشيرة"
+
+msgid "Zahlungseingang bestätigen / stornieren"
+msgstr "تأكيد الدفع أو إلغاؤه"
+
+msgid "Keine offenen Rechnungen."
+msgstr "لا توجد فواتير مفتوحة."
+
+msgid "{} · {} · {}"
+msgstr "{} · {} · {}"
+
+msgid "Offene Rechnung"
+msgstr "فاتورة مفتوحة"
+
+msgid "Bitte Rechnung wählen."
+msgstr "يرجى اختيار فاتورة."
+
+msgid "Zahlungseingang bestätigt."
+msgstr "تم تأكيد الدفع."
+
+msgid "Admin-Storno"
+msgstr "إلغاء من قِبل المسؤول"
+
+msgid "Rechnung storniert."
+msgstr "تم إلغاء الفاتورة."
+
+msgid "Stornieren"
+msgstr "إلغاء"
+
+msgid "Zahler"
+msgstr "الدافع"
+
+msgid "Abrechnung"
+msgstr "الفوترة"
+
+msgid "Gebühren, Rechnungen und Zahlungseingang"
+msgstr "الرسوم والفواتير والدفع"
+
+msgid "Bruttojahresgehalt (EUR, für Visa-Abrechnung)"
+msgstr "الراتب السنوي الإجمالي (EUR، لفوترة التأشيرات)"
+
+msgid "Ausbildung"
+msgstr "التدريب المهني"
+
+msgid "Termin konnte nicht gebucht werden: {0}"
+msgstr "تعذّر حجز الموعد: {0}"
+
+msgid "Visumgebühr fehlgeschlagen: {0}"
+msgstr "فشل رسم التأشيرة: {0}"
+
+msgid "erstellt"
+msgstr "أُنشئ"
+
+msgid "bereits vorhanden"
+msgstr "موجود مسبقاً"
+
+msgid "entfällt (Ausbildung)"
+msgstr "لا ينطبق (التدريب المهني)"

@@ -203,6 +203,9 @@ _db.init_candidates_migrations()
 # im Spiegel vor. Idempotent (CREATE ... IF NOT EXISTS + ALTER nur bei Bedarf).
 _db.init_consents_table()
 
+# 26.10.2026 (Entgelt-Schema): Parität zu main.py::init_billing_migrations.
+_db.init_billing_migrations()
+
 
 def pytest_sessionfinish(session, exitstatus):
     """Endwerte in die Pointer-Datei — UND ERST DANACH das eigene Spiegel-

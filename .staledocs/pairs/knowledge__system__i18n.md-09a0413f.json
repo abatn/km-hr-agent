@@ -96,6 +96,7 @@
       "test_i18n.py",
       "test_match_actions.py",
       "test_nm1_nm2.py",
+      "test_p9_3_select_options_gewrappt",
       "test_p9_4_agent_tasks_labels_deutsch_und_gewrappt",
       "test_p9_5b_*",
       "test_runner_i18n.py",
@@ -117,24 +118,24 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-25T14:54:51+00:00",
+    "at": "2026-10-26T19:38:19+00:00",
     "code_blobs": {
-      "tests/test_i18n.py": "3013579f88faa059d0d85155db93aa6ae0e8ef2d",
+      "tests/test_i18n.py": "208312b7842868098ba84ee0a23ee2e06a5499ed",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "fd94faabedad7c7ca46d53a1154755625d751ff4",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "e9a92afc013b70d406c84ca7a581156d473a3e34",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "dc960b151ddf6ebb76972b7dc1350fa87125f3b8",
-      "webui/locales/de/LC_MESSAGES/messages.po": "195ef91cc1be2a959282a44555216123d6573cf6",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "4f6dc1da95857a16285088e220868384c97ed048",
-      "webui/locales/en/LC_MESSAGES/messages.po": "bb91405e27d001b2e37f1dfd33439b480088c8fc",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "601343954bb9ca6ed7e96450ba283255f7f0bce5",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "b8231a71ad851e4a68d62ce6f6750e18e015f14e"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "09339543fb90c4470172c7abca9d82d6fc3f5d65",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "10d05528ab9c9f445d5675fe2725fef2c698f1e1",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "729a85069c8a44d87f0ad79507a88bdc80dc9dc4",
+      "webui/locales/de/LC_MESSAGES/messages.po": "9feb804488bce384d04d3c259d0a3df5dcdd817e",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "db50e2d1dcd1c33b25878cb5ed2bf8f894c39c4a",
+      "webui/locales/en/LC_MESSAGES/messages.po": "617fd80cbd9a7037ea8e77604db235fe2be9104a",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "ace5cdd2fd4550f93fa19f45db61e68bdcbdfeb2",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "853d54a6feba7378013e51c2c1c83e9d7e7f5ad5"
     },
-    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
-    "doc_blob": "6aa370101d39c7881d44e3afbcc161503ba44448",
-    "note": "webui/locales/fr/LC_MESSAGES/messages.mo und .po ge\u00e4ndert; 27 neue msgids, 1220 Keys, checks.py i18n rc=0"
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "doc_blob": "7925eba44fbd122eb28ab36104aaee67ce624838",
+    "note": "Geprueft: webui/locales/messages.po/.mo final kompiliert (Billing-Keys + Ausbildung + Fehlermeldungen); checks.py i18n rc=0."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

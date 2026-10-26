@@ -103,13 +103,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-23T10:43:38+00:00",
+    "at": "2026-10-26T19:29:17+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "f2771aff5a54e1a12a62d9870dff5409f81e9b1d"
+      "webui/pages/employer.py": "2c813d72634aacf75f192c07abd453c00bac7114"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
     "doc_blob": "86a54a56488a18ce7eafada8e4aee5a26b8b2eb5",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/portal/employer-board.md"
+    "note": "Geprueft: ALLOWED_TRANSITIONS, _BOARD_COLUMNS, _board_rows, def _page_board in webui/pages/employer.py unveraendert."
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

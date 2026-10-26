@@ -3696,3 +3696,180 @@ msgstr "🎬 Enregistrement de la présentation personnelle (facultatif)"
 
 msgid "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
 msgstr "Sans consentement, le lien est généré sans enregistrement."
+
+msgid "Beratung / CV-Check"
+msgstr "Conseil / Vérification du CV"
+
+msgid "Vermittlung (Arbeitsvertrag)"
+msgstr "Placement (contrat de travail)"
+
+msgid "Visumgenehmigung"
+msgstr "Autorisation de visa"
+
+msgid "Rechnung gestellt"
+msgstr "Facture émise"
+
+msgid "Bezahlt"
+msgstr "Payé"
+
+msgid "Storniert"
+msgstr "Annulé"
+
+msgid "Zahlung per Banküberweisung"
+msgstr "Paiement par virement bancaire"
+
+msgid "Kontoinhaber"
+msgstr "Titulaire du compte"
+
+msgid "Bank"
+msgstr "Banque"
+
+msgid "IBAN"
+msgstr "IBAN"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "Verwendungszweck"
+msgstr "Motif du versement"
+
+msgid "Rechnungsnummer"
+msgstr "Numéro de facture"
+
+msgid "Noch keine Rechnungen"
+msgstr "Pas encore de factures"
+
+msgid "Rechnungen erscheinen hier nach der Buchung oder nach dem Auslöser."
+msgstr "Les factures apparaissent ici après la réservation ou après le déclencheur."
+
+msgid "Rechnung"
+msgstr "Facture"
+
+msgid "Leistung"
+msgstr "Prestation"
+
+msgid "Betrag"
+msgstr "Montant"
+
+msgid "Fällig"
+msgstr "Échéance"
+
+msgid "Zahlungseingang wird durch das Team bestätigt; die Rechnung bleibt bis dahin offen."
+msgstr "Le paiement est confirmé par l'équipe ; la facture reste ouverte jusqu'à lors."
+
+msgid "#{id} · {titel} · {firma}"
+msgstr "#{id} · {titel} · {firma}"
+
+msgid "Beratung / CV-Check buchen (99 €)"
+msgstr "Réserver un conseil / une vérification de CV (99 €)"
+
+msgid "Termin (TT.MM.JJJJ HH:MM)"
+msgstr "Rendez-vous (JJ.MM.AAAA HH:MM)"
+
+msgid "Bitte Bewerbung wählen."
+msgstr "Veuillez sélectionner une candidature."
+
+msgid "Bitte Termin im Format TT.MM.JJJJ HH:MM eingeben."
+msgstr "Veuillez saisir le rendez-vous au format JJ.MM.AAAA HH:MM."
+
+msgid "Termin gebucht. Rechnung über 99 € wurde erstellt."
+msgstr "Rendez-vous réservé. Une facture de 99 € a été créée."
+
+msgid "Termin buchen (99 €)"
+msgstr "Réserver le rendez-vous (99 €)"
+
+msgid "Gebuchte Beratungstermine"
+msgstr "Rendez-vous de conseil réservés"
+
+msgid "Gebühren & Rechnungen"
+msgstr "Frais et factures"
+
+msgid "Rechnungen und Banküberweisung"
+msgstr "Factures et virement bancaire"
+
+msgid "Abrechnung ist deaktiviert."
+msgstr "La facturation est désactivée."
+
+msgid "Aktivieren mit KMHR_BILLING_ENABLED=1."
+msgstr "Activer avec KMHR_BILLING_ENABLED=1."
+
+msgid "Visumgebühr erfassen (nach Visum-Genehmigung)"
+msgstr "Enregistrer les frais de visa (après autorisation du visa)"
+
+msgid "Keine eingestellten Bewerbungen vorhanden."
+msgstr "Aucune candidature embauchée."
+
+msgid "#{id} · {name} · {titel} · {firma}"
+msgstr "#{id} · {name} · {titel} · {firma}"
+
+msgid "Eingestellte Bewerbung"
+msgstr "Candidature embauchée"
+
+msgid "Bruttojahresgehalt (EUR)"
+msgstr "Salaire brut annuel (EUR)"
+
+msgid "Bitte Bruttojahresgehalt eingeben."
+msgstr "Veuillez saisir le salaire brut annuel."
+
+msgid "Visumgebühren: Kandidat {k}, Arbeitgeber {a}."
+msgstr "Frais de visa : candidat {k}, employeur {a}."
+
+msgid "Visumgebühren erstellen"
+msgstr "Créer les frais de visa"
+
+msgid "Zahlungseingang bestätigen / stornieren"
+msgstr "Confirmer ou annuler le paiement"
+
+msgid "Keine offenen Rechnungen."
+msgstr "Aucune facture en cours."
+
+msgid "{} · {} · {}"
+msgstr "{} · {} · {}"
+
+msgid "Offene Rechnung"
+msgstr "Facture en cours"
+
+msgid "Bitte Rechnung wählen."
+msgstr "Veuillez sélectionner une facture."
+
+msgid "Zahlungseingang bestätigt."
+msgstr "Paiement confirmé."
+
+msgid "Admin-Storno"
+msgstr "Annulation par l'administrateur"
+
+msgid "Rechnung storniert."
+msgstr "Facture annulée."
+
+msgid "Stornieren"
+msgstr "Annuler"
+
+msgid "Zahler"
+msgstr "Payeur"
+
+msgid "Abrechnung"
+msgstr "Facturation"
+
+msgid "Gebühren, Rechnungen und Zahlungseingang"
+msgstr "Frais, factures et paiement"
+
+msgid "Bruttojahresgehalt (EUR, für Visa-Abrechnung)"
+msgstr "Salaire brut annuel (EUR, pour la facturation des visas)"
+
+msgid "Ausbildung"
+msgstr "Apprentissage"
+
+msgid "Termin konnte nicht gebucht werden: {0}"
+msgstr "Le rendez-vous n'a pas pu être réservé : {0}"
+
+msgid "Visumgebühr fehlgeschlagen: {0}"
+msgstr "Échec des frais de visa : {0}"
+
+msgid "erstellt"
+msgstr "créé"
+
+msgid "bereits vorhanden"
+msgstr "déjà présent"
+
+msgid "entfällt (Ausbildung)"
+msgstr "non applicable (apprentissage)"

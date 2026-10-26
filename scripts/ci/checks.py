@@ -133,13 +133,13 @@ def check_i18n() -> None:
     print(f"i18n geprüft: {len(cats)} Kataloge")
 
 
-# ── schema: DB-Tabellen vs. erwartete 17 ─────────────────────────────────
+# ── schema: DB-Tabellen vs. erwartete 20 ─────────────────────────────────
 ERWARTETE_TABELLEN = {
     "admins", "agent_tasks", "application_status_history", "applications",
-    "candidate_documents", "candidate_status_history", "candidates",
+    "billing_fees", "candidate_documents", "candidate_status_history", "candidates",
     "compliance_protokoll", "consents", "employers", "feedback",
     "gewichtung_historie", "job_status_history", "jobs", "language_tests",
-    "mentoring", "notifications", "password_resets",
+    "mentoring", "notifications", "password_resets", "termin_buchungen",
 }
 
 

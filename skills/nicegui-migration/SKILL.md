@@ -213,7 +213,7 @@ python3 -m webui.main  # → http://localhost:8080
 | D8 | `ui.caption` → `ui.label(...).classes("text-caption ...")` (7 Stellen) | `ui.caption` existiert in NiceGUI 3.17.1 nicht (`'caption' not in dir(ui)`) → Seite crasht vor jedem Widget | Quasar `text-caption`-Äquivalent; employer.py 343/443/462/466, admin.py 577/597/601 |
 | D9 | Termin-Widgets als **Default-Args-Snapshot** an `make_transition` binden | Python-Closure-Late-Binding: `_inv_*` wird in Folge-Cards derselben Loop-Iteration auf None gesetzt → Payload verlor termin_* (im E2E sichtbar) | Fund im P3-Test 22.09.2026; Muster wie `_a_id=a_id` daneben |
 | D10 | Runner-Guard akzeptiert `admin_klick` (Tripel) | Spec erlaubt Admin-Übergänge mit `trigger: admin_klick` — Code war enger als MD (Lab-Prinzip 3: Inkonsistenz → hier Code an MD) | `knowledge/system/agent-automation.md` vs `scripts/agent-runner.py` (gemessen 10.10.2026) |
-| D11 | **C2:** `navigate_to("admin","kandidaten")` → `"stellen"` (2 Zeilen) | `"kandidaten"` existiert nicht im Admin-PAGE_MAP (12 Keys, `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026)) → Navigation nach Transition ins Leere | `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 10.10.2026) |
+| D11 | **C2:** `navigate_to("admin","kandidaten")` → `"stellen"` (2 Zeilen) | `"kandidaten"` existiert nicht im Admin-PAGE_MAP (13 Keys, `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 26.10.2026)) → Navigation nach Transition ins Leere | `webui/pages/admin.py` (Codemarke `PAGE_MAP`, gemessen 26.10.2026) |
 | D12 | admin `conn.close()` erst nach Archiv-Block | Close Zeile 499 → Visum-Count (586) bediente geschlossene DB → 500 `ProgrammingError` | admin.py:_page_stellen |
 
 ### E2E-Beweise (22.09.2026)

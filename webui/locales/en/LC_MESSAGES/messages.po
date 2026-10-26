@@ -3696,3 +3696,180 @@ msgstr "🎬 Recording of the self-presentation (optional)"
 
 msgid "Ohne Einwilligung wird der Link ohne Aufnahme erzeugt."
 msgstr "Without consent, the link is generated without recording."
+
+msgid "Beratung / CV-Check"
+msgstr "Consultation / CV check"
+
+msgid "Vermittlung (Arbeitsvertrag)"
+msgstr "Placement (employment contract)"
+
+msgid "Visumgenehmigung"
+msgstr "Visa approval"
+
+msgid "Rechnung gestellt"
+msgstr "Invoice issued"
+
+msgid "Bezahlt"
+msgstr "Paid"
+
+msgid "Storniert"
+msgstr "Cancelled"
+
+msgid "Zahlung per Banküberweisung"
+msgstr "Payment by bank transfer"
+
+msgid "Kontoinhaber"
+msgstr "Account holder"
+
+msgid "Bank"
+msgstr "Bank"
+
+msgid "IBAN"
+msgstr "IBAN"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "Verwendungszweck"
+msgstr "Reference"
+
+msgid "Rechnungsnummer"
+msgstr "Invoice number"
+
+msgid "Noch keine Rechnungen"
+msgstr "No invoices yet"
+
+msgid "Rechnungen erscheinen hier nach der Buchung oder nach dem Auslöser."
+msgstr "Invoices appear here after booking or after the trigger."
+
+msgid "Rechnung"
+msgstr "Invoice"
+
+msgid "Leistung"
+msgstr "Service"
+
+msgid "Betrag"
+msgstr "Amount"
+
+msgid "Fällig"
+msgstr "Due"
+
+msgid "Zahlungseingang wird durch das Team bestätigt; die Rechnung bleibt bis dahin offen."
+msgstr "Payment is confirmed by the team; the invoice remains open until then."
+
+msgid "#{id} · {titel} · {firma}"
+msgstr "#{id} · {titel} · {firma}"
+
+msgid "Beratung / CV-Check buchen (99 €)"
+msgstr "Book consultation / CV check (€99)"
+
+msgid "Termin (TT.MM.JJJJ HH:MM)"
+msgstr "Appointment (DD.MM.YYYY HH:MM)"
+
+msgid "Bitte Bewerbung wählen."
+msgstr "Please select an application."
+
+msgid "Bitte Termin im Format TT.MM.JJJJ HH:MM eingeben."
+msgstr "Please enter the appointment in DD.MM.YYYY HH:MM format."
+
+msgid "Termin gebucht. Rechnung über 99 € wurde erstellt."
+msgstr "Appointment booked. An invoice for €99 has been created."
+
+msgid "Termin buchen (99 €)"
+msgstr "Book appointment (€99)"
+
+msgid "Gebuchte Beratungstermine"
+msgstr "Booked consultation appointments"
+
+msgid "Gebühren & Rechnungen"
+msgstr "Fees & invoices"
+
+msgid "Rechnungen und Banküberweisung"
+msgstr "Invoices and bank transfer"
+
+msgid "Abrechnung ist deaktiviert."
+msgstr "Billing is disabled."
+
+msgid "Aktivieren mit KMHR_BILLING_ENABLED=1."
+msgstr "Enable with KMHR_BILLING_ENABLED=1."
+
+msgid "Visumgebühr erfassen (nach Visum-Genehmigung)"
+msgstr "Record visa fee (after visa approval)"
+
+msgid "Keine eingestellten Bewerbungen vorhanden."
+msgstr "No hired applications."
+
+msgid "#{id} · {name} · {titel} · {firma}"
+msgstr "#{id} · {name} · {titel} · {firma}"
+
+msgid "Eingestellte Bewerbung"
+msgstr "Hired application"
+
+msgid "Bruttojahresgehalt (EUR)"
+msgstr "Gross annual salary (EUR)"
+
+msgid "Bitte Bruttojahresgehalt eingeben."
+msgstr "Please enter the gross annual salary."
+
+msgid "Visumgebühren: Kandidat {k}, Arbeitgeber {a}."
+msgstr "Visa fees: candidate {k}, employer {a}."
+
+msgid "Visumgebühren erstellen"
+msgstr "Create visa fees"
+
+msgid "Zahlungseingang bestätigen / stornieren"
+msgstr "Confirm or cancel payment"
+
+msgid "Keine offenen Rechnungen."
+msgstr "No open invoices."
+
+msgid "{} · {} · {}"
+msgstr "{} · {} · {}"
+
+msgid "Offene Rechnung"
+msgstr "Open invoice"
+
+msgid "Bitte Rechnung wählen."
+msgstr "Please select an invoice."
+
+msgid "Zahlungseingang bestätigt."
+msgstr "Payment confirmed."
+
+msgid "Admin-Storno"
+msgstr "Admin cancellation"
+
+msgid "Rechnung storniert."
+msgstr "Invoice cancelled."
+
+msgid "Stornieren"
+msgstr "Cancel"
+
+msgid "Zahler"
+msgstr "Payer"
+
+msgid "Abrechnung"
+msgstr "Billing"
+
+msgid "Gebühren, Rechnungen und Zahlungseingang"
+msgstr "Fees, invoices and payment"
+
+msgid "Bruttojahresgehalt (EUR, für Visa-Abrechnung)"
+msgstr "Gross annual salary (EUR, for visa billing)"
+
+msgid "Ausbildung"
+msgstr "Apprenticeship"
+
+msgid "Termin konnte nicht gebucht werden: {0}"
+msgstr "The appointment could not be booked: {0}"
+
+msgid "Visumgebühr fehlgeschlagen: {0}"
+msgstr "Visa fee failed: {0}"
+
+msgid "erstellt"
+msgstr "created"
+
+msgid "bereits vorhanden"
+msgstr "already present"
+
+msgid "entfällt (Ausbildung)"
+msgstr "not applicable (apprenticeship)"

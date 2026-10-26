@@ -557,7 +557,8 @@ def insert_job(employer_id: int, titel: str, beschreibung: str, standort: str,
                land: str, stellentyp: str, hard_skills: str, soft_skills: str,
                berufserfahrung_jahre: int, deutsch_level: str, englisch_level: str,
                abschluss: str, gehaltsrahmen_min: int | None,
-               gehaltsrahmen_max: int | None) -> int | None:
+               gehaltsrahmen_max: int | None,
+               bruttojahresgehalt_eur: int | None = None) -> int | None:
     """Legt eine neue Stelle an. Kopie aus app.py:3515-3520.
 
     P1-11 (30.09.2026): Fehlerursache wird protokolliert (vorher `except Exception:
@@ -583,11 +584,12 @@ def insert_job(employer_id: int, titel: str, beschreibung: str, standort: str,
         cur.execute(
             """INSERT INTO jobs (employer_id, titel, beschreibung, standort, land, stellentyp,
                hard_skills, soft_skills, berufserfahrung_jahre, deutsch_level, englisch_level,
-               abschluss, gehaltsrahmen_min, gehaltsrahmen_max)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+               abschluss, gehaltsrahmen_min, gehaltsrahmen_max, bruttojahresgehalt_eur)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (employer_id, titel, beschreibung, standort, land, stellentyp,
              hard_skills, soft_skills, berufserfahrung_jahre, deutsch_level, englisch_level,
-             abschluss, gehaltsrahmen_min or None, gehaltsrahmen_max or None),
+             abschluss, gehaltsrahmen_min or None, gehaltsrahmen_max or None,
+             bruttojahresgehalt_eur or None),
         )
         job_id = cur.lastrowid
         conn.execute(
@@ -979,6 +981,58 @@ def init_candidates_migrations() -> None:
         c.execute("ALTER TABLE candidates ADD COLUMN franzoesisch TEXT")
     conn.commit()
     conn.close()
+
+
+def init_billing_migrations(db_path: Path | None = None) -> None:
+    """Entgelt-Schema (26.10.2026, idempotent): billing_fees, Terminbuchungen,
+    jobs.bruttojahresgehalt_eur. Schema-Quelle: webui/billing.py.
+
+    Eigenes Feld statt gehaltsrahmen_* (dort Monats-/Jahreswerte gemischt).
+    """
+    conn = sqlite3.connect(str(db_path or DB_PATH))
+    try:
+        c = conn.cursor()
+        c.execute("""CREATE TABLE IF NOT EXISTS billing_fees (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            application_id INTEGER,
+            candidate_id INTEGER,
+            employer_id INTEGER,
+            payer_role TEXT NOT NULL,
+            fee_type TEXT NOT NULL,
+            amount_cents INTEGER NOT NULL,
+            currency TEXT NOT NULL DEFAULT 'EUR',
+            status TEXT NOT NULL DEFAULT 'rechnung_gestellt',
+            invoice_number TEXT NOT NULL UNIQUE,
+            invoice_date TEXT NOT NULL,
+            due_date TEXT NOT NULL,
+            paid_at TIMESTAMP,
+            salary_basis_cents INTEGER,
+            job_is_ausbildung INTEGER NOT NULL DEFAULT 0,
+            note TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )""")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_billing_payer ON billing_fees(payer_role, candidate_id, employer_id)")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_billing_status ON billing_fees(status)")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_billing_application ON billing_fees(application_id)")
+        c.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_billing_unique_app "
+                  "ON billing_fees(application_id, payer_role, fee_type) "
+                  "WHERE application_id IS NOT NULL AND status != 'storniert'")
+        c.execute("""CREATE TABLE IF NOT EXISTS termin_buchungen (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            application_id INTEGER NOT NULL,
+            candidate_id INTEGER NOT NULL,
+            slot_at TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'gebucht',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(application_id, slot_at)
+        )""")
+        jobs_spalten = {r[1] for r in c.execute("PRAGMA table_info(jobs)").fetchall()}
+        if jobs_spalten and "bruttojahresgehalt_eur" not in jobs_spalten:
+            c.execute("ALTER TABLE jobs ADD COLUMN bruttojahresgehalt_eur INTEGER")
+        conn.commit()
+    finally:
+        conn.close()
 
 
 # ─── Consent-Nachweise (26.10.2026) ────────────────────────────────────

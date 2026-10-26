@@ -223,6 +223,28 @@ def a4_match_focus():
     _ep._page_match(s)
 
 
+# ── Entgeltmodell (26.10.2026): Render-Routen für alle drei Profile ──
+# Regel R5-1: Demo-Routen gehören hierher, nicht ins Testmodul.
+# Der Feature-Flag wird im Test per monkeypatch gesetzt.
+
+@ui.page('/billing-candidate')
+def billing_candidate_demo():
+    from webui.pages.billing_ui import candidate_billing_section
+    candidate_billing_section(1)
+
+
+@ui.page('/billing-employer')
+def billing_employer_demo():
+    from webui.pages.billing_ui import employer_billing_section
+    employer_billing_section(1)
+
+
+@ui.page('/billing-admin')
+def billing_admin_demo():
+    from webui.pages.billing_ui import admin_billing_section
+    admin_billing_section()
+
+
 # user_simulation führt diese Datei via runpy mit run_name='__main__' aus und
 # erwartet ui.run() (NICEGUI_USER_SIMULATION=true verhindert den echten Serverstart).
 if __name__ in {"__main__", "__mp_main__"}:

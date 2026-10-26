@@ -60,15 +60,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-23T10:43:47+00:00",
+    "at": "2026-10-26T19:29:25+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
-      "webui/pages/candidate.py": "2649378474d8b962c4a432f0dce33e12f99100b4"
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "75fdde7f607a0f3b1ec7dfcad86e79cc443b7c32",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/vdo-ninja-migration.md"
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "doc_blob": "2882a7dfe34ef28758c5126b4236678614567a3b",
+    "note": "Geprueft: Selbstpraesentation/webui/pages/candidate.py Self-Presentation-Pfad unveraendert."
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

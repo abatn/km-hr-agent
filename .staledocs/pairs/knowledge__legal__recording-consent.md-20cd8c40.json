@@ -33,14 +33,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T13:59:38+00:00",
+    "at": "2026-10-26T19:29:13+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
-      "webui/pages/candidate.py": "f6f88923654be2ceb4fae350e737356e1674a916"
+      "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "8b54885cd55702fed7f6cfd1427c1edcefb46940",
+    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
     "doc_blob": "fd015dee92234fc42568bdd67a9a3eaff46eefcf",
-    "note": "knowledge/legal/recording-consent.md: Consent-Datenmodell/UI und Rechtsdaten 26.10.2026 gepr\u00fcft; 701 collected/696 passed"
+    "note": "Geprueft: video_url und vdo.ninja in webui/pages/candidate.py unveraendert vorhanden."
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1

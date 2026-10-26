@@ -510,6 +510,11 @@ def _tab_profil(s: dict) -> None:
 
         ui.button(_('Passwort aendern'), on_click=do_change_pw).classes(C.BTN_PRIMARY + " mt-2")
 
+    # Entgeltmodell (26.10.2026): Gebühren & Rechnungen im Profil.
+    # Rendert ohne Flag KMHR_BILLING_ENABLED=1 nichts (webui/billing.py).
+    from webui.pages.billing_ui import candidate_billing_section
+    candidate_billing_section(s["user_cand_id"])
+
 
 # ─── Tab 3: Stellenangebote ──────────────────────────────────────────
 
