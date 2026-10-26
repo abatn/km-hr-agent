@@ -166,7 +166,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-26T21:45:37+00:00",
+    "at": "2026-10-26T22:04:20+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -227,7 +227,7 @@
       "knowledge/system/e2e-ci-seed.md": "061a9260ab8132e4ab336093b712e9a049a9bb85",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
       "knowledge/system/i18n-runner-chain.md": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
-      "knowledge/system/i18n.md": "7925eba44fbd122eb28ab36104aaee67ce624838",
+      "knowledge/system/i18n.md": "12cd21b8a23bade8c8400711f1627da2124470ea",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -247,9 +247,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
     },
-    "commit": "6ade3a1ed0d045c14ea9cfda7e2de4360a5d56b0",
+    "commit": "3fd2ff43cdbed44620a19d9dd319b19925c6eba0",
     "doc_blob": "af31968de3e75c7250724db3e8a103df0cba4c46",
-    "note": "Geprueft: knowledge.md ist ein reiner Zeiger-Index (Doku-Authority v1.0); die Eintraege zu knowledge/legal/agb.md und knowledge/legal/datenschutz.md stimmen weiter, geaendert wurde nur deren Inhalt (Entgeltmodell AGB 5 / Datenschutz 2.1)."
+    "note": "Geprueft: knowledge.md ist reiner Zeiger-Index; Eintrag knowledge/system/i18n.md stimmt weiter, dort nur Nachtrag 26.10.2026 (Key-Menge 1298, AST-Guard) ergaenzt."
   },
   "doc": "knowledge.md",
   "schema": 1

@@ -170,12 +170,12 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-26T19:38:20+00:00",
+    "at": "2026-10-26T22:03:48+00:00",
     "code_blobs": {
       "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "864176a3c110681a992ca85df853913bd7aa8957",
-      "webui/pages/billing_ui.py": "dede4b0e95ff9c2e3f0acd55499349519faca960",
+      "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
       "webui/pages/employer.py": "2c813d72634aacf75f192c07abd453c00bac7114",
       "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
@@ -183,9 +183,9 @@
       "webui/pages/login.py": "8ac28bebdb274095d054818fbe8ac3e2b41dc704",
       "webui/pages/not_found.py": "20f647c1604d8a79e379761498d217ef8a97e85b"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "3fd2ff43cdbed44620a19d9dd319b19925c6eba0",
     "doc_blob": "008cc8c6cd7315dff516e4ca95f7c6691d3f11bf",
-    "note": "Geprueft: webui/pages/billing_ui.py folgt dem Handler-Connection-Muster (eigene conn je Callback, try/finally); Admin-PAGE_MAP 13."
+    "note": "Geprueft: webui/pages/billing_ui.py folgt dem Handler-Connection-Muster (eigene conn je Callback, try/finally); D34-Regressionstest unveraendert gueltig."
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1
