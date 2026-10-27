@@ -170,7 +170,7 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-27T18:04:14+00:00",
+    "at": "2026-10-27T19:19:55+00:00",
     "code_blobs": {
       "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -178,14 +178,14 @@
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
       "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9",
-      "webui/pages/landing.py": "8ef9f27752b1454a03018ad8b4da8bd0d5aa611d",
+      "webui/pages/landing.py": "3e15b602b0c9a334002d3c5526686da85e303398",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
       "webui/pages/login.py": "7159eb021833b140519d0edd295f992c4c1de561",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b"
     },
-    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
+    "commit": "947a37226bcac4cdfddd14c1eb2d0a3317004e32",
     "doc_blob": "008cc8c6cd7315dff516e4ca95f7c6691d3f11bf",
-    "note": "Zitierte Stellen (u.a. 457: test_conn_closure) gelesen: NiceGUI-Muster und conn-Regeln. Geaendert wurden CSS-Bloecke und ein IntersectionObserver in landing.py; die beschriebenen Muster bleiben gueltig."
+    "note": "webui/pages/landing.py geaendert: ausschliesslich CSS-Regeln im bestehenden @media-Block (max-width 768px) plus zwei Regeln fuer .kmhr-end. Die beschriebenen NiceGUI-Muster (conn-Regeln, PAGE_MAP, test_conn_closure, Zeilen u.a. 457) bleiben gueltig."
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1
