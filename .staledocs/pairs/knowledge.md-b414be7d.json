@@ -166,16 +166,16 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-26T22:59:12+00:00",
+    "at": "2026-10-27T12:49:05+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
       "knowledge/language-courses.md": "3d419eb25c803c0565fadcf7432ab2c0ee5b4ab6",
       "knowledge/language-tests.md": "4b907df38795d83a62ef1783a0698943531b7af7",
-      "knowledge/legal/agb.ar.md": "04e902ad4b2f12c27a75f952c4ff53826bfd3ed3",
-      "knowledge/legal/agb.en.md": "b09b4526873b6249506fee20f7c056b2f9697e1c",
-      "knowledge/legal/agb.fr.md": "b0962adf19a931d3feb0a2c881a603c008afbcbf",
-      "knowledge/legal/agb.md": "a10f54b6fe6ce8b8deed70effda8729de6c97ff0",
+      "knowledge/legal/agb.ar.md": "4c75dd64fb58f5c893bca93b81d9a26bcaa6370c",
+      "knowledge/legal/agb.en.md": "8d8af7bc648755ddd40b6ae6cd537c5e62d51003",
+      "knowledge/legal/agb.fr.md": "3ea35d2f825ad254d6ab2d00acf20b89a5cdb904",
+      "knowledge/legal/agb.md": "3c021e8ee42a56f538fafd22a74762fc536a592c",
       "knowledge/legal/compliance-rules.md": "17f64b7843b56f82a0c6b4c2d77f65cce4124581",
       "knowledge/legal/contract-management.md": "ddea3a649bb5696f021361fb4d2fc484c67191b3",
       "knowledge/legal/contract-sources.md": "cb21205a05ca258b36a18e0865faa933400e81f4",
@@ -247,9 +247,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "ce15bd0b623373badd66553086f845c987b4eb0c",
     "doc_blob": "af31968de3e75c7250724db3e8a103df0cba4c46",
-    "note": "Gepr\u00fcft 26.10.2026: Wissens-Index (Zeile 77) verweist weiter auf knowledge/system/i18n.md; dort ist nur der Nachtrag (Zeilen 86-88) und der Key-Stand 1302 erg\u00e4nzt, Indexeintrag unver\u00e4ndert."
+    "note": "Am 27.10.2026 in ce15bd0 geprueft: knowledge/legal/agb.{md,en,fr,ar}.md nur inhaltlich geaendert (Zeile 4, der Zusatz zum Bipperz-Vorlagenhinweis aus der Status-Kopfnote entfernt). knowledge.md L82 (Indexzeile legal/) nennt weiterhin exakt dieselben vier Dateien, L77 ist der Wildcard-Claim knowledge/**; keine Datei hinzugefuegt, entfernt oder umbenannt, Pfade unveraendert - Index weiterhin zutreffend."
   },
   "doc": "knowledge.md",
   "schema": 1
