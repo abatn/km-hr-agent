@@ -125,7 +125,7 @@
       "webui/pages/billing_ui.py",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-26T22:58:47+00:00",
+    "at": "2026-10-27T14:27:43+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -143,6 +143,7 @@
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
+      "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
@@ -310,16 +311,16 @@
       "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f",
       "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "8ac28bebdb274095d054818fbe8ac3e2b41dc704",
+      "webui/pages/login.py": "03899fbe7af9d067e3d1f22d29b387bfef104ddd",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b",
       "webui/static/three/LICENSE": "8ada2a5f982916b0ba4b7a0aa7de347587e745d7",
       "webui/static/three/three.core.js": "0a1d6cb9ef3cabc97a50bd02394c85e8d1c513c2",
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
-      "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
+      "webui/theme.py": "c103766f8a6bb11852a7f2e95fa6281b41c6c5a4"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "53b713b41d2ec9f69946fae8bd5d7fbe83717984",
     "doc_blob": "45eef514ec72687dc3cd210e0f06dacb4d2f65ad",
-    "note": "Gepr\u00fcft 26.10.2026: AGENTS.md Zeile 51 (Doku-Gates checks.py docs|legal|mcp|i18n|schema|mdguard) unver\u00e4ndert; Diff ist nur _()-Wrap in not_found.py, Slot-Label in employer.py (refresh_docs) und 4 msgids je Katalog. Keine Gate-Regel betroffen."
+    "note": "Gelesen: Zeilen 7 und 51 (Gate-Befehle checks.py, docs.yml-Trigger). Die Aenderung (webui/pages/login.py, webui/theme.py: nur CSS-@media-Regeln) aendert weder Gate-Befehle noch Trigger-Pfade; Aussagen bleiben korrekt."
   },
   "doc": "AGENTS.md",
   "schema": 1
