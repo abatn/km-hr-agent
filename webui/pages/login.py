@@ -136,6 +136,13 @@ def create() -> None:
                     0%, 100% { transform: translateY(0px) scale(1); }
                     50% { transform: translateY(-20px) scale(1.05); }
                 }
+                /* Mobil: Orbs ausblenden, Login-Container und Tab-Strip auf Viewport-Breite begrenzen. */
+                @media (max-width: 768px) {
+                    .login-container { overflow-x: hidden; width: 100%; min-width: 0; max-width: 100%; }
+                    .login-orb { display: none; }
+                    .login-container .q-tabs { max-width: 100%; overflow-x: auto; }
+                    .login-container .q-tab { flex: 0 0 auto; }
+                }
             </style>
         ''')
 

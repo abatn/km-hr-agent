@@ -170,7 +170,7 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-26T22:59:23+00:00",
+    "at": "2026-10-27T14:15:49+00:00",
     "code_blobs": {
       "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -180,12 +180,12 @@
       "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f",
       "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "8ac28bebdb274095d054818fbe8ac3e2b41dc704",
+      "webui/pages/login.py": "03899fbe7af9d067e3d1f22d29b387bfef104ddd",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "afe9f0fd6462d0d04f714ea759e0318cbd9d2416",
     "doc_blob": "008cc8c6cd7315dff516e4ca95f7c6691d3f11bf",
-    "note": "Gepr\u00fcft 26.10.2026: Zeile 457 nennt webui/pages/not_found.py; die \u00c4nderung ist ein _()-Wrap ohne Struktur\u00e4nderung, das Migrationsmuster bleibt g\u00fcltig."
+    "note": "Gelesen: D30-D34 und Prueferregel (conn-Muster, visa_info_section). Die Aenderung in webui/pages/login.py betrifft nur einen Mobil-@media-Block im Login-Style; die conn-Regeln und Codemarken bleiben korrekt."
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

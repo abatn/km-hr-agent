@@ -570,6 +570,11 @@ CUSTOM_CSS = """
     .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
     .grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
 }
+/* Rechtsseiten (Mobil): breite Tabellen scrollen im eigenen Kasten, lange Woerter brechen um. */
+@media (max-width: 768px) {
+    .legal-md table { display: block; overflow-x: auto; max-width: 100%; }
+    .legal-md { overflow-wrap: anywhere; }
+}
 """
 
 

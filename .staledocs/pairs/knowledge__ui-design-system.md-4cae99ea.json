@@ -97,14 +97,14 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-21T22:15:37+00:00",
+    "at": "2026-10-27T14:15:46+00:00",
     "code_blobs": {
       "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
-      "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
+      "webui/theme.py": "c103766f8a6bb11852a7f2e95fa6281b41c6c5a4"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "afe9f0fd6462d0d04f714ea759e0318cbd9d2416",
     "doc_blob": "741278cd86b17a954d7418d42196617e9f756234",
-    "note": "Geprueft 22.10.2026: `webui/components.py` (genannter Dateipfad) wurde geaendert (HR-Sicht: ein Eintrag je Kandidat + Hinweis auf aeltere Fassungen); Farben, Karten und Typografie (Theme) sind unveraendert."
+    "note": "Gelesen: Abschnitt 2.5 (Semantik-Buttons, apply_brand_colors). Die Aenderung in webui/theme.py betrifft nur @media-Regeln fuer .legal-md (Tabellen-Scroll, Umbruch) unter 768px; die beschriebene Button-Regel und Codemarke bleiben korrekt."
   },
   "doc": "knowledge/ui-design-system.md",
   "schema": 1
