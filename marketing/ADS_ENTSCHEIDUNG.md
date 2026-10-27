@@ -25,7 +25,7 @@ die Herkunft einzelner Kandidaten ist personenbezogen und wird nicht gespeichert
 | Meta Marketing API | Stellenanzeigen müssen als Kategorie **Beschäftigung** (`EMPLOYMENT`) deklariert werden, sobald Europa (u. a. DE/FR) betroffen ist. Dann gelten: Alter 18–65+, alle Geschlechter, keine PLZ, keine Lookalikes, keine Ausschlüsse; Verstoß = harter Fehler. | Meta Transparency Center („Diskriminierende Praktiken“), Meta Help Center (Special Ad Categories), Marketing-API-Doku |
 | DSA / DSGVO | Profilbasierte Werbung mit Art.-9-Daten ist verboten; bei Minderjährigen ebenfalls. Kandidaten-Profiling für Anzeigen ist daher ausgeschlossen. | Kommission, DSA-Leitlinien |
 | Google Ads | Offizieller MCP-Server (`googleads/google-ads-mcp`) ist **nur lesend** (Reporting). Schreibende MCP-Server sind Drittanbieter (z. B. `mharnett/mcp-google-ads`, PAUSED-Standard, Freigabe-Workflow). | GitHub-Repos, Google-Entwicklerdoku (Stand 16.10.2026) |
-| x402 | Krypto-Zahlungsprotokoll (HTTP 402, USDC auf Blockchain). **Im Repo nicht vorhanden.** Meta und Google akzeptieren es nicht als Zahlungsweg. `AGENTS.md`: Abrechnung **nur per Banküberweisung**, kein Online-Zahlungsdienst. | x402-Spezifikation, Cloudflare-Doku |
+| x402 | In **`~/mimo-agents/flight-agent`** umgesetzt: Verkäufer-Schranke (`attest/x402_gate.py`, Base Mainnet/Testnet) und Käufer-Client (`attest/client.py`, SDK `x402[evm]==2.25.0`). Hier neu: Käufer-Pfad `scripts/ads_x402.py` (nur Testnetz) mit Preisdeckel vor jeder Zahlung. x402-Werbenetzwerke (Instinct, Operon, hive-ad-bid, picoads, AD-402) richten sich an **KI-Agenten**, nicht an Menschen. Meta und Google nehmen x402 nicht an. `AGENTS.md`: Abrechnung nur per Überweisung. |
 
 ## 3. Entscheidungen
 
@@ -43,7 +43,7 @@ die Herkunft einzelner Kandidaten ist personenbezogen und wird nicht gespeichert
 6. **Simulation statt Markt:** Das Gebotsmodell nutzt **Design-Annahmen** (Basis-CPM je Segment). Sie sind **nicht gemessen**, nicht als Fakt ausgewiesen und dienen nur dem Ablauftest.
 7. **Erste Plattform-Anbindung: Meta (Facebook/Instagram) als Dry-Run-Payload.** Die vorhandene Meta-App und die Seiten-Tokens (`.env-social`) bleiben unverändert; Werbekonto-Zugriff (`ads_management`) ist ein separater Review- und Zahlungsschritt.
 8. **Keine Live-Anbindung in diesem Schritt.** Begründung: echte Ausgaben, ungeklärtes Werbekonto mit Zahlungsmittel, Meta-Review für `ads_management`, und die Abrechnung läuft laut `AGENTS.md` nur per Überweisung. `--live` bricht deshalb ab.
-9. **x402 wird nicht eingebaut.** Es gibt keinen bestehenden x402-Mechanismus, und die Werbeplattformen akzeptieren ihn nicht. Eine Übernahme würde eine Krypto-Zahlungsschicht ohne Gegenstück einführen.
+9. **x402 als Zahlungsschicht, nur Testnetz.** Der Käufer-Pfad `scripts/ads_x402.py` zahlt ein Gebot über HTTP 402 (`x402[evm]`), wie `flight-agent`. Regeln im Code: Mainnet (`eip155:8453`) ist gesperrt; der Preis wird vor der Zahlung gegen den Deckel (geplantes Tagesbudget) geprüft; ohne `KMHR_ADS_X402_URL` und `KMHR_ADS_X402_PRIVATE_KEY` findet keine Zahlung statt; nur freigegebene Kampagnen werden bezahlt; der Schlüssel erscheint nie im Protokoll. Der Schlüssel des `flight-agent` wird **nicht** verwendet. Echte Gebotsbörsen für Menschen gibt es über x402 nicht (siehe Punkt 1 und 2). Die Schicht ist deshalb nur gegen einen Testserver geprüft. |
 10. **Google Ads:** später, nur Lesezugriff (offizieller MCP) für Reporting. Kein schreibender Drittanbieter-MCP in dieser Phase.
 
 ## 4. Offene Punkte (vor einer echten Schaltung)

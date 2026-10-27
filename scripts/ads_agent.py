@@ -31,6 +31,11 @@ _spec = importlib.util.spec_from_file_location("social_agent_ads", ROOT / "scrip
 social = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(social)  # type: ignore[union-attr]
 
+_x402_spec = importlib.util.spec_from_file_location("ads_x402", ROOT / "scripts" / "ads_x402.py")
+ads_x402 = importlib.util.module_from_spec(_x402_spec)
+sys.modules["ads_x402"] = ads_x402  # noetig fuer @dataclass in ads_x402
+_x402_spec.loader.exec_module(ads_x402)  # type: ignore[union-attr]
+
 FORBIDDEN_CLAIMS = ("garantiert", "dsgvo-konform", "100 %", "100%", "kostenlos",
                     "visum garantiert", "sofort eingestellt", "guaranteed", "garanti",
                     "gratuit", "مضمون")
@@ -223,8 +228,29 @@ def append_dmp(day: date, signals: dict[str, Any], campaigns: list[dict[str, Any
             fh.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def pay_approved(campaigns: list[dict[str, Any]], x402_cfg: dict[str, str] | None) -> None:
+    """x402-Gebot nur für freigegebene Kampagnen; Preisdeckel = geplantes Tagesbudget."""
+    for c in campaigns:
+        if c["status"] != "paused_ready":
+            continue
+        if not x402_cfg:
+            c["x402"] = {"status": "nicht_konfiguriert"}
+            continue
+        body = {"campaign": c["campaign_key"], "bid_cpm_eur": c["bid_simulation"]["bid_cpm_eur"],
+                "budget_eur": c["daily_budget_eur"], "status": "PAUSED"}
+        social.assert_no_pii(json.dumps(body))
+        try:
+            r = ads_x402.pay_bid(x402_cfg["url"], body, x402_cfg["private_key"],
+                                 max_price_usdc=c["daily_budget_eur"])
+            c["x402"] = {"status": "paid" if r.status == 200 else f"http_{r.status}",
+                         "price_usdc": r.price_usdc, "network": r.network,
+                         "payment_response": r.payment_response}
+        except ads_x402.X402Error as exc:
+            c["x402"] = {"status": "abgelehnt", "error": str(exc)}
+
+
 def run_once(day: date, db_path: Path, live: bool = False, out_dir: Path = OUT_DIR,
-             dmp_path: Path | None = None) -> dict[str, Any]:
+             dmp_path: Path | None = None, x402_cfg: dict[str, str] | None = None) -> dict[str, Any]:
     if live:
         raise AdsError("Live-Schaltung ist nicht implementiert (siehe marketing/ADS_ENTSCHEIDUNG.md)")
     cap = float(os.environ.get("KMHR_ADS_DAILY_CAP_EUR", "0") or 0)
@@ -238,6 +264,9 @@ def run_once(day: date, db_path: Path, live: bool = False, out_dir: Path = OUT_D
     for c in campaigns:
         c["bid_simulation"] = simulate_bid(c)
         c["platform_payloads"] = {p: meta_payload_dry_run(c) for p in c["platforms"] if p == "facebook"}
+    if x402_cfg is None:
+        x402_cfg = ads_x402.config_from_env()
+    pay_approved(campaigns, x402_cfg)
     spend = sum(c["daily_budget_eur"] for c in campaigns)
     if spend > cap:
         raise AdsError(f"Cap überschritten: {spend} > {cap}")

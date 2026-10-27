@@ -34,3 +34,22 @@ KMHR_ADS_DAILY_CAP_EUR=5 KMHR_ADS_APPROVAL_FILE=freigabe.json \
 - Das Gebotsmodell nutzt **Design-Annahmen** (`assumed_cpm_eur`), keine Marktdaten.
 - Die Größe der Kandidatenzielgruppe ist nicht aus eigenen Daten messbar und wird nicht geschätzt.
 - Keine Rückkopplung von Klicks oder Bewerbungen auf einzelne Personen.
+
+## x402-Zahlungsschicht (nur Testnetz)
+
+Gebote können per x402 bezahlt werden (`scripts/ads_x402.py`, Muster aus `flight-agent/attest/client.py`).
+
+```bash
+# Testnetz-Schlüssel nur in der Umgebung, nie in Dateien oder Protokollen
+KMHR_ADS_X402_URL=https://<boerse>/x402/bid \
+KMHR_ADS_X402_PRIVATE_KEY=0x<testnet-schluessel> \
+KMHR_ADS_DAILY_CAP_EUR=5 KMHR_ADS_APPROVAL_FILE=freigabe.json \
+  .venv-streamlit/bin/python3 scripts/ads_agent.py --once
+```
+
+- Zahlung **nur** für Kampagnen mit Status `paused_ready` (Freigabe + Cap).
+- Preisdeckel = geplantes Tagesbudget; der Preis wird vor der Zahlung geprüft.
+- Mainnet (`eip155:8453`) ist gesperrt.
+- Ohne URL oder Schlüssel: `x402.status = nicht_konfiguriert`, keine Zahlung.
+
+Tests: `tests/test_ads_x402.py` läuft mit `.venv-ads` (siehe `requirements-ads.txt`) gegen einen lokalen Mock-Facilitator und eine Test-Börse. Im Projekt-venv werden sie übersprungen.

@@ -1,0 +1,6 @@
+# Werbe-Agent: x402-Zahlungsschicht (Test/Simulation). Version wie flight-agent (requirements-runtime.txt).
+x402[evm]==2.25.0
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+httpx>=0.27
+pytest>=8
