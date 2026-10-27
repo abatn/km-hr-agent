@@ -46,6 +46,8 @@ pairs:
     code: ["scripts/ads_agent.py", "scripts/social_agent.py", "tests/test_ads_agent.py"]
   - doc: marketing/ADS_ALTERNATIVEN.md
     code: ["scripts/ads_agent.py", "tests/test_ads_channels.py"]
+  - doc: marketing/ADS_INNOVATION.md
+    code: ["scripts/jobs_x402_feed.py", "tests/test_jobs_x402_feed.py"]
   - doc: marketing/ads-agent.md
     code: ["scripts/ads_agent.py", "scripts/social_agent.py", "tests/test_ads_agent.py"]
   - doc: skills/social-agent/SKILL.md
