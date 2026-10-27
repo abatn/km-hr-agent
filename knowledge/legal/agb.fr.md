@@ -1,7 +1,7 @@
 # Conditions Générales (CGU/CGV)
 
 > **Statut : PROJET (état au 26.10.2026)** — texte juridique, **à faire vérifier par un avocat**. Pas de conseil juridique.
-> Structure inspirée des CGU de plateformes courantes (modèle : Bipperz T&C) — **texte propre**,
+> Structure inspirée des CGU de plateformes courantes — **texte propre**,
 > non repris mot pour mot. **FR = traduction de l'original allemand** (non contraignante ; la version
 > allemande prévaut). Informations manquantes : **« [à compléter] »** (principe du labo : aucune invention).
 

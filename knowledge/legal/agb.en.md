@@ -1,7 +1,7 @@
 # Terms and Conditions (T&C)
 
 > **Status: DRAFT (as of 26.10.2026)** — legal text, **to be reviewed by a lawyer**. Not legal advice.
-> Structure modelled on common platform T&Cs (template: Bipperz T&C) — **own text**, not copied
+> Structure modelled on common platform T&Cs — **own text**, not copied
 > verbatim. **EN = translation of the German original** (not legally binding; the German version
 > prevails). Missing details: **"[to be added]"** (lab principle: no inventions).
 

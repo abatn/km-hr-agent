@@ -1,7 +1,7 @@
 # Allgemeine Geschäftsbedingungen (AGB)
 
 > **Status: ENTWURF (Stand 26.10.2026)** — Rechtstext, **anwaltlich zu prüfen**. Keine Rechtsberatung.
-> Struktur angelehnt an marktübliche Plattform-AGB (Vorlage: Bipperz T&C) — **eigener Text**,
+> Struktur angelehnt an marktübliche Plattform-AGB — **eigener Text**,
 > nicht wörtlich übernommen. Offene Angaben: **„[zu ergänzen]"** (Lab-Prinzip: keine Erfindungen).
 
 ## 1. Geltungsbereich
