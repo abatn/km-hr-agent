@@ -180,6 +180,11 @@ body {
                color: var(--kmhr-muted); font-size: 0.88rem; line-height: 1.7; }
 .kmhr-foot-link { color: var(--kmhr-primary); text-decoration: none; font-size: 0.9rem; }
 .kmhr-foot-link:hover { text-decoration: underline; }
+/* ── Mobil (≤768 px): Animation auf ≤45 vh, eine Primär-CTA vor dem Inhalt ── */
+@media (max-width: 768px) {
+  .kmhr-anim-host { min-height: 0 !important; height: 45vh !important; }
+  .kmhr-m-hide { display: none !important; }
+}
 </style>
 
 <script type="module">
@@ -250,7 +255,7 @@ import * as THREE from '/static/three/three.module.js';
   const clamp01 = (v) => Math.max(0, Math.min(1, v));
   const smooth = (v) => { const x = clamp01(v); return x * x * (3 - 2 * x); };
   const lerp = (a, b, f) => a + (b - a) * f;
-  const S = { captionIdx: -1, dots: [], startTime: 0, pausedAt: null,
+  const S = { captionIdx: -1, dots: [], startTime: 0, pausedAt: null, autoPaused: false, offscreen: false,
               staticIdx: 0, reduce: false, endEl: null, fillEl: null, fadeEl: null,
               countEl: null, frames: 0, loops: 0 };
 
@@ -337,6 +342,7 @@ import * as THREE from '/static/three/three.module.js';
       } else {
         S.startTime += performance.now() - S.pausedAt;
         S.pausedAt = null;
+        S.autoPaused = false;
         pauseBtn.innerHTML = '&#10074;&#10074;';
         pauseBtn.setAttribute('aria-label', 'Pause');
         pauseBtn.title = 'Pause';
@@ -779,13 +785,24 @@ import * as THREE from '/static/three/three.module.js';
     }
     requestAnimationFrame(frame);
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) S.pausedAt = performance.now();
-      else if (S.pausedAt !== null) {
-        S.startTime += performance.now() - S.pausedAt;
+    /* Automatische Pause (Tab verdeckt ODER Animation außerhalb des Viewports).
+       Manuelle Pause (Button) bleibt unberührt: S.autoPaused markiert nur die eigene Pause. */
+    const syncPause = () => {
+      if (document.hidden || S.offscreen) {
+        if (S.pausedAt === null) { S.pausedAt = performance.now(); S.autoPaused = true; }
+      } else if (S.autoPaused) {
+        if (S.pausedAt !== null) S.startTime += performance.now() - S.pausedAt;
         S.pausedAt = null;
+        S.autoPaused = false;
       }
-    });
+    };
+    document.addEventListener('visibilitychange', syncPause);
+    if (window.IntersectionObserver) {
+      new IntersectionObserver((entries) => {
+        S.offscreen = !entries[0].isIntersecting;
+        syncPause();
+      }).observe(host);
+    }
   }
 
   whenHostReady((host) => {
@@ -921,9 +938,9 @@ def create() -> None:
                 with ui.row().classes("items-center gap-3"):
                     language_switcher()
                     ui.button(_("Registrieren"), on_click=lambda: ui.navigate.to("/login")) \
-                        .classes(C.BTN_SECONDARY)
+                        .classes(C.BTN_SECONDARY + " kmhr-m-hide")
                     ui.button(_("Zum Login"), on_click=lambda: ui.navigate.to("/login")) \
-                        .classes(C.BTN_PRIMARY)
+                        .classes(C.BTN_PRIMARY + " kmhr-m-hide")
 
             # ── Hero (Schritt 1: Hauptaufgabe) ──────────────────────
             with ui.column().classes("kmhr-hero w-full"):
@@ -941,7 +958,7 @@ def create() -> None:
                     ui.button(_("▶ 30-Sekunden-Tour"),
                               on_click=lambda: ui.run_javascript(
                                   "document.getElementById('kmhr-ablauf').scrollIntoView({behavior:'smooth'})")
-                              ).classes(C.BTN_SECONDARY)
+                              ).classes(C.BTN_SECONDARY + " kmhr-m-hide")
 
             # ── Animation (Three.js, lokal) — unsere Stärke, direkt unter dem Hero ──
             # Schritt B (Nutzerentscheidung 02.10.2026): die 30-s-Animation ist das

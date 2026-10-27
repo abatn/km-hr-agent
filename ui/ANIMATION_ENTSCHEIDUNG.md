@@ -1,6 +1,6 @@
 # ANIMATION_ENTSCHEIDUNG — Startseite „Das Agenten-Prinzip"
 
-**Stand:** 25.10.2026 · **Umsetzung:** `webui/pages/landing.py` · **Test:** `tests/e2e_landing_chapters.py`
+**Stand:** 25.10.2026 · **Mobil-Nachtrag:** 27.10.2026 · **Umsetzung:** `webui/pages/landing.py` · **Test:** `tests/e2e_landing_chapters.py`
 
 ## Scope und Stack-Abgleich
 
@@ -37,6 +37,8 @@ Zwischen den Fenstern liegen 0,8-s-Übergänge (Kamera fährt, Caption bleibt ku
 - **Labels:** Canvas-Sprites für 3D-Beschriftungen; die narrativen Texte liegen als DOM-Captions darüber.
 - **Interaktion:** Kapitel-Dots springen direkt in ein Kapitel; Pause/Weiter friert die Master-Zeit ein; „Nochmal ansehen" startet bei 0; der Login-CTA erscheint im Ergebnis-Kapitel.
 - **Reduced Motion:** statischer Frame, Countdown `30`, Pause-Button deaktiviert; die Szene bleibt visuell stehen.
+- **Mobil (≤768 px, Nachtrag 27.10.2026):** Der Animationsbereich ist auf `45vh` begrenzt (Desktop bleibt `clamp(520px, 68vh, 720px)`); gemessen 27.10.2026: **380 px** bei 844 px Fensterhöhe statt 574 px. Die Header-Schaltflächen „Registrieren" und „Zum Login" sowie der Tour-Button sind auf Mobil ausgeblendet (`kmhr-m-hide`), weil die Animation direkt darunter steht; die Registrierungs-CTAs in den Sektionen bleiben sichtbar (`ARBEITGEBER-REGISTRIEREN`, `KANDIDAT-REGISTRIEREN`).
+- **Automatische Pause (Nachtrag 27.10.2026):** Ein `IntersectionObserver` pausiert die Master-Zeit, wenn die Szene aus dem Viewport scrollt — Ergänzung zu WCAG 2.2.2, getrennt von der Tab-Pause (`visibilitychange`) und der manuellen Pause (Zustand `S.offscreen` / `S.autoPaused`). Messung 27.10.2026: 10 s weggescrollt → Countdown 20 → 19.
 
 ## Tests und Beweis
 

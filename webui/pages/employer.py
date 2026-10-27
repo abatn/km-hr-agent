@@ -1524,7 +1524,7 @@ def _page_match(s: dict) -> None:
                     with ui.row().classes("items-center justify-between w-full"):
                         with ui.row().classes("items-center gap-3"):
                             candidate_avatar(name)
-                        with ui.column().classes("flex-1"):
+                        with ui.column().classes("flex-1 kmhr-match-col"):
                             ui.label(name or _("Unbekannt")).classes("font-medium")
                             if h_skills:
                                 # M-18 (01.10.2026) / Prompt 2 (13.10.2026): nicht still kuerzen.
@@ -1590,8 +1590,8 @@ def _page_match(s: dict) -> None:
                             # legalen Aktionen dieser Bewerbung (finale Status: nur Badge).
                             # Alle Loop-Variablen als Default-Argumente gebunden (Late-Binding-Falle).
                             with ui.row().classes("items-center justify-between w-full mt-2"):
-                                with ui.row().classes("items-center gap-2"):
-                                    ui.label(titel).classes("font-medium text-sm truncate max-w-md").tooltip(titel)
+                                with ui.row().classes("items-center gap-2 kmhr-match-head"):
+                                    ui.label(titel).classes("font-medium text-sm truncate max-w-md kmhr-match-title").tooltip(titel)
                                     status_badge(app_status)
                                 with ui.row().classes("gap-2"):
                                     # Button-Hierarchie (UI-Regel 28.09.2026): primaer (EINLADEN,

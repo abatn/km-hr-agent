@@ -575,6 +575,16 @@ CUSTOM_CSS = """
     .legal-md table { display: block; overflow-x: auto; max-width: 100%; }
     .legal-md { overflow-wrap: anywhere; }
 }
+/* Mobil (≤768 px): Eingabefelder 16 px (kein iOS-Zoom beim Fokus), Klickziele mind. 44 px breit. */
+@media (max-width: 768px) {
+    .q-field__native, .q-field__input, .q-select__focus-target { font-size: 16px !important; }
+    .q-btn { min-width: 44px; }
+    .kmhr-match-col { min-width: 0 !important; }
+    .kmhr-match-col .q-chip { max-width: 100%; height: auto !important; }
+    .kmhr-match-col .q-chip__content { white-space: normal !important; overflow-wrap: anywhere; }
+    .kmhr-match-title { max-width: 100% !important; }
+    .kmhr-match-head { min-width: 0 !important; max-width: 100% !important; }
+}
 """
 
 

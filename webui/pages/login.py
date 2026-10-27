@@ -142,6 +142,14 @@ def create() -> None:
                     .login-orb { display: none; }
                     .login-container .q-tabs { max-width: 100%; overflow-x: auto; }
                     .login-container .q-tab { flex: 0 0 auto; }
+                    /* Mobil: Seitenrand 16 px statt 48 px, Logo-Karte kompakt, Sprachwahl
+                       hell auf dunkel (Kontrast ≥4,5:1), Tab-Leiste mit Ausblend-Hinweis. */
+                    .login-col { padding-left: 0 !important; padding-right: 0 !important; gap: 20px !important; }
+                    .login-brand { padding: 20px 16px !important; }
+                    .login-col > .nicegui-row:first-child { --q-primary: #FFFFFF; }
+                    .login-col > .nicegui-row:first-child .q-btn { min-width: 44px; min-height: 44px; background: #1E293B; }
+                    .login-container .q-tabs__content { -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+                        mask-image: linear-gradient(to right, #000 85%, transparent); }
                 }
             </style>
         ''')
@@ -152,11 +160,11 @@ def create() -> None:
             ui.element("div").classes("login-orb orb-2")
             ui.element("div").classes("login-orb orb-3")
 
-            with ui.column().classes("items-center gap-10 z-10 w-full max-w-3xl px-12"):
+            with ui.column().classes("login-col items-center gap-10 z-10 w-full max-w-3xl px-12"):
                 # ── Sprachumschalter (i18n, Phase 3 02.10.2026) ─────────
                 language_switcher()
                 # ── Logo / Title (Glass Card) ───────────────────────────
-                with ui.card().classes("glass-strong w-full text-center py-14 px-12 rounded-3xl"):
+                with ui.card().classes("login-brand glass-strong w-full text-center py-14 px-12 rounded-3xl"):
                     with ui.row().classes("items-center justify-center gap-3 mb-2"):
                         ui.icon("smart_toy", size="xl").classes("text-amber-900")
                         ui.label("KM-HR-Agent").classes("text-3xl font-bold text-amber-900")

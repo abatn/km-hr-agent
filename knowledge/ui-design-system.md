@@ -75,6 +75,16 @@
 
 **Quelle:** WCAG 2.1 SC 1.4.3 (≥ 4.5:1) + Kontrastmessung 28.09.2026 (`apply_brand_colors`, entscheidungen.md M-04/M-12); Umsetzung P1-4 = Nutzer-GO (Plan `ui-mvp-plan-v2.md` §6 P1-4).
 
+### 2.6 Ausnahme: Sprachwahl auf Mobil (27.10.2026)
+
+> **Ausnahme zur Regel 2.5:** Die Sprachumschaltung (DE/EN/FR/AR) liegt auf dem orangen Verlaufs-Hintergrund der Login-Seite. `flat`-Buttons in `primary`-Textfarbe erreichen dort nur **1,02:1** (gemessen 27.10.2026 bei 390 px: Text `#1D4ED8` auf `rgb(153,68,16)`) — weit unter 4,5:1. Unter `@media (max-width: 768px)` erhalten die vier Buttons deshalb eine dunkle Fläche `#1E293B` mit weißer Schrift → **14,63:1** (gemessen 27.10.2026) und eine Trefferfläche von **44 × 44 px**. Umgesetzt in `webui/pages/login.py` (Klassen `login-col`/`login-brand`), bewusst als CSS-Ausnahme, weil Quasar-`color=` hier keinen eigenen Hintergrund setzt.
+
+| Element | Mobil | Kontrast mobil | Desktop |
+|---|---|---|---|
+| Sprachwahl DE/EN/FR/AR | `#1E293B` + weiß | **14,63:1** (✅) | `primary` auf Verlauf: **1,0–3,1:1** (❌ offen) |
+
+> **Offen (Desktop):** Auf 1280 px bleibt die Sprachwahl bei `primary`-Text auf dem Verlauf (gemessen 27.10.2026: 1,0–3,1:1). Nicht behoben, weil der Auftrag vom 27.10.2026 Desktop ausdrücklich unverändert ließ; eine Angleichung an die Mobil-Variante ist die naheliegende Folgeänderung.
+
 ---
 
 ## 3. Typografie
