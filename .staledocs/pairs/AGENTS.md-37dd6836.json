@@ -125,7 +125,7 @@
       "webui/pages/billing_ui.py",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-27T23:18:35+00:00",
+    "at": "2026-10-27T23:28:53+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -134,7 +134,7 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1",
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3",
-      "scripts/ads_agent.py": "6a6154a2d35827cc3ae585349a7360f04303a145",
+      "scripts/ads_agent.py": "cda07766440f79ea2b8e85512a51af99d6c394e9",
       "scripts/ads_x402.py": "641e0d29abb32926d3d235c3846a69c4f354ef05",
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
@@ -224,7 +224,8 @@
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
-      "tests/test_ads_agent.py": "85106122c591c9c899cba0abe78dc1f362255c36",
+      "tests/test_ads_agent.py": "0f7dae2b803e9a9103ca62bb9c2d8d9d10e1e1d5",
+      "tests/test_ads_channels.py": "c3e09f15a3532b8769febacd3747a3830599dc81",
       "tests/test_ads_x402.py": "287e0f6671a81b64e3a26a5f915a0dd37ba78a3c",
       "tests/test_application_id_match.py": "b03d73a8c8176d6f26d8b842811b9bde150efcd0",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
@@ -324,9 +325,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "5cc111e06f31b33d1568fda9becb2996d80ca580",
+    "commit": "52eda4913e60c60d6839d2b1b53be7f46bb4fa43",
     "doc_blob": "45eef514ec72687dc3cd210e0f06dacb4d2f65ad",
-    "note": "Gepr\u00fcft 28.10.2026: AGENTS.md Zeile 51 (Doku-Gates checks.py) unver\u00e4ndert; neue Dateien scripts/ads_x402.py, tests/test_ads_x402.py und tests/fixtures/x402_mock_*.py betreffen keine Gate-Regel."
+    "note": "Gepr\u00fcft 28.10.2026: AGENTS.md Zeile 51 (Doku-Gates checks.py) unver\u00e4ndert; neue Dateien scripts/ads_agent.py und tests/test_ads_channels.py betreffen keine Gate-Regel."
   },
   "doc": "AGENTS.md",
   "schema": 1
