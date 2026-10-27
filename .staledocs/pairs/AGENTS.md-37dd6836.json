@@ -125,7 +125,7 @@
       "webui/pages/billing_ui.py",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-27T19:20:02+00:00",
+    "at": "2026-10-27T22:57:07+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -134,6 +134,7 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1",
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3",
+      "scripts/ads_agent.py": "c30415c019a4b924ad804cf91ccf69f662797fc7",
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
@@ -220,6 +221,7 @@
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
+      "tests/test_ads_agent.py": "85106122c591c9c899cba0abe78dc1f362255c36",
       "tests/test_application_id_match.py": "b03d73a8c8176d6f26d8b842811b9bde150efcd0",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
       "tests/test_bak_retention.py": "6cd8f772f00a33d4cfc187ed73eb14360be110a3",
@@ -318,9 +320,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "947a37226bcac4cdfddd14c1eb2d0a3317004e32",
+    "commit": "0bfcfef0ee80d0025421b0f7780fb5c66cf385a9",
     "doc_blob": "45eef514ec72687dc3cd210e0f06dacb4d2f65ad",
-    "note": "webui/pages/landing.py geaendert: Mobil-Block (@media max-width 768px) legt die Kapiteltafel unter die Zeichenflaeche, schaltet den Fade-Layer mobil ab und legt den Login-Button in den Fluss. Zeilen 7/14/51 (Architektur, Setup, Gate-Befehle) bleiben unveraendert."
+    "note": "Gepr\u00fcft 27.10.2026: AGENTS.md Zeile 51 (Doku-Gates checks.py docs|legal|mcp|i18n|schema|mdguard) unver\u00e4ndert; neu sind nur scripts/ads_agent.py und tests/test_ads_agent.py, die keine Gate-Regel betreffen."
   },
   "doc": "AGENTS.md",
   "schema": 1

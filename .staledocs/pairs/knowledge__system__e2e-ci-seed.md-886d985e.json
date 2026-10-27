@@ -110,7 +110,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-26T22:59:20+00:00",
+    "at": "2026-10-27T22:57:11+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -183,6 +183,7 @@
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
+      "tests/test_ads_agent.py": "85106122c591c9c899cba0abe78dc1f362255c36",
       "tests/test_application_id_match.py": "b03d73a8c8176d6f26d8b842811b9bde150efcd0",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
       "tests/test_bak_retention.py": "6cd8f772f00a33d4cfc187ed73eb14360be110a3",
@@ -251,9 +252,9 @@
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "0bfcfef0ee80d0025421b0f7780fb5c66cf385a9",
     "doc_blob": "061a9260ab8132e4ab336093b712e9a049a9bb85",
-    "note": "Gepr\u00fcft 26.10.2026: seed.db und E2E-Baseline sind unber\u00fchrt; der neue Test tests/test_i18n_seiten_guard.py ist ein Unit-Test ohne Eintrag in der E2E-Baseline."
+    "note": "Gepr\u00fcft 27.10.2026: Zeile 78 (mode=ro + .backup, nur gelesen) bleibt richtig; tests/test_ads_agent.py liest seed.db ebenfalls nur \u00fcber den read-only-Pfad von social_agent.read_aggregates (mode=ro), nichts wird geschrieben."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

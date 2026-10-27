@@ -54,8 +54,9 @@
       "social-agent",
       "testdaten/"
     ],
-    "at": "2026-10-26T22:59:11+00:00",
+    "at": "2026-10-27T22:57:09+00:00",
     "code_blobs": {
+      "scripts/ads_agent.py": "c30415c019a4b924ad804cf91ccf69f662797fc7",
       "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e",
       "scripts/ansvar_gateway.py": "3c9ea765dc4b4c4f12b16434a5b6bf4924183767",
@@ -65,6 +66,7 @@
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
+      "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
@@ -93,19 +95,19 @@
       "webui/pages/admin.py": "864176a3c110681a992ca85df853913bd7aa8957",
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f",
-      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9",
+      "webui/pages/landing.py": "3e15b602b0c9a334002d3c5526686da85e303398",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "8ac28bebdb274095d054818fbe8ac3e2b41dc704",
+      "webui/pages/login.py": "7159eb021833b140519d0edd295f992c4c1de561",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b",
       "webui/static/three/LICENSE": "8ada2a5f982916b0ba4b7a0aa7de347587e745d7",
       "webui/static/three/three.core.js": "0a1d6cb9ef3cabc97a50bd02394c85e8d1c513c2",
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
-      "webui/theme.py": "bd5feec6acadd9000ef6e3a45b4d963495b6f2e8"
+      "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "0bfcfef0ee80d0025421b0f7780fb5c66cf385a9",
     "doc_blob": "0ddf542041e3711499ed35e67aa842b00372afde",
-    "note": "Gepr\u00fcft 26.10.2026: instructions.md zitiert ergebnisse/, knowledge/, testdaten/ (Zeilen 117-119) nur als Verzeichnisse; ge\u00e4ndert wurden nur messages.mo/.po, deren Inhalt diese Pfade nicht ber\u00fchrt."
+    "note": "Gepr\u00fcft 27.10.2026: instructions.md Zeile 119 (ergebnisse/ als Verzeichnis) unver\u00e4ndert; die neuen Skripte scripts/ads_agent.py und scripts/facebook_reel.py schreiben nur unter ergebnisse/ads bzw. ergebnisse/social, das entspricht der Tabelle."
   },
   "doc": "instructions.md",
   "schema": 1
