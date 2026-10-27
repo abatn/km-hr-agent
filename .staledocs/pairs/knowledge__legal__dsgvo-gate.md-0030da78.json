@@ -32,13 +32,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T23:11:37+00:00",
+    "at": "2026-10-27T18:04:22+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-    "note": "Gepr\u00fcft 26.10.2026: Zeilen 14-15 zitieren _page_dokumente/refresh_docs in webui/pages/employer.py; im Diff \u00e4ndert sich dort nur das Slot-Label (Konkatenation mit _(\"\u00d6ffnen\")), die Gate-Logik bleibt unber\u00fchrt."
+    "note": "Zeilen 6 und 14-25 gelesen: beschreiben _page_dokumente, refresh_docs und die Dokumenten-Queries. employer.py wurde nur um kmhr-match-col/-head/-title ergaenzt; keine Feld-, Gate- oder Query-Logik geaendert."
   },
   "doc": "knowledge/legal/dsgvo-gate.md",
   "schema": 1

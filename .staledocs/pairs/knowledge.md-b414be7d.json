@@ -166,7 +166,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-27T12:49:05+00:00",
+    "at": "2026-10-27T18:04:25+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -245,11 +245,11 @@
       "knowledge/templates/onboarding-templates/onboarding-ch.md": "5f45dfaf368b742250b6595abb03e28084ff695c",
       "knowledge/templates/onboarding-templates/onboarding-de.md": "b9fd8a2baf005af93401c547390d5fcee473d7cc",
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
-      "knowledge/ui-design-system.md": "741278cd86b17a954d7418d42196617e9f756234"
+      "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "ce15bd0b623373badd66553086f845c987b4eb0c",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "af31968de3e75c7250724db3e8a103df0cba4c46",
-    "note": "Am 27.10.2026 in ce15bd0 geprueft: knowledge/legal/agb.{md,en,fr,ar}.md nur inhaltlich geaendert (Zeile 4, der Zusatz zum Bipperz-Vorlagenhinweis aus der Status-Kopfnote entfernt). knowledge.md L82 (Indexzeile legal/) nennt weiterhin exakt dieselben vier Dateien, L77 ist der Wildcard-Claim knowledge/**; keine Datei hinzugefuegt, entfernt oder umbenannt, Pfade unveraendert - Index weiterhin zutreffend."
+    "note": "Zeilen 3/77 gelesen: deskriptiver Index mit Wildcard-Claim knowledge/**. Geaendert wurde nur der Inhalt von knowledge/ui-design-system.md (neuer Abschnitt 2.6 Mobil-Ausnahme); Datei, Pfad und Indexzeile bleiben zutreffend."
   },
   "doc": "knowledge.md",
   "schema": 1

@@ -125,7 +125,7 @@
       "webui/pages/billing_ui.py",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-27T14:27:43+00:00",
+    "at": "2026-10-27T18:04:18+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -308,19 +308,19 @@
       "webui/pages/admin.py": "864176a3c110681a992ca85df853913bd7aa8957",
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f",
-      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9",
+      "webui/pages/landing.py": "8ef9f27752b1454a03018ad8b4da8bd0d5aa611d",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "03899fbe7af9d067e3d1f22d29b387bfef104ddd",
+      "webui/pages/login.py": "7159eb021833b140519d0edd295f992c4c1de561",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b",
       "webui/static/three/LICENSE": "8ada2a5f982916b0ba4b7a0aa7de347587e745d7",
       "webui/static/three/three.core.js": "0a1d6cb9ef3cabc97a50bd02394c85e8d1c513c2",
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
-      "webui/theme.py": "c103766f8a6bb11852a7f2e95fa6281b41c6c5a4"
+      "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "53b713b41d2ec9f69946fae8bd5d7fbe83717984",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "45eef514ec72687dc3cd210e0f06dacb4d2f65ad",
-    "note": "Gelesen: Zeilen 7 und 51 (Gate-Befehle checks.py, docs.yml-Trigger). Die Aenderung (webui/pages/login.py, webui/theme.py: nur CSS-@media-Regeln) aendert weder Gate-Befehle noch Trigger-Pfade; Aussagen bleiben korrekt."
+    "note": "Zeilen 7/14/51 gelesen (Architektur PAGE_MAP + landing.py Three.js, Setup, Gate-Befehle checks.py/docs.yml). Aenderung ergaenzt nur CSS in @media (max-width 768px) und drei Layout-Klassen in employer.py; Architektur, Start und Gate-Aussagen unveraendert."
   },
   "doc": "AGENTS.md",
   "schema": 1

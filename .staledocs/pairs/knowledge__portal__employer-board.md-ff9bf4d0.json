@@ -103,13 +103,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T22:59:15+00:00",
+    "at": "2026-10-27T18:04:54+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "86a54a56488a18ce7eafada8e4aee5a26b8b2eb5",
-    "note": "Gepr\u00fcft 26.10.2026: Zielcode-Codemarken (ALLOWED_TRANSITIONS, _legal_actions, _BOARD_COLUMNS, _page_board, _page_mehr) sind im Diff nicht enthalten; employer.py \u00e4ndert nur das Slot-Label in refresh_docs."
+    "note": "webui/pages/employer.py geaendert: nur CSS-Klassen in @media (max-width 768px) und drei Klassen an den Match-Karten. Der Board-Aufbau (Zeilen 5 und 77) ist unberuehrt, Aussage bleibt gueltig."
   },
   "doc": "knowledge/portal/employer-board.md",
   "schema": 1

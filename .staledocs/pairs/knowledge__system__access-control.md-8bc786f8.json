@@ -48,22 +48,22 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T22:59:18+00:00",
+    "at": "2026-10-27T18:04:59+00:00",
     "code_blobs": {
       "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "864176a3c110681a992ca85df853913bd7aa8957",
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f",
-      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9",
+      "webui/pages/landing.py": "8ef9f27752b1454a03018ad8b4da8bd0d5aa611d",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "8ac28bebdb274095d054818fbe8ac3e2b41dc704",
+      "webui/pages/login.py": "7159eb021833b140519d0edd295f992c4c1de561",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "bbd910508123611175eb16c0826f705c8f866672",
-    "note": "Gepr\u00fcft 26.10.2026: Zeilen 39/116/178 nennen employer.py-Zugriffsregeln; der Diff \u00e4ndert keine Rollen- oder Zugriffslogik, nur \u00dcbersetzungen (\u00d6ffnen, 404-Texte)."
+    "note": "webui/pages/employer.py, landing.py und login.py geaendert, aber nur CSS-Regeln und Klassen. Rollen, Sidebar-Punkte und PAGE_MAP (Zeilen 39, 116, 178) unveraendert; keine Zugriffslogik betroffen."
   },
   "doc": "knowledge/system/access-control.md",
   "schema": 1

@@ -22,13 +22,13 @@
       "webui/db.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T22:59:14+00:00",
+    "at": "2026-10-27T18:04:55+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
-    "note": "Gepr\u00fcft 26.10.2026: Zeilen 15-16 zitieren refresh_cands und den Kommentar \"Bewerber dieser Stelle\" in employer.py; diese Stellen sind im Diff nicht enthalten."
+    "note": "webui/pages/employer.py geaendert: nur Layout-Klassen fuer die Match-Karten (kmhr-match-col/-head/-title) ergaenzt. Filter, Sortierung und Sichtbarkeitsregeln der Bewerberliste unveraendert, zitierte Aussagen bleiben gueltig."
   },
   "doc": "knowledge/portal/applicants-first.md",
   "schema": 1

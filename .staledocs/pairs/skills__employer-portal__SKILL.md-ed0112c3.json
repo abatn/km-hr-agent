@@ -26,13 +26,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T22:59:21+00:00",
+    "at": "2026-10-27T18:04:57+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "0303f8b8f47398c5f6a54527e77a00dd8dd78b92",
-    "note": "Gepr\u00fcft 26.10.2026: Zeilen 16/161/244 beschreiben Verhalten im employer.py-Portal (Status angesehen, Dokumenten-Aktion); Verhalten unver\u00e4ndert, nur das Button-Label ist jetzt \u00fcbersetzt."
+    "note": "webui/pages/employer.py geaendert: nur drei Layout-Klassen an den Match-Karten. Die Portal-Ablaeufe (Zeilen 16, 161, 244) bleiben unveraendert."
   },
   "doc": "skills/employer-portal/SKILL.md",
   "schema": 1

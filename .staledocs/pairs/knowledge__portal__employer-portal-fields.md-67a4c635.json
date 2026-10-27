@@ -72,13 +72,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T23:11:38+00:00",
+    "at": "2026-10-27T18:04:58+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "66e216c561c57249ee814c4cdbd6f3777090b6a2",
-    "note": "Gepr\u00fcft 26.10.2026: Zeile 250 (PAGE_MAP), 315 (Parser) und 334 (_notify_statuswechsel) in webui/pages/employer.py sind im Diff nicht ge\u00e4ndert; ge\u00e4ndert ist nur das Slot-Label in refresh_docs."
+    "note": "webui/pages/employer.py geaendert: nur Klassen kmhr-match-col/-head/-title, keine Feld- oder Routenaenderung. Die Feldlisten (Zeilen 250, 315, 334, 387) und PAGE_MAP-Eintraege bleiben korrekt."
   },
   "doc": "knowledge/portal/employer-portal-fields.md",
   "schema": 1

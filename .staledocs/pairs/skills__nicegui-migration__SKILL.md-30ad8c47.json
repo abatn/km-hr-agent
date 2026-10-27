@@ -170,22 +170,22 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-10-27T14:15:49+00:00",
+    "at": "2026-10-27T18:04:14+00:00",
     "code_blobs": {
       "webui/main.py": "cd0eb08a07e67bd9cac0e97df375ef33d21e700c",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "864176a3c110681a992ca85df853913bd7aa8957",
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f",
-      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9",
+      "webui/pages/landing.py": "8ef9f27752b1454a03018ad8b4da8bd0d5aa611d",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "03899fbe7af9d067e3d1f22d29b387bfef104ddd",
+      "webui/pages/login.py": "7159eb021833b140519d0edd295f992c4c1de561",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b"
     },
-    "commit": "afe9f0fd6462d0d04f714ea759e0318cbd9d2416",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "008cc8c6cd7315dff516e4ca95f7c6691d3f11bf",
-    "note": "Gelesen: D30-D34 und Prueferregel (conn-Muster, visa_info_section). Die Aenderung in webui/pages/login.py betrifft nur einen Mobil-@media-Block im Login-Style; die conn-Regeln und Codemarken bleiben korrekt."
+    "note": "Zitierte Stellen (u.a. 457: test_conn_closure) gelesen: NiceGUI-Muster und conn-Regeln. Geaendert wurden CSS-Bloecke und ein IntersectionObserver in landing.py; die beschriebenen Muster bleiben gueltig."
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

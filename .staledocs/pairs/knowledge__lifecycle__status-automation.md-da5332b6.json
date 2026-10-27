@@ -40,14 +40,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T23:11:37+00:00",
+    "at": "2026-10-27T18:04:53+00:00",
     "code_blobs": {
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
     "doc_blob": "23fc44ec945d578170e8197544c0e7d025d7c8b0",
-    "note": "Gepr\u00fcft 26.10.2026: Zeilen 15-17 zitieren AKTIV, _legal_actions, _hook_task in webui/pages/employer.py; im Diff ist dort nur das Slot-Label ge\u00e4ndert. Zeile 107 \"Beim \u00d6ffnen\" ist ein Verb, nicht das Label."
+    "note": "webui/pages/employer.py geaendert: nur Layout-Klassen kmhr-match-col/kmhr-match-head/kmhr-match-title ergaenzt. Die Status-Uebergaenge und Task-Automatik in dieser Datei sind unveraendert, die zitierten Aussagen bleiben gueltig."
   },
   "doc": "knowledge/lifecycle/status-automation.md",
   "schema": 1
