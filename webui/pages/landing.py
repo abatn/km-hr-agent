@@ -182,8 +182,22 @@ body {
 .kmhr-foot-link:hover { text-decoration: underline; }
 /* ── Mobil (≤768 px): Animation auf ≤45 vh, eine Primär-CTA vor dem Inhalt ── */
 @media (max-width: 768px) {
-  .kmhr-anim-host { min-height: 0 !important; height: 45vh !important; }
+  .kmhr-anim-host { min-height: 0 !important; height: auto !important; overflow: visible; display: flex; flex-direction: column; }
+  .kmhr-canvas { position: relative; inset: auto; height: 45vh; flex: 0 0 auto; }
+  .kmhr-fade { display: none; }
   .kmhr-m-hide { display: none !important; }
+  /* Tafel UNTER die Zeichenfläche: Szene bleibt vollständig sichtbar, Tafel überdeckt sie nicht. */
+  .kmhr-overlay { position: static; padding: 12px 0 0; }
+  .kmhr-toprow { display: block; position: relative; }
+  .kmhr-cap { max-width: none; padding: 12px 14px; }
+  .kmhr-cap-kicker { padding-right: 64px; }
+  .kmhr-cap-title { font-size: 1.05rem; margin: 4px 0; padding-right: 0; }
+  .kmhr-cap-text { font-size: 0.85rem; line-height: 1.45; }
+  .kmhr-count { position: absolute; top: 0; right: 0; padding: 4px 12px; }
+  /* Login-Button im Ergebnis-Kapitel in den Fluss legen: vorher lag er absolut
+     verankert zu 19,1 % ueber der Tafel (gemessen 27.10.2026, 390 px). */
+  .kmhr-end { position: static; display: none; margin: 10px 0 6px; text-align: center; }
+  .kmhr-end.kmhr-end-show { display: block; }
 }
 </style>
 
