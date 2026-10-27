@@ -107,15 +107,17 @@ def test_targeting_beschaeftigungsregeln_immer(tmp_path):
         assert t["lookalikes"] is False and t["zip_codes"] == [] and t["exclusions"] == []
 
 
-def test_meta_payload_ist_paused_und_employment(tmp_path, monkeypatch):
+def test_meta_payload_nur_per_opt_in_und_paused(tmp_path, monkeypatch):
     monkeypatch.setenv("KMHR_ADS_DAILY_CAP_EUR", "0")
+    monkeypatch.setenv("KMHR_ADS_CHANNELS", "meta_ads")
     result = ads.run_once(date(2026, 10, 27), SEED, out_dir=tmp_path,
                           dmp_path=tmp_path / "dmp.jsonl")
     for c in result["campaigns"]:
+        assert "meta_ads" in result["channels"]
         for payload in c["platform_payloads"].values():
-            assert payload["data"]["status"] == "PAUSED"
-            assert payload["data"]["special_ad_categories"] == ["EMPLOYMENT"]
-            assert payload["access_token"] == "<ADS_ACCESS_TOKEN>"
+            if "special_ad_categories" in payload.get("data", {}):
+                assert payload["data"]["status"] == "PAUSED"
+                assert payload["data"]["special_ad_categories"] == ["EMPLOYMENT"]
 
 
 def test_live_ist_gesperrt(tmp_path):

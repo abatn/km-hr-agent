@@ -53,3 +53,18 @@ KMHR_ADS_DAILY_CAP_EUR=5 KMHR_ADS_APPROVAL_FILE=freigabe.json \
 - Ohne URL oder Schlüssel: `x402.status = nicht_konfiguriert`, keine Zahlung.
 
 Tests: `tests/test_ads_x402.py` läuft mit `.venv-ads` (siehe `requirements-ads.txt`) gegen einen lokalen Mock-Facilitator und eine Test-Börse. Im Projekt-venv werden sie übersprungen.
+
+## Kanäle (ohne Meta als Standard)
+
+Standard: **Google Ads (Search)** und **Microsoft Advertising (Search)**. Begründung und Quellen: `marketing/ADS_ALTERNATIVEN.md`.
+
+```bash
+# Default: google_ads,microsoft_ads
+.venv-streamlit/bin/python3 scripts/ads_agent.py --once
+# Meta nur bewusst zuschalten
+KMHR_ADS_CHANNELS=google_ads,meta_ads .venv-streamlit/bin/python3 scripts/ads_agent.py --once
+```
+
+- Suchanzeigen: Headline ≤ 30, Beschreibung ≤ 90 Zeichen, Ziel-URL und KI-Hinweis (`check_search_asset`).
+- Alle Payloads sind Dry-Run und PAUSED. Feldnamen vor einer Live-Nutzung gegen die aktuelle API-Referenz prüfen.
+- Unbekannte Kanalnamen brechen den Lauf ab.

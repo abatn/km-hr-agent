@@ -44,6 +44,8 @@ pairs:
     code: ["scripts/social_agent.py", "scripts/social_oauth.py", "scripts/agent-runner.py", "tests/test_social_agent.py", "tests/test_social_oauth.py"]
   - doc: marketing/ADS_ENTSCHEIDUNG.md
     code: ["scripts/ads_agent.py", "scripts/social_agent.py", "tests/test_ads_agent.py"]
+  - doc: marketing/ADS_ALTERNATIVEN.md
+    code: ["scripts/ads_agent.py", "tests/test_ads_channels.py"]
   - doc: marketing/ads-agent.md
     code: ["scripts/ads_agent.py", "scripts/social_agent.py", "tests/test_ads_agent.py"]
   - doc: skills/social-agent/SKILL.md

@@ -61,3 +61,5 @@ die Herkunft einzelner Kandidaten ist personenbezogen und wird nicht gespeichert
 - Google Ads MCP Entwicklerleitfaden: https://developers.google.com/google-ads/api/docs/developer-toolkit/mcp-server
 - x402 Spezifikation: https://github.com/x402-foundation/x402/blob/main/specs/x402-specification-v2.md
 - DSA / Art. 9 DSGVO Profiling-Verbot: Verordnung (EU) 2022/2065, Verordnung (EU) 2016/679
+
+> **Aktualisierung 28.10.2026:** Meta ist nicht mehr Standardkanal. Standard sind Google Ads und Microsoft Advertising (Suchabsicht, offene API). Begründung: `marketing/ADS_ALTERNATIVEN.md`. Meta läuft nur per Opt-in (`KMHR_ADS_CHANNELS=meta_ads`).

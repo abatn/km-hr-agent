@@ -41,19 +41,50 @@ FORBIDDEN_CLAIMS = ("garantiert", "dsgvo-konform", "100 %", "100%", "kostenlos",
                     "gratuit", "مضمون")
 DE_COUNTRIES = {"DE", "FR", "CH", "Deutschland", "Frankreich", "Schweiz"}
 
+# Kanäle: Suchanzeigen (Google Ads, Microsoft Advertising) sind Default; Meta nur per Opt-in.
+CHANNELS: dict[str, dict[str, Any]] = {
+    "google_ads": {"label": "Google Ads (Search)", "default": True},
+    "microsoft_ads": {"label": "Microsoft Advertising (Bing Search)", "default": True},
+    "meta_ads": {"label": "Meta Ads (Opt-in, Beschäftigungskategorie)", "default": False},
+}
+DEFAULT_CHANNELS = [k for k, v in CHANNELS.items() if v["default"]]
+
 SEGMENTS: dict[str, dict[str, Any]] = {
     "employers_eu": {
         "label": "Arbeitgeber DE/FR/CH",
-        "platforms": ["linkedin", "facebook"],
+        "platforms": ["google_ads", "microsoft_ads"],
         "max_cpm_eur": 15.0,
         # Design-Annahme, nicht gemessen (siehe ADS_ENTSCHEIDUNG.md Punkt 6)
         "assumed_cpm_eur": 12.0,
     },
     "candidates_north_africa": {
         "label": "Kandidaten Nordafrika",
-        "platforms": ["facebook", "instagram"],
+        "platforms": ["google_ads", "microsoft_ads"],
         "max_cpm_eur": 4.0,
         "assumed_cpm_eur": 2.5,
+    },
+}
+
+SEARCH_ASSETS: dict[str, dict[str, dict[str, str]]] = {
+    "employers_eu": {
+        "de": {"headline": "Fachkräfte aus Nordafrika",
+               "description": "Für Arbeitgeber in der EU. Der Mensch entscheidet. KI-Hinweis: KI-gestützt."},
+        "en": {"headline": "Skilled North African talent",
+               "description": "For employers in the EU. Humans make the decisions. AI note: AI-assisted."},
+        "fr": {"headline": "Talents d'Afrique du Nord",
+               "description": "Pour employeurs de l'UE. L'humain décide. Note IA : assisté par IA."},
+        "ar": {"headline": "كفاءات من شمال أفريقيا",
+               "description": "لأصحاب العمل في الاتحاد الأوروبي. القرار للإنسان. ملاحظة: بدعم من الذكاء الاصطناعي."},
+    },
+    "candidates_north_africa": {
+        "de": {"headline": "Jobs in Europa",
+               "description": "Stellen für Fachkräfte aus Nordafrika. Der Mensch entscheidet. KI-Hinweis: KI-gestützt."},
+        "en": {"headline": "Jobs in Europe",
+               "description": "Jobs for North African talent. Humans make the decisions. AI note: AI-assisted."},
+        "fr": {"headline": "Emplois en Europe",
+               "description": "Offres pour talents d'Afrique du Nord. L'humain décide. Note IA : assisté par IA."},
+        "ar": {"headline": "وظائف في أوروبا",
+               "description": "فرص عمل في أوروبا لكفاءات شمال أفريقيا. القرار للإنسان. ملاحظة: بدعم من الذكاء الاصطناعي."},
     },
 }
 
@@ -124,15 +155,39 @@ def derive_segments(signals: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
-def check_creative(text: str) -> None:
+def check_text(text: str) -> None:
     social.assert_no_pii(text)
     low = text.lower()
     for claim in FORBIDDEN_CLAIMS:
         if claim in low:
             raise AdsError(f"Werbeaussage verboten: {claim!r}")
+
+
+def check_creative(text: str) -> None:
+    check_text(text)
     has_ai_note = any(marker in text for marker in ("KI-", "AI note", "Note IA", "الذكاء"))
     if SITE not in text or not has_ai_note:
         raise AdsError("Pflichtbestandteile fehlen (Link oder KI-Hinweis)")
+
+
+def check_search_asset(asset: dict[str, str]) -> None:
+    """Google/Microsoft-Suchanzeige: feste Längen, Ziel-URL und KI-Hinweis in der Beschreibung."""
+    if len(asset["headline"]) > 30:
+        raise AdsError(f"Headline zu lang ({len(asset['headline'])} > 30)")
+    if len(asset["description"]) > 90:
+        raise AdsError(f"Beschreibung zu lang ({len(asset['description'])} > 90)")
+    check_text(asset["headline"] + " " + asset["description"])
+    if not any(m in asset["description"] for m in ("KI-", "AI note", "Note IA", "الذكاء")):
+        raise AdsError("KI-Hinweis fehlt in der Suchanzeige")
+
+
+def build_search_assets() -> list[dict[str, str]]:
+    out = []
+    for segment, langs in SEARCH_ASSETS.items():
+        for lang, asset in langs.items():
+            check_search_asset(asset)
+            out.append({"segment": segment, "language": lang, "final_url": SITE, **asset})
+    return out
 
 
 def build_creatives() -> list[dict[str, str]]:
@@ -185,6 +240,7 @@ def plan_campaigns(segments: list[dict[str, Any]], cap_eur: float,
         campaigns.append({"campaign_key": key, "status": status, "reason": reason,
                           "daily_budget_eur": round(budget, 2),
                           "targeting": targeting_for(key),
+                          "languages": ["fr", "ar"] if key == "candidates_north_africa" else ["de", "en", "fr"],
                           "platforms": SEGMENTS[key]["platforms"]})
     return campaigns
 
@@ -198,6 +254,50 @@ def simulate_bid(campaign: dict[str, Any]) -> dict[str, Any]:
     return {"simulated": True, "bid_cpm_eur": round(bid, 2), "max_cpm_eur": seg["max_cpm_eur"],
             "assumed_cpm_eur": seg["assumed_cpm_eur"], "expected_impressions": impressions,
             "note": "Design-Annahme, keine Marktdaten"}
+
+
+GOOGLE_GEO = {"DE": "2276", "FR": "2250", "CH": "2756", "MA": "2504", "DZ": "2012", "TN": "2788", "EG": "2818"}
+GOOGLE_LANG = {"de": "1001", "en": "1000", "fr": "1002", "ar": "1019"}
+
+
+def google_ads_payloads(campaign: dict[str, Any]) -> dict[str, Any]:
+    """Google Ads API (Dry-Run): erst Budget, dann Suchkampagne, beide PAUSED.
+    Kriterien-IDs (Geo/Sprache) sind gegen die Google-Ads-Kriterienliste zu prüfen."""
+    t = campaign["targeting"]
+    base = "https://googleads.googleapis.com/v20/customers/<CUSTOMER_ID>"
+    budget_op = {"create": {"name": f"KMHR-budget-{campaign['campaign_key']}",
+                            "amountMicros": str(int(campaign["daily_budget_eur"] * 1_000_000)),
+                            "deliveryMethod": "STANDARD", "explicitlyShared": False}}
+    campaign_op = {"create": {"name": f"KMHR-{campaign['campaign_key']}", "status": "PAUSED",
+                              "advertisingChannelType": "SEARCH",
+                              "campaignBudget": "<BUDGET_RESOURCE_NAME>",
+                              "networkSettings": {"targetGoogleSearch": True,
+                                                  "targetSearchNetwork": False,
+                                                  "targetContentNetwork": False},
+                              "geoTargetTypeSetting": {"positiveGeoTargetType": "PRESENCE"},
+                              "manualCpc": {"enhancedCpcEnabled": False}}}
+    return {"budget": {"url": f"{base}/campaignBudgets:mutate", "json": {"operations": [budget_op]}},
+            "campaign": {"url": f"{base}/campaigns:mutate", "json": {"operations": [campaign_op]}},
+            "geo_targets": [f"geoTargetConstants/{GOOGLE_GEO[c]}" for c in t["countries"]],
+            "languages": [f"languageConstants/{GOOGLE_LANG[l]}" for l in campaign["languages"]],
+            "headers": {"Authorization": "Bearer <OAUTH_ACCESS_TOKEN>",
+                        "login-customer-id": "<MANAGER_CUSTOMER_ID>"},
+            "note": "Dry-Run: kein Netzwerkaufruf; Google Ads braucht ein Cloud-Projekt mit Explorer-Zugang"}
+
+
+def microsoft_ads_payload(campaign: dict[str, Any]) -> dict[str, Any]:
+    """Microsoft Advertising (Dry-Run): SOAP-Operation AddCampaigns, Status Paused."""
+    t = campaign["targeting"]
+    return {"service": "CampaignManagement", "operation": "AddCampaigns",
+            "body": {"AccountId": "<ACCOUNT_ID>", "Campaigns": [{
+                "Name": f"KMHR-{campaign['campaign_key']}", "Status": "Paused",
+                "CampaignType": "Search", "BudgetType": "DailyBudgetStandard",
+                "DailyBudget": campaign["daily_budget_eur"], "TimeZone": "CentralEuropeanTime",
+                "Languages": campaign["languages"], "GeoTargets": t["countries"]}]},
+            "headers": {"AuthenticationToken": "<OAUTH_ACCESS_TOKEN>",
+                        "DeveloperToken": "<MSADS_DEVELOPER_TOKEN>",
+                        "CustomerAccountId": "<ACCOUNT_ID>"},
+            "note": "Dry-Run: kein Netzwerkaufruf; Universal-Entwicklertoken aus dem Developer Portal"}
 
 
 def meta_payload_dry_run(campaign: dict[str, Any]) -> dict[str, Any]:
@@ -249,6 +349,17 @@ def pay_approved(campaigns: list[dict[str, Any]], x402_cfg: dict[str, str] | Non
             c["x402"] = {"status": "abgelehnt", "error": str(exc)}
 
 
+def selected_channels() -> list[str]:
+    raw = os.environ.get("KMHR_ADS_CHANNELS", "").strip()
+    if not raw:
+        return list(DEFAULT_CHANNELS)
+    chosen = [c.strip() for c in raw.split(",") if c.strip()]
+    unknown = [c for c in chosen if c not in CHANNELS]
+    if unknown:
+        raise AdsError(f"Unbekannte Kanäle: {unknown}")
+    return chosen
+
+
 def run_once(day: date, db_path: Path, live: bool = False, out_dir: Path = OUT_DIR,
              dmp_path: Path | None = None, x402_cfg: dict[str, str] | None = None) -> dict[str, Any]:
     if live:
@@ -261,9 +372,12 @@ def run_once(day: date, db_path: Path, live: bool = False, out_dir: Path = OUT_D
     segments = derive_segments(signals)
     creatives = build_creatives()
     campaigns = plan_campaigns(segments, cap, approvals)
+    channels = selected_channels()
     for c in campaigns:
         c["bid_simulation"] = simulate_bid(c)
-        c["platform_payloads"] = {p: meta_payload_dry_run(c) for p in c["platforms"] if p == "facebook"}
+        builders = {"google_ads": google_ads_payloads, "microsoft_ads": microsoft_ads_payload,
+                    "meta_ads": meta_payload_dry_run}
+        c["platform_payloads"] = {p: builders[p](c) for p in c["platforms"] if p in channels}
     if x402_cfg is None:
         x402_cfg = ads_x402.config_from_env()
     pay_approved(campaigns, x402_cfg)
@@ -273,6 +387,7 @@ def run_once(day: date, db_path: Path, live: bool = False, out_dir: Path = OUT_D
 
     result = {"date": day.isoformat(), "mode": "dry_run", "cap_eur": cap,
               "planned_budget_eur": spend, "signals": {k: v for k, v in signals.items() if k != "jobs_by_land"},
+              "channels": selected_channels(), "search_assets": build_search_assets(),
               "segments": segments, "creatives": creatives, "campaigns": campaigns}
     out = out_dir / day.isoformat()
     out.mkdir(parents=True, exist_ok=True)
