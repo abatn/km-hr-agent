@@ -1,0 +1,24 @@
+{
+  "ack": {
+    "anchors": [
+      ".venv-ads",
+      "ADS_ALTERNATIVEN.md",
+      "ads_agent.py",
+      "extensions.bazaar",
+      "mode=ro",
+      "payment-required",
+      "scripts/jobs_x402_feed.py",
+      "tests/test_jobs_x402_feed.py"
+    ],
+    "at": "2026-10-27T23:41:02+00:00",
+    "code_blobs": {
+      "scripts/jobs_x402_feed.py": "13c665fcf6e86945ff2bcf12677cf8eede07f1e1",
+      "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c"
+    },
+    "commit": "19d8ed723288ca87a415c5fa7225eb978fca5d85",
+    "doc_blob": "ff918cbe4ada7b0d8d562074fdd5ce75798dea42",
+    "note": "Gepr\u00fcft 28.10.2026: Dokument nennt scripts/jobs_x402_feed.py (GET /api/agent/jobs, Bazaar-Deklaration, Testnetz-Sperre) und tests/test_jobs_x402_feed.py (7 Tests); Namen und Verhalten stimmen mit dem Code \u00fcberein."
+  },
+  "doc": "marketing/ADS_INNOVATION.md",
+  "schema": 1
+}

@@ -110,7 +110,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-27T23:18:37+00:00",
+    "at": "2026-10-27T23:41:09+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -185,7 +185,8 @@
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
-      "tests/test_ads_agent.py": "85106122c591c9c899cba0abe78dc1f362255c36",
+      "tests/test_ads_agent.py": "0f7dae2b803e9a9103ca62bb9c2d8d9d10e1e1d5",
+      "tests/test_ads_channels.py": "c3e09f15a3532b8769febacd3747a3830599dc81",
       "tests/test_ads_x402.py": "287e0f6671a81b64e3a26a5f915a0dd37ba78a3c",
       "tests/test_application_id_match.py": "b03d73a8c8176d6f26d8b842811b9bde150efcd0",
       "tests/test_asgi_guard.py": "f1673682f271d76e8d1a7cabc938cc6a1de04bcc",
@@ -209,6 +210,7 @@
       "tests/test_i18n_seiten_guard.py": "dde59b711fc0a1389b4f450fb08218e8f085a9ef",
       "tests/test_invitation_termin_guard.py": "82c42327c96c9c6e80c90b05179a0cd2028c7e44",
       "tests/test_job_dedupe.py": "f0993dbc29fd574a1741e209d60da19391464e97",
+      "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "4c5ab676bf03774219ef90342a57f794c3ff4c71",
       "tests/test_language_scoring.py": "2976286c9c93d7cb037ed9a6fedae79e4a9873c3",
@@ -255,9 +257,9 @@
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "5cc111e06f31b33d1568fda9becb2996d80ca580",
+    "commit": "19d8ed723288ca87a415c5fa7225eb978fca5d85",
     "doc_blob": "061a9260ab8132e4ab336093b712e9a049a9bb85",
-    "note": "Gepr\u00fcft 28.10.2026: Zeilen 79/87/93 (Isolation-Log, CI-Schritte, Dummy-.env) unver\u00e4ndert; die neuen Fixtures enthalten nur die W\u00f6rter source/.env im Python-Code, nicht die dokumentierten Pfade und Schritte."
+    "note": "Gepr\u00fcft 28.10.2026: Zeilen 78/79 (Isolation-Log mode=ro, source=) unver\u00e4ndert; neue Tests nutzen seed.db nur lesend (mode=ro), nichts wird geschrieben."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

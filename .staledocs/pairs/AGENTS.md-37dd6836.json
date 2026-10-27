@@ -125,7 +125,7 @@
       "webui/pages/billing_ui.py",
       "webui/pages/landing.py"
     ],
-    "at": "2026-10-27T23:28:53+00:00",
+    "at": "2026-10-27T23:41:06+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -146,6 +146,7 @@
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
       "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
+      "scripts/jobs_x402_feed.py": "13c665fcf6e86945ff2bcf12677cf8eede07f1e1",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
@@ -249,6 +250,7 @@
       "tests/test_i18n_seiten_guard.py": "dde59b711fc0a1389b4f450fb08218e8f085a9ef",
       "tests/test_invitation_termin_guard.py": "82c42327c96c9c6e80c90b05179a0cd2028c7e44",
       "tests/test_job_dedupe.py": "f0993dbc29fd574a1741e209d60da19391464e97",
+      "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
       "tests/test_landing_page.py": "4c5ab676bf03774219ef90342a57f794c3ff4c71",
       "tests/test_language_scoring.py": "2976286c9c93d7cb037ed9a6fedae79e4a9873c3",
@@ -325,9 +327,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "52eda4913e60c60d6839d2b1b53be7f46bb4fa43",
+    "commit": "19d8ed723288ca87a415c5fa7225eb978fca5d85",
     "doc_blob": "45eef514ec72687dc3cd210e0f06dacb4d2f65ad",
-    "note": "Gepr\u00fcft 28.10.2026: AGENTS.md Zeile 51 (Doku-Gates checks.py) unver\u00e4ndert; neue Dateien scripts/ads_agent.py und tests/test_ads_channels.py betreffen keine Gate-Regel."
+    "note": "Gepr\u00fcft 28.10.2026: AGENTS.md Zeile 51 (Doku-Gates) unver\u00e4ndert; neue Dateien jobs_x402_feed.py und test_jobs_x402_feed.py betreffen keine Gate-Regel."
   },
   "doc": "AGENTS.md",
   "schema": 1

@@ -85,6 +85,7 @@
       "knowledge/ui-design-system.md",
       "marketing/ADS_ALTERNATIVEN.md",
       "marketing/ADS_ENTSCHEIDUNG.md",
+      "marketing/ADS_INNOVATION.md",
       "marketing/ENTSCHEIDUNG.md",
       "marketing/ads-agent.md",
       "marketing/social-agent.md",
@@ -123,7 +124,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-27T23:28:53+00:00",
+  "at": "2026-10-27T23:41:09+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }
