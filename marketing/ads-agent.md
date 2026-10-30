@@ -41,6 +41,8 @@ KMHR_ADS_DAILY_CAP_EUR=5 KMHR_ADS_APPROVAL_FILE=freigabe.json \
 
 ## Facebook-Anzeigen live schalten
 
+Vollständige Konfigurations- und Betriebsreferenz (Env-Variablen, Pflichtfelder je Objekt, Subcodes, Ablauf): `marketing/facebook-ads-ablauf.md`.
+
 Voraussetzungen, die **ein Mensch** einmalig erledigt (Code kann das nicht):
 
 1. **Werbekonto** in Meta Business anlegen, Rechtsperson und Rechnungsdaten hinterlegen, **Zahlungsmittel** hinzufügen.

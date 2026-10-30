@@ -49,7 +49,9 @@ pairs:
   - doc: marketing/ADS_INNOVATION.md
     code: ["scripts/jobs_x402_feed.py", "tests/test_jobs_x402_feed.py"]
   - doc: marketing/ads-agent.md
-    code: ["scripts/ads_agent.py", "scripts/social_agent.py", "tests/test_ads_agent.py"]
+    code: ["scripts/ads_agent.py", "scripts/social_agent.py", "tests/test_ads_agent.py", "tests/test_ads_x402.py"]
+  - doc: marketing/facebook-ads-ablauf.md
+    code: ["scripts/meta_ads.py", "scripts/ads_agent.py", "tests/test_meta_ads.py"]
   - doc: skills/social-agent/SKILL.md
     code: ["scripts/social_agent.py", "scripts/social_oauth.py", "tests/test_social_agent.py", "tests/test_social_oauth.py"]
   - doc: knowledge/system/social-automation.md
