@@ -66,7 +66,7 @@
       "webui/pages/employer.py",
       "write_file"
     ],
-    "at": "2026-10-26T19:31:28+00:00",
+    "at": "2026-10-30T21:09:18+00:00",
     "code_blobs": {
       "skills/assess-culture-fit/SKILL.md": "08fbd19ce7c494f0fa79f48060dcd4ef070b6cba",
       "skills/candidate-portal/SKILL.md": "6ecf5cd0f3b2f693e5058f3700f54bc48ee026e6",
@@ -86,16 +86,16 @@
       "skills/language-course/SKILL.md": "872156c64e0bfdf6073afbf6a23fd3acf97bc416",
       "skills/match-candidate/SKILL.md": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
       "skills/mentoring/SKILL.md": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-      "skills/nicegui-migration/SKILL.md": "008cc8c6cd7315dff516e4ca95f7c6691d3f11bf",
+      "skills/nicegui-migration/SKILL.md": "6bdce3bf21cc21002cc395cbdb8cb3de4bfd6aef",
       "skills/notify-user/SKILL.md": "4fb3b459fb8894ef5144b456ea01a86f500270ed",
       "skills/pre-screen/SKILL.md": "c88e7f0b78983b06d67d55971f8d659f7d6e35bf",
       "skills/social-agent/SKILL.md": "fc02a5a9d15896609a6b2aa199111b5d05954b5c",
       "skills/store-feedback/SKILL.md": "bd836181948ab55b62583df2751cfb47d52c0eaf",
       "skills/verify-documents/SKILL.md": "d540129a5c16be5461b860668bc11511fc8e43f4"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "dd633ea0a89894a817f6b703ba7d8304a4da0c06",
-    "note": "Geprueft: Index zu skills/nicegui-migration/SKILL.md und skills/pre-screen/SKILL.md; nur Zahlenkorrektur Admin-PAGE_MAP 12->13."
+    "note": "skills/README.md: Zwei-Ebenen-Modell und Seitenzahlen (PAGE_MAP, _TAB_MAP) gegen webui/pages geprueft; die Admin-Dashboard-Karte ist keine neue Seite, Zaehler unveraendert. Nachweis der Aenderung liegt in skills/nicegui-migration/SKILL.md (Funktionszahl 52)."
   },
   "doc": "skills/README.md",
   "schema": 1

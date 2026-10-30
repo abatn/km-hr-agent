@@ -43,9 +43,9 @@ def _cand_tree() -> ast.Module:
     return ast.parse(CAND_SRC)
 
 
-def _funktion(tree: ast.Module, name: str) -> ast.FunctionDef:
+def _funktion(tree: ast.Module, name: str) -> ast.FunctionDef | ast.AsyncFunctionDef:
     for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef) and node.name == name:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name:
             return node
     raise AssertionError(f"Funktion {name} nicht gefunden")
 
@@ -98,13 +98,44 @@ def test_arbeitgeber_registrierung_blockiert_ohne_haken():
 
 def test_registrierung_schreibt_terms_und_privacy_nach_insert():
     """Beide Zwecke (getrennte Einwilligungen, Art. 7 Abs. 2) je Konto-Typ."""
-    assert '_record_registration_consents(\n                                        "candidate", cur.lastrowid' in LOGIN_SRC
+    assert "db.complete_registration(" in LOGIN_SRC
+    assert '"candidate", cur.lastrowid' in LOGIN_SRC
+    assert "lambda: _record_registration_consents(" in LOGIN_SRC
     assert '"employer", cur.lastrowid' in LOGIN_SRC
     fn = _funktion(_login_tree(), "_record_registration_consents")
     src = ast.get_source_segment(LOGIN_SRC, fn) or ""
     assert '"terms"' in src and '"privacy"' in src
     assert "db.CONSENT_VERSION" in src
     assert "db.record_consent" in src
+
+
+def _attr_call_zeilen(fn: ast.FunctionDef, attr: str) -> list[int]:
+    """Zeilennummern aller `<etwas>.<attr>(...)`-Aufrufe in `fn`."""
+    return [
+        node.lineno for node in ast.walk(fn)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == attr
+    ]
+
+
+@pytest.mark.parametrize("funktion", ["do_register", "do_employer_register"])
+def test_complete_registration_nach_commit(funktion):
+    """AST-Beweis: das Konto ist committet, BEVOR der Nachlauf startet.
+
+    Reihenfolge bindend — `db.complete_registration` (Consent/Task/
+    Notification) darf nie vor `conn.commit()` laufen, sonst hängt die
+    Registrierung an einem Nachlauf, dessen Konto noch nicht persistiert ist.
+    """
+    fn = _funktion(_login_tree(), funktion)
+    commits = _attr_call_zeilen(fn, "commit")
+    complete = _attr_call_zeilen(fn, "complete_registration")
+    assert commits, f"{funktion}: kein conn.commit() gefunden"
+    assert complete, f"{funktion}: kein db.complete_registration() gefunden"
+    assert max(commits) < min(complete), (
+        f"{funktion}: complete_registration (Zeile {min(complete)}) steht "
+        f"nicht nach conn.commit() (Zeile {max(commits)})"
+    )
 
 
 def test_record_registration_consents_schreibt_zwei_zeilen(monkeypatch):

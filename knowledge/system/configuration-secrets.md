@@ -17,6 +17,8 @@ Diese Datei ist die MD-Wahrheit für die Laufzeit-Konfiguration des NiceGUI-Fron
 | `KMHR_ADMIN_SEED_PASSWORD` | Passwort des Admin-Seed-Kontos — seit R3-4 **Pflicht** (ohne `KMHR_DEV`) | `admin-agent-2026` (**Entwicklung**, unsicher, nur noch unter `KMHR_DEV`) | `webui/pages/login.py` (gemessen 10.10.2026) |
 | `KMHR_DEV` | Schalter: hebt das Fail-closed-Gate für beide Pflicht-Variablen auf | nicht gesetzt → **Gate aktiv** | `webui/main.py` (Codemarke `KMHR_DEV`, gemessen 10.10.2026) |
 | `KMHR_BILLING_ENABLED` | Entgeltmodell ein-/ausschalten (`billing_on_eingestellt`, UI-Sektionen, Visum-/Termingebühren) | `0` (**aus**) | `webui/billing.py` `billing_enabled` (26.10.2026) |
+| `KMHR_WELCOME_MAIL` | Willkommensmail bei Registrierung (Kandidat/Arbeitgeber) | `0` (**aus**) | `webui/db.py` `welcome_mail_enabled` (30.10.2026) |
+| `KMHR_PUBLIC_BASE_URL` | Basis-URL für Links in Mails (Passwort-Reset, Willkommensmail) — wird vom Runner gelesen, nicht von der WebUI | `http://localhost:8080` | `scripts/agent-runner.py` `build_welcome_mail` / `send_password_reset` (30.10.2026) |
 | `KMHR_BANK_HOLDER` | Kontoinhaber auf der Rechnung — Pflicht, sonst keine Zahlungsaufforderung | nicht gesetzt → Rechnung zeigt Warnhinweis | `webui/billing.py` `bank_details` (26.10.2026) |
 | `KMHR_BANK_IBAN` | IBAN für die Banküberweisung — Pflicht, kein Test-/Default-Wert | nicht gesetzt → `configured=False` | `webui/billing.py` `bank_details` (26.10.2026) |
 | `KMHR_BANK_NAME` | Bankname (optional, Anzeige) | leer → `—` | `webui/billing.py` `bank_details` (26.10.2026) |
@@ -198,8 +200,9 @@ SHA-256-Hash** in der neuen Tabelle `password_resets`) und schickt einen Link
 - **Rate-Limit 3 Anfragen / 10 Min pro E-Mail.**
 - Generische Antwort bei unbekannter E-Mail.
 - **Token niemals im Log:** der Token steht nur im Mail-Body; `logs/mcp-calls.log`
-  schreibt per Whitelist (frozenset der erlaubten Args-Keys im Runner) ausschließlich
-  `to`/`subject` — der Body wird nie geloggt.
+  schreibt per Whitelist (frozenset der erlaubten Args-Keys im Runner) nur
+  `subject` und weitere Whitelist-Keys — **nie** `to`, **nie** den Body
+  (30.10.2026: `to` aus `_MCP_LOG_ALLOWED_KEYS` entfernt).
 - **Zieltabelle aus dem Tab-Kontext** (`candidate`→`candidates`, `employer`→`employers`):
   dieselbe E-Mail kann in beiden Tabellen stehen, der Tab entscheidet.
 - Abgelaufene/verbrauchte Zeilen löscht `dsgvo_cleanup`.
@@ -215,7 +218,7 @@ Restrisiko dokumentiert, nicht umgesetzt.
 und `tests/e2e_password_reset.py` (isoliert). Code: `webui/db.py`
 (init_password_resets_table, hash_reset_token), `webui/logic.py` (apply_password_reset),
 `webui/pages/login.py` (Link „Passwort vergessen?" + Dialoge), `scripts/agent-runner.py`
-(Task send_password_reset).
+(Task send_password_reset). Payload seit 30.10.2026 nur `role` + `id` + `req`; die Adresse lädt der Runner aus der Zieltabelle (Spec agent-automation.md §3.5).
 
 ---
 
@@ -244,3 +247,29 @@ per **Banküberweisung**; es gibt bewusst **keinen** Karten- oder Online-Zahldie
 
 **Nachweis:** `tests/test_billing.py` (31 Unit-Tests: Beträge, Deckel, Ausbildung,
 Idempotenz, Terminbuchung, Visum, Statuswechsel, Bankdaten aus ENV).
+
+---
+
+## (i) IMAP-DSN-Poller für Zustellfehler (30.10.2026)
+
+**Quelle: Auftrag „Bounce-Verarbeitung" (30.10.2026).** Der Poller liest DSN-Berichte (Zustellfehler)
+aus dem Absender-Postfach und sperrt weitere Welcome-Mails für das betroffene Konto. Spec:
+`knowledge/system/agent-automation.md` §3.3.
+
+| Variable | Zweck | Default | Ort |
+|---|---|---|---|
+| `KMHR_BOUNCE_POLL_ENABLED` | Schalter; nur der Wert `1` aktiviert den Poller | `0` (aus) | `.env` bzw. Runner-Umgebung |
+| `KMHR_IMAP_HOST` | IMAP-Server | leer → Poller nicht konfiguriert | `.env-runner` |
+| `KMHR_IMAP_PORT` | IMAP-Port (SSL) | `993` | `.env-runner` |
+| `KMHR_IMAP_USER` | Postfach-Benutzer (Absender-Konto) | leer → nicht konfiguriert | `.env-runner` |
+| `KMHR_IMAP_PASSWORD` | Passwort oder App-Passwort des Postfachs | leer → nicht konfiguriert | `.env-runner` (**Geheimnis**, `chmod 600`) |
+| `KMHR_IMAP_MAILBOX` | Ordner | `INBOX` | `.env-runner` |
+
+**Regeln (bindend):**
+1. Der Poller liest nur (`readonly`, `BODY.PEEK`) und verändert das Postfach nicht.
+2. Ohne `KMHR_BOUNCE_POLL_ENABLED=1` findet kein Netzzugriff statt.
+3. Zugangsdaten nie in Logs, Payloads oder die Doku-Beispiele. Das Passwort gehört nur in `.env-runner`.
+4. Die Runner-Logs enthalten nur Zähler, keine Adressen.
+
+**Nachweis:** `tests/test_mail_bounce.py` (synthetische DSN, Idempotenz, Flag aus, keine Adresse
+in Ablage und Rückgabe, Welcome-Sperre).

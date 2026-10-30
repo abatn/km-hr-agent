@@ -1,6 +1,12 @@
 {
   "ack": {
     "anchors": [
+      ".kmhr-anim-host",
+      ".kmhr-end",
+      ".kmhr-overlay",
+      "IntersectionObserver",
+      "S.autoPaused",
+      "S.offscreen",
       "THREE.Points",
       "_CHAPTERS",
       "_STEP_LINES",
@@ -8,6 +14,8 @@
       "ergebnisse/",
       "ergebnisse/screenshots/landing-agent-ergebnis.png",
       "ergebnisse/screenshots/landing-agent-prinzip.png",
+      "kmhr-end-show",
+      "kmhr-m-hide",
       "prefers-reduced-motion",
       "tests/conftest.py",
       "tests/e2e_landing_chapters.py",
@@ -21,18 +29,18 @@
       "window.__kmhr",
       "window.__kmhr.seek(t)"
     ],
-    "at": "2026-10-25T15:42:32+00:00",
+    "at": "2026-10-30T19:46:12+00:00",
     "code_blobs": {
       "tests/e2e_landing_chapters.py": "8659af0e5f032d2a7134c70ff15d1070e122f3ff",
       "tests/test_landing_page.py": "4c5ab676bf03774219ef90342a57f794c3ff4c71",
-      "webui/pages/landing.py": "979c40b7b4c12ef38e8a6c5872506713ea103827",
+      "webui/pages/landing.py": "3e15b602b0c9a334002d3c5526686da85e303398",
       "webui/static/three/LICENSE": "8ada2a5f982916b0ba4b7a0aa7de347587e745d7",
       "webui/static/three/three.core.js": "0a1d6cb9ef3cabc97a50bd02394c85e8d1c513c2",
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426"
     },
-    "commit": "09cdb5b837fd98fe293eafb008ef7ac4be7dbdbb",
-    "doc_blob": "285c792f41f1d766c4779abe56c14b7c4151430d",
-    "note": "landing.py: 5 Builder/Stationen, window.__kmhr/seek, Reduced Motion und Screenshots im Test verifiziert"
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "doc_blob": "78073e7a0a5211076812d2f92cdc720939723ff4",
+    "note": "Die Umsetzung `webui/pages/landing.py` enth\u00e4lt weiterhin `_CHAPTERS`, `_STEP_LINES`, `TOTAL = 30.0` und `window.__kmhr`; der genannte Test `tests/test_landing_page.py::test_kapitelstruktur_synchron` existiert. Die \u00c4nderung an `landing.py` betrifft nur den Dateistand, nicht die dokumentierten Kapitel/Zeiten."
   },
   "doc": "ui/ANIMATION_ENTSCHEIDUNG.md",
   "schema": 1

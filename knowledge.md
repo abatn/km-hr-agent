@@ -70,7 +70,7 @@ Kein Formatter konfiguriert — die CI-Gates (`ci.yml`, Doc-Gates) sind verbindl
 | Knowledge-MD | 78 | `find knowledge -name '*.md' -not -name '*.bak*' \| wc -l` (gemessen 25.10.2026; Verlauf: 77 vor Social-Automation, 76 am 21.10.2026, 47 am 01.10.2026) |
 | DB-Tabellen | 18 | `data/feedback.db` (gemessen 26.10.2026) |
 | MCP-Server | 14 | `opencode.json` (Key `mcp`) |
-| i18n-msgid je Sprache | 1221 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` (gemessen 25.10.2026; 1220 Keys im Katalog; vorher 1193) |
+| i18n-msgid je Sprache | 1329 | `grep -c '^msgid ' webui/locales/de/LC_MESSAGES/messages.po` (gemessen 30.10.2026; 1328 Keys im Katalog; vorher 1220) |
 | Unit-Tests | siehe `AGENTS.md` | `.venv-streamlit/bin/python3 -m pytest -q` |
 | E2E-Dateien | 55 (53 lauffähig) | `ls tests/e2e_*.py \| wc -l` (gemessen 25.10.2026; `e2e_harness.py` + `e2e_isolation.py` sind keine E2E-Skripte) |
 

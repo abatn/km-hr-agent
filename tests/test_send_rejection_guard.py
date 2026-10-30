@@ -118,13 +118,22 @@ class TestSendRejectionGuard(unittest.TestCase):
         print(f"GUARD BLOCKED (status) — {ctx.exception} — mcp_call=0")
 
     def test_positiv_abgelehnt_mit_trigger_mail_gemockt(self):
+        conn = _isolated_conn()
+        try:
+            email = conn.execute(
+                "SELECT email FROM candidates WHERE id = ?", (10,)).fetchone()[0]
+        finally:
+            conn.close()
+        self.assertTrue(email, "Seed-Kandidat #10 braucht eine E-Mail")
         with patch.object(mod, "mcp_call", return_value="OK|Gesendet an test@example.invalid") as m:
             res = mod.send_rejection(dict(POS_PAYLOAD))
         m.assert_called_once()
         self.assertEqual(m.call_args[0][1], "send_email")
+        # Empfängeradresse steht im Tool-Argument (aus der DB), nicht im Ergebnis.
+        self.assertEqual(m.call_args[0][2]["to"], email)
         self.assertIn("mail", res)
-        self.assertTrue(res["to"])
-        print(f"GUARD PASSED — mcp_call=1 (GEMOCKT, keine echte Mail) — to={res['to']}")
+        self.assertNotIn("to", res)
+        print("GUARD PASSED — mcp_call=1 (GEMOCKT, keine echte Mail) — kein 'to' im Ergebnis")
 
     def test_negativ_process_task_log_zeile_und_failed(self):
         conn = MagicMock()

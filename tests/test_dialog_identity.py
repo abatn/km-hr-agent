@@ -23,6 +23,7 @@ Bestehende Guard-Faelle (kein trigger / Status != abgelehnt / POS truthy-to) lie
 tests/test_send_rejection_guard.py und werden hier NICHT dupliziert.
 """
 import importlib.util
+import json
 import sqlite3
 from pathlib import Path
 from unittest.mock import patch
@@ -394,7 +395,10 @@ def test_guard_positiv_to_wert_aus_db_select_gemockte_mail():
         res = mod.send_rejection(dict(payload))
     assert m.call_count == 1
     assert m.call_args[0][1] == "send_email"
-    assert res["to"] == email_pre
+    # Empfängeradresse steht im Tool-Argument (aus dem DB-SELECT), nicht im Ergebnis.
+    assert m.call_args[0][2]["to"] == email_pre
+    assert "to" not in res
+    assert email_pre not in json.dumps(res)
 
 
 # ─── 7. FINAL: Pre-Baselines unverändert ────────────────────────────────────

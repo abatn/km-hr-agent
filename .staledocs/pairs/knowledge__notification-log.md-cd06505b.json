@@ -8,13 +8,13 @@
       "msg_key",
       "webui/logic.py"
     ],
-    "at": "2026-10-26T22:59:14+00:00",
+    "at": "2026-10-30T21:07:53+00:00",
     "code_blobs": {
-      "webui/db.py": "52ca558a49f9475a5e9acdc71912a99774801bb9"
+      "webui/db.py": "1a131405322618946a2dedcb73bbfc52355b8d76"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
-    "doc_blob": "2e83a385e5c8ec0cc69e9059d62dbe4217305906",
-    "note": "Gepr\u00fcft 26.10.2026: Doku betrifft das notifications-Schema in webui/db.py, das unver\u00e4ndert ist; der Diff ber\u00fchrt keine Notification-Logik."
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "doc_blob": "8ced44d596143eabfcb7c1a05c39b2cc0e74de34",
+    "note": "msg_key- und Notification-Aussagen gegen insert_notification und dsgvo_cleanup in webui/db.py geprueft; Bounce-Skip erzeugt keine Notification, nichts zu ergaenzen."
   },
   "doc": "knowledge/notification-log.md",
   "schema": 1

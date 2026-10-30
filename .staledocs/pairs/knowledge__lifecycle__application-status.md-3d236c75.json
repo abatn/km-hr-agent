@@ -26,14 +26,14 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-26T23:11:37+00:00",
+    "at": "2026-10-30T19:46:01+00:00",
     "code_blobs": {
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "14c928d0207b48a2c8faa285ec5ac7d014bf612e",
-    "note": "Gepr\u00fcft 26.10.2026: knowledge/lifecycle/application-status.md beschreibt Statuspfade; die im Diff ge\u00e4nderten Dateien (webui/pages/employer.py Dokumenten-Slot, webui/pages/not_found.py, Kataloge) sind dort nicht genannt."
+    "note": "Die Automatisierungs-Hooks (\u201e`\u2192 eingeladen` = `create_invitation`, `\u2192 abgelehnt` = `send_rejection`, `\u2192 eingestellt` = `onboarding_release`\") stehen so in `webui/pages/employer.py`: `_hook_task = {\"eingeladen\": \"create_invitation\", \"abgelehnt\": \"send_rejection\", \"eingestellt\": \"onboarding_release\"}`; die 30.10.-\u00c4nderung betrifft nur die Registrierung, nicht die Status\u00fcberg\u00e4nge."
   },
   "doc": "knowledge/lifecycle/application-status.md",
   "schema": 1

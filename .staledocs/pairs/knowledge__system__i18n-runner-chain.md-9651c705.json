@@ -91,6 +91,7 @@
       "send_onboarding_mail",
       "send_pre_screen_invitation",
       "send_rejection",
+      "send_welcome",
       "task_type.title()",
       "test_i18n.py",
       "testdaten/",
@@ -112,14 +113,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-23T10:43:43+00:00",
+    "at": "2026-10-30T21:08:35+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
-    "doc_blob": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar knowledge/system/i18n-runner-chain.md"
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "doc_blob": "3b67bad8a19aa567823715b675bc3d91e516b49a",
+    "note": "knowledge/system/i18n-runner-chain.md: Abschnitt 7.1 (send_welcome ueber tr()) gegen build_welcome_mail geprueft; Bounce-Skip aendert die Sprachregel nicht. Katalogzahlen sind datiert (09.10.2026)."
   },
   "doc": "knowledge/system/i18n-runner-chain.md",
   "schema": 1

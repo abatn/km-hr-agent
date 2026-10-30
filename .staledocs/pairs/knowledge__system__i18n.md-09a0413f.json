@@ -120,26 +120,27 @@
       "webui/i18n_core.py",
       "webui/pages/candidate.py",
       "webui/pages/employer.py",
+      "webui/pages/login.py",
       "webui/pages/not_found.py"
     ],
-    "at": "2026-10-26T22:59:20+00:00",
+    "at": "2026-10-30T21:08:36+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "208312b7842868098ba84ee0a23ee2e06a5499ed",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "22edda8e3ce785a04927a180e7019347e15d4c5d",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "d2ce9f4840c08002d702c707c7bca7e624ffa9d8",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "97897774a22c0e6007fdfcfa69f0f1a1da50752b",
-      "webui/locales/de/LC_MESSAGES/messages.po": "5219748b8b68ee0b28f2fe0c5619d87c3dee91c2",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "15174edba970c8ecf158d0bd1d3925b907dbb451",
-      "webui/locales/en/LC_MESSAGES/messages.po": "def261a87752e5554ae1de4639c3ac202d3f3f9a",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "0d60fc6e78380d804812fd305f420bbb3f519bf7",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "6e774a63b01a4c3a2d633ec8f4bff399e44f57a8"
+      "webui/locales/ar/LC_MESSAGES/messages.mo": "281da12974451f40ac05dae26f54f058d596dda8",
+      "webui/locales/ar/LC_MESSAGES/messages.po": "a5ff5496986bb63cd138165f6bfea92b87b66045",
+      "webui/locales/de/LC_MESSAGES/messages.mo": "db3dfb66e7f819407a9e7de98dfc294698711ba0",
+      "webui/locales/de/LC_MESSAGES/messages.po": "617b77085abd439176d4ded5a599de291e5cd23e",
+      "webui/locales/en/LC_MESSAGES/messages.mo": "0f0b048e175ed9e89e6bcf1996083eb3a38bb2c3",
+      "webui/locales/en/LC_MESSAGES/messages.po": "5901504b71d41b48748b12b8b0e436143622c1ca",
+      "webui/locales/fr/LC_MESSAGES/messages.mo": "3d60cf2763b8e5021cbf5bf31b6990f81ba16f6e",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "f1126d2fbf953d72a50d59604cb6c5101042b3f3"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
-    "doc_blob": "33a682773662ecfff911319c7b3e537a27d0f1f3",
-    "note": "Gepr\u00fcft 26.10.2026: Nachtrag (Zeilen 86-88) nennt genau die vier ge\u00e4nderten msgids und Dateien; Key-Stand 1302 entspricht grep -c \"^msgid \" (1303 inkl. Header) in de/messages.po."
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "doc_blob": "2c06bbed6073d78c3a2163ab8b5afb70d3c0ba4e",
+    "note": "knowledge/system/i18n.md: Key-Menge 1328 (grep 1329 inkl. Header) nach vier Admin-msgids am 30.10.2026 neu gemessen; Zusatz zur Zustellfehler-Karte ergaenzt."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

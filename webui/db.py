@@ -83,7 +83,8 @@ def init_agent_tasks_table() -> None:
     vorhanden = {r[1] for r in c.execute("PRAGMA table_info(agent_tasks)")}
     for spalte, typ in (("started_at", "TIMESTAMP"), ("finished_at", "TIMESTAMP"),
                         ("result_json", "TEXT"), ("result_path", "TEXT"),
-                        ("error_text", "TEXT"), ("attempts", "INTEGER DEFAULT 0")):
+                        ("error_text", "TEXT"), ("attempts", "INTEGER DEFAULT 0"),
+                        ("next_attempt_at", "TIMESTAMP")):
         if spalte not in vorhanden:
             c.execute(f"ALTER TABLE agent_tasks ADD COLUMN {spalte} {typ}")
     conn.commit()
@@ -171,6 +172,253 @@ def queue_agent_task(task_type: str, payload: dict) -> int | None:
     except Exception as e:
         print(f"[Agent-Queue] Fehler (App läuft weiter): {e}")
         return None
+
+
+# ─── Willkommensmail-Registrierung (Plan v2, 30.10.2026) ─────────────
+# Feature-Flag: Default AUS. Die Mail selbst verschickt der Runner
+# (task_type 'send_welcome'); hier wird nur gequeued. Bewusst OHNE
+# E-Mail-Adresse im Payload — der Runner liest sie ueber role+id aus der DB
+# (kein PII-Duplikat in der Queue, DSGVO-Minimierung).
+
+def welcome_mail_enabled() -> bool:
+    """Willkommensmail-Flag (`KMHR_WELCOME_MAIL=1`), Default aus."""
+    return os.environ.get("KMHR_WELCOME_MAIL", "0") == "1"
+
+
+def queue_welcome(role: str, subject_id: int, language: str = "de") -> int | None:
+    """Queued einen `send_welcome`-Task (idempotent, tagesuebergreifend).
+
+    Dedupe ueber payload.role + payload.id gegen die Status
+    pending/running/done — ein Konto bekommt genau eine Willkommensmail.
+    `failed` ist bewusst nicht in der Sperre: nach einem Fehlversuch darf
+    erneut gequeued werden. Rueckgabe: Task-id oder None (Flag aus/Duplikat).
+    """
+    if role not in ("candidate", "employer"):
+        raise ValueError(f"Ungueltige Rolle fuer queue_welcome: {role!r}")
+    if not welcome_mail_enabled():
+        return None
+    payload = json.dumps(
+        {"role": role, "id": int(subject_id), "language": language},
+        ensure_ascii=False, sort_keys=True,
+    )
+    conn = sqlite3.connect(str(AGENT_TASKS_DB), timeout=10, isolation_level=None)
+    c = conn.cursor()
+    try:
+        # BEGIN IMMEDIATE: Schreib-Lock vor dem SELECT, sonst koennten zwei
+        # parallele Registrierungen beide "kein Duplikat" sehen.
+        c.execute("BEGIN IMMEDIATE")
+        c.execute("""SELECT id FROM agent_tasks
+            WHERE task_type = 'send_welcome'
+              AND json_extract(payload, '$.role') = ?
+              AND json_extract(payload, '$.id') = ?
+              AND status IN ('pending', 'running', 'done')
+            LIMIT 1""", (role, int(subject_id)))
+        if c.fetchone() is not None:
+            c.execute("ROLLBACK")
+            return None
+        c.execute("INSERT INTO agent_tasks (task_type, payload, status) "
+                  "VALUES ('send_welcome', ?, 'pending')", (payload,))
+        tid = c.lastrowid
+        c.execute("COMMIT")
+        return tid
+    except Exception as ex:
+        # ROLLBACK best effort — ein Fehler dabei darf die Original-Exception
+        # nicht verdecken (Repo-Gate test_silent_errors.py: kein stummes
+        # Schlucken, deshalb protokollieren statt `pass`).
+        try:
+            c.execute("ROLLBACK")
+        except Exception as rb_ex:
+            print(f"[db] queue_welcome: ROLLBACK fehlgeschlagen: {rb_ex!r}")
+        print(f"[db] queue_welcome fehlgeschlagen ({role}, {subject_id}): {ex!r}")
+        raise
+    finally:
+        conn.close()
+
+
+class RegistrationConsentError(RuntimeError):
+    """Consent-Nachweis bei der Registrierung fehlgeschlagen.
+
+    Das zuvor committete Konto wurde per `delete_registration` kompensiert
+    (Option a, 30.10.2026): keine halbe Registrierung ohne Einwilligungs-
+    nachweis. Der Aufrufer in der UI wertet das ueber
+    `complete_registration` als `REGISTRATION_ERROR` aus.
+    """
+
+
+REGISTRATION_OK = "ok"
+REGISTRATION_ERROR = "error"
+
+
+def delete_registration(role: str, subject_id: int) -> None:
+    """Loescht ein Registrierungs-Konto samt Consent-Zeilen (Kompensation).
+
+    Eine Transaktion: erst `consents` (Nachweise ohne Konto waeren
+    verwaiste personenbezogene Daten), dann die Rollentabelle
+    (`candidates`/`employers`). `commit` am Ende, `close` im `finally`.
+    Rollen-Vertrag wie `queue_welcome`; alles andere ist ein Programmierfehler.
+    """
+    if role not in ("candidate", "employer"):
+        raise ValueError(f"Ungueltige Rolle fuer delete_registration: {role!r}")
+    tabelle = "candidates" if role == "candidate" else "employers"
+    conn = get_conn()
+    try:
+        c = conn.cursor()
+        c.execute("DELETE FROM consents WHERE subject_type = ? AND subject_id = ?",
+                  (role, int(subject_id)))
+        c.execute(f"DELETE FROM {tabelle} WHERE id = ?", (int(subject_id),))
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def finalize_registration(role: str, subject_id: int, language: str,
+                          record_consents) -> int | None:
+    """Registrierungs-Nachlauf: Einwilligungen -> Willkommensmail -> In-App.
+
+    Reihenfolge ist bindend: `record_consents()` zuerst. Wirft sie, wird das
+    bereits committete Konto per `delete_registration` kompensiert
+    (Option a) und `RegistrationConsentError` ausgeloest — dann entstehen
+    weder Task noch Notification. Ein Fehler in der Kompensation wird
+    protokolliert, ersetzt aber nie die Original-Ursache (`from ex`).
+    `queue_welcome` und `insert_notification` bleiben best effort — die
+    Registrierung darf an ihnen nie scheitern (Fehler werden protokolliert,
+    nicht weitergereicht).
+    Rueckgabe: Task-id oder None (Flag aus/Duplikat).
+    """
+    try:
+        record_consents()
+    except Exception as ex:
+        try:
+            delete_registration(role, subject_id)
+        except Exception as del_ex:
+            # Kompensation fehlgeschlagen: protokollieren, nicht verschlucken.
+            # Die RegistrationConsentError unten bleibt die Ursache.
+            print(f"[db] finalize_registration: Kompensation fehlgeschlagen "
+                  f"({role}, {subject_id}): {del_ex!r}")
+        raise RegistrationConsentError(
+            f"Consent-Nachweis fehlgeschlagen ({role}, {subject_id}): {ex!r}"
+        ) from ex
+    try:
+        task_id = queue_welcome(role, subject_id, language)
+    except Exception as ex:
+        # Konto ist bereits committet: Enqueue-Fehler nie weiterreichen, nur
+        # protokollieren (Repo-Gate test_silent_errors.py in db.py).
+        print(f"[db] finalize_registration: queue_welcome fehlgeschlagen "
+              f"({role}, {subject_id}): {ex!r}")
+        task_id = None
+    try:
+        insert_notification(
+            subject_id, role,
+            "Willkommen bei KM-HR-Agent", "Ihr Konto ist aktiv.",
+            msg_key="welcome_" + role, params={},
+        )
+    except Exception as ex:
+        # Bewusst kein raise: der Nachweis ist geschrieben, das Konto aktiv.
+        # Nur protokollieren (Repo-Gate test_silent_errors.py in db.py).
+        print(f"[db] finalize_registration: Benachrichtigung fehlgeschlagen "
+              f"({role}, {subject_id}): {ex!r}")
+    return task_id
+
+
+def complete_registration(role: str, subject_id: int, language: str,
+                          record_consents) -> str:
+    """UI-Fassade um `finalize_registration`: gibt `REGISTRATION_OK` oder
+    `REGISTRATION_ERROR` zurueck und wirft nie.
+
+    `RegistrationConsentError` (Consent fehlt, Konto kompensiert) und jeder
+    andere Fehler aus dem Nachlauf werden protokolliert; die UI zeigt dann
+    eine Fehlermeldung statt eines Tracebacks. Nur bei erfolgreichem
+    Consent-Nachweis laeuft der best-effort-Teil (Task/Notification).
+    """
+    try:
+        finalize_registration(role, subject_id, language, record_consents)
+    except RegistrationConsentError as ex:
+        print(f"[db] complete_registration: Einwilligung fehlgeschlagen "
+              f"({role}, {subject_id}): {ex!r}")
+        return REGISTRATION_ERROR
+    except Exception as ex:
+        print(f"[db] complete_registration: Nachlauf fehlgeschlagen "
+              f"({role}, {subject_id}): {ex!r}")
+        return REGISTRATION_ERROR
+    return REGISTRATION_OK
+
+
+# ─── Zustellfehler / Bounce (30.10.2026, Spec agent-automation.md §3.2) ───
+
+_ACCOUNT_TABLES = {"candidate": "candidates", "employer": "employers"}
+
+
+def find_account_id(role: str, email: str) -> int | None:
+    """Konto-ID je Rolle und E-Mail (case-insensitive) oder None."""
+    table = _ACCOUNT_TABLES.get(role)
+    if not table or not email or not email.strip():
+        return None
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            f"SELECT id FROM {table} WHERE lower(email) = lower(?)",
+            (email.strip(),),
+        ).fetchone()
+        return int(row[0]) if row else None
+    finally:
+        conn.close()
+
+
+def find_account_for_mail(email: str) -> tuple[str, int] | None:
+    """Erstes Konto zur Adresse (candidate vor employer) als (role, id) oder None."""
+    for role in ("candidate", "employer"):
+        sid = find_account_id(role, email)
+        if sid is not None:
+            return role, sid
+    return None
+
+
+def has_mail_bounce(role: str, subject_id: int) -> bool:
+    """True, wenn für dieses Konto ein Zustellfehler (mail_bounce) erfasst wurde."""
+    conn = get_conn()
+    try:
+        row = conn.execute(
+            """SELECT 1 FROM agent_tasks WHERE task_type = 'mail_bounce'
+               AND json_extract(payload, '$.role') = ?
+               AND json_extract(payload, '$.id') = ? LIMIT 1""",
+            (role, int(subject_id)),
+        ).fetchone()
+        return row is not None
+    finally:
+        conn.close()
+
+
+def record_mail_bounce(role: str, subject_id: int, dsn_key: str, status: str) -> bool:
+    """Erfasst einen Zustellfehler genau einmal je DSN-Schlüssel.
+
+    Rückgabe True = neu erfasst, False = Duplikat. Keine Adresse im Payload.
+    Bestehende Ablage: agent_tasks (task_type 'mail_bounce', Status done).
+    """
+    payload = json.dumps({"role": role, "id": int(subject_id), "dsn": dsn_key,
+                          "status": status}, ensure_ascii=False, sort_keys=True)
+    conn = sqlite3.connect(str(AGENT_TASKS_DB), timeout=10, isolation_level=None)
+    c = conn.cursor()
+    try:
+        c.execute("BEGIN IMMEDIATE")
+        c.execute("""SELECT 1 FROM agent_tasks WHERE task_type = 'mail_bounce'
+                     AND json_extract(payload, '$.dsn') = ? LIMIT 1""", (dsn_key,))
+        if c.fetchone() is not None:
+            c.execute("ROLLBACK")
+            return False
+        c.execute("""INSERT INTO agent_tasks (task_type, status, payload, result_json, finished_at)
+                     VALUES ('mail_bounce', 'done', ?, ?, CURRENT_TIMESTAMP)""",
+                  (payload, json.dumps({"status": "bounce_erfasst"}, ensure_ascii=False)))
+        c.execute("COMMIT")
+        return True
+    except Exception as ex:
+        try:
+            c.execute("ROLLBACK")
+        except Exception as rb_ex:
+            print(f"[db] record_mail_bounce: ROLLBACK fehlgeschlagen: {rb_ex!r}")
+        print(f"[db] record_mail_bounce fehlgeschlagen ({role}, {subject_id}): {ex!r}")
+        raise
+    finally:
+        conn.close()
 
 
 # ─── Bewerbung + Agent-Kette (Phase 5/v6.2, Port app.py:3294-3330) ───

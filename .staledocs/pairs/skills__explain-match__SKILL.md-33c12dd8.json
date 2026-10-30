@@ -1,14 +1,14 @@
 {
   "ack": {
     "anchors": [],
-    "at": "2026-10-26T22:59:21+00:00",
+    "at": "2026-10-30T21:08:41+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "7cb5aab4147181e8e528f829676bbef664ee1d56",
-    "note": "Gepr\u00fcft 26.10.2026: Skill-Logik liegt in scripts/agent-runner.py, im Diff nicht enthalten."
+    "note": "skills/explain-match/SKILL.md: Verweise auf match-candidate, explanation-templates und Score gegen Runner geprueft; keine der Aenderungen betrifft diese Aussagen."
   },
   "doc": "skills/explain-match/SKILL.md",
   "schema": 1

@@ -29,13 +29,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T19:29:28+00:00",
+    "at": "2026-10-30T21:08:09+00:00",
     "code_blobs": {
-      "webui/db.py": "52ca558a49f9475a5e9acdc71912a99774801bb9"
+      "webui/db.py": "1a131405322618946a2dedcb73bbfc52355b8d76"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-    "note": "Geprueft: mentoring-Schema unveraendert; webui/db.py nur um init_billing_migrations ergaenzt."
+    "note": "Mentoring-Aussagen gegen assign_mentor, end_mentoring und get_active_mentor in webui/db.py geprueft; neue Account- und Bounce-Funktionen betreffen Mentoring nicht."
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

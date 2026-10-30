@@ -3915,3 +3915,81 @@ msgstr "{0} نسخة أقدم بدون رابط فيديو حالٍ"
 
 msgid "Bewerbung nicht gefunden"
 msgstr "لم يتم العثور على طلب التوظيف"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Konto ist bereit"
+msgstr "مرحباً بك في KM-HR-Agent – حسابك جاهز"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Arbeitgeberkonto für {firma}"
+msgstr "مرحباً بك في KM-HR-Agent – حساب صاحب العمل الخاص بك لـ {firma}"
+
+msgid "Ihr Konto bei KM-HR-Agent ist aktiv."
+msgstr "حسابك في KM-HR-Agent نشط."
+
+msgid "Ihr Arbeitgeberkonto für {firma} ist aktiv."
+msgstr "حساب صاحب العمل الخاص بك لـ {firma} نشط."
+
+msgid "Ihre nächsten Schritte:"
+msgstr "خطواتك التالية:"
+
+msgid "1. Profil vervollständigen"
+msgstr "1. أكمل ملفك الشخصي"
+
+msgid "2. Lebenslauf hochladen"
+msgstr "2. ارفع سيرتك الذاتية"
+
+msgid "3. Passende Stellen finden"
+msgstr "3. اعثر على وظائف مناسبة"
+
+msgid "1. Stelle veröffentlichen"
+msgstr "1. انشر وظيفة"
+
+msgid "2. Passende Profile sichten"
+msgstr "2. راجع الملفات المناسبة"
+
+msgid "3. Zum Interview einladen"
+msgstr "3. ادعُ إلى مقابلة"
+
+msgid "Zur Anmeldung: {link}"
+msgstr "تسجيل الدخول: {link}"
+
+msgid "Zum Arbeitgeberportal: {link}"
+msgstr "بوابة صاحب العمل: {link}"
+
+msgid "Der Mensch entscheidet."
+msgstr "القرار للإنسان."
+
+msgid "Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht."
+msgstr "إذا لم تنشئ حساباً لدينا، يرجى تجاهل هذه الرسالة."
+
+msgid "Datenschutz: {link}"
+msgstr "الخصوصية: {link}"
+
+msgid "Diese Nachricht wurde mit Unterstützung eines KI-Systems erstellt (EU AI Act Art. 50)."
+msgstr "تم إنشاء هذه الرسالة بمساعدة نظام ذكاء اصطناعي (قانون الذكاء الاصطناعي للاتحاد الأوروبي، المادة 50)."
+
+msgid "welcome_candidate.titel"
+msgstr "مرحباً بك في KM-HR-Agent"
+
+msgid "welcome_candidate.text"
+msgstr "حسابك نشط. أكمل ملفك الشخصي وارفع سيرتك الذاتية."
+
+msgid "welcome_employer.titel"
+msgstr "مرحباً بك في KM-HR-Agent"
+
+msgid "welcome_employer.text"
+msgstr "حساب صاحب العمل الخاص بك نشط. انشر وظيفتك الأولى."
+
+msgid "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+msgstr "فشل التسجيل. يرجى المحاولة مرة أخرى."
+
+msgid "Zustellfehler (Bounce)"
+msgstr "أخطاء التسليم (ارتداد)"
+
+msgid "Erfasste harte Zustellfehler: {n}"
+msgstr "عدد أخطاء التسليم النهائية المسجلة: {n}"
+
+msgid "{rolle} · Konto #{id} · {zeit}"
+msgstr "{rolle} · الحساب رقم {id} · {zeit}"
+
+msgid "Keine Zustellfehler erfasst."
+msgstr "لم تُسجَّل أي أخطاء تسليم."

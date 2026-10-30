@@ -60,15 +60,15 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T19:29:25+00:00",
+    "at": "2026-10-30T21:08:38+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "2882a7dfe34ef28758c5126b4236678614567a3b",
-    "note": "Geprueft: Selbstpraesentation/webui/pages/candidate.py Self-Presentation-Pfad unveraendert."
+    "note": "knowledge/system/vdo-ninja-migration.md: Raumnamen prescreening{code} und vdo_ninja_url/vdo_ninja_gast_url gegen create_invitation geprueft; diese Codemarken sind unveraendert."
   },
   "doc": "knowledge/system/vdo-ninja-migration.md",
   "schema": 1

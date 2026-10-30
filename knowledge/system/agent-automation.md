@@ -95,6 +95,7 @@ und `agent_chars`, keine Aufrufer brechen. Die frühere Obergrenze `RESULT_TEXT_
 
 | Event (app.py Hook) | Task(s) | Bemerkung |
 |---|---|---|
+| Registrierung abgeschlossen (Login-Tab Kandidat/Arbeitgeber) | `send_welcome` | Willkommensmail an das neue Konto (transaktional, kein HR-Klick); Details §3.2 |
 | CV-Upload erfolgreich (Candidate 📤) | `extract_profile` | User-Entscheidung: Agent extrahiert sofort nach Upload |
 | Bewerbung erstellt (💼 Bewerben) | `match_candidate`, `check_compliance`, `assess_culture_fit` (+ falls Extract noch offen: auch `extract_profile`) | User-Entscheidung: volle Kette bei Bewerbung |
 | `status → eingeladen` (💼 oder 🏢, seit Phase 2 auch 🛡️ Admin-Bewerber-Verwaltung, `trigger: admin_klick`) | `create_invitation` | JA-Pfad: VDO.Ninja-Raum + Fragen + ICS + Einladungs-Mail |
@@ -135,6 +136,91 @@ und `agent_chars`, keine Aufrufer brechen. Die frühere Obergrenze `RESULT_TEXT_
 13.10.2026 trägt der Insert `started_at`/`finished_at` und ein minimales `result_json`
 (`inline/entscheidung/score/kategorie/signature`) — `done` ist damit nachweisbar.
 
+### 3.2 Willkommensmail bei Registrierung (30.10.2026)
+
+**Was.** Nach erfolgreicher Registrierung (Kandidat im Login-Tab „Kandidat", Arbeitgeber im
+Tab „Arbeitgeber") queued die App genau einen Task `send_welcome`; die Mail selbst verschickt
+ausschließlich der Runner. Feature-Flag `KMHR_WELCOME_MAIL` (Default `0` = aus; nur der Wert
+`1` schaltet frei, `true/yes` **nicht** — Codemarke `welcome_mail_enabled`, `webui/db.py`).
+
+| Aspekt | Regel | Codemarke |
+|---|---|---|
+| Payload | `{"role": "candidate"\|"employer", "id": <int>, "language": "de"\|"en"\|"fr"\|"ar"}` — **keine E-Mail-Adresse im Payload** (DSGVO-Minimierung). Der Runner liest `candidates.email`/`employers.email` über `role`+`id`. | `def queue_welcome`, `webui/db.py` |
+| Enqueue-Zeitpunkt | `complete_registration(role, subject_id, language, record_consents)` (`webui/db.py`) ruft `finalize_registration`; dort läuft **zuerst** `record_consents()` (Consent-Einträge), **danach** `queue_welcome`. Wirft `record_consents`, führt `finalize_registration` die Kompensation `delete_registration` aus — sie löscht die `consents`-Einträge **und** die Kandidat-/Arbeitgeber-Zeile — und wirft `RegistrationConsentError` an den Aufrufer. Fehler in `queue_welcome` oder `insert_notification` werden dagegen **protokolliert, nicht weitergereicht** (best effort): das Konto bleibt erfolgreich registriert, nur Mail-Task bzw. Notification fehlen. | `def complete_registration`, `def finalize_registration`, `def delete_registration`, `RegistrationConsentError`, `webui/db.py` |
+| UI-Rückmeldung | `webui/pages/login.py` fängt `RegistrationConsentError` und zeigt `REGISTRATION_ERROR` („Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.") — **kein** Erfolgstext. `REGISTRATION_OK` erscheint nur nach erfolgreichem `complete_registration`. | `REGISTRATION_OK`, `REGISTRATION_ERROR`, `webui/pages/login.py` |
+| Idempotenz | Genau **ein** Task pro `role`+`id` über **alle Tage**: SELECT auf `task_type='send_welcome'` + `json_extract(payload,'$.role')` + `json_extract(payload,'$.id')` mit `status IN ('pending','running','done')`. `failed` ist **nicht** gesperrt → nach Fehlversuch ist eine Neuanlage erlaubt. `BEGIN IMMEDIATE` vor dem SELECT (Schreib-Lock), sonst könnten zwei parallele Registrierungen beide „kein Duplikat" sehen. Rückgabe: Task-id oder `None` (Flag aus/Duplikat). | `def queue_welcome`, `webui/db.py` |
+| Runner | `send_welcome(payload)` (`scripts/agent-runner.py`, Dispatch in `process_task`): MCP-direct über `email-sender.send_email`, Betreff/Body deterministisch aus `build_welcome_mail` (`tr(...)`, KI-Hinweis EU AI Act Art. 50). Erfolg: `{"status": "sent"}`. Konto nicht gefunden oder ohne E-Mail: `{"status": "skipped", "grund": "kein_konto"}` (kein Retry, Task wird `done`). | `def send_welcome`, `def build_welcome_mail`, `def process_task` |
+| Fehler / Retry | Antwort beginnt mit `FEHLER:` (aus `mcp-email-server.py`) → `RuntimeError` → `finish_task(ok=False)`: `error_text` gesetzt, Task bleibt `pending` mit Wartezeit (`next_attempt_at`, §3.4), Versuchszähler +1 (in `claim_task`); ab `MAX_ATTEMPTS` (3) `failed`. | `def send_welcome`, `def finish_task`, `def claim_task`, `MAX_ATTEMPTS` |
+| DRY-RUN | `mcp_call` liefert `DRY-RUN` → Rückgabe `{"status": "dry_run"}` (**nicht** `sent`); kein Retry, Task wird `done`. | `def send_welcome`, `def mcp_call` |
+| Links in der Mail | Anmelde-/Datenschutz-Links kommen aus `KMHR_PUBLIC_BASE_URL` (Default `http://localhost:8080`, abschließender `/` wird entfernt) — **gleiche Mechanik** wie `send_password_reset`. | `def build_welcome_mail`, `def send_password_reset` |
+| In-App | `insert_notification(subject_id, role, …, msg_key="welcome_"+role, params={})` → `welcome_candidate`/`welcome_employer`; **best effort** (Exception wird geschluckt), die Registrierung scheitert nie an der Notification. Läuft **unabhängig vom Mail-Flag** (auch bei `KMHR_WELCOME_MAIL=0`). `titel`/`nachricht` bleiben als deutscher Fallback gefüllt. | `def insert_notification`, `webui/db.py` |
+| Gleiches Verhalten / Ausnahme | `send_confirmation`, `send_rejection` und `send_onboarding_mail` werfen bei `FEHLER:` wie `send_welcome` eine `RuntimeError` (→ Retry). **Bewusste Ausnahme: `create_invitation`** — der Einladungsfluss (Raum + Fragen + ICS + Mail) ist ein eigener, größerer Schritt; ein `FEHLER:` der Einladungs-Mail landet nur als `mail`-Feld im `result_json`, ohne FEHLER-Retry. | `def send_confirmation`, `def send_rejection`, `def send_onboarding_mail`, `def create_invitation` |
+| DSGVO-Redaktion | `result_json` **und** `error_text` werden zentral in `finish_task` redigiert: `to`/`mail_to`/`email`/`cc`/`bcc` entfallen, E-Mail-Muster in Strings werden zu `<EMAIL>`. `logs/mcp-calls.log` loggt `FEHLER`-Antworten als `ok=False` und schreibt `to` nicht (`_MCP_LOG_ALLOWED_KEYS` ohne `to`). | `def _redact_result`, `def finish_task`, `def _mcp_log_live`, `_MCP_LOG_ALLOWED_KEYS`, `scripts/agent-runner.py` |
+
+**Zählung.** `send_welcome` ist ein zusätzlicher **deterministischer Dispatch-Typ**. Die Zählung
+in §2 („18 DISTINCT task_type", Messstand 25.09./09.10.2026) bleibt als datierter Messstand
+unverändert; `COUNT(DISTINCT task_type)` wächst erst mit dem ersten realen Task.
+
+**Variante A unberührt:** Die Willkommensmail ist transaktional (Konto-Anlage) und enthält
+keine Einladung, Absage oder Entscheidung — kein HR-Klick nötig, kein LLM.
+
+**Quelle:** Plan v2 + Review (30.10.2026), Design-Entscheidung ohne externe Norm.
+
+### 3.3 Zustellfehler (Bounce) per IMAP-DSN (30.10.2026)
+
+**Was.** Erkennt harte Zustellfehler, die nach der SMTP-Annahme per Delivery-Status-Bericht (DSN)
+im Absender-Postfach eintreffen, und sperrt weitere Welcome-Mails an das betroffene Konto. Standardmäßig
+aus: `KMHR_BOUNCE_POLL_ENABLED` (Default `0`, nur `1` schaltet ein).
+
+| Aspekt | Regel | Codemarke |
+|---|---|---|
+| Quelle | IMAP-Postfach, readonly (`BODY.PEEK`), Suche SINCE 14 Tage, höchstens 200 Nachrichten je Lauf | `def poll_bounces`, `scripts/mail_bounce.py` |
+| Erkennung | `multipart/report` mit `report-type=delivery-status`; Empfänger mit `Action: failed` und `Status: 5.x.x`. Weiche Fehler (`4.x.x`, `delayed`) werden ignoriert, der MTA versucht erneut. | `def parse_dsn` |
+| Ablage | bestehende Tabelle `agent_tasks`, `task_type='mail_bounce'`, Status `done`, Payload `{role, id, dsn, status}`, Ergebnis `{"status": "bounce_erfasst"}`. **Keine neue Tabelle, keine Adresse.** | `def record_mail_bounce` |
+| Idempotenz | `dsn` = SHA-256 aus Message-ID, Rolle, ID und Position im Bericht. Zweite Verarbeitung derselben DSN ergibt `duplikat`, keine zweite Zeile. Schreiben unter `BEGIN IMMEDIATE`. | `def record_mail_bounce`, `def dsn_key` |
+| Sperre | `send_welcome` prüft vor dem Versand `has_mail_bounce(role, id)` und liefert `{"status": "skipped", "grund": "zustellfehler"}`; kein Versand, kein Retry. | `def has_mail_bounce`, `def send_welcome` |
+| Takt | Hauptschleife des Runners ruft den Poller alle `BOUNCE_POLL_SECONDS` (600 s). Flag aus = No-op ohne Netzzugriff. Fehler werden protokolliert, der Runner läuft weiter. | `def run_bounce_poll`, `BOUNCE_POLL_SECONDS` |
+| Logs | Nur Zähler (`gesehen`, `erfasst`, `duplikat`, `unbekannt`). Keine Adresse, keine Message-ID. | `def run_bounce_poll` |
+| Admin-Sicht | Dashboard-Karte „Zustellfehler (Bounce)": Anzahl und die letzten 20 Einträge mit Rolle, Konto-ID und Zeitpunkt, ohne Adressen. | `def _page_dashboard`, `webui/pages/admin.py` |
+
+**Grenzen (offen):** Nur harte Fehler. Das DSN-Format wurde gegen synthetische Berichte getestet,
+nicht gegen ein echtes Yahoo-Postfach. `mail_bounce`-Zeilen haben keine `application_id` und werden
+von `dsgvo_cleanup` nicht erfasst; nach einer Kontolöschung bleibt die Retention-Frage offen.
+
+### 3.4 Retry mit Backoff und Jitter (30.10.2026)
+
+**Was.** Ersetzt den festen 60-s-Takt als Wiederholungsregel. Das Abholen der Queue bleibt bei 60 s
+(`LOOP_SECONDS`); wann ein fehlgeschlagener Task erneut drankommt, steuert `next_attempt_at`.
+
+| Aspekt | Regel | Codemarke |
+|---|---|---|
+| Spalte | `agent_tasks.next_attempt_at` (TIMESTAMP, UTC), idempotente Migration; keine neue Tabelle. Leer = sofort fällig. | `def init_agent_tasks_table`, `webui/db.py` |
+| Wartezeit | nach Versuch 1 und 2 je `RETRY_BACKOFF_SECONDS` (60 s, 300 s) plus Jitter bis 20 %. Der Wert 900 s gilt nach Versuch 3 und greift erst, wenn `MAX_ATTEMPTS` auf 4 oder mehr steht. | `def retry_delay_seconds`, `RETRY_BACKOFF_SECONDS` |
+| Abholung | `fetch_pending` und `claim_task` nehmen nur Tasks mit `next_attempt_at` leer oder ≤ jetzt. | `def fetch_pending`, `def claim_task` |
+| Fehlversuch | `finish_task(ok=False)` setzt bei `attempts < MAX_ATTEMPTS` Status `pending` und den nächsten Zeitpunkt. | `def finish_task` |
+| Persistenz | Der Zeitpunkt liegt in der DB. Ein Neustart verschiebt nichts nach vorn. | — |
+| Ende | Nach dem dritten Versuch `failed`. Ein `failed`-Task wird nicht mehr abgeholt (keine Endlosschleife). | `MAX_ATTEMPTS` |
+| Uhr | `_utc_now()` ist injizierbar; Tests setzen die Zeit gezielt. | `def _utc_now` |
+
+**Grenze (vorbestehend, nicht Teil dieses Pakets):** Ein Task im Status `running` nach Absturz des
+Runners bleibt hängen. Eine Wiederaufnahme ist nicht umgesetzt.
+
+### 3.5 Passwort-Reset-Payload ohne Adresse (30.10.2026)
+
+**Was.** Die Reset-Anfrage in `webui/pages/login.py` sucht das Konto per E-Mail. Bei Treffer queued
+sie `send_password_reset` mit `role`, `id` und `req`; ohne Treffer wird kein Task angelegt. Die Antwort
+an den Nutzer bleibt in beiden Fällen gleich (generisch).
+
+- Der Runner lädt die Adresse über `id` aus `candidates` bzw. `employers` (`def _email_by_id`).
+  Die Zieltabelle kommt weiterhin aus `role`. Das Rate-Limit bleibt E-Mail-basiert.
+- Übergang: Alt-Tasks aus der Zeit vor der Umstellung tragen `email` im Payload und werden über
+  den Fallback weiter bedient, bis die Queue leer ist. Der Fallback loggt nichts.
+- Die Rückgabe von `send_password_reset` enthält keine Adresse mehr (`mail` ist redigiert).
+
+**Grenze (vorbestehend):** Die Mail-Funktionen `send_confirmation`, `send_onboarding_mail`,
+`send_rejection` und `create_invitation` geben weiterhin ein `to`-Feld in ihrer Rückgabe zurück. Das
+landet nicht in der DB, weil `finish_task` die Schlüssel `to`/`mail_to`/`email`/`cc`/`bcc` entfernt.
+
 ## 4. Hintergrund-Runner (`scripts/agent-runner.py`) – HYBRID v2
 
 **Social-Agent (25.10.2026):** Der Social-Media-Agent ist **nicht** Teil der
@@ -154,7 +240,7 @@ Spec: `knowledge/system/social-automation.md`.
 | Meeting-Raum (Entscheidung 27.09.: VDO.Ninja statt Jitsi vom 12.09.) | Raum-URL = Projektstandard wie `scripts/agent-runner.py` (Codemarke `def create_invitation`, gemessen 10.10.2026) (`def create_invitation`) / ** (die URL selbst)**: `https://vdo.ninja/?director=prescreening{code}` (kostenlos, Peer-to-Peer, kein Account). **Kein** Meeting-Tool-Aufruf — die URL wird als String gebildet; `jitsi-meeting` ist am 27.09.2026 entfernt. **Kein Google Meet** (`create_meeting_link` wird NICHT verwendet) |
 | Nachlauf | result_path aus Agent-Ausgabe parsen (oder Standardpfad `ergebnisse/{task_type}-{id}-{datum}.md` erzwingen), `finished_at` setzen, bei Fehler `attempts+1`, ab 3 → `failed` |
 | Stabilität | MCP-direct: Timeout 60 s/Tool. LLM-Tasks: max. 10 min (Timeout → failed + Retry). Fehlgeschlagene Connectors → `failed` + Eintrag in `logs/agent-errors.log` (Konvention hr-api-connectors.md §6) |
-| **Protokollierung (Stand 13.10.2026)** | `mcp_call` loggt im DRY_RUN eine `[DRY-RUN]`-Zeile. **Live** schreibt es seit 13.10.2026 eine redigierte Nachweiszeile pro Aufruf nach `logs/mcp-calls.log` (Whitelist `to`/`subject`/`language`/`file_path`/`candidate_name`/`position`/`match_score`/`cultural_fit_score`/`date`/`time`/`topic`/`duration_minutes`/`meet_url`, Strings auf 120 Zeichen; **nie** `body`/`cc`/`bcc`/`description` — DSGVO). Logfehler brechen den MCP-Aufruf nie. |
+| **Protokollierung (Stand 30.10.2026)** | `mcp_call` loggt im DRY_RUN eine `[DRY-RUN]`-Zeile. **Live** schreibt es seit 13.10.2026 eine redigierte Nachweiszeile pro Aufruf nach `logs/mcp-calls.log` (Whitelist `subject`/`language`/`file_path`/`candidate_name`/`position`/`match_score`/`cultural_fit_score`/`date`/`time`/`topic`/`duration_minutes`/`meet_url`, Strings auf 120 Zeichen; **nie** `body`/`to`/`cc`/`bcc`/`description` — DSGVO; `FEHLER`-Antworten werden als `ok=False` geloggt). Logfehler brechen den MCP-Aufruf nie. |
 | **Log-Beweissicherung (A, 23.09.2026)** | `/tmp/nicegui.log` = E2E-Beweismittel (Guard-Zeilen „Hintergrund-Runner gestartet" / „stale pidfile" / „vorhandener Runner genutzt", Traceback-Zähler). **Vor JEDEM Server-Neustart sichern:** `cp /tmp/nicegui.log /tmp/nicegui.log.bak-$(date +%Y%m%d-%H%M)` — kein rm, ältere .bak bleiben liegen. **Start NUR mit Append:** `setsid nohup .venv-streamlit/bin/python3 -m webui.main >> /tmp/nicegui.log 2>&1 < /dev/null & disown` — **niemals `>`** (Truncation löscht Guard-Historie). Kill und Spawn IMMER in getrennten Shell-Calls (pkill-Selbstmord-Falle, Pattern `webui/main.py`). Schritt-0 23.09.2026: Truncation-Spawn `>` existiert **nicht** im Repo (`start-webui.sh` (gemessen 10.10.2026) ohne Redirect; Runner-Spawn `webui/logic.py` (gemessen 10.10.2026) → DEVNULL) → A2 „Code-Rotation" entfällt als widerlegt; Log-Birth 2026-09-22 22:21 belegt frühere externe Überschreibung → Regel deshalb bindend. Datei-Backup vor dieser Änderung: `agent-automation.md.bak-20260923-1150`. |
 | **send_rejection-Guard (C1/O2, 23.09.2026)** | Spec (jetzt implementierter Code): `send_rejection()` prüft VOR dem Mailversand ZWEIERLEI, Struktur analog `visa_confirmation` (`scripts/agent-runner.py` (Codemarke `def visa_confirmation`, gemessen 10.10.2026)) / `create_invitation` : (1) `payload["trigger"] ∈ {hr_klick_portal, hr_klick_hr_seite, admin_klick}`, sonst `RuntimeError("Variante A verletzt: send_rejection nur nach HR-Klick")`; (2) die zugehörige Bewerbung `payload["application_id"]` hat `applications.status = "abgelehnt"` (alle 5 Trigger-Quellen updaten den Status VOR dem Queue: `app.py` (gemessen 10.10.2026), `webui/pages/employer.py` (gemessen 10.10.2026), `webui/pages/admin.py` (gemessen 10.10.2026)), sonst RuntimeError „nur bei Status 'abgelehnt'". Abbruch = Exception → `process_task` → `finish_task(ok=False)` + Log-Zeile `✓ Task #N FEHLER: …` (`scripts/agent-runner.py` (Codemarke `def log`, gemessen 10.10.2026), Log-Datei `log()`) → **kein Mailversand** (`mcp_call` wird nie erreicht). Quelle: Variante A `AGENTS.md` (user-approved 12.09.2026), Zeilen :87/:123/:125, Runner-Docstring :20-21/:348; C1-Offener-Punkt SKILL:231 + phase2:364 (Task #105 lief ohne Guard durch); Tests `tests/test_send_rejection_guard.py` (NEGATIV/POSITIV, `mcp_call` immer gemockt — nie echter Mailversand). |
 | **Match-Dialoge (Ist-Stand, gemessen 15.10.2026; ersetzt die frühere „Identity-Regel NB1+NB4")** | Ist-Stand: Die 3 Match-Dialoge (`webui/pages/employer.py` _page_match: Einladen/Ablehnen/Einstellen) speichern im State die **application_id der gewählten Bewerbung** (`_invite_ctx`/`_reject_ctx`/`_hire_ctx`, Codemark `_page_match`, gemessen 15.10.2026). Jede Aktion wirkt ausschließlich auf diese eine Bewerbung (UPDATE + History per `WHERE id=?`). **Reject:** setzt die gewählte Bewerbung auf `abgelehnt` (Dialog-Label: „Andere Bewerbungen dieses Kandidaten bleiben unveraendert") und queued GENAU EIN `send_rejection`-Task `{application_id, candidate_id, job_id, trigger: hr_klick_portal}` direkt aus dem Dialog-State. **Invite/Hire:** ebenfalls nur die gewählte Bewerbung; Payloads `create_invitation`/`onboarding_release` enthalten zusätzlich `candidate_id` (onboarding_release wertet es für die Visum-Auswertung aus, `scripts/agent-runner.py` (gemessen 10.10.2026)). **Ungültiger Status** (Guard `_legal`, z. B. Bewerbung bereits terminal) → `ui.notify`-Fehler, kein DB-Write, kein Task. **Terminal-Status** (`eingestellt`/`abgelehnt`/`zurückgezogen`) werden von den Dialogen nicht angefasst. Die frühere Identity-Regel (Candidate-ID im State, application_id am Queue-Punkt per SELECT, „flippt ALLE aktiven Apps", `ids[0]`/`LIMIT 1`) ist **nicht** mehr Code-Stand (gemessen 15.10.2026); datierte Historie in `ergebnisse/entscheidungen.md`. |
@@ -178,6 +264,7 @@ Jeder Prompt referenziert die Skills + Wissensdateien (wie scripts/agent-test.sh
 | `verify_documents` (**v6**, Quelle seit v6.1) | **LLM-Task:** Prompt = SKILL.md-Regeln (`skills/verify-documents/SKILL.md`) + Dokumenttext (pdf-reader) + Land. **Dokumenten-Quelle v6.1:** Tabelle `candidate_documents` (typed: Typ je Datei, vom Kandidaten im Tab 🗂️ Dokumente gewählt); Fallback: Glob `testdaten/kandidat-N-*`. Ausgabe: Dokument-Tabelle (Typ/Pflichtfelder/Indizien/Status) + Gesamtstatus + **Visum-Auswertung WAS/WIE/WO** (ansvar-law): WAS = Aufenthaltstitel-Art · WIE = Schritte/Unterlagen/Fristen · WO = zuständige Behörde (DE: Ausländerbehörde/Auslandsvertretung · FR: Préfecture · CH: Kantonales Migrationsamt). Ablage: ergebnisse/verify-documents-kandidat-N-datum.md. Kein Visum-Bedarf → „nicht relevant" |
 | `visa_confirmation` (**v6**) | **MCP-direct (kein LLM):** liest Visum-WAS/WIE/WO aus verify_documents-result_json und sendet via email-sender.send_email an den Kandidaten (KI-Hinweis EU AI Act Art. 50 inklusive). **NUR nach HR-Klick** (Variante-A-Guard wie create_invitation/send_rejection) |
 | `send_confirmation` / `notify_hr` | Einfache send_email-Aufrufe mit Templates (Eingang / Ergebnis bereit) |
+| `send_welcome` (**30.10.2026**) | **MCP-direct (kein LLM):** liest E-Mail + Name bzw. Firma/Kontaktperson über `role`+`id` aus der DB (kein PII im Payload), baut Betreff/Body via `build_welcome_mail` (deterministisch, `tr(...)`, KI-Hinweis EU AI Act Art. 50) und sendet via `email-sender.send_email`; Ergebnis `{"status": "sent"}` oder `{"status": "skipped", "grund": "kein_konto"}`. Spec §3.2 |
 | `export_report` | **Deterministisch (kein LLM):** Exportiert Match-Ergebnisse als MD-Datei nach ergebnisse/. Trigger: Nach `store_feedback` (app.py) oder manuell. |
 | `handle_errors` | **Deterministisch (kein LLM):** Protokolliert Fehler in logs/agent-errors.log; die Laufzeitzeilen landen in `ergebnisse/error-statistik-{JJJJ-MM-TT}.md` (eigenes 5-Spalten-Schema). Die normative Datei `knowledge/error-statistics.md` bleibt aggregiert und wird nur redaktionell gepflegt (Spec `knowledge/system/md-schreib-konvention.md` §5 Ziffer 2; Codemarke `def handle_errors`, `scripts/agent-runner.py`, gemessen 21.10.2026). Trigger: Manuell (HR meldet Fehler). |
 | `contract_preflight` (**Phase D P8**, 24.09.2026) | **Deterministisch (kein LLM):** liest `knowledge/legal/contract-sources.md` (Link-Katalog, 0 Hartkodierung), prüft Gehaltsrahmen vs. Mindestlohn (Wert+URL aus MD), Formfall-Hinweise (§14 Abs.4 / §126a / §623 mit URLs aus Katalog), NachwG-15-Punkte-Checkliste. Report `ergebnisse/contract-preflight-bewerbung-{app_id}.md`. **Trigger: HR-Klick** 📄 „Vertrags-Check starten" (🏢 Onboarding) – Variante-A-Guard. **Kein** Vertrag erstellen, **kein** Signieren (Spec skills/contract-management/SKILL.md). |
@@ -249,7 +336,7 @@ Gatekeeper wertet die jüngste Datei **der passenden Stelle** aus — by design,
   Historische Herkunft dieses Designs: `knowledge/system/p8-cloud-datenquellen.md` (⚰️ tot/überholt,
   Cloud entfällt).
 
-## 8. E-Mail-Matrix (alle 6, erweitert Spec v6 12.09.2026)
+## 8. E-Mail-Matrix (alle 7, erweitert Spec v6 12.09.2026; Nr. 7 seit 30.10.2026)
 
 | # | Anlass | An | Connector/Tool | Inhalt (Kurz) |
 |---|---|---|---|---|
@@ -259,6 +346,7 @@ Gatekeeper wertet die jüngste Datei **der passenden Stelle** aus — by design,
 | 4 | HR klickt `→ abgelehnt` | Kandidat | email-sender · send_email | Neutrale Absage, AGG-sicher, ohne Begründung – vom Agenten gesendet, NUR nach HR-Klick |
 | 5 | HR klickt „📩 Visum-Antrag bestätigen" (**v6**) | Kandidat | email-sender · send_email | Visum-Schritte (agent-generiert via ansvar-law): Behörden-Typ, typische Dokumente, Frist-Hinweise – NUR nach HR-Klick |
 | 6 | `status → eingestellt` (**v6**, Mail #6 seit 23.09.2026) | Kandidat | email-sender · send_email (`send_onboarding_mail`, `scripts/agent-runner.py` (Codemarke `def send_onboarding_mail`, gemessen 10.10.2026)) | Onboarding-Begrüßung: Stelle, kompakte Checkliste (Vertrag/IT/Woche 1, aus `knowledge/onboarding-default.md`), optionaler Visum-Abschnitt, Portal-Verweis, `TEMPLATE_KI_HINWEIS` – NUR nach HR/Admin-Klick (Variante-A-Guard) + Status `eingestellt`; davor: Freigabe-Report `ergebnisse/onboarding-freigabe-bewerbung-{app_id}.md` (inkl. Visum-Abschnitt) |
+| 7 | Registrierung abgeschlossen (**30.10.2026**) | Kandidat **und** Arbeitgeber | email-sender · send_email (`send_welcome`, `scripts/agent-runner.py` (Codemarke `def send_welcome`)) | **Transaktional, kein HR-Klick:** Begrüßung + nächste Schritte (Kandidat: Profil/CV/Stellen; Arbeitgeber: Stelle/Profile/Einladung), Anmelde-Link, Datenschutz-Link, KI-Hinweis. Betreff/Body via `build_welcome_mail`; Flag `KMHR_WELCOME_MAIL` (Default aus), Spec §3.2 |
 
 ## 9. DSGVO / Compliance
 

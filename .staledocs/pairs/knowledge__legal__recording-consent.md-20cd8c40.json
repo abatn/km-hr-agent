@@ -33,14 +33,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-26T19:29:13+00:00",
+    "at": "2026-10-30T21:07:52+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "fd015dee92234fc42568bdd67a9a3eaff46eefcf",
-    "note": "Geprueft: video_url und vdo.ninja in webui/pages/candidate.py unveraendert vorhanden."
+    "note": "Gate-8-Aussage und vdo_ninja_gast_url (record=off) gegen create_invitation in agent-runner.py geprueft; die Runner-Aenderungen betreffen diese Codemarken nicht."
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1

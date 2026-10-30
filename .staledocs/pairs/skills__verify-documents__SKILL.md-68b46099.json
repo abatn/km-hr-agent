@@ -21,14 +21,14 @@
       "verify_documents",
       "verify_integrity"
     ],
-    "at": "2026-10-26T22:59:23+00:00",
+    "at": "2026-10-30T21:08:12+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
-      "webui/pages/employer.py": "03d058e6fe6227b8835266d304dffb4633d3a36f"
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
+      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "d540129a5c16be5461b860668bc11511fc8e43f4",
-    "note": "Gepr\u00fcft 26.10.2026: Dokumentenpr\u00fcfung in employer.py bleibt unver\u00e4ndert; \u00fcbersetzt wurde nur das Anzeige-Label \u00d6ffnen im Slot."
+    "note": "Berichtspfad verify_documents-kandidat-{id} und Forensik-Schritt gegen agent-runner.py geprueft; Retry-Backoff aendert den Ablauf nicht."
   },
   "doc": "skills/verify-documents/SKILL.md",
   "schema": 1

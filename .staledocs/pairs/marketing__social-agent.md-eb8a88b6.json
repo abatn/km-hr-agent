@@ -33,17 +33,17 @@
       "scripts/social_agent.py",
       "skills/**"
     ],
-    "at": "2026-10-25T22:56:27+00:00",
+    "at": "2026-10-30T21:08:39+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
       "scripts/social_oauth.py": "0b692a653cbb43cd391bbb39c023496eab6639a0",
       "tests/test_social_agent.py": "b19f7ae02090f5895298a73f9bb8b3af3b302546",
       "tests/test_social_oauth.py": "42b62141b071d7c58d41741aab20a66d8a2503e1"
     },
-    "commit": "e94e277b69d74ed320c8c3f63581f92b581c19f9",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "5b1b477f6a6a65ec4e1089219ff76768167cc3c9",
-    "note": "social-agent.md: logs/ im Pair-Scope (agent-runner.py), LinkedIn/OAuth aktuell"
+    "note": "marketing/social-agent.md: Inputs, Guardrails und Outputs gegen scripts/social_agent.py (Outbox, Statuswerte) geprueft; dieser Pfad ist nicht verandert."
   },
   "doc": "marketing/social-agent.md",
   "schema": 1

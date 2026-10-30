@@ -166,7 +166,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-27T18:04:25+00:00",
+    "at": "2026-10-30T21:08:29+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -205,7 +205,7 @@
       "knowledge/lifecycle/referenz-sphinxats.md": "0b37491b8760a9ff40d57095ba28183f42df1178",
       "knowledge/lifecycle/relocation.md": "9d135959616df985d7957ed641649b75e802eccd",
       "knowledge/lifecycle/status-automation.md": "23fc44ec945d578170e8197544c0e7d025d7c8b0",
-      "knowledge/notification-log.md": "2e83a385e5c8ec0cc69e9059d62dbe4217305906",
+      "knowledge/notification-log.md": "8ced44d596143eabfcb7c1a05c39b2cc0e74de34",
       "knowledge/onboarding-default.md": "3ce6e37a5ecced6eb7d9314979a1dab80e304658",
       "knowledge/portal/applicants-first.md": "100533672b923ea49f41fe7ae2e6fc3fc36334d4",
       "knowledge/portal/candidate-portal-fields.md": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
@@ -216,18 +216,18 @@
       "knowledge/portal/matching-filter.md": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
       "knowledge/profiles/README.md": "5578fd70feefdd6b50e07944ade5a65cd7f4745e",
       "knowledge/system/access-control.md": "bbd910508123611175eb16c0826f705c8f866672",
-      "knowledge/system/agent-automation.md": "164e1d47bebd2c0ea0a869d14f25e0a264a684b3",
+      "knowledge/system/agent-automation.md": "3e9a7abe0b573256f86b1dbe7dc588ed380243ab",
       "knowledge/system/asgi-guard.md": "3966b6fb918be26f75767f818444e97b5a6a85e2",
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
       "knowledge/system/cloudflare-deployment.md": "6c4cef6bd843fe3f0eab4efc0eab1a97a62c0406",
-      "knowledge/system/configuration-secrets.md": "dc4482e74d826a7b2b7ba9e22d5e8f30982f0405",
+      "knowledge/system/configuration-secrets.md": "f6d26983be76d34d3a3cd80445307d97761eaadb",
       "knowledge/system/dependency-pinning.md": "2c5e276d7b22734b3740e73a4a1d998c99481697",
       "knowledge/system/deploy-pipeline.md": "b897bf473f5ca58083d5b5678cd8d909d6870c57",
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
       "knowledge/system/e2e-ci-seed.md": "061a9260ab8132e4ab336093b712e9a049a9bb85",
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
-      "knowledge/system/i18n-runner-chain.md": "b5ece9d5b536b07e579ecc1d556c17dfb63aff01",
-      "knowledge/system/i18n.md": "33a682773662ecfff911319c7b3e537a27d0f1f3",
+      "knowledge/system/i18n-runner-chain.md": "3b67bad8a19aa567823715b675bc3d91e516b49a",
+      "knowledge/system/i18n.md": "2c06bbed6073d78c3a2163ab8b5afb70d3c0ba4e",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -247,9 +247,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
-    "doc_blob": "af31968de3e75c7250724db3e8a103df0cba4c46",
-    "note": "Zeilen 3/77 gelesen: deskriptiver Index mit Wildcard-Claim knowledge/**. Geaendert wurde nur der Inhalt von knowledge/ui-design-system.md (neuer Abschnitt 2.6 Mobil-Ausnahme); Datei, Pfad und Indexzeile bleiben zutreffend."
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "doc_blob": "f4cd7ae393177997845f9b2559bcc3f72954dc06",
+    "note": "knowledge.md: i18n-msgid-Zahl 1329 gegen grep auf de/messages.po (30.10.2026) geprueft. Tabellenzahl 18 ist ein datierter Messstand (26.10.2026), vorbestehende Abweichung zum Schema-Gate (20) offen gemeldet; keine neue Tabelle durch diese Aenderung."
   },
   "doc": "knowledge.md",
   "schema": 1

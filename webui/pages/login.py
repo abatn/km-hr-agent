@@ -281,10 +281,16 @@ def create() -> None:
                                         ),
                                     )
                                     conn.commit()
-                                    _record_registration_consents(
-                                        "candidate", cur.lastrowid, get_language())
-                                    r_msg.text = _("Registriert! Jetzt einloggen.")
-                                    r_msg.classes(replace="text-green-400 text-sm")
+                                    outcome = db.complete_registration(
+                                        "candidate", cur.lastrowid, get_language(),
+                                        lambda: _record_registration_consents(
+                                            "candidate", cur.lastrowid, get_language()))
+                                    if outcome == db.REGISTRATION_OK:
+                                        r_msg.text = _("Registriert! Jetzt einloggen.")
+                                        r_msg.classes(replace="text-green-400 text-sm")
+                                    else:
+                                        r_msg.text = _("Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.")
+                                        r_msg.classes(replace="text-red-400 text-sm")
                                 except sqlite3.IntegrityError:
                                     r_msg.text = _("E-Mail bereits registriert.")
                                     r_msg.classes(replace="text-red-400 text-sm")
@@ -372,10 +378,16 @@ def create() -> None:
                                         ),
                                     )
                                     conn.commit()
-                                    _record_registration_consents(
-                                        "employer", cur.lastrowid, get_language())
-                                    er_msg.text = _("Registriert! Jetzt einloggen.")
-                                    er_msg.classes(replace="text-green-400 text-sm")
+                                    outcome = db.complete_registration(
+                                        "employer", cur.lastrowid, get_language(),
+                                        lambda: _record_registration_consents(
+                                            "employer", cur.lastrowid, get_language()))
+                                    if outcome == db.REGISTRATION_OK:
+                                        er_msg.text = _("Registriert! Jetzt einloggen.")
+                                        er_msg.classes(replace="text-green-400 text-sm")
+                                    else:
+                                        er_msg.text = _("Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.")
+                                        er_msg.classes(replace="text-red-400 text-sm")
                                 except sqlite3.IntegrityError:
                                     er_msg.text = _("E-Mail bereits registriert.")
                                     er_msg.classes(replace="text-red-400 text-sm")
@@ -469,11 +481,19 @@ def create() -> None:
                 return
             # Generische Antwort IMMER gleich (kein Enumeration-Loch): ob ein Konto
             # existiert und ob das Rate-Limit greift, entscheidet der Agent-Runner.
-            db.queue_agent_task("send_password_reset", {
-                "email": email_val,
-                "role": _reset_ctx["role"],
-                "req": uuid4().hex,
-            })
+            # DSGVO (30.10.2026): die Adresse steht NICHT im Payload. Nur bei Treffer
+            # wird role + id gequeued; der Runner lädt die Adresse selbst.
+            try:
+                konto_id = db.find_account_id(_reset_ctx["role"], email_val)
+            except Exception as ex:
+                print(f"[Passwort-Reset] Kontosuche fehlgeschlagen: {ex!r}")
+                konto_id = None
+            if konto_id is not None:
+                db.queue_agent_task("send_password_reset", {
+                    "role": _reset_ctx["role"],
+                    "id": konto_id,
+                    "req": uuid4().hex,
+                })
             forgot_msg.text = _("Wenn ein Konto mit dieser E-Mail existiert, ist der Link unterwegs.")
             forgot_msg.classes(replace="text-green-400 text-sm")
 

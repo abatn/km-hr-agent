@@ -3920,3 +3920,81 @@ msgstr "{0} ältere Version(en) ohne aktuellen Video-Link"
 
 msgid "Bewerbung nicht gefunden"
 msgstr "Bewerbung nicht gefunden"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Konto ist bereit"
+msgstr "Willkommen bei KM-HR-Agent – Ihr Konto ist bereit"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Arbeitgeberkonto für {firma}"
+msgstr "Willkommen bei KM-HR-Agent – Ihr Arbeitgeberkonto für {firma}"
+
+msgid "Ihr Konto bei KM-HR-Agent ist aktiv."
+msgstr "Ihr Konto bei KM-HR-Agent ist aktiv."
+
+msgid "Ihr Arbeitgeberkonto für {firma} ist aktiv."
+msgstr "Ihr Arbeitgeberkonto für {firma} ist aktiv."
+
+msgid "Ihre nächsten Schritte:"
+msgstr "Ihre nächsten Schritte:"
+
+msgid "1. Profil vervollständigen"
+msgstr "1. Profil vervollständigen"
+
+msgid "2. Lebenslauf hochladen"
+msgstr "2. Lebenslauf hochladen"
+
+msgid "3. Passende Stellen finden"
+msgstr "3. Passende Stellen finden"
+
+msgid "1. Stelle veröffentlichen"
+msgstr "1. Stelle veröffentlichen"
+
+msgid "2. Passende Profile sichten"
+msgstr "2. Passende Profile sichten"
+
+msgid "3. Zum Interview einladen"
+msgstr "3. Zum Interview einladen"
+
+msgid "Zur Anmeldung: {link}"
+msgstr "Zur Anmeldung: {link}"
+
+msgid "Zum Arbeitgeberportal: {link}"
+msgstr "Zum Arbeitgeberportal: {link}"
+
+msgid "Der Mensch entscheidet."
+msgstr "Der Mensch entscheidet."
+
+msgid "Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht."
+msgstr "Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht."
+
+msgid "Datenschutz: {link}"
+msgstr "Datenschutz: {link}"
+
+msgid "Diese Nachricht wurde mit Unterstützung eines KI-Systems erstellt (EU AI Act Art. 50)."
+msgstr "Diese Nachricht wurde mit Unterstützung eines KI-Systems erstellt (EU AI Act Art. 50)."
+
+msgid "welcome_candidate.titel"
+msgstr "Willkommen bei KM-HR-Agent"
+
+msgid "welcome_candidate.text"
+msgstr "Ihr Konto ist aktiv. Vervollständigen Sie Ihr Profil und laden Sie Ihren Lebenslauf hoch."
+
+msgid "welcome_employer.titel"
+msgstr "Willkommen bei KM-HR-Agent"
+
+msgid "welcome_employer.text"
+msgstr "Ihr Arbeitgeberkonto ist aktiv. Veröffentlichen Sie Ihre erste Stelle."
+
+msgid "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+msgstr "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+
+msgid "Zustellfehler (Bounce)"
+msgstr "Zustellfehler (Bounce)"
+
+msgid "Erfasste harte Zustellfehler: {n}"
+msgstr "Erfasste harte Zustellfehler: {n}"
+
+msgid "{rolle} · Konto #{id} · {zeit}"
+msgstr "{rolle} · Konto #{id} · {zeit}"
+
+msgid "Keine Zustellfehler erfasst."
+msgstr "Keine Zustellfehler erfasst."

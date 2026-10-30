@@ -33,14 +33,14 @@
       "webui/db.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-26T19:29:15+00:00",
+    "at": "2026-10-30T21:07:54+00:00",
     "code_blobs": {
-      "webui/db.py": "52ca558a49f9475a5e9acdc71912a99774801bb9",
+      "webui/db.py": "1a131405322618946a2dedcb73bbfc52355b8d76",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "d75dc7abe1c70a78cc0997c5f9beebb11182ec46",
-    "note": "Geprueft: _TAB_MAP in webui/pages/candidate.py weiter 7 Tabs; _PROFIL_SPALTEN unveraendert; Billing-Sektion nur im Profil-Tab ergaenzt."
+    "note": "Passwort-Abschnitt beschreibt den Selbstservice (change_password), nicht den Reset-Flow in login.py; Spaltenaussagen gegen candidates-Schema in db.py geprueft."
   },
   "doc": "knowledge/portal/candidate-portal-fields.md",
   "schema": 1

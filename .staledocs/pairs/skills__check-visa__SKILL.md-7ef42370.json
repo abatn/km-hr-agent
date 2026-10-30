@@ -14,13 +14,13 @@
       "search(\"BeschV\")",
       "stellenprofil-{name}.txt"
     ],
-    "at": "2026-10-23T10:43:49+00:00",
+    "at": "2026-10-30T21:08:04+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83"
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408"
     },
-    "commit": "6861e57be08853beab8b08e4605acc358f2e4778",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "f6fee1c23868beea0897af4d4fdbce082a79cbcb",
-    "note": "Geprueft 23.10.2026, Evidence gelesen (Claim-Code-Marker dieses Paares): Aenderungen additiv in scripts/agent-runner.py (_llm_complete: Log-Zeilen HTTP-Status/leere Antwort/Exception; create_invitation: Termin-Datum+Uhrzeit-Pruefung -> RuntimeError statt Ersatztermin-Fallback), webui/pages/employer.py (elif-Hinweis Einladung wird vorbereitet), webui/db.py (get_invitation_task_status); i18n-Kataloge msgid in 4 Sprachen; Spec knowledge/system/agent-automation.md nachgezogen; Tests test_llm_fehler_logging/test_invitation_termin_guard/test_einladung_hinweis je rc=0. Paar skills/check-visa/SKILL.md"
+    "note": "Task check_visa (Codemarke Visum-Check-Pruefer) und ergebnisse/-Pfad gegen agent-runner.py geprueft; Backoff veraendert nur das Retry-Timing."
   },
   "doc": "skills/check-visa/SKILL.md",
   "schema": 1

@@ -36,7 +36,7 @@ import subprocess
 import sys
 import time
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -214,6 +214,7 @@ PRESCREEN_CONFIG_SERVER = PROJECT_ROOT / "connectors" / "prescreen-config-server
 
 LOOP_SECONDS = 60
 MAX_TASKS_PER_LOOP = 5
+BOUNCE_POLL_SECONDS = 600  # Takt des IMAP-DSN-Pollers (nur wenn KMHR_BOUNCE_POLL_ENABLED=1)
 MCP_TIMEOUT = 60          # Sekunden pro MCP-Tool-Aufruf
 LLM_TIMEOUT = 600         # 10 min pro LLM-Task (Spec §4)
 MAX_ATTEMPTS = 3
@@ -329,10 +330,11 @@ def log(msg: str) -> None:
 
 # ─── MCP-Connector-Aufrufe (stdio JSON-RPC, Muster: Handshake-Test) ─────
 
-# DSGVO-Whitelist (13.10.2026): NUR diese Keys duerfen im Live-Nachweislog
-# stehen. body/description/cc/bcc etc. werden NIEMALS geschrieben.
+# DSGVO-Whitelist (13.10.2026, 30.10.2026 erweitert): NUR diese Keys duerfen
+# im Live-Nachweislog stehen. body/description/cc/bcc/to etc. werden NIEMALS
+# geschrieben (to entfernt: keine Empfaengeradresse in logs/mcp-calls.log).
 _MCP_LOG_ALLOWED_KEYS = frozenset({
-    "to", "subject", "language", "file_path", "candidate_name", "position",
+    "subject", "language", "file_path", "candidate_name", "position",
     "match_score", "cultural_fit_score", "date", "time", "topic",
     "duration_minutes", "meet_url",
 })
@@ -358,7 +360,9 @@ def _mcp_log_live(server_name: str, tool: str, args: dict, ok: bool,
                  f"{server_name}::{tool} | {'ok' if ok else 'FEHLER'} | "
                  f"{json.dumps(redigiert, ensure_ascii=False)}")
         if fehler:
-            zeile += f" | {fehler}"
+            # DSGVO: Maskierung VOR dem Kuerzen – ein gekapptes Fragment
+            # ("anna@exa") wuerde die E-Mail-Regex sonst nicht mehr erkennen.
+            zeile += f" | {_redact_result(str(fehler))[:120]}"
         log_pfad = PROJECT_ROOT / "logs" / "mcp-calls.log"
         log_pfad.parent.mkdir(exist_ok=True)
         with open(log_pfad, "a", encoding="utf-8") as f:
@@ -370,7 +374,7 @@ def _mcp_log_live(server_name: str, tool: str, args: dict, ok: bool,
 def mcp_call(server_py: Path, tool: str, args: dict) -> str:
     """Ruft ein Tool eines lokalen FastMCP-Servers auf (initialize + call + exit)."""
     if DRY_RUN:
-        log(f"[DRY-RUN] MCP {server_py.name}::{tool} args={json.dumps(args, ensure_ascii=False)[:120]}")
+        log(f"[DRY-RUN] MCP {server_py.name}::{tool} args={json.dumps(_redact_result(args), ensure_ascii=False)[:120]}")
         return "DRY-RUN"
     try:
         if not server_py.exists():
@@ -425,9 +429,10 @@ def mcp_call(server_py: Path, tool: str, args: dict) -> str:
         result = "\n".join(c.get("text", "") for c in content)
     except Exception as _e:
         _mcp_log_live(server_py.name, tool, args, ok=False,
-                      fehler=f"{type(_e).__name__}: {_e}"[:120])
+                      fehler=f"{type(_e).__name__}: {_e}")
         raise
-    _mcp_log_live(server_py.name, tool, args, ok=True)
+    _mcp_log_live(server_py.name, tool, args,
+                  ok=not str(result).startswith("FEHLER"))
     return result
 
 
@@ -473,7 +478,115 @@ def send_confirmation(payload: dict) -> dict:
                    {"to": email,
                     "subject": tr("Ihre Bewerbung ist eingegangen", lang),
                     "body": body})
-    return {"mail": out[:200], "to": email}
+    safe = _redact_result(str(out))
+    if safe.startswith("FEHLER"):
+        raise RuntimeError(safe[:200])
+    return {"mail": safe[:200]}
+
+
+def build_welcome_mail(role: str, lang: str, name: str = "", firma: str = "") -> tuple[str, str]:
+    """Willkommensmail nach Konto-Anlage (Betreff, Body). Spec: knowledge/legal/agb.md.
+
+    Rein deterministisch: kein f-String im msgid, nur `.format` via `tr(...)`.
+    Arbeitgebertext ohne Gebühren-/Erfolgs-/Garantieaussagen (AGB § 5).
+    """
+    # Gleiche Mechanik wie send_password_reset: Basis-URL aus der Umgebung,
+    # Default identisch (http://localhost:8080).
+    base = (os.environ.get("KMHR_PUBLIC_BASE_URL") or "http://localhost:8080").rstrip("/")
+    _anrede = (tr("Guten Tag {name},", lang, name=name)
+               if (name or "").strip()
+               else tr("Guten Tag,", lang))
+    if role == "candidate":
+        subject = tr("Willkommen bei KM-HR-Agent – Ihr Konto ist bereit", lang)
+        body = "\n\n".join([
+            _anrede,
+            tr("Ihr Konto bei KM-HR-Agent ist aktiv.", lang),
+            tr("Ihre nächsten Schritte:", lang),
+            tr("1. Profil vervollständigen", lang),
+            tr("2. Lebenslauf hochladen", lang),
+            tr("3. Passende Stellen finden", lang),
+            tr("Zur Anmeldung: {link}", lang, link=base + "/login"),
+            tr("Der Mensch entscheidet.", lang),
+            tr("Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht.", lang),
+            tr("Datenschutz: {link}", lang, link=base + "/datenschutz"),
+            tr("Ihr KM-HR-Agent-Team", lang),
+        ])
+    elif role == "employer":
+        subject = tr("Willkommen bei KM-HR-Agent – Ihr Arbeitgeberkonto für {firma}", lang,
+                     firma=firma)
+        body = "\n\n".join([
+            _anrede,
+            tr("Ihr Arbeitgeberkonto für {firma} ist aktiv.", lang, firma=firma),
+            tr("Ihre nächsten Schritte:", lang),
+            tr("1. Stelle veröffentlichen", lang),
+            tr("2. Passende Profile sichten", lang),
+            tr("3. Zum Interview einladen", lang),
+            tr("Zum Arbeitgeberportal: {link}", lang, link=base + "/employer"),
+            tr("Der Mensch entscheidet.", lang),
+            tr("Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht.", lang),
+            tr("Datenschutz: {link}", lang, link=base + "/datenschutz"),
+            tr("Ihr KM-HR-Agent-Team", lang),
+        ])
+    else:
+        raise RuntimeError(f"build_welcome_mail: unbekannte Rolle '{role}'")
+    body += "\n\n--\n" + tr(
+        "Diese Nachricht wurde mit Unterstützung eines KI-Systems erstellt (EU AI Act Art. 50).",
+        lang)
+    return subject, body
+
+
+def send_welcome(payload: dict) -> dict:
+    """Willkommensmail für ein frisch angelegtes Konto (candidate/employer)."""
+    role = payload.get("role")
+    sid = payload.get("id")
+    if role not in ("candidate", "employer"):
+        raise RuntimeError(f"send_welcome: unbekannte Rolle '{role}'")
+    conn = sqlite3.connect(str(DB_PATH)); c = conn.cursor()
+    try:
+        if role == "candidate":
+            c.execute("SELECT email, name FROM candidates WHERE id = ?", (sid,))
+            row = c.fetchone()
+            email = row[0] if row else None
+            name, firma = (row[1] if row else "") or "", ""
+        else:
+            c.execute("SELECT email, firma, kontaktperson FROM employers WHERE id = ?", (sid,))
+            row = c.fetchone()
+            email = row[0] if row else None
+            firma = (row[1] if row else "") or ""
+            name = (row[2] if row else "") or ""
+    finally:
+        conn.close()
+    if not row or not email:
+        log(f"   Willkommensmail: Konto #{sid} ({role}) nicht gefunden / keine E-Mail – übersprungen")
+        return {"status": "skipped", "grund": "kein_konto"}
+    from webui import db as _db
+    if _db.has_mail_bounce(role, sid):
+        log(f"   Willkommensmail: Konto #{sid} ({role}) hat einen Zustellfehler – übersprungen")
+        return {"status": "skipped", "grund": "zustellfehler"}
+    lang = _lang(payload)
+    subject, body = build_welcome_mail(role, lang, name=name, firma=firma)
+    out = mcp_call(EMAIL_SERVER, "send_email",
+                   {"to": email, "subject": subject, "body": body})
+    safe = _redact_result(str(out))
+    if safe.startswith("DRY-RUN"):
+        return {"status": "dry_run"}
+    if safe.startswith("FEHLER"):
+        raise RuntimeError(safe[:200])
+    return {"status": "sent"}
+
+
+def _email_by_id(table: str, sid) -> str:
+    """Adresse eines Kontos aus der festen Zieltabelle (candidates/employers). "" wenn keine."""
+    try:
+        konto_id = int(sid)
+    except (TypeError, ValueError):
+        return ""
+    conn = sqlite3.connect(str(DB_PATH))
+    try:
+        row = conn.execute(f"SELECT email FROM {table} WHERE id = ?", (konto_id,)).fetchone()
+    finally:
+        conn.close()
+    return (row[0] or "").strip() if row else ""
 
 
 def send_password_reset(payload: dict) -> dict:
@@ -489,12 +602,20 @@ def send_password_reset(payload: dict) -> dict:
     from datetime import timedelta as _td, timezone as _tz, datetime as _dt
     from webui import db as _db  # framework-frei (nur sqlite3)
 
-    email = (payload.get("email") or "").strip()
     role = payload.get("role")
     lang = _lang(payload)
     table = {"candidate": "candidates", "employer": "employers"}.get(role)
-    if not email or not table:
-        log("   Passwort-Reset: unbekannte Rolle/leere E-Mail – keine Mail (generisch)")
+    if not table:
+        log("   Passwort-Reset: unbekannte Rolle – keine Mail (generisch)")
+        return {"status": "no_account"}
+    if payload.get("id") is not None:
+        # DSGVO (30.10.2026): Adresse aus der Zieltabelle laden, nie aus dem Payload.
+        email = _email_by_id(table, payload.get("id"))
+    else:
+        # Übergang: Alt-Tasks aus der Zeit vor der Umstellung tragen die Adresse noch.
+        email = (payload.get("email") or "").strip()
+    if not email:
+        log("   Passwort-Reset: kein Konto in der Zieltabelle – keine Mail (generisch)")
         return {"status": "no_account"}
 
     _db.init_password_resets_table(DB_PATH)
@@ -540,7 +661,7 @@ def send_password_reset(payload: dict) -> dict:
                    {"to": email,
                     "subject": tr("Passwort zuruecksetzen – KM-HR-Agent", lang),
                     "body": body})
-    return {"status": "sent", "to": email, "mail": out[:200]}
+    return {"status": "sent", "mail": _redact_result(str(out))[:200]}
 
 
 def _dokumente_block(cand_id: int) -> str:
@@ -755,7 +876,10 @@ def send_onboarding_mail(payload: dict) -> dict:
     ]) + _ki_hinweis(lang)
     out = mcp_call(EMAIL_SERVER, "send_email",
                    {"to": email, "subject": tr("Willkommen im Team – Ihre Einstellung", lang), "body": body})
-    return {"mail": out[:200], "to": email, "app_id": app_id, "job": titel,
+    safe = _redact_result(str(out))
+    if safe.startswith("FEHLER"):
+        raise RuntimeError(safe[:200])
+    return {"mail": safe[:200], "to": email, "app_id": app_id, "job": titel,
             **({"visum": visum} if visum else {})}
 
 
@@ -792,7 +916,10 @@ def send_rejection(payload: dict) -> dict:
                    {"to": email,
                     "subject": tr("Rückmeldung zu Ihrer Bewerbung", lang),
                     "body": body})
-    return {"mail": out[:200], "to": email}
+    safe = _redact_result(str(out))
+    if safe.startswith("FEHLER"):
+        raise RuntimeError(safe[:200])
+    return {"mail": safe[:200]}
 
 
 def _hr_email_from_db(job_id) -> str | None:
@@ -2147,10 +2274,35 @@ def contract_preflight(payload: dict) -> dict:
 
 # ─── Task-Ausführung + Queue-Verwaltung ─────────────────────────────────
 
+# Backoff (30.10.2026, Spec agent-automation.md §3.2): Wartezeit nach Versuch 1..n
+# in Sekunden, plus Jitter. Mit MAX_ATTEMPTS = 3 greifen nur die ersten beiden
+# Werte; 900 s greift erst, wenn MAX_ATTEMPTS auf 4 oder mehr erhöht wird.
+RETRY_BACKOFF_SECONDS = (60, 300, 900)
+RETRY_JITTER_FRACTION = 0.2
+
+
+def _utc_now() -> datetime:
+    """Injizierbare Uhr (Tests patchen diese Funktion). UTC ohne Zeitzone."""
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def _utc_str(dt: datetime) -> str:
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def retry_delay_seconds(attempts: int) -> int:
+    """Wartezeit nach dem `attempts`-ten fehlgeschlagenen Versuch (inkl. Jitter)."""
+    index = min(max(int(attempts), 1), len(RETRY_BACKOFF_SECONDS)) - 1
+    base = RETRY_BACKOFF_SECONDS[index]
+    return base + random.randint(0, int(base * RETRY_JITTER_FRACTION))
+
+
 def fetch_pending(conn) -> list:
     c = conn.cursor()
     c.execute("""SELECT id, task_type, payload, attempts FROM agent_tasks
-                 WHERE status = 'pending' ORDER BY id LIMIT ?""", (MAX_TASKS_PER_LOOP,))
+                 WHERE status = 'pending'
+                   AND (next_attempt_at IS NULL OR next_attempt_at <= ?)
+                 ORDER BY id LIMIT ?""", (_utc_str(_utc_now()), MAX_TASKS_PER_LOOP))
     return c.fetchall()
 
 
@@ -2163,7 +2315,9 @@ def claim_task(conn, task_id: int) -> bool:
     c = conn.cursor()
     try:
         c.execute("""UPDATE agent_tasks SET status = 'running', started_at = CURRENT_TIMESTAMP,
-                     attempts = attempts + 1 WHERE id = ? AND status = 'pending'""", (task_id,))
+                     attempts = attempts + 1 WHERE id = ? AND status = 'pending'
+                     AND (next_attempt_at IS NULL OR next_attempt_at <= ?)""",
+                  (task_id, _utc_str(_utc_now())))
         conn.commit()
         return c.rowcount == 1
     except sqlite3.Error as e:
@@ -2173,7 +2327,7 @@ def claim_task(conn, task_id: int) -> bool:
         # damit der 60-s-Loop nicht endlos auf denselben Task wartet. Die
         # Eskalation ist **robust gegen fehlende Spalten** (Schemalücken können
         # auch `attempts`/`error_text` betreffen) ⇒ absteigende Versuche.
-        fehlertext = f"claim_task: {e}"[:200]
+        fehlertext = _redact_result(f"claim_task: {e}"[:200])
         last_eskalationsfehler: sqlite3.Error | None = None
         for _stmt, _params in (
             ("""UPDATE agent_tasks SET attempts = attempts + 1, error_text = ?
@@ -2208,7 +2362,8 @@ def claim_task(conn, task_id: int) -> bool:
             try:
                 c.execute("""UPDATE agent_tasks SET status = 'failed', error_text = ?
                              WHERE id = ? AND status = 'pending'""",
-                          (f"claim_task nach {_attempts} Versuchen gescheitert: {e}"[:200],
+                          (_redact_result(
+                              f"claim_task nach {_attempts} Versuchen gescheitert: {e}"[:200]),
                            task_id))
                 conn.commit()
                 log(f"   ⚠️ Task #{task_id} nach {_attempts} Versuchen als 'failed' "
@@ -2218,6 +2373,29 @@ def claim_task(conn, task_id: int) -> bool:
                 conn.rollback()
                 log(f"   ⚠️ Eskalation des Tasks #{task_id} fehlgeschlagen: {e3}")
         return False
+
+
+_RESULT_BLOCKED_KEYS = frozenset({"to", "mail_to", "email", "cc", "bcc"})
+_EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
+
+
+def _redact_result(value):
+    """Entfernt E-Mail-Adressen aus `result_json` (DSGVO, 30.10.2026).
+
+    Rekursiv: gesperrte Keys (to/mail_to/email/cc/bcc) fallen weg, Strings
+    werden per Regex maskiert. So landet auch das MCP-Ergebnis
+    ("OK|Gesendet an <adresse>") nie mit Adresse in der DB.
+    """
+    if isinstance(value, dict):
+        return {k: _redact_result(v) for k, v in value.items()
+                if k not in _RESULT_BLOCKED_KEYS}
+    if isinstance(value, list):
+        return [_redact_result(v) for v in value]
+    if isinstance(value, tuple):
+        return tuple(_redact_result(v) for v in value)
+    if isinstance(value, str):
+        return _EMAIL_RE.sub("<EMAIL>", value)
+    return value
 
 
 def finish_task(conn, task_id: int, ok: bool, result: dict | None = None,
@@ -2233,16 +2411,21 @@ def finish_task(conn, task_id: int, ok: bool, result: dict | None = None,
     Status `"failed"` (kein Retry, kein „done")."""
     c = conn.cursor()
     try:
+        # DSGVO (30.10.2026): error_text darf keine E-Mail-Adresse tragen —
+        # dieselbe Maskierung wie result_json (_redact_result).
+        if error:
+            error = _redact_result(str(error))
         # Ergebnis-JSON absichern: ein nicht serialisierbares Ergebnis darf NICHT
         # den „done"-Pfad nehmen (L1, 21.10.2026).
         result_json = None
         terminal = False
         if result:
             try:
-                result_json = json.dumps(result, ensure_ascii=False)
+                result_json = json.dumps(_redact_result(result), ensure_ascii=False)
             except (TypeError, ValueError) as e:
                 result_json = None
-                error = f"{error or 'Ergebnis nicht serialisierbar'}: {e!r}"[:400]
+                error = _redact_result(
+                    f"{error or 'Ergebnis nicht serialisierbar'}: {e!r}"[:400])
                 ok = False
                 terminal = True
         # Versuchsstand lesen (Spalte kann in alten Schemata fehlen).
@@ -2262,8 +2445,9 @@ def finish_task(conn, task_id: int, ok: bool, result: dict | None = None,
                          error_text = ? WHERE id = ?""", (error, task_id))
         else:
             status = "pending"
-            c.execute("UPDATE agent_tasks SET status = 'pending', error_text = ? WHERE id = ?",
-                      (error, task_id))
+            naechster = _utc_str(_utc_now() + timedelta(seconds=retry_delay_seconds(attempts)))
+            c.execute("""UPDATE agent_tasks SET status = 'pending', error_text = ?,
+                         next_attempt_at = ? WHERE id = ?""", (error, naechster, task_id))
         conn.commit()
         return status
     except sqlite3.Error as e:
@@ -2315,6 +2499,8 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
             result = send_confirmation(payload)
         elif task_type == "send_password_reset":
             result = send_password_reset(payload)
+        elif task_type == "send_welcome":
+            result = send_welcome(payload)
         elif task_type == "send_rejection":
             result = send_rejection(payload)
         elif task_type == "create_invitation":
@@ -2399,7 +2585,6 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
             # Mail #6 (NB6, 23.09.2026): Onboarding-Begrüßungsmail an Kandidat
             _mail_res = send_onboarding_mail(payload)
             result["mail"] = _mail_res.get("mail", "")
-            result["mail_to"] = _mail_res.get("to", "")
             result_path = str(rep)
         elif task_type in ("extract_profile", "match_candidate", "check_compliance", "assess_culture_fit",
                            "verify_documents", "check_visa", "notify_user", "check_gdpr",
@@ -2446,7 +2631,8 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
     elif _status == "nicht_persistiert":
         log(f"⚠️ Task #{task_id} ({task_type}) nicht persistiert — kein 'done' gemeldet")
     else:
-        log(f"✗ Task #{task_id} ({task_type}) FEHLER: {(error or '?')[:120]} "
+        log(f"✗ Task #{task_id} ({task_type}) FEHLER: "
+            f"{_redact_result(str(error or '?'))[:120]} "
             f"(Status: {_status})")
     # Pförtner-Regel (v3): NACH finish_task evaluieren, sobald alle 3 Kette-Berichte
     # done sind (idempotent via notify_hr-Marker); JA → notify_hr-Task, NEIN → still
@@ -2455,6 +2641,18 @@ def process_task(conn, task_id: int, task_type: str, payload_json: str, attempts
             _maybe_gatekeeper(conn, app_id, payload)
         except Exception as e:
             log(f"   Pförtner-Auswertung fehlgeschlagen (App/Runner läuft weiter): {e}")
+
+def run_bounce_poll() -> None:
+    """IMAP-DSN-Poll (Spec agent-automation.md §3.2). No-op ohne KMHR_BOUNCE_POLL_ENABLED=1.
+    Protokolliert nur Zähler, nie Adressen; Fehler brechen den Runner nicht ab."""
+    try:
+        from mail_bounce import poll_bounces
+        res = poll_bounces()
+        if res.get("status") != "disabled":
+            log(f"Bounce-Poll: {res}")
+    except Exception as e:
+        log(f"Bounce-Poll fehlgeschlagen (Runner läuft weiter): {type(e).__name__}")
+
 
 # ─── Main-Loop ───────────────────────────────────────────────────────────
 
@@ -2511,7 +2709,11 @@ def main() -> None:
     signal.signal(signal.SIGINT, cleanup_pid)
     log(f"Agent-Runner gestartet (PID {os.getpid()}, Modell {LLM_MODEL}, "
         f"{'DRY-RUN' if DRY_RUN else 'live'}, {'einmalig' if RUN_ONCE else 'Loop'})")
+    naechster_bounce_poll = 0.0
     while True:
+        if time.time() >= naechster_bounce_poll:
+            naechster_bounce_poll = time.time() + BOUNCE_POLL_SECONDS
+            run_bounce_poll()
         try:
             conn = sqlite3.connect(str(DB_PATH), timeout=10)
             sweep_gatekeeper(conn)

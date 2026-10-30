@@ -3915,3 +3915,81 @@ msgstr "{0} older version(s) without a current video link"
 
 msgid "Bewerbung nicht gefunden"
 msgstr "Application not found"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Konto ist bereit"
+msgstr "Welcome to KM-HR-Agent – your account is ready"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Arbeitgeberkonto für {firma}"
+msgstr "Welcome to KM-HR-Agent – your employer account for {firma}"
+
+msgid "Ihr Konto bei KM-HR-Agent ist aktiv."
+msgstr "Your KM-HR-Agent account is active."
+
+msgid "Ihr Arbeitgeberkonto für {firma} ist aktiv."
+msgstr "Your employer account for {firma} is active."
+
+msgid "Ihre nächsten Schritte:"
+msgstr "Your next steps:"
+
+msgid "1. Profil vervollständigen"
+msgstr "1. Complete your profile"
+
+msgid "2. Lebenslauf hochladen"
+msgstr "2. Upload your CV"
+
+msgid "3. Passende Stellen finden"
+msgstr "3. Find matching jobs"
+
+msgid "1. Stelle veröffentlichen"
+msgstr "1. Publish a job"
+
+msgid "2. Passende Profile sichten"
+msgstr "2. Review matching profiles"
+
+msgid "3. Zum Interview einladen"
+msgstr "3. Invite to an interview"
+
+msgid "Zur Anmeldung: {link}"
+msgstr "Log in: {link}"
+
+msgid "Zum Arbeitgeberportal: {link}"
+msgstr "Employer portal: {link}"
+
+msgid "Der Mensch entscheidet."
+msgstr "Humans make the decisions."
+
+msgid "Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht."
+msgstr "If you did not create an account with us, please ignore this message."
+
+msgid "Datenschutz: {link}"
+msgstr "Privacy: {link}"
+
+msgid "Diese Nachricht wurde mit Unterstützung eines KI-Systems erstellt (EU AI Act Art. 50)."
+msgstr "This message was created with the support of an AI system (EU AI Act Art. 50)."
+
+msgid "welcome_candidate.titel"
+msgstr "Welcome to KM-HR-Agent"
+
+msgid "welcome_candidate.text"
+msgstr "Your account is active. Complete your profile and upload your CV."
+
+msgid "welcome_employer.titel"
+msgstr "Welcome to KM-HR-Agent"
+
+msgid "welcome_employer.text"
+msgstr "Your employer account is active. Publish your first job."
+
+msgid "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+msgstr "Registration failed. Please try again."
+
+msgid "Zustellfehler (Bounce)"
+msgstr "Delivery errors (bounce)"
+
+msgid "Erfasste harte Zustellfehler: {n}"
+msgstr "Hard delivery errors recorded: {n}"
+
+msgid "{rolle} · Konto #{id} · {zeit}"
+msgstr "{rolle} · account #{id} · {zeit}"
+
+msgid "Keine Zustellfehler erfasst."
+msgstr "No delivery errors recorded."

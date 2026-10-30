@@ -61,6 +61,15 @@ class TestSendOnboardingGuard(unittest.TestCase):
         self.assertTrue(res["to"])
         print(f"GUARD PASSED — mcp_call=1 (GEMOCKT, keine echte Mail) — to={res['to']}")
 
+    def test_fehler_ergebnis_wirft_runtimeerror(self):
+        """mcp_call liefert "FEHLER: SMTP" → harter RuntimeError (kein stiller Erfolg)."""
+        with patch.object(mod, "mcp_call", return_value="FEHLER: SMTP") as m:
+            with self.assertRaises(RuntimeError) as ctx:
+                mod.send_onboarding_mail(dict(POS_PAYLOAD))
+        self.assertIn("SMTP", str(ctx.exception))
+        m.assert_called_once()
+        self.assertEqual(m.call_args[0][1], "send_email")
+
     def test_negativ_process_task_log_zeile_und_failed(self):
         conn = MagicMock()
         logs, finishes = [], []

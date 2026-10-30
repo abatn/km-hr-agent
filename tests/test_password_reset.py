@@ -21,6 +21,7 @@ um — die Live-DB wird NIE beschrieben. Eingefuegte Test-Zeilen werden im
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -222,11 +223,23 @@ def _run_runner(payload: dict, monkeypatch, tmp_path):
     return result, captured, log_text
 
 
+def _payload(email: str, role: str) -> dict:
+    """Payload wie ihn die UI nach Treffer queued: role + id, keine Adresse."""
+    table = "candidates" if role == "candidate" else "employers"
+    conn = _conn()
+    try:
+        row = conn.execute(f"SELECT id FROM {table} WHERE lower(email) = lower(?)",
+                           (email,)).fetchone()
+    finally:
+        conn.close()
+    return {"role": role, "id": row[0] if row else 999999999}
+
+
 def test_runner_unknown_email_no_mail(monkeypatch, tmp_path):
     _cleanup()
     try:
         result, captured, _ = _run_runner(
-            {"email": "nirgends@example.invalid", "role": "candidate"}, monkeypatch, tmp_path)
+            {"role": "candidate", "id": 999999999}, monkeypatch, tmp_path)
         assert result["status"] == "no_account"
         assert captured == {}          # kein Mail-Aufruf
     finally:
@@ -238,7 +251,7 @@ def test_runner_sends_link_token_only_in_body(monkeypatch, tmp_path):
     try:
         _insert_candidate(logic.hash_password_argon2id("altpasswort1"))
         result, captured, log_text = _run_runner(
-            {"email": CAND_MAIL, "role": "candidate"}, monkeypatch, tmp_path)
+            _payload(CAND_MAIL, "candidate"), monkeypatch, tmp_path)
         assert result["status"] == "sent"
         assert captured["tool"] == "send_email"
         body = captured["args"]["body"]
@@ -278,7 +291,7 @@ def test_runner_rate_limit_blocks_fourth(monkeypatch, tmp_path):
         statuses = []
         for _ in range(4):
             r, _, _ = _run_runner(
-                {"email": CAND_MAIL, "role": "candidate"}, monkeypatch, tmp_path)
+                _payload(CAND_MAIL, "candidate"), monkeypatch, tmp_path)
             statuses.append(r["status"])
         assert statuses[:3] == ["sent", "sent", "sent"]
         assert statuses[3] == "rate_limited"
@@ -286,8 +299,8 @@ def test_runner_rate_limit_blocks_fourth(monkeypatch, tmp_path):
         _cleanup()
 
 
-def test_mcp_log_whitelist_excludes_body():
-    """Der Live-MCP-Nachweislog schreibt den Body nie (Token-Schutz)."""
+def test_mcp_log_whitelist_excludes_body_and_recipient():
+    """Der Live-MCP-Nachweislog schreibt weder Body noch Empfängeradresse (DSGVO)."""
     import tempfile
     from unittest.mock import patch as _patch
     with tempfile.TemporaryDirectory() as d:
@@ -297,7 +310,8 @@ def test_mcp_log_whitelist_excludes_body():
                                "body": "TOKEN-GEHEIM-123"}, True)
             txt = (Path(d) / "logs" / "mcp-calls.log").read_text(encoding="utf-8")
     assert "TOKEN-GEHEIM-123" not in txt
-    assert "a@b.de" in txt and "s" in txt
+    assert "a@b.de" not in txt
+    assert '"subject": "s"' in txt
 
 
 def test_runner_dispatch_enthaelt_send_password_reset():
@@ -317,7 +331,7 @@ def test_runner_role_picks_target_table(role, email, table, inserter, monkeypatc
     try:
         inserter(logic.hash_password_argon2id("altpasswort1"))
         result, captured, _ = _run_runner(
-            {"email": email, "role": role}, monkeypatch, tmp_path)
+            _payload(email, role), monkeypatch, tmp_path)
         assert result["status"] == "sent"
         token = captured["args"]["body"].split("/login?reset=")[1].split()[0].strip()
         conn = _conn()
@@ -333,3 +347,57 @@ def test_runner_role_picks_target_table(role, email, table, inserter, monkeypatc
             "zielneupass1", _pw_hash_of(email, table))
     finally:
         _cleanup()
+
+
+@pytest.mark.parametrize("role,email,inserter", [
+    ("candidate", CAND_MAIL, _insert_candidate),
+    ("employer", EMP_MAIL, _insert_employer),
+])
+def test_payload_ohne_adresse_sendet_trotzdem(role, email, inserter, monkeypatch, tmp_path):
+    """Payload nur role + id (30.10.2026): kein '@', der Runner lädt die Adresse selbst."""
+    _cleanup()
+    try:
+        inserter(logic.hash_password_argon2id("altpasswort1"))
+        payload = _payload(email, role)
+        assert "@" not in json.dumps(payload)
+        assert set(payload) == {"role", "id"}
+        result, captured, log_text = _run_runner(payload, monkeypatch, tmp_path)
+        assert result["status"] == "sent"
+        assert captured["args"]["to"] == email
+        assert email not in log_text
+        assert email not in json.dumps(result)
+    finally:
+        _cleanup()
+
+
+def test_alt_task_mit_email_im_payload_funktioniert_weiter(monkeypatch, tmp_path):
+    """Übergang: vor der Umstellung gequeuete Tasks tragen noch `email`."""
+    _cleanup()
+    try:
+        _insert_candidate(logic.hash_password_argon2id("altpasswort1"))
+        result, captured, _ = _run_runner(
+            {"email": CAND_MAIL, "role": "candidate"}, monkeypatch, tmp_path)
+        assert result["status"] == "sent"
+    finally:
+        _cleanup()
+
+
+def test_unbekannte_id_erzeugt_keine_mail_und_keine_adresse_im_log(monkeypatch, tmp_path):
+    _cleanup()
+    try:
+        result, captured, log_text = _run_runner(
+            {"role": "employer", "id": 999999999}, monkeypatch, tmp_path)
+        assert result["status"] == "no_account"
+        assert captured == {}
+        assert "@" not in log_text
+    finally:
+        _cleanup()
+
+
+def test_login_queued_nur_role_und_id():
+    """Quelltext-Vertrag: Die Reset-UI queued bei Treffer role + id, keine Adresse."""
+    src = (ROOT / "webui" / "pages" / "login.py").read_text(encoding="utf-8")
+    block = src.split('db.queue_agent_task("send_password_reset", {', 1)[1].split("})", 1)[0]
+    assert '"id": konto_id' in block
+    assert '"role": _reset_ctx["role"]' in block
+    assert "email" not in block

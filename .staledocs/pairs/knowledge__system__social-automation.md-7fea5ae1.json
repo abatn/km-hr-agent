@@ -53,19 +53,19 @@
       "status='aktiv'",
       "w_member_social"
     ],
-    "at": "2026-10-25T22:56:26+00:00",
+    "at": "2026-10-30T21:08:37+00:00",
     "code_blobs": {
       "deploy/systemd/kmhr-social.service": "9d5a1ed292d4e26fc86b042c1439c3b818481572",
       "deploy/systemd/kmhr-social.timer": "a7ab8fe8115b45cd37f7efe674c0e18512cddd96",
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
       "scripts/social_oauth.py": "0b692a653cbb43cd391bbb39c023496eab6639a0",
       "tests/test_social_agent.py": "b19f7ae02090f5895298a73f9bb8b3af3b302546",
       "tests/test_social_oauth.py": "42b62141b071d7c58d41741aab20a66d8a2503e1"
     },
-    "commit": "e94e277b69d74ed320c8c3f63581f92b581c19f9",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "fee19b4dbefcd9c1978e8426d93f4bbd1ec60fbd",
-    "note": "social-automation.md: LinkedIn-Version 202610, logs-Pair-Scope, Tests 658 passed"
+    "note": "knowledge/system/social-automation.md: Verbotsliste und Datenquellen gegen scripts/social_agent.py geprueft; der Social-Agent ist von den Aenderungen nicht beruehrt."
   },
   "doc": "knowledge/system/social-automation.md",
   "schema": 1

@@ -127,6 +127,30 @@ def _page_dashboard(s: dict) -> None:
         for label, tbl in tables:
             stat_card(label, _count(tbl), "storage", color=PRIMARY)
 
+    # ─── Zustellfehler (Bounce, 30.10.2026) — ohne Adressen ─────────────
+    try:
+        _bconn = db.get_conn()
+        try:
+            _bcount = _bconn.execute(
+                "SELECT COUNT(*) FROM agent_tasks WHERE task_type = 'mail_bounce'").fetchone()[0]
+            _brows = _bconn.execute(
+                "SELECT json_extract(payload, '$.role'), json_extract(payload, '$.id'), "
+                "finished_at FROM agent_tasks WHERE task_type = 'mail_bounce' "
+                "ORDER BY id DESC LIMIT 20").fetchall()
+        finally:
+            _bconn.close()
+    except Exception as ex:
+        print(f"[admin] Zustellfehler-Abfrage fehlgeschlagen: {ex!r}")
+        _bcount, _brows = 0, []
+    with ui.card().classes(C.CARD + " w-full mt-4"):
+        ui.label(_("Zustellfehler (Bounce)")).classes(C.CARD_TITLE + " mb-2")
+        ui.label(_("Erfasste harte Zustellfehler: {n}").format(n=_bcount)).classes("text-sm mb-2")
+        for _brole, _bid, _bzeit in _brows:
+            ui.label(_("{rolle} · Konto #{id} · {zeit}").format(
+                rolle=_brole or "–", id=_bid or "–", zeit=_bzeit or "–")).classes("text-xs")
+        if not _brows:
+            ui.label(_("Keine Zustellfehler erfasst.")).classes("text-xs text-gray-500")
+
     # ─── Admin Charts ───────────────────────────────────────────────────
     try:
         conn = db.get_conn()

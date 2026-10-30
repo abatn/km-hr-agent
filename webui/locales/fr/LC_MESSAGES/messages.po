@@ -3915,3 +3915,81 @@ msgstr "{0} version(s) plus ancienne(s) sans lien vidéo actuel"
 
 msgid "Bewerbung nicht gefunden"
 msgstr "Candidature introuvable"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Konto ist bereit"
+msgstr "Bienvenue chez KM-HR-Agent – votre compte est prêt"
+
+msgid "Willkommen bei KM-HR-Agent – Ihr Arbeitgeberkonto für {firma}"
+msgstr "Bienvenue chez KM-HR-Agent – votre compte employeur pour {firma}"
+
+msgid "Ihr Konto bei KM-HR-Agent ist aktiv."
+msgstr "Votre compte KM-HR-Agent est actif."
+
+msgid "Ihr Arbeitgeberkonto für {firma} ist aktiv."
+msgstr "Votre compte employeur pour {firma} est actif."
+
+msgid "Ihre nächsten Schritte:"
+msgstr "Vos prochaines étapes :"
+
+msgid "1. Profil vervollständigen"
+msgstr "1. Compléter votre profil"
+
+msgid "2. Lebenslauf hochladen"
+msgstr "2. Téléverser votre CV"
+
+msgid "3. Passende Stellen finden"
+msgstr "3. Trouver des offres adaptées"
+
+msgid "1. Stelle veröffentlichen"
+msgstr "1. Publier une offre"
+
+msgid "2. Passende Profile sichten"
+msgstr "2. Consulter les profils pertinents"
+
+msgid "3. Zum Interview einladen"
+msgstr "3. Inviter à un entretien"
+
+msgid "Zur Anmeldung: {link}"
+msgstr "Se connecter : {link}"
+
+msgid "Zum Arbeitgeberportal: {link}"
+msgstr "Portail employeur : {link}"
+
+msgid "Der Mensch entscheidet."
+msgstr "L'humain décide."
+
+msgid "Falls Sie kein Konto bei uns angelegt haben, ignorieren Sie diese Nachricht."
+msgstr "Si vous n'avez pas créé de compte chez nous, veuillez ignorer ce message."
+
+msgid "Datenschutz: {link}"
+msgstr "Confidentialité : {link}"
+
+msgid "Diese Nachricht wurde mit Unterstützung eines KI-Systems erstellt (EU AI Act Art. 50)."
+msgstr "Ce message a été créé avec l'aide d'un système d'IA (règlement IA de l'UE, art. 50)."
+
+msgid "welcome_candidate.titel"
+msgstr "Bienvenue chez KM-HR-Agent"
+
+msgid "welcome_candidate.text"
+msgstr "Votre compte est actif. Complétez votre profil et téléversez votre CV."
+
+msgid "welcome_employer.titel"
+msgstr "Bienvenue chez KM-HR-Agent"
+
+msgid "welcome_employer.text"
+msgstr "Votre compte employeur est actif. Publiez votre première offre."
+
+msgid "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+msgstr "L'inscription a échoué. Veuillez réessayer."
+
+msgid "Zustellfehler (Bounce)"
+msgstr "Erreurs de livraison (rebond)"
+
+msgid "Erfasste harte Zustellfehler: {n}"
+msgstr "Erreurs de livraison définitives enregistrées : {n}"
+
+msgid "{rolle} · Konto #{id} · {zeit}"
+msgstr "{rolle} · compte n° {id} · {zeit}"
+
+msgid "Keine Zustellfehler erfasst."
+msgstr "Aucune erreur de livraison enregistrée."

@@ -101,9 +101,9 @@
       "write_prescreen_md",
       "x[-1]"
     ],
-    "at": "2026-10-26T19:29:24+00:00",
+    "at": "2026-10-30T21:08:36+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "tests/test_md_writer_discipline.py": "364434878b68b55343e49a99a2b8c1a2adb30037",
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
@@ -111,9 +111,9 @@
       "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "c19695d3d546fecd2c77aed4d5115d13169701fc",
-    "note": "Geprueft: Laufzeit-Schreiber unveraendert; scripts/ci/checks.py mdguard rc=0."
+    "note": "knowledge/system/md-schreib-konvention.md: Zaehlwert sqlite_master=18 ist ein datierter Messstand (26.10.2026); keine neue Tabelle durch diese Aenderung, mail_bounce.py schreibt keine MD-Artefakte. Abweichung zum Schema-Gate vorbestehend, offen gemeldet."
   },
   "doc": "knowledge/system/md-schreib-konvention.md",
   "schema": 1

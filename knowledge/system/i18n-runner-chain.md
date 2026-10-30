@@ -16,7 +16,7 @@ Sprache bedient — ohne externe Nebenwirkung (kein echter Mail-Versand, kein LL
   (`_body_sprache_ok`) mit **max. 1 Retry** und Warn-Log (§7.1 Punkt 5) — **keine** harte Garantie.
 - **(b) Gespeicherte Artefakte/Altbestand werden NICHT rückübersetzt:** es gilt die
   **Erzeugungssprache** (§7.1 Punkt 4). Garantiert ist die Sprache für die **deterministischen
-  `tr()`-Pfade** (Mails #1–#6, die deterministischen Reports, die `>`-Header-Prosa) — **je Sprache**.
+  `tr()`-Pfade** (Mails #1–#7, die deterministischen Reports, die `>`-Header-Prosa) — **je Sprache**.
 - **(c) Struktur-Labels im LLM-Körper = best-effort in der Payload-Sprache:** die
   Prompt-Ausgabe-Struktur (Sektionsüberschriften wie `Gesamtstatus:`, `Typ | Pflichtfelder | Indizien`,
   `Visum-Bedarf:`, `Prüfpunkt`, `Nächste Schritte — Kandidat`, `Erfahrung:`/`Kultur-Fit:`/`Gehalt:`)
@@ -35,13 +35,13 @@ Sprache bedient — ohne externe Nebenwirkung (kein echter Mail-Versand, kein LL
 | `notifications`-Zeilen (`Neue Bewerbung`, `{0} hat sich beworben: {1}`) | **Erzeugungs-Sprache** (Kandidaten-Session beim Trigger) | `webui/pages/candidate.py` (Codemarke `def _notify_neue_bewerbung`, gemessen 10.10.2026) → `db.insert_notification(..., _(...))` | cross-person: Empfänger ≠ Auslöser (Kandidaten-Sprache beim Trigger) |
 | Statische UI (Tabs, Labels, Status über `status_label`) | **Session-Sprache** | `webui/i18n.py` (gemessen 10.10.2026) | — |
 | Portal-erzeugte MD (Onboarding-Checkliste, Pre-Screen-MD, Feedback-MD) | **Erzeugungs-Sprache** | P9.4, `knowledge/system/i18n.md` Klasse E | — |
-| **Runner-erzeugte Artefakte** (Mails #1–#6, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core.py` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver | Runner-intern ohne UI-Akteur: erbt Sprache der auslösenden Kette (`_lang(payload)`, §7) |
+| **Runner-erzeugte Artefakte** (Mails #1–#7, `ergebnisse/einladung-*.md`, `ergebnisse/onboarding-freigabe-*.md`, `ergebnisse/contract-preflight-*.md`, `ergebnisse/export-kandidat-*.md`) | **Payload-Sprache** (Session-Sprache des Auslösers) | `scripts/agent-runner.py` — `_lang(payload)` + `tr()` aus `webui/i18n_core.py` (P2/P3, 07.10.2026); `language` im Task-Payload via `webui/db.py`-Resolver | Runner-intern ohne UI-Akteur: erbt Sprache der auslösenden Kette (`_lang(payload)`, §7) |
 | **LLM-Berichts-Body** (`extract_profile-*`, `match_candidate-*`, `check_compliance-*`, `assess_culture_fit-*`, `verify_documents-*`, `check_visa-*`, `explain_match-*`, `notify_user-*.md` in `ergebnisse/`) | **Payload-Sprache** (Prompt-Anweisung `Antworte in <Klarname>.`, §7.1 Punkt 5) — Altbestand **vor** 07.10.2026 bleibt deutsch (Punkt 4), z. B. `extract_profile-kandidat-13-2026-09-24.md` | `scripts/agent-runner.py`, Codemarke `Antworte in` (Prompt-Bau); Anzeige in 🏢 🔎 Agent-Details via `logic.ERGEBNISSE.glob(_glob)` (neueste Datei je Task) | best-effort (Prompt + `_body_sprache_ok`, max 1 Retry, §7.1 P5); Altbestand nicht rückübersetzt (P4) |
 | **LLM-Berichts-Header** (`# Extract Profile – Kandidat #13 / Stelle #6` + `> Agent-Task (Phase 5, live …), Modell: …`) | **Prosa-Zeile in Payload-Sprache; Titel-Marker sprachstabil (deutsch)** — nur die `>`-Zeile `(> Agent-Task (Phase 5, live …), Modell: …)` läuft über `tr()`; der **Task-Titel bleibt englisch** (Identifier, entspricht Dateiname-Prefix und Badge-Key) und die **Titel-Struktur-Marker `Kandidat #<id>` / `Stelle #<id>` bleiben IMMER deutsch** (sprachstabile, maschinell geparste Identifier) — **P9.5b, Nutzer-GO 07.10.2026 „Mitübersetzen", korrigiert 09.10.2026 (parse-kritische Marker)**; Altbestand vor 07.10. bleibt deutsch (Punkt 4, GO „Liegen lassen") | `scripts/agent-runner.py`, Codemarke `llm_report_header` (früher `header =`); Parser: `webui/pages/employer.py` Codemarke `_BERICHT_STELLE` (`Stelle #(\d+)`) + `tests/test_r33_compliance_reports.py` (`Stelle #\d+`); Beweise `tests/test_runner_i18n.py` (Codemarke `def test_p9_5b_header_de_byteidentisch`, gemessen 10.10.2026) (de byte-identisch → `e2e_admin_downloads` rc=0) + `test_p9_5b_header_payload_sprache`; Dateisuche unberührt (Dateiname-Muster, Codemarke `_find_agent_report`) | parse-kritische Marker `Kandidat #`/`Stelle #` immer deutsch = gebundene Soll-Ausnahme (§7.1 P5) |
 
 **Design-Entscheidung (keine externe Quelle):** Runner-Artefakte liefen bis P1 fix Deutsch (kein
 Session-Kontext). Seit **P2/P3 (07.10.2026, Variante B)** tragen die Tasks `language` im Payload
-(`webui/db.py` (Codemarke `def queue_agent_task`, gemessen 10.10.2026) + Resolver-Hook) und der Runner übersetzt Mails #1–#6 + die 3
+(`webui/db.py` (Codemarke `def queue_agent_task`, gemessen 10.10.2026) + Resolver-Hook) und der Runner übersetzt Mails #1–#7 + die 3
 deterministischen Reports über `tr()` aus der **framework-freien** Kernschicht `webui/i18n_core.py`
 (kein NiceGUI-Import). Alt-Tasks ohne `language` → `de` (keine Rück-Übersetzung bestehender Dateien).
 
@@ -120,7 +120,7 @@ Seit Entscheidung 16.10.2026 (Iteration „Einladungen") gibt es eine **dritte A
 
 ## 6. Offene Punkte
 - ~~**Klasse F (neu):** Runner-/MCP-erzeugte Artefakte ohne i18n~~ → **geschlossen P2/P3
-  (07.10.2026):** Mails #1–#6 + die deterministischen Reports (`einladung-*`,
+  (07.10.2026):** Mails #1–#7 + die deterministischen Reports (`einladung-*`,
   `onboarding-freigabe-*`, `contract-preflight-*`) laufen über `tr()`/`_lang()`
   (Spec §7.1); LLM-Prompts tragen die Anweisung `Antworte in <Sprache>.` (Punkt 5).
   **P4c (07.10.2026):** auch der Report-Generator `export_report` (`export-kandidat-*.md`)
@@ -178,9 +178,9 @@ zu werten.
    `gatekeeper_eval`, `notify_hr`), MUSS das Payload `"language": _lang(payload)` tragen
    (Codemarke `_lang(payload)` in `scripts/agent-runner.py`); sonst greift kein Resolver und die
    Folge-Task fällt **still** auf `de` zurück.
-3. **Runner:** `_lang(payload) = payload["language"] if in SUPPORTED else "de"`; alle **6 Mails**
-   (`send_confirmation`, `notify_hr`, `visa_confirmation`, `send_onboarding_mail`, `send_rejection`,
-   `create_invitation` inkl. ICS-Titel) und die **4 deterministischen Reports** (`einladung-*`,
+3. **Runner:** `_lang(payload) = payload["language"] if in SUPPORTED else "de"`; alle **7 Mails**
+   (`send_welcome`, `send_confirmation`, `notify_hr`, `visa_confirmation`, `send_onboarding_mail`,
+   `send_rejection`, `create_invitation` inkl. ICS-Titel) und die **4 deterministischen Reports** (`einladung-*`,
    `onboarding-freigabe-*`, `contract-preflight-*`, `export-kandidat-*`) über `tr(...)`.
 4. **Fallback / Altbestand:** Tasks ohne `language` (bereits in der Queue) → `de`; keine
    Rück-Übersetzung bestehender Mails/Reports **und LLM-Berichte** (P9.4-Regel „Erzeugungssprache";

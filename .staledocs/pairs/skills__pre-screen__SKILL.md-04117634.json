@@ -30,15 +30,15 @@
       "webui/components.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-26T19:29:30+00:00",
+    "at": "2026-10-30T21:08:43+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "02c9769bc3ba0fede203ff31c9876b95d07eed83",
+      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "webui/components.py": "2c5c542f69a18533c62f5b4677582bdaa3e44170",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "b1c307be4e2c38c83901e2b4e33ce2a9ad003854",
+    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
     "doc_blob": "c88e7f0b78983b06d67d55971f8d659f7d6e35bf",
-    "note": "Geprueft: Pre-Screen-Tab webui/pages/candidate.py unveraendert; nur Billing-Sektion im Profil-Tab."
+    "note": "skills/pre-screen/SKILL.md: VDO.Ninja-URL-Muster (prescreening{code}, push, record) gegen create_invitation und Prescreen-Codemarken geprueft; Backoff und Bounce-Poll beruehren sie nicht."
   },
   "doc": "skills/pre-screen/SKILL.md",
   "schema": 1

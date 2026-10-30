@@ -88,7 +88,8 @@ def main() -> int:
                 print('1) generische Antwort nach "Link senden" OK')
                 tasks = _rows(
                     "SELECT id, payload FROM agent_tasks WHERE task_type = 'send_password_reset' "
-                    "AND json_extract(payload, '$.email') = ? ORDER BY id DESC LIMIT 1",
+                    "AND json_extract(payload, '$.id') = (SELECT id FROM candidates WHERE email = ?) "
+                    "ORDER BY id DESC LIMIT 1",
                     (CAND_EMAIL,))
                 if not tasks:
                     fehler.append("kein send_password_reset-Task in der Spiegel-DB")
@@ -189,7 +190,9 @@ def main() -> int:
                          (orig_hash, CAND_EMAIL))
             conn.execute("DELETE FROM password_resets WHERE email = ?", (CAND_EMAIL,))
             conn.execute("DELETE FROM agent_tasks WHERE task_type = 'send_password_reset' "
-                         "AND json_extract(payload, '$.email') = ?", (CAND_EMAIL,))
+                         "AND (json_extract(payload, '$.email') = ? "
+                         "OR json_extract(payload, '$.id') = (SELECT id FROM candidates WHERE email = ?))",
+                         (CAND_EMAIL, CAND_EMAIL))
             conn.commit()
         finally:
             conn.close()
