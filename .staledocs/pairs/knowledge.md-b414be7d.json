@@ -167,7 +167,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-30T22:55:49+00:00",
+    "at": "2026-10-30T23:00:12+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -186,7 +186,7 @@
       "knowledge/legal/datenschutz.md": "519e161d59e90a03f749b37cb9ec52f0bcdecf0b",
       "knowledge/legal/document-types.md": "cb6176ac9532b7ca0e1407b3e86d82b953d8edff",
       "knowledge/legal/dsgvo-gate.md": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-      "knowledge/legal/gdpr-policy.md": "b95c35062711eb7901d5014703a83abb68e7d036",
+      "knowledge/legal/gdpr-policy.md": "a380b241c5735e1500d56a9c96f0756b2f1e7127",
       "knowledge/legal/impressum.ar.md": "f59ca1506eb83b3df9fe2499c5181a16576694b0",
       "knowledge/legal/impressum.en.md": "cd58c524cbfbcfaab376a216f1a918125053c842",
       "knowledge/legal/impressum.fr.md": "7e7d05440ea95958b5318c2e8175269d89857c7c",
@@ -248,7 +248,7 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "78dc306614342dd2f4de922b540f9994d9145a55",
+    "commit": "e007dc3671517dffe39c419122b8c0bfba172bf2",
     "doc_blob": "f4cd7ae393177997845f9b2559bcc3f72954dc06",
     "note": "knowledge.md: Zeile zu den vier Env-Dateien (.env-email mit SMTP_*) gegen knowledge/system/configuration-secrets.md \u00a7(j) und .env-email.example geprueft; Aussage bleibt richtig."
   },
