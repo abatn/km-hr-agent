@@ -110,7 +110,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-27T23:41:09+00:00",
+    "at": "2026-10-30T12:19:08+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -185,7 +185,7 @@
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
       "tests/test_admin_i18n.py": "a7cf583ef36f9e5984bde9238ece19841a76f1bf",
-      "tests/test_ads_agent.py": "0f7dae2b803e9a9103ca62bb9c2d8d9d10e1e1d5",
+      "tests/test_ads_agent.py": "375198330d4bdca404d1b9c765b3260fd7388e8f",
       "tests/test_ads_channels.py": "c3e09f15a3532b8769febacd3747a3830599dc81",
       "tests/test_ads_x402.py": "287e0f6671a81b64e3a26a5f915a0dd37ba78a3c",
       "tests/test_application_id_match.py": "b03d73a8c8176d6f26d8b842811b9bde150efcd0",
@@ -223,6 +223,7 @@
       "tests/test_mcp_warmup.py": "0616faa668be24917879c012ecb1ae411a9458b2",
       "tests/test_md_writer_discipline.py": "364434878b68b55343e49a99a2b8c1a2adb30037",
       "tests/test_mdguard_checker.py": "9af1a007ffc0e81b6de3aefb624ae5518895e968",
+      "tests/test_meta_ads.py": "ded6e2c38353b91737c148b194653dd2d1a3c04b",
       "tests/test_na1_nd3.py": "35e3b99036f3a34be730bb05c69c856b59a5024f",
       "tests/test_nf2_score_cache.py": "e3325c3111402472c5dfacecde41bc15ebf36cfe",
       "tests/test_nm1_nm2.py": "61af662e945c5af5a21597e4bd077af4ee7fe8bb",
@@ -257,9 +258,9 @@
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "19d8ed723288ca87a415c5fa7225eb978fca5d85",
+    "commit": "d1b0c68b8f6265acc477f1b4a5119a7912c589ba",
     "doc_blob": "061a9260ab8132e4ab336093b712e9a049a9bb85",
-    "note": "Gepr\u00fcft 28.10.2026: Zeilen 78/79 (Isolation-Log mode=ro, source=) unver\u00e4ndert; neue Tests nutzen seed.db nur lesend (mode=ro), nichts wird geschrieben."
+    "note": "tests/test_meta_ads.py gepr\u00fcft: nur Test-Token-Konstante ge\u00e4ndert, Seed-/Spiegelaussage unver\u00e4ndert"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

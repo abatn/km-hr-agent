@@ -1,32 +1,43 @@
 {
   "ack": {
     "anchors": [
+      "--check-meta",
+      "--kit",
       "--live",
-      ".env-social",
       "AGENTS.md",
       "KMHR_ADS_APPROVAL_FILE",
+      "KMHR_ADS_CHANNELS=meta_ads",
       "KMHR_ADS_DAILY_CAP_EUR",
+      "KMHR_ADS_LIVE_CONFIRM=1",
+      "META_VIDEO_PATH",
+      "META_VIDEO_URL",
       "agent_tasks.payload",
       "candidates_north_africa",
       "connectors/",
       "employers_eu",
       "ergebnisse/ads/dmp_signals.jsonl",
       "i18n.md",
+      "marketing/ADS_ALTERNATIVEN.md",
       "marketing/ads-agent.md",
       "scripts/ads_agent.py",
+      "scripts/ads_x402.py",
+      "scripts/meta_ads.py",
       "scripts/social_agent.py::read_aggregates",
       "social_agent",
-      "webui/"
+      "special_ad_categories=[\"EMPLOYMENT\"]",
+      "status=PAUSED",
+      "webui/",
+      "x402[evm]"
     ],
-    "at": "2026-10-27T22:57:11+00:00",
+    "at": "2026-10-29T22:47:27+00:00",
     "code_blobs": {
-      "scripts/ads_agent.py": "c30415c019a4b924ad804cf91ccf69f662797fc7",
+      "scripts/ads_agent.py": "d7f24f2ba88fca4d9b18d317f9478c05dbddb22c",
       "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
-      "tests/test_ads_agent.py": "85106122c591c9c899cba0abe78dc1f362255c36"
+      "tests/test_ads_agent.py": "375198330d4bdca404d1b9c765b3260fd7388e8f"
     },
-    "commit": "0bfcfef0ee80d0025421b0f7780fb5c66cf385a9",
-    "doc_blob": "2d85ca1d57cc5aee7ceda10f6f7aa5620c1f0560",
-    "note": "Gepr\u00fcft 27.10.2026: Entscheidungsdokument beschreibt scripts/ads_agent.py (Dry-Run, Cap 0, PAUSED, Aggregat-DMP, --live gesperrt) und nutzt social_agent.read_aggregates; Code und Tests stimmen \u00fcberein (38 Tests gr\u00fcn)."
+    "commit": "d1b0c68b8f6265acc477f1b4a5119a7912c589ba",
+    "doc_blob": "f6b779bec16439361f84466344273d5875b60260",
+    "note": "marketing/ADS_ENTSCHEIDUNG.md und scripts/meta_ads.py gepr\u00fcft: Meta-2026-Pflichtfelder is_adset_budget_sharing_enabled und special_ad_category_country live verifiziert"
   },
   "doc": "marketing/ADS_ENTSCHEIDUNG.md",
   "schema": 1

@@ -16,14 +16,14 @@
       "scripts/ads_agent.py",
       "tests/test_ads_channels.py"
     ],
-    "at": "2026-10-27T23:28:50+00:00",
+    "at": "2026-10-29T22:45:32+00:00",
     "code_blobs": {
-      "scripts/ads_agent.py": "cda07766440f79ea2b8e85512a51af99d6c394e9",
+      "scripts/ads_agent.py": "d7f24f2ba88fca4d9b18d317f9478c05dbddb22c",
       "tests/test_ads_channels.py": "c3e09f15a3532b8769febacd3747a3830599dc81"
     },
-    "commit": "52eda4913e60c60d6839d2b1b53be7f46bb4fa43",
+    "commit": "d1b0c68b8f6265acc477f1b4a5119a7912c589ba",
     "doc_blob": "a592699a46f2d1e157e35a3367d34abec39b1ca0",
-    "note": "Gepr\u00fcft 28.10.2026: Dokument nennt CHANNELS, google_ads_payloads, microsoft_ads_payload und check_search_asset (L\u00e4ngen 30/90); alle Namen existieren in scripts/ads_agent.py, Tests in tests/test_ads_channels.py (15 Tests gr\u00fcn)."
+    "note": "scripts/ads_agent.py gepr\u00fcft: Video-Pfad erg\u00e4nzt, Meta bleibt Opt-in"
   },
   "doc": "marketing/ADS_ALTERNATIVEN.md",
   "schema": 1

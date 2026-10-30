@@ -18,8 +18,9 @@ _spec.loader.exec_module(ads)  # type: ignore[union-attr]
 
 @pytest.fixture(autouse=True)
 def _clean_env(monkeypatch):
-    monkeypatch.delenv("KMHR_ADS_DAILY_CAP_EUR", raising=False)
-    monkeypatch.delenv("KMHR_ADS_APPROVAL_FILE", raising=False)
+    for var in ("KMHR_ADS_DAILY_CAP_EUR", "KMHR_ADS_APPROVAL_FILE",
+                "KMHR_ADS_LIVE_CONFIRM", "KMHR_ADS_CHANNELS"):
+        monkeypatch.delenv(var, raising=False)
 
 
 def test_kleinzellen_schutz():
@@ -120,10 +121,99 @@ def test_meta_payload_nur_per_opt_in_und_paused(tmp_path, monkeypatch):
                 assert payload["data"]["special_ad_categories"] == ["EMPLOYMENT"]
 
 
-def test_live_ist_gesperrt(tmp_path):
-    with pytest.raises(ads.AdsError, match="nicht implementiert"):
+def test_live_ohne_bestaetigung_bricht_ab(tmp_path):
+    with pytest.raises(ads.AdsError, match="KMHR_ADS_LIVE_CONFIRM"):
         ads.run_once(date(2026, 10, 27), SEED, live=True, out_dir=tmp_path,
                      dmp_path=tmp_path / "dmp.jsonl")
+
+
+class _FakeMetaClient:
+    """Ersetzt den Netzwerk-Client; zeichnet die Anlage auf."""
+
+    instances: list["_FakeMetaClient"] = []
+
+    def __init__(self, cfg, transport=None):
+        self.cfg = cfg
+        self.launched = []
+        self.ok = True
+        _FakeMetaClient.instances.append(self)
+
+    def preflight(self):
+        return {"ok": self.ok, "blockers": [] if self.ok else ["Test-Blocker"],
+                "warnings": []}
+
+    def launch(self, spec, day, language="de"):
+        self.launched.append({"spec": spec, "day": day, "language": language})
+        return {"status": "paused_created", "campaign_id": "c1",
+                "adset_id": "s1", "creative_id": "cr1", "ad_id": "a1"}
+
+    def activate(self, ids, confirm=False):
+        self.activated = ids
+        return {"status": "active", **{k: "ACTIVE" for k in ids}}
+
+
+@pytest.fixture
+def live_env(tmp_path, monkeypatch):
+    approval = tmp_path / "approval.json"
+    approval.write_text(json.dumps({"campaigns": {"employers_eu": 3.0}}))
+    monkeypatch.setenv("KMHR_ADS_DAILY_CAP_EUR", "3")
+    monkeypatch.setenv("KMHR_ADS_APPROVAL_FILE", str(approval))
+    monkeypatch.setenv("KMHR_ADS_CHANNELS", "meta_ads")
+    monkeypatch.setenv("KMHR_ADS_LIVE_CONFIRM", "1")
+    monkeypatch.setattr(ads.meta_ads, "MetaAdsClient", _FakeMetaClient)
+    _FakeMetaClient.instances.clear()
+    return approval
+
+
+def test_live_legt_paused_kampagne_an_und_aktiviert_nicht(tmp_path, live_env):
+    result = ads.run_once(date(2026, 10, 29), SEED, live=True, out_dir=tmp_path,
+                          dmp_path=tmp_path / "dmp.jsonl")
+    assert result["mode"] == "live_paused"
+    ready = [c for c in result["campaigns"] if c["status"] == "paused_created"]
+    assert len(ready) == 1 and ready[0]["meta"]["campaign_id"] == "c1"
+    assert all(c["status"] != "active" for c in result["campaigns"])
+    client = _FakeMetaClient.instances[0]
+    assert len(client.launched) == 1
+    spec = client.launched[0]["spec"]
+    assert spec["daily_budget_eur"] == 3.0
+    assert spec["link"] == ads.SITE
+    ads.check_creative(spec["creative"])
+    run = json.loads((tmp_path / "2026-10-29" / "run.json").read_text(encoding="utf-8"))
+    assert run["mode"] == "live_paused" and "meta_live" in run
+
+
+def test_live_preflight_blocker_wird_mit_lauf_persistiert(tmp_path, live_env):
+    class _Blocked(_FakeMetaClient):
+        def preflight(self):
+            return {"ok": False, "blockers": ["Kein Zahlungsmittel"], "warnings": []}
+
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr(ads.meta_ads, "MetaAdsClient", _Blocked)
+    try:
+        with pytest.raises(ads.AdsError, match="Zahlungsmittel"):
+            ads.run_once(date(2026, 10, 29), SEED, live=True, out_dir=tmp_path,
+                         dmp_path=tmp_path / "dmp.jsonl")
+    finally:
+        monkeypatch.undo()
+    run = json.loads((tmp_path / "2026-10-29" / "run.json").read_text(encoding="utf-8"))
+    assert run["meta_live"]["preflight"]["blockers"] == ["Kein Zahlungsmittel"]
+
+
+def test_aktivieren_ohne_yes_verweigert(tmp_path, live_env):
+    with pytest.raises(ads.AdsError, match="--yes"):
+        ads.activate_campaign(date(2026, 10, 29), "employers_eu", confirm=False,
+                              out_dir=tmp_path)
+
+
+def test_aktivieren_setzt_ids(tmp_path, live_env):
+    ads.run_once(date(2026, 10, 29), SEED, live=True, out_dir=tmp_path,
+                 dmp_path=tmp_path / "dmp.jsonl")
+    result = ads.activate_campaign(date(2026, 10, 29), "employers_eu",
+                                   confirm=True, out_dir=tmp_path)
+    assert result["status"] == "active"
+    run = json.loads((tmp_path / "2026-10-29" / "run.json").read_text(encoding="utf-8"))
+    assert ads.find_campaign(run, "employers_eu")["status"] == "active"
+    assert (tmp_path / "2026-10-29" / "activation-employers_eu.json").is_file()
 
 
 def test_dmp_enthaelt_nur_aggregate(tmp_path):
@@ -143,3 +233,45 @@ def test_lauf_schreibt_run_json(tmp_path):
     assert run["mode"] == "dry_run"
     assert len(run["creatives"]) == 8
     assert len(run["campaigns"]) == 2
+
+
+def test_live_meta_video_pfad_legt_paused_an(tmp_path, monkeypatch):
+    """Integration: --live übergibt den Video-Spec an den Meta-Client."""
+    approval = tmp_path / "approval.json"
+    approval.write_text(json.dumps({"campaigns": {
+        "employers_eu": 3.0, "candidates_north_africa": 2.0}}), encoding="utf-8")
+    monkeypatch.setenv("KMHR_ADS_DAILY_CAP_EUR", "5")
+    monkeypatch.setenv("KMHR_ADS_APPROVAL_FILE", str(approval))
+    monkeypatch.setenv("KMHR_ADS_CHANNELS", "meta_ads")
+    monkeypatch.setenv("KMHR_ADS_LIVE_CONFIRM", "1")
+
+    seen: list[dict] = []
+
+    class FakeClient:
+        def __init__(self, cfg):
+            self.cfg = cfg
+
+        def preflight(self):
+            return {"ok": True, "blockers": [], "warnings": []}
+
+        def launch(self, campaign, day, language="de"):
+            seen.append(campaign)
+            return {"status": "paused_created", "campaign_id": "c",
+                    "adset_id": "s", "creative_id": "cr", "ad_id": "a",
+                    "creative_type": "video", "video_id": "vid1",
+                    "daily_budget_eur": campaign["daily_budget_eur"],
+                    "special_ad_categories": ["EMPLOYMENT"],
+                    "language": language}
+
+    monkeypatch.setattr(ads.meta_ads, "MetaAdsClient", FakeClient)
+    result = ads.run_once(date(2026, 10, 29), SEED, live=True,
+                          out_dir=tmp_path, dmp_path=tmp_path / "dmp.jsonl")
+
+    assert result["mode"] == "live_paused"
+    assert seen and all(c["link_description"] == "jobs.hanibal-ai.com" for c in seen)
+    assert any(c["status"] == "paused_created"
+               and c["meta"]["creative_type"] == "video"
+               and c["meta"]["video_id"] == "vid1"
+               for c in result["campaigns"])
+    run = json.loads((tmp_path / "2026-10-29" / "run.json").read_text(encoding="utf-8"))
+    assert run["mode"] == "live_paused"
