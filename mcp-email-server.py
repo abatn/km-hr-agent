@@ -8,6 +8,7 @@ Quelle: https://github.com/bedro96/email-send-mcp (Inspiration)
 from fastmcp import FastMCP
 import smtplib
 import os
+import re
 import sys
 from pathlib import Path
 from email.mime.text import MIMEText
@@ -35,11 +36,21 @@ if env_file.exists():
 
 mcp = FastMCP("email-sender")
 
+_EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+
+
+def _ohne_adressen(text: str) -> str:
+    """Maskiert E-Mail-Adressen in Fehlertexten (DSGVO, 30.10.2026)."""
+    return _EMAIL_RE.sub("<EMAIL>", text)
+
 # Konfiguration aus Umgebungsvariablen
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.mail.yahoo.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")  # App-Passwort
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")  # App-Passwort bzw. Mailtrap-Token
+# Absenderadresse für Header und Envelope (30.10.2026, Mailtrap: muss zur verifizierten
+# Domain passen). Fallback SMTP_USERNAME (Login), damit Altkonfigurationen weiter laufen.
+SMTP_FROM = os.getenv("SMTP_FROM", "").strip() or SMTP_USERNAME
 DEFAULT_FROM_NAME = os.getenv("DEFAULT_FROM_NAME", "KM-HR-Agent")
 
 
@@ -68,10 +79,13 @@ def send_email(
     """
     if not SMTP_USERNAME or not SMTP_PASSWORD:
         return "FEHLER: SMTP_credentials nicht konfiguriert. Setze SMTP_USERNAME und SMTP_PASSWORD in .env"
+    # Port 465 = implizites TLS (SMTP_SSL), wird hier nicht unterstützt. Nur 587 mit STARTTLS.
+    if SMTP_PORT == 465:
+        return "FEHLER: SMTP_PORT 465 wird nicht unterstützt; 587 (STARTTLS) verwenden"
 
     try:
         msg = MIMEMultipart()
-        msg["From"] = f"{DEFAULT_FROM_NAME} <{SMTP_USERNAME}>"
+        msg["From"] = f"{DEFAULT_FROM_NAME} <{SMTP_FROM}>"
         msg["To"] = to
         msg["Subject"] = subject
         if cc:
@@ -91,16 +105,17 @@ def send_email(
             server.starttls()
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
             # Fix 12.09.2026 (Live-Test): Tippfehler SMCP_ -> SMTP_
-            server.sendmail(SMTP_USERNAME, recipients, msg.as_string())
+            server.sendmail(SMTP_FROM, recipients, msg.as_string())
 
-        return f"OK|Gesendet an {to}|{subject}|{datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        # DSGVO: keine Empfängeradresse in der Rückgabe (landet sonst in Runner-Logs/Berichten).
+        return f"OK|Gesendet|{subject}|{datetime.now().strftime('%Y-%m-%d %H:%M')}"
 
     except smtplib.SMTPAuthenticationError:
         return "FEHLER: SMTP-Auth fehlgeschlagen. Prüfe App-Passwort."
     except smtplib.SMTPException as e:
-        return f"FEHLER: SMTP-Fehler: {str(e)}"
+        return f"FEHLER: SMTP-Fehler: {_ohne_adressen(str(e))}"
     except Exception as e:
-        return f"FEHLER: {str(e)}"
+        return f"FEHLER: {_ohne_adressen(str(e))}"
 
 
 @mcp.tool()

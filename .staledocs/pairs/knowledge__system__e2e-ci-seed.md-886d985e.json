@@ -110,7 +110,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-10-30T21:08:34+00:00",
+    "at": "2026-10-30T22:42:00+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -219,6 +219,7 @@
       "tests/test_m02_m14_closure.py": "942c1156f8b2210a80fd987b88ef776e6ed54d5b",
       "tests/test_mail_bounce.py": "9c4ce969a41740fea41ac3f69343d0ad811fa574",
       "tests/test_match_actions.py": "7cae3e947c7a553d63dd7a2aadf5583fc297ab42",
+      "tests/test_mcp_email_server.py": "24520bd5ad90bc1f83bc392a970796cabfe25a6f",
       "tests/test_mcp_official_client.py": "c804c270140e520bc4a94334065dd5f3c35c2b5a",
       "tests/test_mcp_session.py": "ee5d2e0f051df45f772a44869ac49c214ebdaa2a",
       "tests/test_mcp_warmup.py": "0616faa668be24917879c012ecb1ae411a9458b2",
@@ -254,6 +255,7 @@
       "tests/test_social_oauth.py": "42b62141b071d7c58d41741aab20a66d8a2503e1",
       "tests/test_status_guards_md.py": "544699205a4b9d6daa7ca8bf0548bca6e86121a2",
       "tests/test_status_labels_complete.py": "94e67fed275c828932d2938c5b0178de1d7579c7",
+      "tests/test_systemd_units.py": "3a773f76b9bda245b40b55f20d24cf823d8b8375",
       "tests/test_tabs_render.py": "9603b0520dd7f11d317cb7c268c4aa8d5a88db5b",
       "tests/test_ui_fixes_p0.py": "fe736537f15154555ce5cdb9641f208973d52b73",
       "tests/test_vdo_raumname.py": "65a88b218b31d1757bda6f9122453948c57d935e",
@@ -261,9 +263,9 @@
       "tests/test_welcome_mail.py": "c12ab7aae1bcbc0a2cd7043ea5eb5aa0cc477a23",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "commit": "78dc306614342dd2f4de922b540f9994d9145a55",
     "doc_blob": "061a9260ab8132e4ab336093b712e9a049a9bb85",
-    "note": "knowledge/system/e2e-ci-seed.md: Spec nennt keine Payload-Felder; e2e_password_reset nur als Skriptname und Lauf-Historie erwaehnt. Zaehlwerte nicht neu gemessen, Aussage unveraendert."
+    "note": "e2e-ci-seed.md: Spec beschreibt die Seed-DB, nicht den Mailversand; geaenderte Datei tests/test_mcp_email_server.py ist nicht referenziert, Aussage unveraendert."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

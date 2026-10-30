@@ -180,14 +180,14 @@
       "webui/pages/login.py",
       "{task_type}-kandidat-{cid}-{datum}.md"
     ],
-    "at": "2026-10-30T21:08:31+00:00",
+    "at": "2026-10-30T22:42:03+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
       "scripts/agent-test.sh": "3ec67725f693f38a001c503fc8a9983552567b9e"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
-    "doc_blob": "3e9a7abe0b573256f86b1dbe7dc588ed380243ab",
-    "note": "knowledge/system/agent-automation.md: Abschnitte 3.2 bis 3.5 gegen send_welcome, retry_delay_seconds, poll_bounces, record_mail_bounce, send_password_reset und Admin-Karte geprueft; Codemarken und Tabellenwerte stimmen."
+    "commit": "78dc306614342dd2f4de922b540f9994d9145a55",
+    "doc_blob": "0396db60ee2bbf778945ee47de0ad3876ffd9d90",
+    "note": "agent-automation.md Zeile E-Mail-Zugang gegen mcp-email-server.py (SMTP_FROM, Port 587 STARTTLS, 465 abgewiesen) und configuration-secrets.md \u00a7(j) geprueft; stimmt nach Korrektur."
   },
   "doc": "knowledge/system/agent-automation.md",
   "schema": 1

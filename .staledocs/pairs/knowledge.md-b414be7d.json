@@ -21,6 +21,7 @@
       "NVIDIA_API_KEY",
       "PAGE_MAP",
       "README.md",
+      "SMTP_*",
       "_()",
       "_TAB_MAP",
       "access-control-v3-1-zwei-ebenen-admin.md",
@@ -166,7 +167,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-30T21:08:29+00:00",
+    "at": "2026-10-30T22:55:49+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -185,7 +186,7 @@
       "knowledge/legal/datenschutz.md": "519e161d59e90a03f749b37cb9ec52f0bcdecf0b",
       "knowledge/legal/document-types.md": "cb6176ac9532b7ca0e1407b3e86d82b953d8edff",
       "knowledge/legal/dsgvo-gate.md": "de5caa71ad1b664c5f37fef5d8655610be4b5e5e",
-      "knowledge/legal/gdpr-policy.md": "a380b241c5735e1500d56a9c96f0756b2f1e7127",
+      "knowledge/legal/gdpr-policy.md": "b95c35062711eb7901d5014703a83abb68e7d036",
       "knowledge/legal/impressum.ar.md": "f59ca1506eb83b3df9fe2499c5181a16576694b0",
       "knowledge/legal/impressum.en.md": "cd58c524cbfbcfaab376a216f1a918125053c842",
       "knowledge/legal/impressum.fr.md": "7e7d05440ea95958b5318c2e8175269d89857c7c",
@@ -216,11 +217,11 @@
       "knowledge/portal/matching-filter.md": "fd8d58497673aeaad1d6108dec7f20b3b4b68ed1",
       "knowledge/profiles/README.md": "5578fd70feefdd6b50e07944ade5a65cd7f4745e",
       "knowledge/system/access-control.md": "bbd910508123611175eb16c0826f705c8f866672",
-      "knowledge/system/agent-automation.md": "3e9a7abe0b573256f86b1dbe7dc588ed380243ab",
+      "knowledge/system/agent-automation.md": "0396db60ee2bbf778945ee47de0ad3876ffd9d90",
       "knowledge/system/asgi-guard.md": "3966b6fb918be26f75767f818444e97b5a6a85e2",
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
       "knowledge/system/cloudflare-deployment.md": "6c4cef6bd843fe3f0eab4efc0eab1a97a62c0406",
-      "knowledge/system/configuration-secrets.md": "f6d26983be76d34d3a3cd80445307d97761eaadb",
+      "knowledge/system/configuration-secrets.md": "fb28f4b694961058a24643b44a78e227d7a35b40",
       "knowledge/system/dependency-pinning.md": "2c5e276d7b22734b3740e73a4a1d998c99481697",
       "knowledge/system/deploy-pipeline.md": "b897bf473f5ca58083d5b5678cd8d909d6870c57",
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
@@ -229,7 +230,7 @@
       "knowledge/system/i18n-runner-chain.md": "3b67bad8a19aa567823715b675bc3d91e516b49a",
       "knowledge/system/i18n.md": "2c06bbed6073d78c3a2163ab8b5afb70d3c0ba4e",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
-      "knowledge/system/mcp-connector-config.md": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
+      "knowledge/system/mcp-connector-config.md": "92ca0bbefdafa0dd6c6d892be9b2741e6c00e653",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
       "knowledge/system/md-schreib-konvention.md": "c19695d3d546fecd2c77aed4d5115d13169701fc",
       "knowledge/system/mvp.md": "6c5a2e747b1a2fd2b9178862265423d1f9d49e33",
@@ -247,9 +248,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "commit": "78dc306614342dd2f4de922b540f9994d9145a55",
     "doc_blob": "f4cd7ae393177997845f9b2559bcc3f72954dc06",
-    "note": "knowledge.md: i18n-msgid-Zahl 1329 gegen grep auf de/messages.po (30.10.2026) geprueft. Tabellenzahl 18 ist ein datierter Messstand (26.10.2026), vorbestehende Abweichung zum Schema-Gate (20) offen gemeldet; keine neue Tabelle durch diese Aenderung."
+    "note": "knowledge.md: Zeile zu den vier Env-Dateien (.env-email mit SMTP_*) gegen knowledge/system/configuration-secrets.md \u00a7(j) und .env-email.example geprueft; Aussage bleibt richtig."
   },
   "doc": "knowledge.md",
   "schema": 1

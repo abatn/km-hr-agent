@@ -34,7 +34,7 @@
       "webui/logic.py",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-20T11:26:44+00:00",
+    "at": "2026-10-30T22:42:04+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -43,9 +43,9 @@
       "connectors/salary-data-server.py": "4ec2505892fece82a85065d6d2fbaa4ef6fb766a",
       "connectors/test-connector.py": "8b440d9aff9b8890a4c762fa7b8f8e208183fff1"
     },
-    "commit": "0663735dd06ee99b6c5a727cb37775a030221245",
-    "doc_blob": "e8ba964e119c1927789cbdbf6c73d00bccdfe0ba",
-    "note": ""
+    "commit": "78dc306614342dd2f4de922b540f9994d9145a55",
+    "doc_blob": "92ca0bbefdafa0dd6c6d892be9b2741e6c00e653",
+    "note": "mcp-connector-config.md email-sender-Zeilen gegen mcp-email-server.py und .env-email.example geprueft; Host und Stand 30.10.2026 stimmen."
   },
   "doc": "knowledge/system/mcp-connector-config.md",
   "schema": 1

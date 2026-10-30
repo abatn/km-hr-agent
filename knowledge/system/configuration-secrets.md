@@ -273,3 +273,34 @@ aus dem Absender-Postfach und sperrt weitere Welcome-Mails für das betroffene K
 
 **Nachweis:** `tests/test_mail_bounce.py` (synthetische DSN, Idempotenz, Flag aus, keine Adresse
 in Ablage und Rückgabe, Welcome-Sperre).
+
+---
+
+## (j) E-Mail-Versand: Mailtrap Transactional (30.10.2026)
+
+**Quelle: Auftrag „Mailtrap-Umstellung" (30.10.2026).** Der Versand läuft über `mcp-email-server.py`
+(Tool `send_email`, einziger SMTP-Pfad). Die Konfiguration liegt in `.env-email`; Vorlage:
+`.env-email.example` (versioniert, ohne Werte).
+
+| Variable | Zweck | Wert / Default |
+|---|---|---|
+| `SMTP_SERVER` | Mailtrap-Transactional-Host | `live.smtp.mailtrap.io` |
+| `SMTP_PORT` | Port, nur STARTTLS | `587` (465 wird abgewiesen) |
+| `SMTP_USERNAME` | Login | `api` (fest bei Mailtrap) |
+| `SMTP_PASSWORD` | Transactional-API-Token der Domain (**Geheimnis**) | nur in `.env-email`, `chmod 600` |
+| `SMTP_FROM` | Absender für Header **und** Envelope | `no-reply@hanibal-ai.com`; leer = Fallback auf `SMTP_USERNAME` |
+| `DEFAULT_FROM_NAME` | Anzeigename | `KM-HR-Agent` |
+
+**Regeln (bindend):**
+1. Der Absender muss zur verifizierten Domain gehören. Header und Envelope kommen beide aus `SMTP_FROM`.
+2. Ein SPF-Eintrag wird **nicht** angelegt. Mailtrap deckt SPF über den Domain-Verifikations-Record ab
+   (Mailtrap-Doku, Cloudflare-Anleitung). DMARC bleibt bei `p=none`, bis die Reports ausgewertet sind.
+3. Sandbox-Zugangsdaten nie in `.env-email` der Produktion. Die Sandbox liefert nicht an echte Empfänger.
+4. Keine Empfängeradresse, kein Token in Logs, Rückgaben oder `error_text`. Die Erfolgsmeldung enthält
+   keine Adresse; Fehlertexte werden im Server maskiert (`_ohne_adressen`).
+5. Der Token wird nie committet. Bei Verdacht auf Offenlegung rotieren.
+6. Deploy überträgt `.env-email` nicht. Die Datei auf dem Server wird von Hand gepflegt
+   (`knowledge/system/deploy-pipeline.md`). Rollback: die gesicherte Datei zurückkopieren.
+
+**Nachweis:** `tests/test_mcp_email_server.py` (Mock-SMTP: Header und Envelope, Fallback, Port 587 mit
+STARTTLS, Port 465 abgewiesen, adressfreie Rückgaben).

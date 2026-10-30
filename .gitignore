@@ -2,6 +2,7 @@
 .env*
 !.env.example
 !.env-social.example
+!.env-email.example
 *.key
 github.key
 *.pem

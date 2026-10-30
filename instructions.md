@@ -23,7 +23,7 @@
 | `pdf-reader` | `read_pdf_text`, `get_pdf_info`, `analyze_pdf_structure` | MCP (Python) | ✅ FUNKTIONIERT | PDF-Text extrahieren |
 | `meeting-tools` | `generate_screening_questions`, `generate_ics_file`, `create_meeting_link` | MCP (Python) | ✅ FUNKTIONIERT | Screening-Fragen + ICS generieren (`create_meeting_link` = LEGACY, wird nicht genutzt; URL seit 27.09.2026 VDO.Ninja statt Jitsi) |
 | ~~`jitsi-meeting`~~ | — | — | **ENTFERNT 27.09.2026** | 0 Aufrufe im Code; VDO.Ninja-Migration (Spec `knowledge/system/vdo-ninja-migration.md`) |
-| `email-sender` | `send_email`, `send_interview_invitation`, `send_pre_screen_invitation` | MCP (Python) | ✅ FUNKTIONIERT | E-Mails via SMTP (Server aus `.env-email`; **seit 24.09.2026 Gmail** smtp.gmail.com:587 STARTTLS, davor Yahoo) |
+| `email-sender` | `send_email`, `send_interview_invitation`, `send_pre_screen_invitation` | MCP (Python) | ✅ FUNKTIONIERT | E-Mails via SMTP (Server aus `.env-email`; **seit 30.10.2026 Mailtrap Transactional** live.smtp.mailtrap.io:587 STARTTLS, vorher Gmail seit 24.09.2026, davor Yahoo) |
 | `playwright` | `browser_navigate`, `browser_snapshot`, `browser_click`, `browser_fill_form`, `browser_find`, `browser_close` | MCP (npx) | ✅ FUNKTIONIERT | Browser-Automation (Chromium), Webseiten laden und auslesen |
 | `fetch` | `fetch` | MCP (uvx) | ✅ FUNKTIONIERT | HTTP-Fetch (Web-Inhalte laden) |
 | `anysearch` | `search`, `extract`, `batch_search`, `get_sub_domains` | MCP (remote) | ✅ **anonym/schlüsselfrei seit 01.10.2026** (nur `X-Anysearch-Client`; die `Authorization`-Zeile wurde am 01.10.2026 aus `opencode.json` **entfernt**, H9 geschlossen; wirksam nach OpenCode-Neustart) | Websuche (Heimatland-Suche, Kurse) |
