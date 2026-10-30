@@ -123,7 +123,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-10-30T12:19:07+00:00",
+    "at": "2026-10-30T12:52:12+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -147,7 +147,7 @@
       "scripts/jobs_x402_feed.py": "13c665fcf6e86945ff2bcf12677cf8eede07f1e1",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
-      "scripts/meta_ads.py": "4375dad7e80a5fee9081a9aed3fb078c2c6a22c6",
+      "scripts/meta_ads.py": "44ceb47567ca73b69e39d78bf0604b9ff6e9f1aa",
       "scripts/pixel_verify.py": "9c940e5eede93c9b6a0aca393500ec5329e61140",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
       "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
@@ -262,7 +262,7 @@
       "tests/test_mcp_warmup.py": "0616faa668be24917879c012ecb1ae411a9458b2",
       "tests/test_md_writer_discipline.py": "364434878b68b55343e49a99a2b8c1a2adb30037",
       "tests/test_mdguard_checker.py": "9af1a007ffc0e81b6de3aefb624ae5518895e968",
-      "tests/test_meta_ads.py": "ded6e2c38353b91737c148b194653dd2d1a3c04b",
+      "tests/test_meta_ads.py": "e689a76741601b53036ee666976cce9396d38da3",
       "tests/test_na1_nd3.py": "35e3b99036f3a34be730bb05c69c856b59a5024f",
       "tests/test_nf2_score_cache.py": "e3325c3111402472c5dfacecde41bc15ebf36cfe",
       "tests/test_nm1_nm2.py": "61af662e945c5af5a21597e4bd077af4ee7fe8bb",
@@ -327,9 +327,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "d1b0c68b8f6265acc477f1b4a5119a7912c589ba",
+    "commit": "c3dea603bb20273556e7089d35ddf7e2c549ba0a",
     "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "tests/test_meta_ads.py gepr\u00fcft: nur Test-Token-Konstante auf test-token-not-real ge\u00e4ndert, Video-Tests unver\u00e4ndert"
+    "note": "scripts/meta_ads.py und tests/test_meta_ads.py gepr\u00fcft: Page-Token-Preflight via debug_token, Tests gr\u00fcn"
   },
   "doc": "AGENTS.md",
   "schema": 1

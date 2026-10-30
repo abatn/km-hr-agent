@@ -45,7 +45,7 @@ Voraussetzungen, die **ein Mensch** einmalig erledigt (Code kann das nicht):
 
 1. **Werbekonto** in Meta Business anlegen, Rechtsperson und Rechnungsdaten hinterlegen, **Zahlungsmittel** hinzufügen.
 2. **Seite** als Anzeigengeber (Facebook-Seite vorhanden, Rolle „Anzeigen verwalten“).
-3. **Token mit `ads_management`**: Graph API Explorer, App der App-ID aus `.env-social`, Nutzer muss App-Admin/Entwickler/Tester **und** Werbekonto-Admin sein. In der Entwicklungsumgebung der App funktioniert das ohne App-Review (Review ist nur für fremde Nutzer nötig).
+3. **Token mit `ads_management`**: Graph API Explorer, App der App-ID aus `.env-social`, Nutzer muss App-Admin/Entwickler/Tester **und** Werbekonto-Admin sein. In der Entwicklungsumgebung der App funktioniert das ohne App-Review (Review ist nur für fremde Nutzer nötig). Ein Page-Token für die Zielseite funktioniert ebenfalls; der Preflight liest dessen Scopes per `debug_token` (dafür `META_APP_ID`/`META_APP_SECRET` oder `FACEBOOK_APP_ID`/`FACEBOOK_APP_SECRET` setzen).
 4. **DSA-Begünstigter/Bezahler** eintragen (Pflicht für DE/FR-Zielgruppe).
 
 Konfiguration in `.env-social` (chmod 600):
@@ -58,6 +58,9 @@ META_DSA_BENEFICIARY=Hanibal AI
 META_DSA_PAYOR=Hanibal AI
 META_GRAPH_VERSION=v26.0
 META_ADS_CURRENCY=EUR
+# Optional, wenn ein Page-Token statt User-Token genutzt wird:
+# META_APP_ID=2263359441188320
+# META_APP_SECRET=...
 # Video-Ad (optional; ohne Video: Link-Anzeige)
 META_VIDEO_PATH=/pfad/zum/reel.mp4
 # oder: META_VIDEO_URL=https://.../reel.mp4

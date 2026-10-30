@@ -110,6 +110,29 @@ def test_preflight_blockiert_fremde_waehrung():
     assert any("USD" in b for b in report["blockers"])
 
 
+def test_preflight_page_token_nutzt_debug_token():
+    responses = _preflight_ok()
+    responses["me"] = {"id": "999", "name": "KMHR Seite"}
+    responses["debug_token"] = {"data": {
+        "is_valid": True,
+        "scopes": ["ads_management", "ads_read", "pages_read_engagement"],
+    }}
+    report = meta.MetaAdsClient(
+        _cfg(app_id="2263359441188320", app_secret="test-secret"),
+        transport=FakeTransport(responses)).preflight()
+    assert report["ok"] is True, report["blockers"]
+    assert report["token_type"] == "page"
+    assert report["permissions"]["ads_management"] == "granted"
+
+
+def test_preflight_page_token_ohne_app_secret_blockiert():
+    responses = _preflight_ok()
+    responses["me"] = {"id": "999", "name": "KMHR Seite"}
+    report = meta.MetaAdsClient(_cfg(), transport=FakeTransport(responses)).preflight()
+    assert report["ok"] is False
+    assert any("META_APP_ID" in b for b in report["blockers"])
+
+
 def test_preflight_fehlt_dsa_blockiert_eu():
     report = meta.MetaAdsClient(_cfg(dsa_beneficiary="", dsa_payor=""),
                                 transport=FakeTransport(_preflight_ok())).preflight()

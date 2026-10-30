@@ -39,15 +39,15 @@
       "tests/test_meta_ads.py",
       "video_id"
     ],
-    "at": "2026-10-29T22:47:31+00:00",
+    "at": "2026-10-30T12:52:13+00:00",
     "code_blobs": {
       "scripts/ads_agent.py": "d7f24f2ba88fca4d9b18d317f9478c05dbddb22c",
       "scripts/social_agent.py": "466b61c9a3ee06a685eb620dd6cd10beea594e5f",
       "tests/test_ads_agent.py": "375198330d4bdca404d1b9c765b3260fd7388e8f"
     },
-    "commit": "d1b0c68b8f6265acc477f1b4a5119a7912c589ba",
-    "doc_blob": "40e75c6921bd61202151083574bc71f3c1d61a7d",
-    "note": "marketing/ads-agent.md und scripts/meta_ads.py gepr\u00fcft: Thumbnail-Pflicht, adimages/image_hash und Meta-2026-Felder dokumentiert"
+    "commit": "c3dea603bb20273556e7089d35ddf7e2c549ba0a",
+    "doc_blob": "77044bfd65851a305bdc0ec199973e8944c5954c",
+    "note": "marketing/ads-agent.md und scripts/meta_ads.py gepr\u00fcft: Page-Token + META_APP_ID/SECRET dokumentiert"
   },
   "doc": "marketing/ads-agent.md",
   "schema": 1

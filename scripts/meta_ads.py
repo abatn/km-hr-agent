@@ -138,6 +138,8 @@ class MetaConfig:
     currency: str = "EUR"
     dsa_beneficiary: str = ""
     dsa_payor: str = ""
+    app_id: str = ""
+    app_secret: str = ""
     video_id: str = ""
     video_url: str = ""
     video_path: str = ""
@@ -166,6 +168,8 @@ class MetaConfig:
             currency=(e.get("META_ADS_CURRENCY") or "EUR").strip().upper(),
             dsa_beneficiary=(e.get("META_DSA_BENEFICIARY") or "").strip(),
             dsa_payor=(e.get("META_DSA_PAYOR") or "").strip(),
+            app_id=(e.get("META_APP_ID") or e.get("FACEBOOK_APP_ID") or "").strip(),
+            app_secret=(e.get("META_APP_SECRET") or e.get("FACEBOOK_APP_SECRET") or "").strip(),
             video_id=(e.get("META_VIDEO_ID") or "").strip(),
             video_url=(e.get("META_VIDEO_URL") or "").strip(),
             video_path=(e.get("META_VIDEO_PATH") or "").strip(),
@@ -202,11 +206,12 @@ class MetaAdsClient:
     # ── HTTP ────────────────────────────────────────────────────────────────
     def _call(self, method: str, path: str, params: dict[str, Any] | None = None,
               data: dict[str, Any] | None = None,
-              host: str = GRAPH_HOST) -> dict[str, Any]:
+              host: str = GRAPH_HOST,
+              access_token: str | None = None) -> dict[str, Any]:
         if not self.cfg.token:
             raise MetaAdsError("META_ADS_ACCESS_TOKEN fehlt")
         p = {k: str(v) for k, v in (params or {}).items()}
-        p["access_token"] = self.cfg.token
+        p["access_token"] = access_token or self.cfg.token
         body = None
         if data is not None:
             body = {}
@@ -358,8 +363,31 @@ class MetaAdsClient:
             return result
 
         me = self.get("me", fields="id,name")
-        perms = self.get("me/permissions").get("data", [])
-        granted = {p.get("permission"): p.get("status") for p in perms}
+        is_page_token = str(me.get("id")) == self.cfg.page_id
+        result["token_type"] = "page" if is_page_token else "user"
+        if is_page_token:
+            # Page-Token haben keine /me/permissions-Liste. Die Scopes stehen
+            # im debug_token; dafür werden App-ID/Secret benötigt.
+            if not (self.cfg.app_id and self.cfg.app_secret):
+                blockers.append(
+                    "Page-Token erkannt, aber META_APP_ID/META_APP_SECRET fehlen "
+                    "für die Scope-Prüfung")
+                granted = {}
+            else:
+                try:
+                    debug = self._call(
+                        "GET", "debug_token", {"input_token": self.cfg.token},
+                        access_token=f"{self.cfg.app_id}|{self.cfg.app_secret}")
+                    scopes = debug.get("data", {}).get("scopes", [])
+                    granted = {str(s): "granted" for s in scopes}
+                except MetaAdsError:
+                    granted = {}
+                    blockers.append(
+                        "Page-Token-Scopes nicht lesbar (debug_token); "
+                        "META_APP_ID/META_APP_SECRET prüfen")
+        else:
+            perms = self.get("me/permissions").get("data", [])
+            granted = {p.get("permission"): p.get("status") for p in perms}
         result["permissions"] = {"ads_management": granted.get("ads_management", "missing"),
                                  "ads_read": granted.get("ads_read", "missing"),
                                  "pages_read_engagement": granted.get(
