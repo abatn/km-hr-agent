@@ -11,6 +11,7 @@
       ],
       "ignore": [
         "*-kandidat-{id}-*.md",
+        ".venv-pdf",
         "babel.cfg",
         "contract-preflight-*.md",
         "git@github.com:abatn/km-hr-agent.git",
@@ -125,7 +126,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-31T18:06:49+00:00",
-  "note": "advanced by pair ack (no weakening)",
+  "at": "2026-10-31T18:17:47+00:00",
+  "note": "anchors.ignore um .venv-pdf ergaenzt: der Pfad ist ein Laufzeit-Symlink (deploy/provision-mcp.sh -> .venv-streamlit), gitignored und bewusst nie im Repo; die Doku-Aussage in mcp-connector-config.md ist korrekt, kein Repo-Pfad-Claim.",
   "schema": 1
 }

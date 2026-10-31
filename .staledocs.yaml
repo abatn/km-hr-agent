@@ -269,6 +269,8 @@ anchors:
     - "contract-preflight-*.md"
     - "*-kandidat-{id}-*.md"
     - "verify_documents-kandidat-{id}-*.md"
+    # Laufzeit-Artefakte (nicht im Repo, werden vom Deploy angelegt)
+    - ".venv-pdf"                        # Symlink -> .venv-streamlit (deploy/provision-mcp.sh)
     # Geplante, (noch) nicht angelegte Dateien — Prosa ist korrekt (Backlog/Bauplan)
     - "tests/e2e_matching_filter.py"
     - "tests/e2e_c2_connector.py"
