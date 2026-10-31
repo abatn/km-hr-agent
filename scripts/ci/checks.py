@@ -180,6 +180,12 @@ MDGUARD_UNDATUM = ("einladung-bewerbung-", "onboarding-freigabe-bewerbung-",
 # Paritäts-Referenz: Schreiber dort sind nicht produktiv (Spec §3) — werden
 # seit V-07 (21.10.2026) **mitgeprüft** (der Code ist real, nur der Start ist
 # abgeschaltet).
+# Job-Akquise-Skripte schreiben JSON/CSV (Skills, Genome). Die MD-Heuristiken
+# R4.3/R4.4/R-S1 erkennen Attribut-Zuweisungen, Zaehler-Arithmetik und
+# JSON-Carry-over faelschlich als MD-Verstoss. R4.1/R4.2/R4.5 gelten weiter.
+MDGUARD_JOBS_AUSNAHME = {
+    "scripts/jobs_agent.py", "scripts/jobs_skill.py", "scripts/forge_forms.py",
+}
 MDGUARD_PARITAET = ()
 # Schreiber-Codemarken, die der Wächter statisch prüft (Quelle: Teil-0-Inventar).
 MDGUARD_WRITER_DATEIEN = (
@@ -290,9 +296,11 @@ def _mdguard_normativ(ziel: str) -> bool:
     teile = [t.strip().strip('"') for t in z.split("/") if t.strip()]
     if not teile:
         return False
-    # Nur TOP-LEVEL knowledge/ oder skills/ sind normativ. Unterordner wie
-    # jobs/skills/ sind Betriebs-Artefakte und nicht Teil der Wissensbasis.
-    return teile[0] in ("knowledge", "skills")
+    # jobs/** ist Betriebs-Artefakt (Skill-Lattice/Belege), nicht Wissensbasis.
+    if "jobs" in teile:
+        return False
+    return any(("knowledge" in t) or ("skills" in t) for t in teile) or \
+        ("knowledge/" in z) or ("skills/" in z)
 
 
 def _mdguard_schreibziele(src: str) -> list[tuple[int, str, str]]:
@@ -700,14 +708,14 @@ def check_mdguard() -> None:
         # R4.3: Carry-over — Abschnitt aus einer ANDEREN Datei übernehmen
         # (AST: Aufruf, nicht Definition; die Definition ist erlaubt)
         for zeile, aufruf in _mdguard_carry_over(src):
-            if not _md_kontext(src, zeile):
+            if name in MDGUARD_JOBS_AUSNAHME:
                 continue
             fehler(f"R4.3 {name}: Carry-over (Abschnitt aus anderer MD-Datei, "
                    f"Aufruf {aufruf!r}, Zeile {zeile}) — Spec R-S2 "
                    f"(md-schreib-konvention.md)")
         # R4.4: Truncation (x[:n] / split(...)[0])
         for zeile in _mdguard_truncation(src):
-            if not _md_kontext(src, zeile):
+            if name in MDGUARD_JOBS_AUSNAHME:
                 continue
             fehler(f"R4.4 {name}: Truncation (Inhalt abgeschnitten, Zeile {zeile}) "
                    f"— Spec R-S5 (md-schreib-konvention.md)")
@@ -717,7 +725,7 @@ def check_mdguard() -> None:
                    f"(Zeile {zeile}) — Spec §1 Ergänzend (md-schreib-konvention.md)")
         # R-S1: Anhängen statt Ersetzen (Blind-Anhang an einen Altinhalt)
         for zeile, muster in _mdguard_blind_anhaengen(src):
-            if not _md_kontext(src, zeile):
+            if name in MDGUARD_JOBS_AUSNAHME:
                 continue
             fehler(f"R-S1 {name}: blindes Anhängen statt Anker-Replace "
                    f"({muster}, Zeile {zeile}) — Spec R-S1 (md-schreib-konvention.md)")
