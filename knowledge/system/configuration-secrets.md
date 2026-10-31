@@ -290,6 +290,7 @@ in Ablage und Rückgabe, Welcome-Sperre).
 | `SMTP_PASSWORD` | Transactional-API-Token der Domain (**Geheimnis**) | nur in `.env-email`, `chmod 600` |
 | `SMTP_FROM` | Absender für Header **und** Envelope | `no-reply@hanibal-ai.com`; leer = Fallback auf `SMTP_USERNAME` |
 | `DEFAULT_FROM_NAME` | Anzeigename | `KM-HR-Agent` |
+| `SMTP_REPLY_TO` | optionale Antwortadresse (Reply-To-Header) | leer = kein Header; nur mit MX-Record der Domain und existierendem Postfach |
 
 **Regeln (bindend):**
 1. Der Absender muss zur verifizierten Domain gehören. Header und Envelope kommen beide aus `SMTP_FROM`.
@@ -302,5 +303,12 @@ in Ablage und Rückgabe, Welcome-Sperre).
 6. Deploy überträgt `.env-email` nicht. Die Datei auf dem Server wird von Hand gepflegt
    (`knowledge/system/deploy-pipeline.md`). Rollback: die gesicherte Datei zurückkopieren.
 
+7. Mail-Links (Anmeldung, Datenschutz, Reset) kommen aus `KMHR_PUBLIC_BASE_URL`. Produktion:
+   `https://jobs.hanibal-ai.com`. Ohne Eintrag zeigen die Links auf `localhost`. Der Wert gehört in
+   `.env` (WebUI-Umgebung, vom Runner geerbt), nicht in `.env-email`.
+8. Versand über Mailtrap Shared IP. Dedicated IP erst ab rund 100.000 Mails pro Monat (Mailtrap-Doku);
+   ein neuer Dedicated IP durchläuft 3 Wochen Warm-up (Tag 1: 300 Mails/Tag, max. 60/Stunde).
+   Volumen bis dahin pro Tag und Stunde beobachten, Anstieg langsam halten.
+
 **Nachweis:** `tests/test_mcp_email_server.py` (Mock-SMTP: Header und Envelope, Fallback, Port 587 mit
-STARTTLS, Port 465 abgewiesen, adressfreie Rückgaben).
+STARTTLS, Port 465 abgewiesen, adressfreie Rückgaben, Reply-To nur wenn gesetzt).

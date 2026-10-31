@@ -133,3 +133,23 @@ def test_fehlertext_mit_adresse_wird_maskiert(smtp, mod):
     assert res.startswith("FEHLER")
     assert ADRESSE not in res
     assert "<EMAIL>" in res
+
+
+def test_reply_to_nur_wenn_gesetzt(smtp, monkeypatch):
+    monkeypatch.setenv("SMTP_FROM", "no-reply@hanibal-ai.com")
+    monkeypatch.setenv("SMTP_USERNAME", "api")
+    monkeypatch.setenv("SMTP_PASSWORD", "test-token")
+    monkeypatch.setenv("SMTP_PORT", "587")
+    monkeypatch.setenv("SMTP_REPLY_TO", "")
+    ohne = _lade_modul("mcp_email_server_ohne_reply")
+    ohne.send_email(ADRESSE, "Betreff", "Text")
+    assert "Reply-To:" not in smtp.verbindungen[-1].nachricht
+
+    monkeypatch.setenv("SMTP_REPLY_TO", "kontakt@hanibal-ai.com")
+    mit = _lade_modul("mcp_email_server_mit_reply")
+    mit.send_email(ADRESSE, "Betreff", "Text")
+    conn = smtp.verbindungen[-1]
+    assert "Reply-To: kontakt@hanibal-ai.com" in conn.nachricht
+    assert conn.absender == "no-reply@hanibal-ai.com"
+    assert "<no-reply@hanibal-ai.com>" in conn.nachricht
+

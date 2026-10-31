@@ -51,6 +51,9 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")  # App-Passwort bzw. Mailtrap-Tok
 # Absenderadresse für Header und Envelope (30.10.2026, Mailtrap: muss zur verifizierten
 # Domain passen). Fallback SMTP_USERNAME (Login), damit Altkonfigurationen weiter laufen.
 SMTP_FROM = os.getenv("SMTP_FROM", "").strip() or SMTP_USERNAME
+# Optionale Antwortadresse (Reply-To-Header). Kein Standardwert: nur eine Adresse eintragen,
+# die tatsächlich ein Postfach hat (Domain mit MX-Record).
+SMTP_REPLY_TO = os.getenv("SMTP_REPLY_TO", "").strip()
 DEFAULT_FROM_NAME = os.getenv("DEFAULT_FROM_NAME", "KM-HR-Agent")
 
 
@@ -86,6 +89,8 @@ def send_email(
     try:
         msg = MIMEMultipart()
         msg["From"] = f"{DEFAULT_FROM_NAME} <{SMTP_FROM}>"
+        if SMTP_REPLY_TO:
+            msg["Reply-To"] = SMTP_REPLY_TO
         msg["To"] = to
         msg["Subject"] = subject
         if cc:
