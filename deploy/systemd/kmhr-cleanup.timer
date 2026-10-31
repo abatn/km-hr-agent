@@ -1,0 +1,12 @@
+[Unit]
+Description=Täglicher KM-HR-Agent DSGVO-Cleanup
+Documentation=https://github.com/abatn/km-hr-agent/blob/main/knowledge/legal/gdpr-policy.md
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+Persistent=true
+RandomizedDelaySec=300
+Unit=kmhr-cleanup.service
+
+[Install]
+WantedBy=timers.target

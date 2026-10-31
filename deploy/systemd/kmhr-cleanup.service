@@ -1,0 +1,11 @@
+[Unit]
+Description=KM-HR-Agent DSGVO-Cleanup (6-Monats-Frist, 183 Tage)
+Documentation=https://github.com/abatn/km-hr-agent/blob/main/knowledge/legal/gdpr-policy.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/km-hr-agent
+EnvironmentFile=-/opt/km-hr-agent/.env
+ExecStart=/opt/km-hr-agent/.venv-streamlit/bin/python /opt/km-hr-agent/scripts/run_cleanup.py

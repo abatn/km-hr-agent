@@ -112,7 +112,7 @@
 - Bei Verstoß: Match wird nicht fortgesetzt
 
 ### 8b. Automatische Löschung
-- Kein Cron-Job: `run_dsgvo_cleanup_once()` läuft beim **App-Start** (`app_bootstrap()`) — bei dauerhaft laufender App ohne Neustart kein Lauf; der Tages-Marker greift nur bei übergebenem Marker-Dict (Messung ⓘ08.10.2026; frühere Fassung „Cron-Job: Täglich" war falsch)
+- Zwei Wege: `run_dsgvo_cleanup_once()` läuft beim **App-Start** (`app_bootstrap()`) und täglich über den systemd-Timer `kmhr-cleanup.timer` → `kmhr-cleanup.service` → `scripts/run_cleanup.py` (ruft ausschließlich `webui.logic.run_dsgvo_cleanup_once()` auf). Der Timer steht auf 03:15 Uhr (`Persistent=true`, `RandomizedDelaySec=300`) und wird über `deploy/systemd/` installiert.
 - Löschung: Vollständig + Protokollierung
 - Ausnahme: Compliance-Daten (36 Monate Pflicht)
 

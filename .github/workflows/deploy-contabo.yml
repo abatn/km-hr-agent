@@ -72,6 +72,14 @@ jobs:
             systemctl daemon-reload
             systemctl enable --now kmhr-social.timer
           fi
+          if [ -f deploy/systemd/kmhr-cleanup.service ] && [ -f deploy/systemd/kmhr-cleanup.timer ]; then
+            install -m 644 deploy/systemd/kmhr-cleanup.service \
+              deploy/systemd/kmhr-cleanup.timer /etc/systemd/system/
+            systemctl daemon-reload
+            systemctl enable --now kmhr-cleanup.timer
+            systemctl start kmhr-cleanup.service || \
+              journalctl -u kmhr-cleanup -n 20 --no-pager
+          fi
           if [ -f deploy/caddy/jobs.hanibal-ai.com.caddy ] && command -v caddy >/dev/null 2>&1; then
             install -d -m 755 /etc/caddy/conf.d
             install -m 644 deploy/caddy/jobs.hanibal-ai.com.caddy \
