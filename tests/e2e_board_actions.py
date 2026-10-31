@@ -117,6 +117,30 @@ def _wait_status(app_id: int, expected: str, timeout=12.0) -> bool:
     return False
 
 
+def _wait_tasks(app_id: int, pre_tasks: int, timeout=12.0) -> list:
+    """Wartet auf den `onboarding_release`-Task (31.10.2026).
+
+    Race-Befund: Der Handler committet den Statuswechsel VOR dem Queue-Insert.
+    Ein sofortiges SELECT nach dem Statussignal sah den Task deshalb regelmaessig
+    noch nicht (CI rot, lokal 2/2) — und der `finally`-Restore loeschte die Zeile
+    anschliessend, sodass sie dauerhaft zu fehlen schien. Jetzt wird gepollt.
+    """
+    end = time.time() + timeout
+    while time.time() < end:
+        conn = _ro()
+        try:
+            rows = conn.execute(
+                "SELECT payload FROM agent_tasks WHERE id > ? AND task_type = 'onboarding_release' "
+                "AND json_extract(payload,'$.application_id') = ?",
+                (pre_tasks, app_id)).fetchall()
+        finally:
+            conn.close()
+        if rows:
+            return rows
+        time.sleep(0.2)
+    return []
+
+
 def _visa_task_da(app_id: int, pre_tasks: int) -> bool:
     """Wurde nach pre_tasks ein visa_confirmation-Task fuer diese Bewerbung angelegt?"""
     conn = sqlite3.connect(DB)
@@ -168,10 +192,20 @@ def main() -> None:
                 page.get_by_role("tab", name=re.compile("Aktiv")).click()
                 page.wait_for_timeout(500)
 
-                # 1) Kartenklick -> Drawer
-                page.get_by_text(label, exact=True).first.click()
+                # 1) Kartenklick -> Drawer (Retry: Karte kann nach dem Tab-Wechsel
+                # noch nicht gerendert sein; CI-Befund 31.10.2026, 8-s-Timeout).
                 drawer = page.locator(".q-dialog:visible").filter(has_text="Bewerbungsdetails")
-                drawer.wait_for(state="visible", timeout=8000)
+                for _versuch in range(3):
+                    karte = page.get_by_text(label, exact=True).first
+                    karte.wait_for(state="visible", timeout=15000)
+                    karte.click()
+                    try:
+                        drawer.wait_for(state="visible", timeout=8000)
+                        break
+                    except Exception:
+                        page.wait_for_timeout(800)
+                else:
+                    raise AssertionError(f"Drawer oeffnete nicht (Karte {label!r})")
                 assert drawer.get_by_text("Einstellen", exact=True).count() >= 1
                 assert drawer.get_by_text("Visum-Info/Schritte", exact=True).count() >= 1
                 assert drawer.get_by_text("Onboarding", exact=True).count() == 0, \
@@ -193,10 +227,13 @@ def main() -> None:
                     "SELECT status, changed_by FROM application_status_history "
                     "WHERE id > ? AND application_id = ?",
                     (base_hist, app_id)).fetchall()
-                tasks = conn.execute(
-                    "SELECT payload FROM agent_tasks WHERE id > ? AND task_type = 'onboarding_release' "
-                    "AND json_extract(payload,'$.application_id') = ?",
-                    (pre_tasks, app_id)).fetchall()
+                conn.close()
+                # Erst nach dem Schliessen pollen: eine offene Lese-Verbindung
+                # (journal_mode=delete) blockiert den Queue-Commit des Handlers.
+                # Der Handler schreibt Notification -> Billing -> Queue; sobald
+                # der Task da ist, ist auch die Notification committet.
+                tasks = _wait_tasks(app_id, pre_tasks)
+                conn = sqlite3.connect(DB)
                 notifs = conn.execute(
                     "SELECT COUNT(*) FROM notifications WHERE id > ? AND user_id = ? AND role = 'candidate'",
                     (base_notif, cand_id)).fetchone()[0]
@@ -233,9 +270,19 @@ def main() -> None:
                 page.wait_for_timeout(1500)
                 page.get_by_role("button", name=re.compile("Hiring-Board")).first.click()
                 page.wait_for_timeout(1200)
-                page.get_by_text(label, exact=True).first.click()
+                # Retry wie Schritt 1 (Board-Render nach Navigation, CI 31.10.2026).
                 drawer3 = page.locator(".q-dialog:visible").filter(has_text="Bewerbungsdetails")
-                drawer3.wait_for(state="visible", timeout=8000)
+                for _versuch in range(3):
+                    karte3 = page.get_by_text(label, exact=True).first
+                    karte3.wait_for(state="visible", timeout=15000)
+                    karte3.click()
+                    try:
+                        drawer3.wait_for(state="visible", timeout=8000)
+                        break
+                    except Exception:
+                        page.wait_for_timeout(800)
+                else:
+                    raise AssertionError(f"Drawer nach HIRE oeffnete nicht ({label!r})")
                 drawer3.get_by_text("Onboarding", exact=True).click()
                 page.wait_for_url("**/employer/onboarding**", timeout=8000)
                 print("ONBOARDING: Navigation /employer/onboarding, kein zweiter Trigger")

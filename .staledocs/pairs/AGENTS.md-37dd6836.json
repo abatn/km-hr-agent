@@ -124,7 +124,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-10-31T16:24:31+00:00",
+    "at": "2026-10-31T17:13:10+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -171,7 +171,7 @@
       "tests/e2e_applicants_first.py": "171c040f31d0c134a9b358f8e1e5b8639943a8ae",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
       "tests/e2e_apply_dialog_multi.py": "c852947278c20532062dd47bc7b2879df323641c",
-      "tests/e2e_board_actions.py": "0fb6af3fbffff217ba71d1ba349871c853e626d6",
+      "tests/e2e_board_actions.py": "ec7166fc1e7a93f3621da6dc1e408fd9227ece90",
       "tests/e2e_board_passiv_filter.py": "26b2f2c9f23813026bb6e808b362df781bb4d8ea",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
       "tests/e2e_candidate_detail.py": "9dc7396d8bf7889b12b4fe7f55f0f7ee3d77229a",
@@ -342,9 +342,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "36cb78ca15fbcb4f7818dd325e1aac592ef062d4",
+    "commit": "3df297cc62aaed7cfbc2dea9f6f649188ad49bd6",
     "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "tests/fixtures/seed.db chirurgisch geaendert: nur absolute Pfade /home/batnini/... in agent_tasks.result_json durch repo-relative ergebnisse/... ersetzt (167 Zeilen, JSON je validiert), Tabellen/Zeilen unveraendert; die Regel \"handgepflegt, nur chirurgisch aendern\" bleibt korrekt."
+    "note": "tests/e2e_board_actions.py: Queue-/Notification-Race behoben (_wait_tasks pollt 12 s nach Schliessen der Lese-Verbindung, Notification danach gelesen, Karten-/Drawer-Retry); AGENTS.md nennt nur die Pruefkette, Aussage bleibt gueltig."
   },
   "doc": "AGENTS.md",
   "schema": 1

@@ -155,6 +155,14 @@ nur `Path(...).exists()` und läuft mit beiden Formen.
 `python3 scripts/seed_e2e_assets.py` ausführen, danach
 `python3 tests/e2e_isolation.py --port 8097 --only e2e_admin_downloads,e2e_c7_downloads,e2e_compliance_reports,e2e_cv_upload,e2e_i18n_full_chain,e2e_i18n_runner_chain,e2e_smoke_all_pages,e2e_ui_p0_p1`.
 
+**Race-Fix `e2e_board_actions` (31.10.2026):** Der Handler committet Status,
+Notification und Queue-Task nacheinander. Der Test las Task und Notification
+sofort nach dem Statussignal und sah sie dadurch zeitweise nicht (CI rot,
+lokal 1–2 von 3). Jetzt pollt `_wait_tasks` bis zu 12 s (nach dem Schließen der
+Lese-Verbindung, `journal_mode=delete`), die Notification wird erst danach
+gelesen; Kartenklick und Drawer-Öffnung haben je einen 3-fachen Retry.
+Beleg: 3/3 Einzelläufe rc=0 (Port 8097, 31.10.2026).
+
 ## Selbst-säende Fixtures statt SKIP (13.10.2026)
 
 **Regel (AGENTS.md Schritt 3):** Datengekoppelte E2E-Skripte dürfen eine fehlende
