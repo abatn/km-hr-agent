@@ -121,6 +121,40 @@ Zwei Skripte scheiterten **nicht** an der Anmeldung, sondern an Seed-/Umgebungs-
 
 Der Skip-Mechanismus: `e2e_isolation.py` liest `KMHR_E2E_SKIP` (kommagetrennte Skriptnamen) und lässt sie im Standardlauf aus.
 
+## Synthetische Datei-Fixtures für den CI-Checkout (31.10.2026)
+
+**Befund (Messung 31.10.2026, Lauf `41187490126`):** Acht Skripte scheiterten im
+CI, weil `testdaten/` und `ergebnisse/` gitignored sind und im Checkout fehlen:
+`e2e_admin_downloads`, `e2e_c7_downloads`, `e2e_compliance_reports`,
+`e2e_cv_upload`, `e2e_i18n_full_chain`, `e2e_i18n_runner_chain`,
+`e2e_smoke_all_pages`, `e2e_ui_p0_p1`. Symptome: `FileNotFoundError` beim
+Upload-Schreiben, `IndexError: list index out of range` in
+`components.prescreen_recruiting_section` (leere Profilliste), fehlende
+Download-Karten, fehlender ICS-Knopf.
+
+**Lösung:** `scripts/seed_e2e_assets.py` erzeugt deterministisch synthetische
+Dateien (keine PII) und läuft als eigener Schritt in `.github/workflows/e2e.yml`
+**vor** dem Isolationslauf. Der Generator schreibt nur in leere oder fehlende
+Ordner; ein belegter Arbeitsstand bleibt unberührt (`--force` erzwingt).
+
+| Ziel | Datei(en) | Zweck |
+|---|---|---|
+| `testdaten/` | `profil-anna-schuster.md`, `profil-mohammed-soliman.md` | Profil-Select (`logic.list_profiles`), verhindert `IndexError` in `prescreen_recruiting_section` |
+| `ergebnisse/` | `extract_profile-*`, `match_candidate-*`, `check_compliance-*`, `notify_user-*`, `assess_culture_fit-*` | Download-Karten der Admin-Tools (`admin.tool_result_section`) |
+| `ergebnisse/` | `check_compliance-kandidat-1-2026-09-29.md` (Titel `Stelle #7`), `check_compliance-kandidat-13-2026-09-22.md` (Titel `Stelle #1`) | Arbeitgeber-Compliance-Seite; Titel mit `Stelle #<id>` ist Pflicht für die Zuordnung (`_BERICHT_STELLE`) |
+| `ergebnisse/` | `self-presentation-kandidat-1-<heute>.md` | Prescreen-Einsicht #8 (`selbstpraesentation_je_kandidat`) |
+| `ergebnisse/` | `einladung-ics-bewerbung-25.ics` | ICS-Knopf der Einladungskarte (Seed-Task 117) |
+
+**Seed-Portabilität (gleiche Messung):** `agent_tasks.result_json` enthielt
+absolute Pfade `/home/batnini/mimo-agents/km-hr-agent/...` aus dem
+Erzeuger-Rechner. Sie wurden am 31.10.2026 in `tests/fixtures/seed.db`
+chirurgisch auf repo-relative Pfade (`ergebnisse/...`) umgestellt; die App prüft
+nur `Path(...).exists()` und läuft mit beiden Formen.
+
+**Verifikation:** In einem Checkout ohne `testdaten/`/`ergebnisse/`
+`python3 scripts/seed_e2e_assets.py` ausführen, danach
+`python3 tests/e2e_isolation.py --port 8097 --only e2e_admin_downloads,e2e_c7_downloads,e2e_compliance_reports,e2e_cv_upload,e2e_i18n_full_chain,e2e_i18n_runner_chain,e2e_smoke_all_pages,e2e_ui_p0_p1`.
+
 ## Selbst-säende Fixtures statt SKIP (13.10.2026)
 
 **Regel (AGENTS.md Schritt 3):** Datengekoppelte E2E-Skripte dürfen eine fehlende
