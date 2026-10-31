@@ -1,0 +1,25 @@
+{
+  "id": "iquesta-search",
+  "name": "iQuesta MCP (FR)",
+  "country": "FR",
+  "source": "iQuesta MCP",
+  "endpoint": "https://mcp.iquesta.com/api/mcp",
+  "auth": "keine",
+  "industries": [
+    "Krankenpflege",
+    "LKW",
+    "Handwerk",
+    "Hotellerie"
+  ],
+  "queries": {
+    "Krankenpflege": "infirmier",
+    "LKW": "chauffeur",
+    "Handwerk": "électricien",
+    "Hotellerie": "cuisinier"
+  },
+  "cities": [],
+  "evidence": "",
+  "last_success": null,
+  "transferable_to": [],
+  "notes": "Getestet 31.10.2026: initialize OK, aber 0 Treffer fuer alle vier Branchen (Inventar stage-/alternance-/IT-lastig)."
+}

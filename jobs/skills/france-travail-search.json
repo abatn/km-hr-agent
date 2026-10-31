@@ -1,0 +1,32 @@
+{
+  "id": "france-travail-search",
+  "name": "France Travail (Frankreich)",
+  "country": "FR",
+  "source": "France Travail – Offres d'emploi v2",
+  "endpoint": "https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search",
+  "auth": "OAuth2 client_credentials (FT_CLIENT_ID/SECRET)",
+  "industries": [
+    "Krankenpflege",
+    "LKW",
+    "Handwerk",
+    "Hotellerie"
+  ],
+  "queries": {
+    "Krankenpflege": "infirmier",
+    "LKW": "chauffeur poids lourd",
+    "Handwerk": "électricien",
+    "Hotellerie": "cuisinier"
+  },
+  "cities": [
+    "Lyon",
+    "Paris",
+    "Marseille"
+  ],
+  "evidence": "",
+  "last_success": null,
+  "transferable_to": [
+    "DE",
+    "CH"
+  ],
+  "notes": "Adapter vorhanden; ohne Credentials Exit 3 (kein Scraping)."
+}

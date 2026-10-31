@@ -1,0 +1,50 @@
+{
+  "id": "eures-search",
+  "name": "EURES (EU/EWR)",
+  "country": "*",
+  "source": "EURES public jv-search",
+  "endpoint": "https://europa.eu/eures/api/jv-searchengine/public/jv-search/search",
+  "auth": "keine",
+  "industries": [
+    "Krankenpflege",
+    "LKW",
+    "Handwerk",
+    "Hotellerie"
+  ],
+  "queries": {
+    "Krankenpflege": "Pflegefachkraft",
+    "LKW": "LKW Fahrer",
+    "Handwerk": "Elektroniker",
+    "Hotellerie": "Koch"
+  },
+  "cities": [],
+  "evidence": "jobs/belege/2026-10-31-eures/",
+  "last_success": "2026-10-31",
+  "transferable_to": [
+    "DE",
+    "FR",
+    "CH",
+    "AT"
+  ],
+  "notes": "Ohne Key; deckt EU/EWR ab, Arbeitgebername + Volltext. Getestet mit 30.398 Pflege-Treffern (DE).",
+  "queries_by_country": {
+    "de": {
+      "Krankenpflege": "Pflegefachkraft",
+      "LKW": "LKW Fahrer",
+      "Handwerk": "Elektroniker",
+      "Hotellerie": "Koch"
+    },
+    "fr": {
+      "Krankenpflege": "infirmier",
+      "LKW": "chauffeur poids lourd",
+      "Handwerk": "électricien",
+      "Hotellerie": "cuisinier"
+    },
+    "ch": {
+      "Krankenpflege": "Pflegefachfrau",
+      "LKW": "Chauffeur",
+      "Handwerk": "Schreiner",
+      "Hotellerie": "Koch"
+    }
+  }
+}

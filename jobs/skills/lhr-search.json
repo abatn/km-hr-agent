@@ -1,0 +1,19 @@
+{
+  "id": "lhr-search",
+  "name": "LHR Hotellerie/Gastronomie (FR)",
+  "country": "FR",
+  "source": "lhotellerie-restauration.fr",
+  "endpoint": "https://www.lhotellerie-restauration.fr/emploi-<metier>/france",
+  "auth": "keine",
+  "industries": [
+    "Hotellerie"
+  ],
+  "queries": {
+    "Hotellerie": "cuisinier"
+  },
+  "cities": [],
+  "evidence": "jobs/belege/2026-10-31-lhr/",
+  "last_success": "2026-10-31",
+  "transferable_to": [],
+  "notes": "Keyfrei; robots erlaubt /emploi*; JSON-LD JobPosting liefert Arbeitgeber. Footer 'REPRODUCTION INTERDITE' -> nur interner Index, immer verlinken."
+}

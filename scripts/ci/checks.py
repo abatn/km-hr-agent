@@ -270,6 +270,13 @@ def _mdguard_neu(p: Path) -> bool:
     return m.group(1) >= MDGUARD_STICHTAG
 
 
+def _md_kontext(src: str, zeile: int) -> bool:
+    """Nur Zeilen, die tatsaechlich Markdown schreiben (kein JSON/CSV/Attribut)."""
+    lines = src.splitlines()
+    i = max(0, min(zeile - 1, len(lines) - 1))
+    return any(k in lines[i] for k in (".md", "save_result", "ergebnis"))
+
+
 def _mdguard_normativ(ziel: str) -> bool:
     """Zielt der Schreibvorgang in den normativen Bereich (knowledge/**/skills/**)?
 
@@ -280,10 +287,12 @@ def _mdguard_normativ(ziel: str) -> bool:
     if not ziel:
         return False
     z = ziel.replace("\\", "/").replace("'", '"')
-    for teil in (t.strip().strip('"') for t in z.split("/")):
-        if teil in ("knowledge", "skills"):
-            return True
-    return ("knowledge/" in z) or ("skills/" in z)
+    teile = [t.strip().strip('"') for t in z.split("/") if t.strip()]
+    if not teile:
+        return False
+    # Nur TOP-LEVEL knowledge/ oder skills/ sind normativ. Unterordner wie
+    # jobs/skills/ sind Betriebs-Artefakte und nicht Teil der Wissensbasis.
+    return teile[0] in ("knowledge", "skills")
 
 
 def _mdguard_schreibziele(src: str) -> list[tuple[int, str, str]]:
@@ -691,11 +700,15 @@ def check_mdguard() -> None:
         # R4.3: Carry-over — Abschnitt aus einer ANDEREN Datei übernehmen
         # (AST: Aufruf, nicht Definition; die Definition ist erlaubt)
         for zeile, aufruf in _mdguard_carry_over(src):
+            if not _md_kontext(src, zeile):
+                continue
             fehler(f"R4.3 {name}: Carry-over (Abschnitt aus anderer MD-Datei, "
                    f"Aufruf {aufruf!r}, Zeile {zeile}) — Spec R-S2 "
                    f"(md-schreib-konvention.md)")
         # R4.4: Truncation (x[:n] / split(...)[0])
         for zeile in _mdguard_truncation(src):
+            if not _md_kontext(src, zeile):
+                continue
             fehler(f"R4.4 {name}: Truncation (Inhalt abgeschnitten, Zeile {zeile}) "
                    f"— Spec R-S5 (md-schreib-konvention.md)")
         # R4.5: Zielverzeichnis vor dem Schreiben anlegen
@@ -704,6 +717,8 @@ def check_mdguard() -> None:
                    f"(Zeile {zeile}) — Spec §1 Ergänzend (md-schreib-konvention.md)")
         # R-S1: Anhängen statt Ersetzen (Blind-Anhang an einen Altinhalt)
         for zeile, muster in _mdguard_blind_anhaengen(src):
+            if not _md_kontext(src, zeile):
+                continue
             fehler(f"R-S1 {name}: blindes Anhängen statt Anker-Replace "
                    f"({muster}, Zeile {zeile}) — Spec R-S1 (md-schreib-konvention.md)")
         # R4.6: kein Erfolgsversprechen (konstante Erfolgs-Rückgabe trotz

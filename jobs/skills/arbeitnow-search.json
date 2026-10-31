@@ -1,0 +1,31 @@
+{
+  "id": "arbeitnow-search",
+  "name": "Arbeitnow (EU, offen)",
+  "country": "DE",
+  "source": "Arbeitnow Job Board API",
+  "endpoint": "https://www.arbeitnow.com/api/job-board-api",
+  "auth": "keine",
+  "industries": [
+    "Krankenpflege",
+    "LKW",
+    "Handwerk",
+    "Hotellerie"
+  ],
+  "queries": {
+    "Krankenpflege": "Pflege",
+    "LKW": "Fahrer",
+    "Handwerk": "Elektriker",
+    "Hotellerie": "Koch"
+  },
+  "cities": [
+    "Berlin",
+    "München"
+  ],
+  "evidence": "",
+  "last_success": null,
+  "transferable_to": [
+    "AT",
+    "CH"
+  ],
+  "notes": "Neu angebunden 31.10.2026; 300 Jobs pro Abruf, Titel/Arbeitgeber/Ort."
+}

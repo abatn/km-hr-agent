@@ -2,6 +2,7 @@
   "ack": {
     "anchors": [
       ".env-email",
+      "X-Anysearch-Client",
       "agent_tasks",
       "app.py",
       "application-status.md",
@@ -54,7 +55,7 @@
       "social-agent",
       "testdaten/"
     ],
-    "at": "2026-10-31T16:24:34+00:00",
+    "at": "2026-10-31T23:52:43+00:00",
     "code_blobs": {
       "scripts/ads_agent.py": "d7f24f2ba88fca4d9b18d317f9478c05dbddb22c",
       "scripts/ads_x402.py": "641e0d29abb32926d3d235c3846a69c4f354ef05",
@@ -68,6 +69,19 @@
       "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
       "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
+      "scripts/forge_forms.py": "991a9e4f480eef7f654d8f2096b3ad4741872183",
+      "scripts/jobs_agent.py": "5f839a9180a9661a6dd3c4bcf080be6258cb4924",
+      "scripts/jobs_api.py": "ce07837d5f645487b7f9793b6c334865fe412bf1",
+      "scripts/jobs_ch.py": "bbbc0bdca3063a8b31927e0a56705fb27cfa3922",
+      "scripts/jobs_enrich.py": "98758d4a1f14a9b0c2bfbfcdc4a263441db3677a",
+      "scripts/jobs_eures.py": "e0f0a77b7eedbfeb396a8389f70ad31e6159c296",
+      "scripts/jobs_fr.py": "8c33716c228ad5cd49b894c9e9ff48ff3b7e14b6",
+      "scripts/jobs_induce.py": "4b839a69a640773be9707c1408360c6abe4ef165",
+      "scripts/jobs_jdp.py": "2cf097e36f4f49d50c59e90a87fe84029a1ba0f1",
+      "scripts/jobs_lhr.py": "ccd87b3d388bf64b8c7211f308c1d7f5aa5c0160",
+      "scripts/jobs_mail.py": "360b44685b61d2991a36d39d867134ca53c94eb0",
+      "scripts/jobs_recipients.py": "d3940fa75ee81f899ab495569901ed9b75960c22",
+      "scripts/jobs_skill.py": "0558289894246642aa1684be680909c57f88e53f",
       "scripts/jobs_x402_feed.py": "13c665fcf6e86945ff2bcf12677cf8eede07f1e1",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
       "scripts/m16-spawn-watch.sh": "da28b70328844f4ce64bd5a1c92ebe969563fd4d",
@@ -111,9 +125,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "36cb78ca15fbcb4f7818dd325e1aac592ef062d4",
+    "commit": "557c01e956e6380a092fdcb61571c86f09452ce4",
     "doc_blob": "d5476cdc2f121ace51e2187db23fdf01f0eef654",
-    "note": "Neues Skript scripts/seed_e2e_assets.py erzeugt synthetische E2E-Fixtures; instructions.md zitiert dessen Docstring-Zeilen zu testdaten/profil-*.md und zum Schutz bestehender Arbeitsstaende. Deskriptives Handbuch, Aussagen weiterhin zutreffend."
+    "note": "instructions.md: neue Job-Akquise-Dateien (scripts/jobs_*.py, forge_forms.py, tests, jobs/skills) geprueft; die Aussagen der Datei bleiben gueltig."
   },
   "doc": "instructions.md",
   "schema": 1

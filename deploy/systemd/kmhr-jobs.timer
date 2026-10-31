@@ -1,0 +1,11 @@
+[Unit]
+Description=Taeglicher Job-Akquise-Lauf (06:00, mit Streuung)
+
+[Timer]
+OnCalendar=*-*-* 06:00:00
+RandomizedDelaySec=300
+Persistent=true
+Unit=kmhr-jobs.service
+
+[Install]
+WantedBy=timers.target

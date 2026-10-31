@@ -43,3 +43,12 @@ HR-Assist-MCP-Server/
 *.jpg
 *.jpeg
 freebuff-chat-*.md
+
+# Job-Akquise: Laufzeit-Artefakte (Belege, Entwürfe, Kontaktlisten)
+jobs/belege/
+jobs/outbox/
+jobs/belege-web/
+jobs/empfaenger*.csv
+jobs/kontakte_recherche.csv
+logs/jobs-agent-*.log
+logs/jobs-cron.log

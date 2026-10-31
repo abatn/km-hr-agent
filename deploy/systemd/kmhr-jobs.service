@@ -1,0 +1,15 @@
+[Unit]
+Description=KM-HR Job-Akquise (Suche, Belege, Kontakte, Entwuerfe, Skill-Lattice)
+Documentation=file:/opt/km-hr-agent/jobs/CRON.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/km-hr-agent
+Environment=JOBS_ENRICH=0
+ExecStart=/opt/km-hr-agent/run_all.sh
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=3600
+# Kein Mailversand in diesem Job (UWG §7): nur Vorbereitung.

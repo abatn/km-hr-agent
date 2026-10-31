@@ -167,7 +167,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-10-31T18:06:32+00:00",
+    "at": "2026-10-31T23:52:46+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -229,6 +229,7 @@
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
       "knowledge/system/i18n-runner-chain.md": "3b67bad8a19aa567823715b675bc3d91e516b49a",
       "knowledge/system/i18n.md": "2c06bbed6073d78c3a2163ab8b5afb70d3c0ba4e",
+      "knowledge/system/jobs-agent.md": "edd44622bafcde86d458474a2352c09a882caef6",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "51356a40a0ef5ada0bf26ab0c78ce0558c7f9577",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -248,9 +249,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "99d35c31c2bce58511a0cac1652e5188a34bece9",
+    "commit": "557c01e956e6380a092fdcb61571c86f09452ce4",
     "doc_blob": "f4cd7ae393177997845f9b2559bcc3f72954dc06",
-    "note": "knowledge/system/mcp-connector-config.md um Abschnitt Server-Provisioning ergaenzt (provision-mcp.sh, verify_mcp.py, Symlink, OAuth-Hinweis); der Indexverweis bleibt gueltig."
+    "note": "knowledge.md: neue Job-Akquise-Dateien (scripts/jobs_*.py, forge_forms.py, tests, jobs/skills) geprueft; die Aussagen der Datei bleiben gueltig."
   },
   "doc": "knowledge.md",
   "schema": 1

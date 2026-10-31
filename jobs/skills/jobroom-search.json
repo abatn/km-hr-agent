@@ -1,0 +1,32 @@
+{
+  "id": "jobroom-search",
+  "name": "Job-Room/SECO (Schweiz)",
+  "country": "CH",
+  "source": "SECO / arbeit.swiss",
+  "endpoint": "https://www.job-room.ch/jobadservice/api/jobAdvertisements/_search",
+  "auth": "keine",
+  "industries": [
+    "Krankenpflege",
+    "LKW",
+    "Handwerk",
+    "Hotellerie",
+    "Logistik"
+  ],
+  "queries": {
+    "Krankenpflege": "Pflegefachfrau",
+    "LKW": "Chauffeur",
+    "Handwerk": "Schreiner",
+    "Hotellerie": "Koch"
+  },
+  "cities": [
+    "Zürich",
+    "Bern",
+    "Basel"
+  ],
+  "evidence": "jobs/belege/2026-10-31-ch/",
+  "last_success": "2026-10-31",
+  "transferable_to": [
+    "DE"
+  ],
+  "notes": "Undokumentiert, aber öffentlich; Kontakt oft nur über applyChannel."
+}

@@ -1,0 +1,29 @@
+{
+  "id": "websearch-fallback",
+  "name": "Websuche (anysearch)",
+  "country": "*",
+  "source": "Anysearch MCP",
+  "endpoint": "https://api.anysearch.com/mcp",
+  "auth": "Header X-Anysearch-Client",
+  "industries": [
+    "Krankenpflege",
+    "LKW",
+    "Handwerk",
+    "Hotellerie"
+  ],
+  "queries": {
+    "Krankenpflege": "Pflegefachkraft Stellenangebot",
+    "LKW": "LKW Fahrer Stellenangebot",
+    "Handwerk": "Handwerk Stellenangebot",
+    "Hotellerie": "Hotel Stellenangebot"
+  },
+  "cities": [],
+  "evidence": "jobs/belege-web/2026-10-31/",
+  "last_success": "2026-10-31",
+  "transferable_to": [
+    "DE",
+    "FR",
+    "CH"
+  ],
+  "notes": "Liefert überwiegend Börsen; nur Fallback."
+}

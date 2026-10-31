@@ -1,0 +1,279 @@
+{
+  "id": "payapi",
+  "semantics": {
+    "first_name": {
+      "labels": [
+        "vorname",
+        "first name",
+        "prénom",
+        "prenom",
+        "given name",
+        "Vorname"
+      ],
+      "names": [
+        "first",
+        "vorname",
+        "prenom",
+        "given",
+        "firstname"
+      ],
+      "autocomplete": [
+        "given-name"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "last_name": {
+      "labels": [
+        "nachname",
+        "familienname",
+        "last name",
+        "nom",
+        "surname",
+        "Nachname"
+      ],
+      "names": [
+        "last",
+        "nachname",
+        "familienname",
+        "surname",
+        "nom",
+        "lastname"
+      ],
+      "autocomplete": [
+        "family-name"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "email": {
+      "labels": [
+        "e-mail",
+        "email",
+        "mail",
+        "courriel",
+        "E-Mail"
+      ],
+      "names": [
+        "mail",
+        "email",
+        "courriel"
+      ],
+      "autocomplete": [
+        "email"
+      ],
+      "types": [
+        "email"
+      ]
+    },
+    "phone": {
+      "labels": [
+        "telefon",
+        "phone",
+        "téléphone",
+        "telephone",
+        "mobile",
+        "Telefon"
+      ],
+      "names": [
+        "tel",
+        "phone",
+        "telefon",
+        "mobile"
+      ],
+      "autocomplete": [
+        "tel"
+      ],
+      "types": [
+        "tel"
+      ]
+    },
+    "street": {
+      "labels": [
+        "straße",
+        "strasse",
+        "street",
+        "adresse",
+        "address",
+        "Straße"
+      ],
+      "names": [
+        "street",
+        "strasse",
+        "adresse",
+        "address"
+      ],
+      "autocomplete": [
+        "street-address"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "zip": {
+      "labels": [
+        "plz",
+        "postleitzahl",
+        "postal code",
+        "code postal",
+        "zip",
+        "PLZ"
+      ],
+      "names": [
+        "plz",
+        "zip",
+        "postal",
+        "postcode"
+      ],
+      "autocomplete": [
+        "postal-code"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "city": {
+      "labels": [
+        "ort",
+        "stadt",
+        "city",
+        "ville",
+        "Ort"
+      ],
+      "names": [
+        "ort",
+        "stadt",
+        "city",
+        "ville"
+      ],
+      "autocomplete": [
+        "address-level2"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "country": {
+      "labels": [
+        "land",
+        "country",
+        "pays",
+        "Land"
+      ],
+      "names": [
+        "land",
+        "country",
+        "pays"
+      ],
+      "autocomplete": [
+        "country",
+        "country-name"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "card_number": {
+      "labels": [
+        "kartennummer",
+        "card number",
+        "numéro de carte",
+        "Kartennummer"
+      ],
+      "names": [
+        "cardnumber",
+        "card_number",
+        "kartennummer"
+      ],
+      "autocomplete": [
+        "cc-number"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "card_expiry": {
+      "labels": [
+        "gültig bis",
+        "expiry",
+        "expiration",
+        "expiration date",
+        "Gültig bis"
+      ],
+      "names": [
+        "expiry",
+        "exp",
+        "gueltig"
+      ],
+      "autocomplete": [
+        "cc-exp"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "card_cvc": {
+      "labels": [
+        "cvc",
+        "cvv",
+        "sicherheitscode",
+        "CVC"
+      ],
+      "names": [
+        "cvc",
+        "cvv",
+        "csc"
+      ],
+      "autocomplete": [
+        "cc-csc"
+      ],
+      "types": [
+        "text"
+      ]
+    },
+    "notes": {
+      "labels": [
+        "anmerkungen",
+        "nachricht",
+        "message",
+        "notes",
+        "bemerkung",
+        "Anmerkungen"
+      ],
+      "names": [
+        "notes",
+        "nachricht",
+        "message",
+        "anmerkung"
+      ],
+      "autocomplete": [],
+      "types": [
+        "textarea"
+      ]
+    },
+    "consent": {
+      "labels": [
+        "agb",
+        "datenschutz",
+        "einwilligung",
+        "consent",
+        "privacy",
+        "conditions",
+        "AGB akzeptieren"
+      ],
+      "names": [
+        "tos",
+        "consent",
+        "datenschutz",
+        "einwilligung",
+        "privacy"
+      ],
+      "autocomplete": [],
+      "types": [
+        "checkbox"
+      ]
+    }
+  }
+}

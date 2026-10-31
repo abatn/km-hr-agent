@@ -79,6 +79,7 @@
       "knowledge/system/e2e-ci-seed.md",
       "knowledge/system/i18n-runner-chain.md",
       "knowledge/system/i18n.md",
+      "knowledge/system/jobs-agent.md",
       "knowledge/system/mcp-connector-config.md",
       "knowledge/system/md-schreib-konvention.md",
       "knowledge/system/social-automation.md",
@@ -126,7 +127,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-10-31T18:17:47+00:00",
-  "note": "anchors.ignore um .venv-pdf ergaenzt: der Pfad ist ein Laufzeit-Symlink (deploy/provision-mcp.sh -> .venv-streamlit), gitignored und bewusst nie im Repo; die Doku-Aussage in mcp-connector-config.md ist korrekt, kein Repo-Pfad-Claim.",
+  "at": "2026-10-31T23:54:15+00:00",
+  "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

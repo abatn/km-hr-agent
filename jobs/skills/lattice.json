@@ -1,0 +1,146 @@
+[
+  {
+    "country": "CH",
+    "industry": "Handwerk",
+    "source": "jobroom-search",
+    "count": 1,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "CH",
+    "industry": "Hotellerie",
+    "source": "jobroom-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "CH",
+    "industry": "Krankenpflege",
+    "source": "jobroom-search",
+    "count": 3,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "CH",
+    "industry": "LKW",
+    "source": "jobroom-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "Handwerk",
+    "source": "ba-search",
+    "count": 3,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "Handwerk",
+    "source": "eures-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "Hotellerie",
+    "source": "ba-search",
+    "count": 3,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "Hotellerie",
+    "source": "eures-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "Krankenpflege",
+    "source": "ba-search",
+    "count": 5,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "Krankenpflege",
+    "source": "eures-search",
+    "count": 4,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "LKW",
+    "source": "ba-search",
+    "count": 3,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "DE",
+    "industry": "LKW",
+    "source": "eures-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "FR",
+    "industry": "Handwerk",
+    "source": "eures-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "FR",
+    "industry": "Hotellerie",
+    "source": "jdp-search",
+    "count": 5,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "FR",
+    "industry": "Hotellerie",
+    "source": "lhr-search",
+    "count": 7,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "FR",
+    "industry": "Krankenpflege",
+    "source": "eures-search",
+    "count": 5,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "FR",
+    "industry": "Krankenpflege",
+    "source": "france-travail-search",
+    "count": 1,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  },
+  {
+    "country": "FR",
+    "industry": "LKW",
+    "source": "eures-search",
+    "count": 2,
+    "last_success": "2026-11-01",
+    "evidence": "jobs/belege/"
+  }
+]

@@ -1,0 +1,15 @@
+<!doctype html><html lang="de"><body><h1>PayAPI Checkout</h1><form id="pay">
+<label for="fn">Vorname</label><input id="fn" name="firstname" autocomplete="given-name" data-expect="first_name" required>
+<label for="ln">Nachname</label><input id="ln" name="lastname" autocomplete="family-name" data-expect="last_name" required>
+<label for="em">E-Mail</label><input id="em" name="email" type="email" autocomplete="email" data-expect="email" required>
+<label for="ph">Telefon</label><input id="ph" name="phone" type="tel" autocomplete="tel" data-expect="phone">
+<label for="st">Straße</label><input id="st" name="street" autocomplete="street-address" data-expect="street">
+<label for="plz">PLZ</label><input id="plz" name="zip" autocomplete="postal-code" data-expect="zip">
+<label for="ort">Ort</label><input id="ort" name="city" autocomplete="address-level2" data-expect="city">
+<label for="land">Land</label><input id="land" name="country" autocomplete="country" data-expect="country">
+<label for="cc">Kartennummer</label><input id="cc" name="cardnumber" autocomplete="cc-number" data-expect="card_number" required>
+<label for="exp">Gültig bis</label><input id="exp" name="expiry" autocomplete="cc-exp" data-expect="card_expiry" required>
+<label for="cvc">CVC</label><input id="cvc" name="cvc" autocomplete="cc-csc" data-expect="card_cvc" required>
+<label for="notes">Anmerkungen</label><textarea id="notes" name="notes" data-expect="notes"></textarea>
+<label><input type="checkbox" id="tos" name="tos" data-expect="consent"> AGB akzeptieren</label>
+</form></body></html>

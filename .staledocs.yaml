@@ -74,6 +74,8 @@ pairs:
     code: ["connectors/**"]
 
   # --- System / Betrieb
+  - doc: knowledge/system/jobs-agent.md
+    code: ["scripts/jobs_*.py", "scripts/forge_forms.py", "tests/test_jobs_*.py", "tests/test_forge_forms.py"]
   - doc: knowledge/system/agent-automation.md
     code: ["scripts/agent-runner.py", "scripts/agent-test.sh"]
   - doc: knowledge/system/md-schreib-konvention.md
@@ -188,6 +190,18 @@ mirror:
 # Docs that intentionally have no code counterpart (ops runbooks, philosophy).
 # Wird aus dem Rest der unklassifizierten Doku automatisch gefüllt (C1).
 standalone:
+  # Job-Akquise: Betriebs-/Laufdokumentation ohne 1:1-Code-Paar
+  - jobs/README.md
+  - jobs/CRON.md
+  - jobs/ABSCHLUSSBERICHT.md
+  - jobs/laufbericht.md
+  - jobs/skills/README.md
+  - jobs/skills/transfer.md
+  - jobs/skills/self_improvement.md
+  - jobs/skills/forge_transfer.md
+  - jobs/vorlagen/mail_de.md
+  - jobs/vorlagen/mail_en.md
+  - jobs/vorlagen/mail_fr.md
   - archiv/PRUEFBERICHT-FINAL.md
   - archiv/km-hr-agent-connector-fix.md
   - knowledge/system/doku-authority.md

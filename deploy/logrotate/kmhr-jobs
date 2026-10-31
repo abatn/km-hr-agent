@@ -1,0 +1,11 @@
+# /etc/logrotate.d/kmhr-jobs
+/opt/km-hr-agent/logs/jobs-agent-*.log /opt/km-hr-agent/logs/jobs-cron.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+    su root root
+}

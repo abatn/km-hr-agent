@@ -1,0 +1,4 @@
+# KM-HR Job-Akquise – taeglich 06:00 (Alternative zum systemd-Timer).
+# Installation:  crontab -u root deploy/cron/kmhr-jobs.cron
+# Entwuerfe/Belege werden erzeugt, es wird NIE automatisch eine E-Mail versendet.
+0 6 * * * cd /opt/km-hr-agent && JOBS_ENRICH=0 ./run_all.sh >> logs/jobs-cron.log 2>&1
