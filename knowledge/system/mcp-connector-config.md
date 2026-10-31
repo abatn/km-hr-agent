@@ -242,6 +242,41 @@ python3 connectors/prescreen-config-server.py
 
 ---
 
+## Server-Provisioning (Contabo, 31.10.2026)
+
+Die 14 Server aus `opencode.json` brauchen auf einem Server mehr als das Repo:
+Node/npx (`playwright`, `filesystem`, `mcp-remote`), uv/uvx (`fetch`),
+`fastmcp` im System-Python (die Connectoren rufen `python3` auf) und einen
+Pfad-Symlink, weil `opencode.json` absolute Pfade des Entwicklerrechners nennt.
+
+`deploy/provision-mcp.sh` richtet das idempotent ein (vorhandene Komponenten
+werden erkannt und übersprungen):
+
+| Komponente | Prüfung | Aktion bei Fehlen |
+|---|---|---|
+| Node 22 + npm/npx | `command -v node` | NodeSource-Setup + `apt-get install nodejs` |
+| uv + uvx | `command -v uv` | `pip install --break-system-packages uv` |
+| fastmcp/mcp/requests | `python3 -c "import fastmcp, mcp, requests"` | `pip install --ignore-installed typing_extensions` (Ubuntu 24.04: Debian-verwaltetes Paket) |
+| Pfad-Symlink | `/home/batnini/mimo-agents/km-hr-agent` | `ln -s /opt/km-hr-agent` |
+| `.venv-pdf` | im Repo | `ln -s .venv-streamlit` (wird von `git clean -fd` entfernt) |
+
+Der Deploy ruft das Skript nach `git clean -fd` auf; ein Fehlschlag blockiert
+den Deploy nicht (`|| WARNUNG`). `opencode.json` bleibt die einzige,
+versionierte Quelle – Server-Edits daran sind untersagt, weil
+`git reset --hard` sie ersetzt.
+
+**Verifikation:** `python3 deploy/verify_mcp.py` startet jeden lokalen Server,
+führt `initialize` + `notifications/initialized` + `tools/list` aus und prüft
+Remote-Server per HTTP-`initialize`. Exit 0 = alle antworten. Messung
+31.10.2026 (Contabo): 14/14 OK (181 Tools gesamt).
+
+**OAuth-Tokens** liegen außerhalb des Repos (`/root/.mcp-auth/...`, `chmod 600`)
+und werden nicht versioniert; bei Neuaufbau einmalig übertragen oder neu
+autorisieren. Wichtig: `npx` nutzt auf dem Server `mcp-remote-0.1.37`, nicht
+`0.1.38`.
+
+---
+
 ## Ist vs. dokumentiert (§G-Zählwerk-Nachzug, 26.09.2026)
 
 Pflichtformulierung: **49 dokumentiert (instructions.md, nach §G-Nachzug) / 181 live (Handshake 26.09.2026)** — Quelle live: `/tmp/opencode/f1-tools-full.json` (selbst summiert = 181 über **15 Server**; historischer Stand 26.09.2026, **vor** der `jitsi-meeting`-Entfernung am 27.09.2026 → heute 14 Server).

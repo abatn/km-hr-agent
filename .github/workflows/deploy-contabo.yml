@@ -54,14 +54,10 @@ jobs:
           git fetch origin main
           git reset --hard "$TARGET_SHA"
           git clean -fd
-          # 31.10.2026: `git clean -fd` entfernt den nicht versionierten
-          # .venv-pdf-Pfad. Ohne ihn startet der Runner MCP-Server mit
-          # System-Python ohne fastmcp (ModuleNotFoundError). Der Pfad zeigt
-          # dokumentiert auf dasselbe Venv (fastmcp + pymupdf).
-          if [ ! -e .venv-pdf ]; then
-            ln -s .venv-streamlit .venv-pdf
-            echo ".venv-pdf -> .venv-streamlit verknuepft"
-          fi
+          # 31.10.2026: MCP-Laufzeit sicherstellen (Node/npx, uv/uvx, fastmcp,
+          # Pfad-Symlink, .venv-pdf). Idempotent; ein Fehlschlag blockiert den
+          # Deploy nicht, die App laeuft auch ohne die MCP-Zusatzserver.
+          bash deploy/provision-mcp.sh || echo "WARNUNG: MCP-Provisioning fehlgeschlagen"
           if git diff --name-only HEAD@{1} HEAD -- requirements.txt | grep -q .; then
             echo "requirements.txt geaendert -> pip install"
             .venv-streamlit/bin/pip install -r requirements.txt -q
