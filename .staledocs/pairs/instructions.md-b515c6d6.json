@@ -55,7 +55,7 @@
       "social-agent",
       "testdaten/"
     ],
-    "at": "2026-10-31T23:52:43+00:00",
+    "at": "2026-11-01T00:02:56+00:00",
     "code_blobs": {
       "scripts/ads_agent.py": "d7f24f2ba88fca4d9b18d317f9478c05dbddb22c",
       "scripts/ads_x402.py": "641e0d29abb32926d3d235c3846a69c4f354ef05",
@@ -66,7 +66,7 @@
       "scripts/asgi_trace_run.py": "383a6023e25294243f3e0e78e475be0905148159",
       "scripts/benchmark_hf.py": "b7e93d2a60b2beb78ab5cbcaa658f73d725fa9d7",
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
-      "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
+      "scripts/ci/checks.py": "fd6a46cb294f7012f24f1a23deb5e995a71ae718",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
       "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
       "scripts/forge_forms.py": "991a9e4f480eef7f654d8f2096b3ad4741872183",
@@ -125,9 +125,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "557c01e956e6380a092fdcb61571c86f09452ce4",
+    "commit": "e675ef2b5676810cd0c28b303186ec759adfb87d",
     "doc_blob": "d5476cdc2f121ace51e2187db23fdf01f0eef654",
-    "note": "instructions.md: neue Job-Akquise-Dateien (scripts/jobs_*.py, forge_forms.py, tests, jobs/skills) geprueft; die Aussagen der Datei bleiben gueltig."
+    "note": "instructions.md: Job-Akquise-Dateien (scripts/jobs_*.py, jobs/skills, tests) und die Knowledge-MD-Zahl 79 geprueft; die Aussagen der Datei bleiben gueltig."
   },
   "doc": "instructions.md",
   "schema": 1

@@ -124,7 +124,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-10-31T23:52:39+00:00",
+    "at": "2026-11-01T00:02:52+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -154,7 +154,7 @@
       "scripts/asgi_trace_run.py": "383a6023e25294243f3e0e78e475be0905148159",
       "scripts/benchmark_hf.py": "b7e93d2a60b2beb78ab5cbcaa658f73d725fa9d7",
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
-      "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f",
+      "scripts/ci/checks.py": "fd6a46cb294f7012f24f1a23deb5e995a71ae718",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
       "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
       "scripts/forge_forms.py": "991a9e4f480eef7f654d8f2096b3ad4741872183",
@@ -288,11 +288,11 @@
       "tests/test_jobs_enrich.py": "49171dbc115fc30ae9c958d378d398f9be7aed03",
       "tests/test_jobs_eures.py": "842cfb2e44bfce530b4d0900b0b99db933e9dc16",
       "tests/test_jobs_fr.py": "92f865ff401caedb358064d9e291a858f4c7c15b",
-      "tests/test_jobs_induce.py": "e8349e4c7b97d5f20a53277319b40750ffca0c6d",
+      "tests/test_jobs_induce.py": "8d4cdcd79a4833c05e39c2f8244b4f422e42f86f",
       "tests/test_jobs_jdp.py": "5b46bc33f5605b1a04d43c65989e295b7a1a114b",
       "tests/test_jobs_lhr.py": "0cdef140a1da5ac2719d7391b9caae196b51a393",
       "tests/test_jobs_mail.py": "84c2723600e681ba498dc977e1fd96cac9903f25",
-      "tests/test_jobs_recipients.py": "75694ba73c827edb7441395cd4b3d0f9ae43a038",
+      "tests/test_jobs_recipients.py": "644932541c0f822ca8ac2f94528c3eaa0ed6c8c1",
       "tests/test_jobs_skill.py": "540889f19775d5011a7bf65a096612603ac73864",
       "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
@@ -378,9 +378,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "557c01e956e6380a092fdcb61571c86f09452ce4",
+    "commit": "e675ef2b5676810cd0c28b303186ec759adfb87d",
     "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "AGENTS.md: neue Job-Akquise-Dateien (scripts/jobs_*.py, forge_forms.py, tests, jobs/skills) geprueft; die Aussagen der Datei bleiben gueltig."
+    "note": "AGENTS.md: Job-Akquise-Dateien (scripts/jobs_*.py, jobs/skills, tests) und die Knowledge-MD-Zahl 79 geprueft; die Aussagen der Datei bleiben gueltig."
   },
   "doc": "AGENTS.md",
   "schema": 1

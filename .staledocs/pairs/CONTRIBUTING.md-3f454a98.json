@@ -26,13 +26,13 @@
       "tests/e2e_isolation.py",
       "webui/"
     ],
-    "at": "2026-10-26T22:59:09+00:00",
+    "at": "2026-11-01T00:02:53+00:00",
     "code_blobs": {
-      "scripts/ci/checks.py": "4b71523e335345820c2e674035faf8ea4ae7fc3f"
+      "scripts/ci/checks.py": "fd6a46cb294f7012f24f1a23deb5e995a71ae718"
     },
-    "commit": "33c29b6dc54e08ec13bc359ec3e3abc9241a69df",
+    "commit": "e675ef2b5676810cd0c28b303186ec759adfb87d",
     "doc_blob": "c189b6060ebaa0252acaf0d0ea280865659bb46c",
-    "note": "Gepr\u00fcft 26.10.2026: CONTRIBUTING.md verweist auf scripts/ci/checks.py (Gate-Befehle), das unver\u00e4ndert ist; die ge\u00e4nderten Dateien (not_found.py, employer.py, Kataloge) werden dort nicht genannt."
+    "note": "CONTRIBUTING.md: Job-Akquise-Dateien (scripts/jobs_*.py, jobs/skills, tests) und die Knowledge-MD-Zahl 79 geprueft; die Aussagen der Datei bleiben gueltig."
   },
   "doc": "CONTRIBUTING.md",
   "schema": 1

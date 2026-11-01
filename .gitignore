@@ -52,3 +52,4 @@ jobs/empfaenger*.csv
 jobs/kontakte_recherche.csv
 logs/jobs-agent-*.log
 logs/jobs-cron.log
+jobs/outbox-web/
