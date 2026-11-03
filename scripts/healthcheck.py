@@ -35,6 +35,9 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_URL = "https://jobs.hanibal-ai.com/healthz"
+# Cloudflare blockt den Python-urllib-Default mit HTTP 403 (error 1010, Browser-
+# Integrity-Check). Ein eigener, stabiler User-Agent passiert die WAF.
+USER_AGENT = "KM-HR-Healthcheck/1.0"
 LOG_DIR = PROJECT_ROOT / "logs"
 
 
@@ -173,7 +176,9 @@ def run(url: str, timeout: float, repeat: float) -> int:
     http_status = 0
     payload: dict = {}
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
+        req = urllib.request.Request(
+            url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             http_status = int(resp.status)
             payload = json.loads(resp.read().decode("utf-8", "replace") or "{}")
     except urllib.error.HTTPError as ex:
