@@ -15,14 +15,14 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-30T21:08:42+00:00",
+    "at": "2026-11-02T18:30:31+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "9af4c5135c62f27da9b934055cebd429f8507408",
-      "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e"
+      "scripts/agent-runner.py": "1d04c302e33efdc36d974aaf433cde5ef7192cef",
+      "webui/logic.py": "7d16ee4d46a226cd45f5df9e7de353885a6af9ee"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
     "doc_blob": "f5e7d53873a999a42b6f411d7f030435bf103d0d",
-    "note": "skills/match-candidate/SKILL.md: Gewichts- und Prompt-Aussagen gegen _gewichts_prompt_zeile geprueft; Retry-, Welcome- und Bounce-Aenderungen beruehren den Matching-Ablauf nicht."
+    "note": "Codepr\u00fcfung 02.11.2026: scripts/agent-runner.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "skills/match-candidate/SKILL.md",
   "schema": 1

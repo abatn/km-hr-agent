@@ -1,0 +1,14 @@
+[Unit]
+Description=KM-HR-Agent Healthcheck (/healthz, 30s)
+Documentation=file:/opt/km-hr-agent/knowledge/system/observability.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/km-hr-agent
+EnvironmentFile=-/opt/km-hr-agent/.env
+EnvironmentFile=-/opt/km-hr-agent/.env-email
+ExecStart=/opt/km-hr-agent/.venv-streamlit/bin/python scripts/healthcheck.py
+StandardOutput=append:/opt/km-hr-agent/logs/healthcheck.log
+StandardError=append:/opt/km-hr-agent/logs/healthcheck.log

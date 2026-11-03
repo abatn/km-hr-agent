@@ -1,0 +1,5 @@
+# KM-HR-Agent – Healthcheck alle 30 s (Cron-Alternative zu systemd)
+# Zwei Zeilen pro Minute (Sekunde 0 und 30). Log: logs/healthcheck.log.
+# Voraussetzung: /opt/km-hr-agent ist der Projektpfad; .env wird vom Script gelesen.
+* * * * * sleep 0;  cd /opt/km-hr-agent && .venv-streamlit/bin/python scripts/healthcheck.py >> logs/healthcheck.log 2>&1
+* * * * * sleep 30; cd /opt/km-hr-agent && .venv-streamlit/bin/python scripts/healthcheck.py >> logs/healthcheck.log 2>&1

@@ -16,7 +16,11 @@ source:
     - "scripts/**"
     - "tests/**"
     - "webui/**"
-  exclude: []
+  exclude:
+    # Binäre Dateien: staledocs liest Git-Blobs als UTF-8 — ein geändertes
+    # Binary (Seed-Fixture, kompilierte Kataloge) würde den Check abbrechen.
+    - "tests/fixtures/**/*.db"
+    - "webui/locales/**/*.mo"
 
 docs:
   include:
@@ -72,6 +76,16 @@ pairs:
     code: ["connectors/**"]
   - doc: knowledge/system/mcp-connector-config.md
     code: ["connectors/**"]
+  - doc: knowledge/system/observability.md
+    code: ["webui/db.py", "webui/main.py", "webui/circuit_breaker.py",
+           "webui/logic.py", "webui/pages/admin.py", "webui/pages/employer.py",
+           "scripts/agent-runner.py", "scripts/healthcheck.py",
+           "deploy/systemd/kmhr-healthcheck.service",
+           "deploy/systemd/kmhr-healthcheck.timer",
+           "deploy/cron/kmhr-healthcheck.cron",
+           "tests/test_audit_chain.py", "tests/test_audit_secret_failclosed.py",
+           "tests/test_circuit_breaker.py", "tests/test_learning_loop.py",
+           "tests/test_healthcheck.py"]
 
   # --- System / Betrieb
   - doc: knowledge/system/jobs-agent.md
@@ -273,6 +287,7 @@ anchors:
     - "ui.footer"
     - "ui.animate"
     - "babel.cfg"                        # existiert by design nicht (knowledge/system/i18n.md)
+    - "POT-Creation-Date"                # gettext-Header-Feld, kein Repo-Pfad
     - "git@github.com:abatn/km-hr-agent.git"   # Git-Remote-URL
     # Glob-Muster: generierte Artefakte / Katalog-Dateien
     - "webui/locales/*/messages.po"

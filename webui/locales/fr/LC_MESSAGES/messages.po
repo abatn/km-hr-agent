@@ -3993,3 +3993,36 @@ msgstr "{rolle} · compte n° {id} · {zeit}"
 
 msgid "Keine Zustellfehler erfasst."
 msgstr "Aucune erreur de livraison enregistrée."
+
+msgid "Lern-Dashboard (30 Tage)"
+msgstr "Tableau d'apprentissage (30 jours)"
+
+msgid "Menschliche Entscheidungen: {n}"
+msgstr "Décisions humaines : {n}"
+
+msgid "Eingeladen: {a} · Abgelehnt: {b} · Eingestellt: {c}"
+msgstr "Invités : {a} · Refusés : {b} · Embauchés : {c}"
+
+msgid "Gewichts-Anpassungen: {n} (Feedback-Einträge: {f})"
+msgstr "Ajustements de pondération : {n} (entrées de feedback : {f})"
+
+msgid "Letzte Anpassung: {t}"
+msgstr "Dernier ajustement : {t}"
+
+msgid "Noch keine Gewichts-Anpassung — der Lern-Loop wartet auf HR-Entscheidungen."
+msgstr "Aucun ajustement de pondération pour l'instant — la boucle d'apprentissage attend les décisions RH."
+
+msgid "Audit-Log (Hash-Kette)"
+msgstr "Journal d'audit (chaîne de hachage)"
+
+msgid "Einträge: {n} · Kette: {s}"
+msgstr "Entrées : {n} · Chaîne : {s}"
+
+msgid "unversehrt"
+msgstr "intacte"
+
+msgid "GEBROCHEN"
+msgstr "ROMPUE"
+
+msgid "Noch keine Audit-Einträge."
+msgstr "Aucune entrée d'audit pour l'instant."

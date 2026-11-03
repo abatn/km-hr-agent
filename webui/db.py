@@ -27,8 +27,318 @@ AGENT_TASKS_DB = DB_PATH
 
 
 def get_conn(db_path: Path | None = None) -> sqlite3.Connection:
-    """Neue SQLite-Verbindung (Zeilenweise Tupel, wie im Streamlit-Code üblich)."""
-    return sqlite3.connect(str(db_path or DB_PATH))
+    """Neue SQLite-Verbindung (Zeilenweise Tupel, wie im Streamlit-Code üblich).
+
+    02.11.2026 (Homöostase): `timeout` + `busy_timeout` gegen `database is
+    locked`. WebUI und Runner teilen sich dieselbe Datei; ohne Wartezeit
+    scheitert der zweite Schreiber sofort. Das WAL-Journal wird einmalig in
+    `enable_wal()` auf Dateiebene gesetzt (persistiert in der DB).
+    """
+    conn = sqlite3.connect(str(db_path or DB_PATH), timeout=10.0)
+    try:
+        conn.execute("PRAGMA busy_timeout=10000")
+    except sqlite3.Error:
+        pass
+    return conn
+
+
+def enable_wal(db_path: Path | None = None) -> str:
+    """Aktiviert Write-Ahead-Logging (persistente DB-Eigenschaft) + prüft es.
+
+    Rückgabe: tatsächlicher `journal_mode` ("wal" im Erfolgsfall). Fehler sind
+    nicht fatal — die App läuft weiter (nur mit Rollback-Journal).
+    """
+    try:
+        conn = sqlite3.connect(str(db_path or DB_PATH), timeout=10.0)
+        try:
+            mode = conn.execute("PRAGMA journal_mode=WAL").fetchone()
+            conn.execute("PRAGMA busy_timeout=10000")
+            conn.execute("PRAGMA synchronous=NORMAL")
+            return str(mode[0]).lower() if mode else "unknown"
+        finally:
+            conn.close()
+    except sqlite3.Error as ex:
+        print(f"[db] WAL konnte nicht aktiviert werden: {ex!r}")
+        return "error"
+
+
+def queue_health() -> dict:
+    """Queue-Kennzahlen für /healthz (schnell, ohne lange Sperren)."""
+    try:
+        conn = sqlite3.connect(str(DB_PATH), timeout=2.0)
+        try:
+            counts = {str(r[0] or "unknown"): int(r[1]) for r in conn.execute(
+                "SELECT status, COUNT(*) FROM agent_tasks GROUP BY status")}
+            failed_1h = int(conn.execute(
+                "SELECT COUNT(*) FROM agent_tasks WHERE status='failed' "
+                "AND finished_at >= datetime('now','-1 hour')").fetchone()[0])
+            pending_old = int(conn.execute(
+                "SELECT COUNT(*) FROM agent_tasks WHERE status='pending' "
+                "AND created_at < datetime('now','-1 hour')").fetchone()[0])
+        finally:
+            conn.close()
+        return {"ok": True, "counts": counts, "failed_last_hour": failed_1h,
+                "pending_older_1h": pending_old}
+    except sqlite3.Error as ex:
+        return {"ok": False, "error": repr(ex)}
+
+
+def _pid_alive(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def runner_health() -> dict:
+    """Prüft die PID-Datei des Agent-Runners (data/agent-runner.pid)."""
+    pfad = DATA_DIR / "agent-runner.pid"
+    try:
+        pid = int(pfad.read_text().strip())
+    except (OSError, ValueError):
+        return {"alive": False, "pid": None, "detail": "PID-Datei fehlt/ungültig"}
+    return {"alive": _pid_alive(pid), "pid": pid, "detail": "ok"}
+
+
+# ─── Audit-Log (unbestechliche Hash-Kette, 02.11.2026) ────────────────
+# Jede menschliche Entscheidung wird append-only protokolliert. Jeder
+# Eintrag enthält den Hash des Vorgängers; die Signatur ist ein HMAC über
+# den Eintrags-Hash. Eine nachträgliche Änderung bricht die Kette und wird
+# von `verify_audit_chain()` gemeldet.
+#
+# Secret: KMHR_AUDIT_SECRET ist PFLICHT. Es gibt keinen Entwicklungs-Default:
+# Ohne Secret verweigert `_audit_secret()` die Signatur (fail-closed). Der
+# Aufrufer (`append_audit`) wirft dann RuntimeError; `_record_decision` fängt
+# das und protokolliert es, damit der HR-Klick nicht bricht — aber es entsteht
+# KEIN unsignierter Audit-Eintrag. Spec: knowledge/system/observability.md §5.
+
+
+def _audit_secret() -> bytes:
+    s = (os.environ.get("KMHR_AUDIT_SECRET") or "").strip()
+    if not s:
+        raise RuntimeError(
+            "KMHR_AUDIT_SECRET nicht gesetzt — Audit-Signatur fail-closed "
+            "verweigert. Details: knowledge/system/observability.md §5.")
+    return s.encode("utf-8")
+
+
+def init_audit_log_table() -> None:
+    """Legt `audit_log` an (idempotent). Append-only per Konvention + Test."""
+    conn = get_conn()
+    try:
+        conn.execute("""CREATE TABLE IF NOT EXISTS audit_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ts TEXT NOT NULL,
+            actor_role TEXT NOT NULL,
+            actor_id TEXT,
+            action TEXT NOT NULL,
+            application_id INTEGER,
+            candidate_id INTEGER,
+            job_id INTEGER,
+            prev_status TEXT,
+            new_status TEXT,
+            payload TEXT,
+            prev_hash TEXT,
+            entry_hash TEXT NOT NULL,
+            signature TEXT)""")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_audit_log_app "
+                     "ON audit_log(application_id)")
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def _audit_entry_dict(ts: str, actor_role: str, actor_id, action: str,
+                      application_id, candidate_id, job_id, prev_status,
+                      new_status, payload) -> dict:
+    return {
+        "ts": ts, "actor_role": actor_role, "actor_id": actor_id,
+        "action": action, "application_id": application_id,
+        "candidate_id": candidate_id, "job_id": job_id,
+        "prev_status": prev_status, "new_status": new_status,
+        "payload": payload,
+    }
+
+
+def append_audit(conn: sqlite3.Connection, *, actor_role: str, action: str,
+                 actor_id=None, application_id=None, candidate_id=None,
+                 job_id=None, prev_status=None, new_status=None,
+                 payload=None) -> str:
+    """Hängt einen Eintrag an die Audit-Kette. Rückgabe: `entry_hash`.
+
+    Der Aufrufer committet (oder überlässt es dem nächsten commit), damit
+    Statuswechsel und Audit-Eintrag atomar bleiben können.
+    """
+    import hashlib
+    import hmac
+    row = conn.execute(
+        "SELECT entry_hash FROM audit_log ORDER BY id DESC LIMIT 1").fetchone()
+    prev_hash = (row[0] if row and row[0] else "")
+    ts = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    entry = _audit_entry_dict(ts, actor_role, actor_id, action,
+                              application_id, candidate_id, job_id,
+                              prev_status, new_status, payload)
+    canonical = json.dumps(entry, sort_keys=True, ensure_ascii=False)
+    payload_json = (json.dumps(payload, sort_keys=True, ensure_ascii=False)
+                    if payload is not None else None)
+    entry_hash = hashlib.sha256(
+        f"{prev_hash}|{canonical}".encode("utf-8")).hexdigest()
+    signature = hmac.new(_audit_secret(), entry_hash.encode("utf-8"),
+                         hashlib.sha256).hexdigest()
+    conn.execute(
+        "INSERT INTO audit_log (ts, actor_role, actor_id, action, "
+        "application_id, candidate_id, job_id, prev_status, new_status, "
+        "payload, prev_hash, entry_hash, signature) "
+        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (ts, actor_role, actor_id, action, application_id, candidate_id,
+         job_id, prev_status, new_status, payload_json, prev_hash,
+         entry_hash, signature))
+    return entry_hash
+
+
+def verify_audit_chain(conn: sqlite3.Connection | None = None) -> dict:
+    """Prüft die gesamte Hash-Kette. Rückgabe: {ok, broken_id, count}."""
+    import hashlib
+    import hmac
+    own = conn is None
+    if own:
+        conn = get_conn()
+    try:
+        rows = conn.execute(
+            "SELECT id, ts, actor_role, actor_id, action, application_id, "
+            "candidate_id, job_id, prev_status, new_status, payload, "
+            "prev_hash, entry_hash, signature FROM audit_log ORDER BY id"
+        ).fetchall()
+    except sqlite3.Error as ex:
+        return {"ok": False, "broken_id": None, "count": 0,
+                "error": repr(ex)}
+    finally:
+        if own:
+            conn.close()
+    prev = ""
+    for r in rows:
+        (rid, ts, role, aid, action, appid, cid, jid, pstat, nstat,
+         payload_json, ph, eh, sig) = r
+        try:
+            payload_obj = json.loads(payload_json) if payload_json else None
+        except (TypeError, ValueError):
+            payload_obj = payload_json
+        entry = _audit_entry_dict(ts, role, aid, action, appid, cid, jid,
+                                  pstat, nstat, payload_obj)
+        expected = hashlib.sha256(
+            f"{prev}|{json.dumps(entry, sort_keys=True, ensure_ascii=False)}"
+            .encode("utf-8")).hexdigest()
+        expected_sig = hmac.new(_audit_secret(), expected.encode("utf-8"),
+                                hashlib.sha256).hexdigest()
+        if ph != prev or eh != expected or sig != expected_sig:
+            return {"ok": False, "broken_id": rid, "count": len(rows)}
+        prev = eh
+    return {"ok": True, "broken_id": None, "count": len(rows)}
+
+
+def get_audit_stats(limit: int = 10) -> dict:
+    """Letzte Audit-Einträge + Kettenstatus (für Admin-Dashboard)."""
+    conn = get_conn()
+    try:
+        try:
+            count = int(conn.execute(
+                "SELECT COUNT(*) FROM audit_log").fetchone()[0])
+            recent = conn.execute(
+                "SELECT ts, actor_role, actor_id, action, prev_status, "
+                "new_status FROM audit_log ORDER BY id DESC LIMIT ?",
+                (int(limit),)).fetchall()
+        except sqlite3.Error:
+            count, recent = 0, []
+    finally:
+        conn.close()
+    return {"count": count, "recent": recent, "chain": verify_audit_chain()}
+
+
+def get_learning_stats(days: int = 30) -> dict:
+    """Lern-Dashboard: menschliche Entscheidungen + Gewichtsänderungen."""
+    conn = get_conn()
+    since = f"-{int(days)} days"
+    # Jede Abfrage einzeln absichern: eine fehlende Tabelle darf die
+    # übrigen Kennzahlen nicht auf 0 setzen (02.11.2026).
+    try:
+        entscheidungen = {str(r[0]): int(r[1]) for r in conn.execute(
+            "SELECT status, COUNT(*) FROM application_status_history "
+            "WHERE status IN ('eingeladen','abgelehnt','eingestellt') "
+            "AND changed_at >= datetime('now', ?) GROUP BY status",
+            (since,))}
+    except sqlite3.Error:
+        entscheidungen = {}
+    try:
+        aenderungen, feedback_n = conn.execute(
+            "SELECT COUNT(*), COALESCE(SUM(feedback_anzahl),0) "
+            "FROM gewichtung_historie WHERE datum >= datetime('now', ?)",
+            (since,)).fetchone()
+    except sqlite3.Error:
+        aenderungen, feedback_n = 0, 0
+    try:
+        letzte = conn.execute(
+            "SELECT datum, kategorie, alte_gewichtung, neue_gewichtung, grund "
+            "FROM gewichtung_historie ORDER BY id DESC LIMIT 10").fetchall()
+    except sqlite3.Error:
+        letzte = []
+    try:
+        letzte_aenderung = conn.execute(
+            "SELECT MAX(datum) FROM gewichtung_historie").fetchone()[0]
+    except sqlite3.Error:
+        letzte_aenderung = None
+    conn.close()
+    return {
+        "days": int(days),
+        "entscheidungen": entscheidungen,
+        "entscheidungen_summe": sum(entscheidungen.values()),
+        "gewichtsaenderungen": int(aenderungen or 0),
+        "feedback_summe": int(feedback_n or 0),
+        "letzte_aenderungen": letzte,
+        "letzte_aenderung": letzte_aenderung,
+    }
+
+
+def health_snapshot() -> dict:
+    """Aggregierter /healthz-Block: DB, Queue, Runner, Audit."""
+    dbh = queue_health()
+    snap = {
+        "status": "ok",
+        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "db": {"ok": dbh.get("ok", False)},
+        "queue": {},
+        "runner": runner_health(),
+        "audit": {},
+    }
+    try:
+        conn = sqlite3.connect(str(DB_PATH), timeout=2.0)
+        try:
+            conn.execute("SELECT 1").fetchone()
+            snap["db"]["tables"] = int(conn.execute(
+                "SELECT COUNT(*) FROM sqlite_master WHERE type='table' "
+                "AND name NOT LIKE 'sqlite_%'").fetchone()[0])
+            snap["db"]["journal_mode"] = str(conn.execute(
+                "PRAGMA journal_mode").fetchone()[0]).lower()
+        finally:
+            conn.close()
+        snap["db"]["ok"] = True
+    except sqlite3.Error as ex:
+        snap["db"] = {"ok": False, "error": repr(ex)}
+    if dbh.get("ok"):
+        snap["queue"] = {k: v for k, v in dbh.items() if k != "ok"}
+        try:
+            snap["audit"] = get_audit_stats(limit=1).get("chain", {})
+        except Exception as ex:  # /healthz darf nie 500 werfen
+            snap["audit"] = {"ok": False, "error": repr(ex)}
+    else:
+        snap["audit"] = {"ok": False, "error": "DB nicht erreichbar"}
+    if not snap["db"].get("ok"):
+        snap["status"] = "error"
+    elif (not snap["runner"].get("alive")
+          or snap["queue"].get("failed_last_hour", 0) > 0
+          or not snap["audit"].get("ok", True)):
+        snap["status"] = "degraded"
+    return snap
 
 
 # ─── Agent-Queue (Phase 5) ────────────────────────────────────────────
@@ -63,7 +373,7 @@ def init_agent_tasks_table() -> None:
     („Erweitertes Schema" + Abschnitt „5.1 Task-Status, DB-Pfad und
     Score-Fallback", Zeile „Schema-Migration ohne WebUI").
     """
-    conn = sqlite3.connect(str(AGENT_TASKS_DB))
+    conn = get_conn(AGENT_TASKS_DB)
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS agent_tasks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -95,7 +405,7 @@ def queue_agent_task(task_type: str, payload: dict) -> int | None:
     """Schreibt einen Agent-Task in die Queue (idempotent pro Tag+Typ+Applikation+Generation).
     Kopie aus app.py:445-477 (Streamlit-frei: kein st.*, nur print)."""
     try:
-        conn = sqlite3.connect(str(AGENT_TASKS_DB))
+        conn = get_conn(AGENT_TASKS_DB)
         c = conn.cursor()
         # Sprach-Transport (Variante B, P1 07.10.2026, Spec i18n-runner-chain.md
         # §7.1): die Session-Sprache des Ausloesers zentral an JEDES Payload
@@ -532,7 +842,7 @@ def get_invitation_artifacts(application_id: int) -> dict | None:
     """Lädt Einladungs-Artefakte (Meeting-Link VDO.Ninja, ICS, Termin) aus dem create_invitation-Task.
     Kopie aus app.py:478-494."""
     try:
-        conn = sqlite3.connect(str(AGENT_TASKS_DB))
+        conn = get_conn(AGENT_TASKS_DB)
         cur = conn.cursor()
         cur.execute("""SELECT result_json FROM agent_tasks
             WHERE task_type = 'create_invitation' AND status = 'done'
@@ -561,7 +871,7 @@ def get_invitation_task_status(application_id: int) -> str | None:
     Connection-Gotcha) — read-only.
     """
     try:
-        conn = sqlite3.connect(str(AGENT_TASKS_DB))
+        conn = get_conn(AGENT_TASKS_DB)
         cur = conn.cursor()
         cur.execute("""SELECT status FROM agent_tasks
             WHERE task_type = 'create_invitation'
@@ -580,7 +890,7 @@ def get_application_status_history(application_id: int) -> list:
     """Gibt die Status-Historie einer Bewerbung zurück (chronologisch).
     Jede Zeile: (status, changed_at, changed_by)."""
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         cur = conn.cursor()
         cur.execute("""SELECT status, changed_at, changed_by FROM application_status_history
             WHERE application_id = ? ORDER BY changed_at ASC""", (application_id,))
@@ -597,7 +907,7 @@ def get_agent_task_status(application_id: int) -> dict | None:
     Kern der Duplikat-Bereinigung: ersetzt die inline-SQL-Blöcke app.py:3355-3363
     (Candidate-Portal) und app.py:3085-3105 (HR-Kandidaten-Tab)."""
     try:
-        conn = sqlite3.connect(str(AGENT_TASKS_DB))
+        conn = get_conn(AGENT_TASKS_DB)
         cur = conn.cursor()
         cur.execute("""SELECT task_type, status FROM agent_tasks
             WHERE id IN (SELECT MAX(id) FROM agent_tasks
@@ -632,7 +942,7 @@ def get_candidate_agent_tasks(candidate_id: int, conn=None) -> list:
     own_conn = conn is None
     try:
         if own_conn:
-            conn = sqlite3.connect(str(AGENT_TASKS_DB))
+            conn = get_conn(AGENT_TASKS_DB)
         cur = conn.cursor()
         cur.execute("SELECT id FROM applications WHERE candidate_id = ?",
                     (candidate_id,))
@@ -686,7 +996,7 @@ def get_language_tests(candidate_id: int) -> list:
     Kern der Duplikat-Bereinigung: ersetzt die SQL-Blöcke app.py:~2790 und ~3560
     (einmal Candidate-Sicht, einmal HR-Dokumente-Tab)."""
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         cur = conn.cursor()
         cur.execute("""SELECT id, sprache, niveau, punkte, cefr_level, test_datum
             FROM language_tests WHERE candidate_id = ? ORDER BY id DESC""", (candidate_id,))
@@ -704,7 +1014,7 @@ def insert_language_test(candidate_id: int, sprache: str, niveau: str,
     """Speichert ein Sprachtest-Ergebnis. Kopie aus app.py:3000-3002.
     Gibt die neue Zeilen-ID zurueck (lastrowid, Muster: insert_job)."""
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         cur = conn.cursor()
         cur.execute(
             "INSERT INTO language_tests (candidate_id, sprache, niveau, fragen_anzahl, punkte, cefr_level, details) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -732,7 +1042,7 @@ def get_documents(candidate_id: int) -> list:
     verschluckt.
     """
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         cur = conn.cursor()
         cur.execute("""SELECT id, dokumententyp, datei_pfad, hochgeladen_am
             FROM candidate_documents WHERE candidate_id = ? ORDER BY id DESC""", (candidate_id,))
@@ -752,7 +1062,7 @@ def insert_document(candidate_id: int, datei_pfad: str, dokument_typ: str) -> bo
     (Konvention der Datei: print nach stderr mit Praefix [db]).
     """
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         conn.execute(
             "INSERT INTO candidate_documents (candidate_id, datei_pfad, dokumententyp) VALUES (?, ?, ?)",
             (candidate_id, datei_pfad, dokument_typ),
@@ -769,7 +1079,7 @@ def insert_document(candidate_id: int, datei_pfad: str, dokument_typ: str) -> bo
 def delete_document(doc_id: int, candidate_id: int) -> bool:
     """Loescht ein Dokument (Art. 17 Selbstservice). Kopie aus app.py:2876."""
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         conn.execute(
             "DELETE FROM candidate_documents WHERE id = ? AND candidate_id = ?",
             (doc_id, candidate_id),
@@ -788,7 +1098,7 @@ def upsert_employer(employer_id: int, branche: str, groesse: str,
                     telefon: str) -> bool:
     """Aktualisiert das Firmenprofil. Kopie aus app.py:3481-3483."""
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         conn.execute(
             """UPDATE employers SET branche=?, groesse=?, standort=?, website=?, beschreibung=?, telefon=?, aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?""",
             (branche, groesse, standort, website, beschreibung, telefon, employer_id),
@@ -819,7 +1129,7 @@ def insert_job(employer_id: int, titel: str, beschreibung: str, standort: str,
     kurze Fenster; spaetere legitime Wiederholungen bleiben erlaubt.
     """
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         cur = conn.cursor()
         row = cur.execute(
             "SELECT id FROM jobs WHERE employer_id = ? AND titel = ? AND standort = ? "
@@ -856,7 +1166,7 @@ def insert_job(employer_id: int, titel: str, beschreibung: str, standort: str,
 def update_job_status(job_id: int, neuer_status: str, changed_by: str = "system") -> bool:
     """Aendert den Stellen-Status. Kopie aus app.py:3541-3543."""
     try:
-        conn = sqlite3.connect(str(DB_PATH))
+        conn = get_conn()
         conn.execute(
             "UPDATE jobs SET status=?, aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?",
             (neuer_status, job_id),
@@ -885,7 +1195,7 @@ def init_notifications_table() -> None:
     (Muster: init_compliance_protokoll_table). `gelesen` bleibt vestigial
     (Löschen beim Lesen, 17.10.2026).
     """
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS notifications (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -913,7 +1223,7 @@ def init_notifications_table() -> None:
 
 def init_mentoring_table() -> None:
     """Legt die mentoring-Tabelle an (idempotent). Spec §3 Option C."""
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS mentoring (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -942,7 +1252,7 @@ def init_compliance_protokoll_table(db_path: Path | None = None) -> None:
 
     `db_path` nur für Tests (Default: DB_PATH).
     """
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS compliance_protokoll (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -999,7 +1309,7 @@ def record_compliance_protokoll(match_id: str, land: str, pruefpunkt: str, statu
 
 def get_active_mentor(candidate_id: int) -> str | None:
     """Liefert den aktiven Mentor-Namen oder None (Spec §5 Lookup)."""
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     row = conn.execute(
         "SELECT mentor_name FROM mentoring WHERE candidate_id = ? AND status = 'aktiv' "
         "ORDER BY changed_at DESC LIMIT 1",
@@ -1017,7 +1327,7 @@ def assign_mentor(candidate_id: int, mentor_name: str, changed_by: str = "arbeit
     name = (mentor_name or "").strip()
     if not name:
         raise ValueError("mentor_name darf nicht leer sein")
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     c = conn.cursor()
     c.execute(
         "UPDATE mentoring SET status = 'beendet', end_at = CURRENT_TIMESTAMP, "
@@ -1039,7 +1349,7 @@ def assign_mentor(candidate_id: int, mentor_name: str, changed_by: str = "arbeit
 def end_mentoring(candidate_id: int, changed_by: str = "arbeitgeber") -> bool:
     """Beendet die aktive Patenschaft (HR-Klick §4, manuell – keine Automatik).
     True wenn eine aktive Patenschaft existierte."""
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     c = conn.cursor()
     c.execute(
         "UPDATE mentoring SET status = 'beendet', end_at = CURRENT_TIMESTAMP, "
@@ -1063,7 +1373,7 @@ def insert_notification(user_id: int, role: str, titel: str, nachricht: str,
     (Default None) — titel/nachricht bleiben IMMER gefuellt (Fallback-Text
     fuer DB-Leser ohne i18n und E2E-Plaintext-Asserts).
     """
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     conn.execute(
         "INSERT INTO notifications (user_id, role, titel, nachricht, msg_key, params) "
         "VALUES (?, ?, ?, ?, ?, ?)",
@@ -1082,7 +1392,7 @@ def get_notifications(user_id: int, role: str, limit: int = 20) -> list:
     neuen Spalten haengen hinten an, bestehende Positions-Zugriffe bleiben
     gueltig. Altbestand: msg_key/params NULL -> Anzeige verbatim.
     """
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     rows = conn.execute(
         "SELECT id, titel, nachricht, gelesen, created_at, msg_key, params "
         "FROM notifications "
@@ -1095,7 +1405,7 @@ def get_notifications(user_id: int, role: str, limit: int = 20) -> list:
 
 def get_unread_count(user_id: int, role: str) -> int:
     """Anzahl ungelesener Benachrichtigungen."""
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     count = conn.execute(
         "SELECT COUNT(*) FROM notifications WHERE user_id = ? AND role = ? AND gelesen = 0",
         (user_id, role),
@@ -1111,7 +1421,7 @@ def delete_notifications(user_id: int, role: str) -> None:
     (entfernt). Die Spalte `gelesen` bleibt als vestigialer Default stehen
     (kein Schema-Change), wird aber nicht mehr gesetzt.
     """
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     conn.execute(
         "DELETE FROM notifications WHERE user_id = ? AND role = ?",
         (user_id, role),
@@ -1133,7 +1443,7 @@ RESET_RATE_WINDOW_MINUTES = 10
 
 def init_password_resets_table(db_path: Path | None = None) -> None:
     """Legt die password_resets-Tabelle an (idempotent). Spec §(g)."""
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS password_resets (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1222,7 +1532,7 @@ def init_candidates_migrations() -> None:
     employer-board.md). Ohne candidates-Tabelle nichts zu tun — ein
     ALTER-Try auf einer Frisch-DB ohne Schema soll den Boot nicht brechen.
     """
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_conn()
     c = conn.cursor()
     spalten = {r[1] for r in c.execute("PRAGMA table_info(candidates)").fetchall()}
     if spalten and "franzoesisch" not in spalten:
@@ -1237,7 +1547,7 @@ def init_billing_migrations(db_path: Path | None = None) -> None:
 
     Eigenes Feld statt gehaltsrahmen_* (dort Monats-/Jahreswerte gemischt).
     """
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     try:
         c = conn.cursor()
         c.execute("""CREATE TABLE IF NOT EXISTS billing_fees (
@@ -1317,7 +1627,7 @@ def init_consents_table(db_path: Path | None = None) -> None:
     werden per ALTER TABLE geheilt — `CREATE TABLE IF NOT EXISTS` ändert eine
     bestehende Tabelle nicht (Muster `init_agent_tasks_table`).
     """
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     try:
         c = conn.cursor()
         c.execute("""CREATE TABLE IF NOT EXISTS consents (
@@ -1380,7 +1690,7 @@ def record_consent(subject_type: str, subject_id: int, purpose: str,
         raise ValueError(f"consents: unbekannte language {language!r}")
     evidence_json = (json.dumps(evidence, ensure_ascii=False, sort_keys=True)
                      if evidence is not None else None)
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     try:
         conn.execute(
             """INSERT INTO consents
@@ -1417,7 +1727,7 @@ def withdraw_consent(subject_type: str, subject_id: int, purpose: str,
     gesetzt. Mehrfacher Aufruf ist ein No-op (False).
     """
     _consent_check(subject_type, subject_id, purpose)
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     try:
         c = conn.execute(
             "UPDATE consents SET withdrawn_at = CURRENT_TIMESTAMP "
@@ -1438,7 +1748,7 @@ def get_consents(subject_type: str, subject_id: int,
     Zusätzlich zu den Spalten enthält jedes dict `active` (bool) — abgeleitet
     aus `withdrawn_at`, damit die UI nicht selbst NULL prüfen muss.
     """
-    conn = sqlite3.connect(str(db_path or DB_PATH))
+    conn = get_conn(db_path)
     try:
         conn.row_factory = sqlite3.Row
         rows = conn.execute(

@@ -29,13 +29,13 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-30T21:08:09+00:00",
+    "at": "2026-11-02T18:55:25+00:00",
     "code_blobs": {
-      "webui/db.py": "1a131405322618946a2dedcb73bbfc52355b8d76"
+      "webui/db.py": "1223884daa4872bec116c3edb2baf33641016b6f"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
     "doc_blob": "7fa0717efcdbab47d76f8540d9dbae01a49d408e",
-    "note": "Mentoring-Aussagen gegen assign_mentor, end_mentoring und get_active_mentor in webui/db.py geprueft; neue Account- und Bounce-Funktionen betreffen Mentoring nicht."
+    "note": "Codepr\u00fcfung 02.11.2026: webui/db.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "skills/mentoring/SKILL.md",
   "schema": 1

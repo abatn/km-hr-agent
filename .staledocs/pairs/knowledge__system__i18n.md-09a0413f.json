@@ -19,7 +19,6 @@
       "NICHT_KONFORM",
       "P9_4_NEUE_KEYS",
       "PAGE_TITLES",
-      "POT-Creation-Date",
       "PhD",
       "Quasar.lang.set({\u2026rtl:true})",
       "STATUS_LABELS",
@@ -123,24 +122,20 @@
       "webui/pages/login.py",
       "webui/pages/not_found.py"
     ],
-    "at": "2026-10-30T21:08:36+00:00",
+    "at": "2026-11-02T18:55:24+00:00",
     "code_blobs": {
       "tests/test_i18n.py": "208312b7842868098ba84ee0a23ee2e06a5499ed",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
       "webui/i18n.py": "4bd80ac4221c76c9bde939fca6731f3af2241377",
       "webui/i18n_core.py": "1df26766ea9bbc92a3f8ae08016901e9c069beaa",
-      "webui/locales/ar/LC_MESSAGES/messages.mo": "281da12974451f40ac05dae26f54f058d596dda8",
-      "webui/locales/ar/LC_MESSAGES/messages.po": "a5ff5496986bb63cd138165f6bfea92b87b66045",
-      "webui/locales/de/LC_MESSAGES/messages.mo": "db3dfb66e7f819407a9e7de98dfc294698711ba0",
-      "webui/locales/de/LC_MESSAGES/messages.po": "617b77085abd439176d4ded5a599de291e5cd23e",
-      "webui/locales/en/LC_MESSAGES/messages.mo": "0f0b048e175ed9e89e6bcf1996083eb3a38bb2c3",
-      "webui/locales/en/LC_MESSAGES/messages.po": "5901504b71d41b48748b12b8b0e436143622c1ca",
-      "webui/locales/fr/LC_MESSAGES/messages.mo": "3d60cf2763b8e5021cbf5bf31b6990f81ba16f6e",
-      "webui/locales/fr/LC_MESSAGES/messages.po": "f1126d2fbf953d72a50d59604cb6c5101042b3f3"
+      "webui/locales/ar/LC_MESSAGES/messages.po": "fad73bbba176782d93fdecf75d7dbe29de30b629",
+      "webui/locales/de/LC_MESSAGES/messages.po": "1e1f493c69e545f27092f0fe1a6e82bae3103b9a",
+      "webui/locales/en/LC_MESSAGES/messages.po": "bf00b8243309dc5099ee89939a0324a61ee22fe0",
+      "webui/locales/fr/LC_MESSAGES/messages.po": "fb7f5035b713da4395a94d928df88e53c3c4c6a9"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
-    "doc_blob": "2c06bbed6073d78c3a2163ab8b5afb70d3c0ba4e",
-    "note": "knowledge/system/i18n.md: Key-Menge 1328 (grep 1329 inkl. Header) nach vier Admin-msgids am 30.10.2026 neu gemessen; Zusatz zur Zustellfehler-Karte ergaenzt."
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
+    "doc_blob": "45092c6bc976704ee4f245a4c9a621022a17e589",
+    "note": "Codepr\u00fcfung 02.11.2026: webui/locales/ar/LC_MESSAGES/messages.po gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "knowledge/system/i18n.md",
   "schema": 1

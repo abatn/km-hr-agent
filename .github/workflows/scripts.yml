@@ -46,6 +46,6 @@ jobs:
         run: |
           mkdir -p data /tmp/opencode
           cp tests/fixtures/seed.db data/feedback.db
-          printf 'KMHR_STORAGE_SECRET=ci\nKMHR_ADMIN_SEED_PASSWORD=ci\n' > .env
+          printf 'KMHR_STORAGE_SECRET=ci\nKMHR_ADMIN_SEED_PASSWORD=ci\nKMHR_AUDIT_SECRET=ci\n' > .env
       - name: Runner --once --dry-run (keine Mails, keine LLM-Calls)
         run: python3 scripts/agent-runner.py --once --dry-run

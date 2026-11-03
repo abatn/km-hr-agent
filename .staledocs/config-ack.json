@@ -12,6 +12,7 @@
       "ignore": [
         "*-kandidat-{id}-*.md",
         ".venv-pdf",
+        "POT-Creation-Date",
         "babel.cfg",
         "contract-preflight-*.md",
         "git@github.com:abatn/km-hr-agent.git",
@@ -82,6 +83,7 @@
       "knowledge/system/jobs-agent.md",
       "knowledge/system/mcp-connector-config.md",
       "knowledge/system/md-schreib-konvention.md",
+      "knowledge/system/observability.md",
       "knowledge/system/social-automation.md",
       "knowledge/system/vdo-ninja-migration.md",
       "knowledge/ui-design-system.md",
@@ -116,7 +118,10 @@
       "skills/verify-documents/SKILL.md",
       "ui/ANIMATION_ENTSCHEIDUNG.md"
     ],
-    "source_exclude": [],
+    "source_exclude": [
+      "tests/fixtures/**/*.db",
+      "webui/locales/**/*.mo"
+    ],
     "source_include": [
       "connectors/**",
       "deploy/**",
@@ -127,7 +132,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-11-01T00:03:00+00:00",
+  "at": "2026-11-02T19:24:58+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

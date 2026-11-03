@@ -3993,3 +3993,36 @@ msgstr "{rolle} · account #{id} · {zeit}"
 
 msgid "Keine Zustellfehler erfasst."
 msgstr "No delivery errors recorded."
+
+msgid "Lern-Dashboard (30 Tage)"
+msgstr "Learning dashboard (30 days)"
+
+msgid "Menschliche Entscheidungen: {n}"
+msgstr "Human decisions: {n}"
+
+msgid "Eingeladen: {a} · Abgelehnt: {b} · Eingestellt: {c}"
+msgstr "Invited: {a} · Rejected: {b} · Hired: {c}"
+
+msgid "Gewichts-Anpassungen: {n} (Feedback-Einträge: {f})"
+msgstr "Weight adjustments: {n} (feedback entries: {f})"
+
+msgid "Letzte Anpassung: {t}"
+msgstr "Last adjustment: {t}"
+
+msgid "Noch keine Gewichts-Anpassung — der Lern-Loop wartet auf HR-Entscheidungen."
+msgstr "No weight adjustment yet — the learning loop is waiting for HR decisions."
+
+msgid "Audit-Log (Hash-Kette)"
+msgstr "Audit log (hash chain)"
+
+msgid "Einträge: {n} · Kette: {s}"
+msgstr "Entries: {n} · Chain: {s}"
+
+msgid "unversehrt"
+msgstr "intact"
+
+msgid "GEBROCHEN"
+msgstr "BROKEN"
+
+msgid "Noch keine Audit-Einträge."
+msgstr "No audit entries yet."

@@ -51,6 +51,9 @@ from ansvar_gateway import ansvar_search, get_ansvar_token
 # läuft in einem eigenen Prozess ohne NiceGUI-Session.
 from webui.i18n_core import tr, SUPPORTED
 
+# 02.11.2026: Circuit-Breaker pro LLM-Modell (framework-frei, testbar).
+from webui.circuit_breaker import breaker_for
+
 # ISO-Kürzel → Klarname für die LLM-Prompt-Anweisung (§7.1 Punkt 5).
 LANG_NAMES = {"de": "Deutsch", "en": "Englisch", "fr": "Französisch", "ar": "Arabisch"}
 
@@ -219,6 +222,13 @@ MCP_TIMEOUT = 60          # Sekunden pro MCP-Tool-Aufruf
 LLM_TIMEOUT = 600         # 10 min pro LLM-Task (Spec §4)
 MAX_ATTEMPTS = 3
 
+# Circuit-Breaker (02.11.2026): Ein Modell, das zweimal scheitert, wird für
+# 5 Minuten übersprungen — dann sofort das nächste Modell der Kette. Vorher
+# kostete ein Ausfall bis zu 3 × 600 s + Backoff pro Task.
+CB_THRESHOLD = int(os.environ.get("KMHR_CB_THRESHOLD", "2"))
+CB_COOLDOWN = float(os.environ.get("KMHR_CB_COOLDOWN", "300"))
+_MODEL_BREAKERS: dict = {}
+
 
 def _llm_complete(prompt: str) -> str:
     """Prompt -> Agent-Text via NVIDIA-NIM mit Modell-Fallback (F2 extrahiert).
@@ -242,6 +252,14 @@ def _llm_complete(prompt: str) -> str:
     last_error = None
     agent_text = ""
     for model_name, model_timeout in model_chain:
+        _breaker = breaker_for(_MODEL_BREAKERS, model_name,
+                               threshold=CB_THRESHOLD, cooldown=CB_COOLDOWN)
+        if not _breaker.allow():
+            last_error = (f"Circuit-Breaker offen ({model_name}, noch "
+                          f"{_breaker.remaining():.0f}s)")
+            log(f"   ⏭️ {model_name} übersprungen — Circuit-Breaker offen "
+                f"(noch {_breaker.remaining():.0f}s)")
+            continue
         api_payload = {
             "messages": [{"role": "user", "content": prompt}],
             "model": model_name,
@@ -255,21 +273,29 @@ def _llm_complete(prompt: str) -> str:
                 if attempt > 0:
                     log(f"   Backoff: {wait}s vor Versuch {attempt+1}/3 ({model_name})")
                     time.sleep(wait)
-                resp = requests.post(api_url, headers=api_headers, json=api_payload, timeout=model_timeout)
+                # 02.11.2026: (connect, read)-Timeout — ein unerreichbarer
+                # Provider scheitert nach 10 s statt nach 600 s; die lange
+                # Frist gilt nur für die eigentliche Antwort (Read).
+                resp = requests.post(api_url, headers=api_headers, json=api_payload,
+                                     timeout=(10, model_timeout))
                 if resp.status_code == 200:
                     agent_text = resp.json()["choices"][0]["message"].get("content") or ""
                     if agent_text.strip():
+                        _breaker.record_success()
                         log(f"   ✅ Erfolg mit {model_name} (Versuch {attempt+1}/3)")
                         break
                     else:
+                        _breaker.record_failure()
                         last_error = f"Agent ohne Text-Antwort ({model_name}, HTTP 200, content leer)"
                         # 22.10.2026 (Fehlversuch-Transparenz): leere Antwort war
                         # bisher still (nur last_error, kein Log-Eintrag).
                         log(f"   ⚠️ Leere Antwort von {model_name} (Versuch {attempt+1}/3, HTTP 200)")
                 elif resp.status_code == 503:
+                    _breaker.record_failure()
                     last_error = f"HTTP 503 ({model_name}, Versuch {attempt+1}/3)"
                     log(f"   ⚠️ 503 von {model_name} (Versuch {attempt+1}/3)")
                 else:
+                    _breaker.record_failure()
                     last_error = f"HTTP {resp.status_code} ({model_name}): {resp.text[:100]}"
                     # 22.10.2026 (Fehlversuch-Transparenz): stilles break -> Fehlursache
                     # loggen (HTTP-Status + Body-Ausschnitt). Beleg fuer die Notwendig-
@@ -278,9 +304,11 @@ def _llm_complete(prompt: str) -> str:
                     log(f"   ⚠️ HTTP {resp.status_code} von {model_name} (Versuch {attempt+1}/3): {resp.text[:100]}")
                     break  # Bei anderen Fehlern: nächstes Modell
             except requests.Timeout:
+                _breaker.record_failure()
                 last_error = f"Timeout nach {model_timeout}s ({model_name})"
                 log(f"   ⚠️ Timeout bei {model_name} (Versuch {attempt+1}/3)")
             except Exception as e:
+                _breaker.record_failure()
                 last_error = f"{type(e).__name__}: {e}"
                 # 22.10.2026 (Fehlversuch-Transparenz): stilles break -> Exception
                 # loggen (Typ + Meldung), sonst ist der Modellwechsel unauffindbar.
@@ -2716,6 +2744,13 @@ def main() -> None:
             run_bounce_poll()
         try:
             conn = sqlite3.connect(str(DB_PATH), timeout=10)
+            # 02.11.2026: Wartezeit statt sofortigem "database is locked"
+            # (WebUI und Runner teilen dieselbe Datei; WAL wird beim App-Start
+            # gesetzt, ist aber auch hier idempotent).
+            try:
+                conn.execute("PRAGMA busy_timeout=10000")
+            except sqlite3.Error:
+                pass
             sweep_gatekeeper(conn)
             tasks = fetch_pending(conn)
             for task_id, task_type, payload, attempts in tasks:

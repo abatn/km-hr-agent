@@ -8,8 +8,8 @@
 #     Default → die Live-App lief mit bekanntem Session-Secret).
 #   * Secrets kommen aus einer .env-Datei (Vorlage: .env.example). Pfad per
 #     KMHR_ENV_FILE uebersteuerbar (Tests). .env ist in .gitignore (".env*").
-#   * Fehlen KMHR_STORAGE_SECRET / KMHR_ADMIN_SEED_PASSWORD und ist KMHR_DEV
-#     nicht ausdruecklich gesetzt, verweigert der Starter den Start (rc=1);
+#   * Fehlen KMHR_STORAGE_SECRET / KMHR_ADMIN_SEED_PASSWORD / KMHR_AUDIT_SECRET
+#     und ist KMHR_DEV nicht ausdruecklich gesetzt, verweigert der Starter den Start (rc=1);
 #     webui/main.py bricht zusaetzlich selbst ab (R3-4, fail-closed).
 #   * Entwicklung ohne Secrets: bewusst `KMHR_DEV=1 ./start-webui.sh`.
 #   * Host: Default 127.0.0.1 (loopback). Für LAN bewusst KMHR_HOST=0.0.0.0 setzen;
@@ -33,6 +33,7 @@ if [ -z "$_dev" ]; then
   _missing=""
   [ -z "${KMHR_STORAGE_SECRET:-}" ] && _missing="$_missing KMHR_STORAGE_SECRET"
   [ -z "${KMHR_ADMIN_SEED_PASSWORD:-}" ] && _missing="$_missing KMHR_ADMIN_SEED_PASSWORD"
+  [ -z "${KMHR_AUDIT_SECRET:-}" ] && _missing="$_missing KMHR_AUDIT_SECRET"
   if [ -n "$_missing" ]; then
     echo "[start-webui] ABBRUCH: fehlende Variable(n):$_missing" >&2
     echo "  Lege '$ENV_FILE' an (Vorlage: .env.example, chmod 600) oder starte" >&2

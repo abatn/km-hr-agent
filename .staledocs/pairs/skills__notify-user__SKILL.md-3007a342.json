@@ -9,13 +9,13 @@
       "scripts/agent-runner.py",
       "webui/db.py"
     ],
-    "at": "2026-10-30T21:08:11+00:00",
+    "at": "2026-11-02T18:55:26+00:00",
     "code_blobs": {
-      "webui/db.py": "1a131405322618946a2dedcb73bbfc52355b8d76"
+      "webui/db.py": "1223884daa4872bec116c3edb2baf33641016b6f"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
     "doc_blob": "4fb3b459fb8894ef5144b456ea01a86f500270ed",
-    "note": "E-Mail-Versand (send_email) und notifications-Tabelle gegen Runner und db.py geprueft; Doku beschreibt Top-Match-Mails, nicht Welcome- oder Reset-Mails."
+    "note": "Codepr\u00fcfung 02.11.2026: webui/db.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "skills/notify-user/SKILL.md",
   "schema": 1

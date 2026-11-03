@@ -11,15 +11,15 @@
       "lebenslauf_hochgeladen",
       "webui/pages/candidate.py"
     ],
-    "at": "2026-10-30T21:15:54+00:00",
+    "at": "2026-11-02T18:30:30+00:00",
     "code_blobs": {
-      "webui/logic.py": "a8cd754e169d68f652a8d44c271afb8cc259e16e",
+      "webui/logic.py": "7d16ee4d46a226cd45f5df9e7de353885a6af9ee",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c",
-      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
+      "webui/pages/employer.py": "b7571e0d27ba60b4763e6f67ad6dd565e6104b37"
     },
-    "commit": "2fd83d6c9e906b7e2ad4ba8fa59ba4bdfa9dde72",
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
     "doc_blob": "fc759c0aeda16682b2699c8d713c21bc7b88b115",
-    "note": "skills/job-application/SKILL.md: Anker _BOARD_COLUMNS gegen webui/pages/employer.py geprueft (Spalte eingegangen mit Label Eingegangen vorhanden); Statuspfade der Bewerbung unveraendert, die Aenderungen betreffen Retry, Bounce und Reset nicht."
+    "note": "Codepr\u00fcfung 02.11.2026: webui/logic.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "skills/job-application/SKILL.md",
   "schema": 1

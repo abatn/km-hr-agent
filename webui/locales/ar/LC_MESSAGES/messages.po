@@ -3993,3 +3993,36 @@ msgstr "{rolle} · الحساب رقم {id} · {zeit}"
 
 msgid "Keine Zustellfehler erfasst."
 msgstr "لم تُسجَّل أي أخطاء تسليم."
+
+msgid "Lern-Dashboard (30 Tage)"
+msgstr "لوحة التعلّم (30 يومًا)"
+
+msgid "Menschliche Entscheidungen: {n}"
+msgstr "قرارات بشرية: {n}"
+
+msgid "Eingeladen: {a} · Abgelehnt: {b} · Eingestellt: {c}"
+msgstr "مدعوون: {a} · مرفوضون: {b} · تم التوظيف: {c}"
+
+msgid "Gewichts-Anpassungen: {n} (Feedback-Einträge: {f})"
+msgstr "تعديلات الأوزان: {n} (مدخلات التغذية الراجعة: {f})"
+
+msgid "Letzte Anpassung: {t}"
+msgstr "آخر تعديل: {t}"
+
+msgid "Noch keine Gewichts-Anpassung — der Lern-Loop wartet auf HR-Entscheidungen."
+msgstr "لا يوجد تعديل على الأوزان بعد — حلقة التعلّم تنتظر قرارات الموارد البشرية."
+
+msgid "Audit-Log (Hash-Kette)"
+msgstr "سجل التدقيق (سلسلة التجزئة)"
+
+msgid "Einträge: {n} · Kette: {s}"
+msgstr "الإدخالات: {n} · السلسلة: {s}"
+
+msgid "unversehrt"
+msgstr "سليمة"
+
+msgid "GEBROCHEN"
+msgstr "مكسورة"
+
+msgid "Noch keine Audit-Einträge."
+msgstr "لا توجد إدخالات تدقيق بعد."

@@ -26,13 +26,13 @@
       "webui/logic.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-10-27T18:04:57+00:00",
+    "at": "2026-11-02T18:30:25+00:00",
     "code_blobs": {
-      "webui/pages/employer.py": "9b42df25ea39deea5abb1519a1d1ec6c16c6d5b9"
+      "webui/pages/employer.py": "b7571e0d27ba60b4763e6f67ad6dd565e6104b37"
     },
-    "commit": "f3970b391538f166e4299d469fddc642985c7aca",
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
     "doc_blob": "0303f8b8f47398c5f6a54527e77a00dd8dd78b92",
-    "note": "webui/pages/employer.py geaendert: nur drei Layout-Klassen an den Match-Karten. Die Portal-Ablaeufe (Zeilen 16, 161, 244) bleiben unveraendert."
+    "note": "Codepr\u00fcfung 02.11.2026: webui/pages/employer.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "skills/employer-portal/SKILL.md",
   "schema": 1

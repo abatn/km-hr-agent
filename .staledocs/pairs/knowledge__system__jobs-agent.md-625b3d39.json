@@ -17,7 +17,7 @@
       "suitability()",
       "tests/test_jobs_agent.py"
     ],
-    "at": "2026-10-31T23:54:15+00:00",
+    "at": "2026-11-02T18:30:16+00:00",
     "code_blobs": {
       "scripts/forge_forms.py": "991a9e4f480eef7f654d8f2096b3ad4741872183",
       "scripts/jobs_agent.py": "5f839a9180a9661a6dd3c4bcf080be6258cb4924",
@@ -40,17 +40,17 @@
       "tests/test_jobs_enrich.py": "49171dbc115fc30ae9c958d378d398f9be7aed03",
       "tests/test_jobs_eures.py": "842cfb2e44bfce530b4d0900b0b99db933e9dc16",
       "tests/test_jobs_fr.py": "92f865ff401caedb358064d9e291a858f4c7c15b",
-      "tests/test_jobs_induce.py": "e8349e4c7b97d5f20a53277319b40750ffca0c6d",
+      "tests/test_jobs_induce.py": "8d4cdcd79a4833c05e39c2f8244b4f422e42f86f",
       "tests/test_jobs_jdp.py": "5b46bc33f5605b1a04d43c65989e295b7a1a114b",
       "tests/test_jobs_lhr.py": "0cdef140a1da5ac2719d7391b9caae196b51a393",
       "tests/test_jobs_mail.py": "84c2723600e681ba498dc977e1fd96cac9903f25",
-      "tests/test_jobs_recipients.py": "75694ba73c827edb7441395cd4b3d0f9ae43a038",
+      "tests/test_jobs_recipients.py": "644932541c0f822ca8ac2f94528c3eaa0ed6c8c1",
       "tests/test_jobs_skill.py": "540889f19775d5011a7bf65a096612603ac73864",
       "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c"
     },
-    "commit": "557c01e956e6380a092fdcb61571c86f09452ce4",
+    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
     "doc_blob": "edd44622bafcde86d458474a2352c09a882caef6",
-    "note": "knowledge/system/jobs-agent.md: Spec gegen scripts/jobs_agent.py, jobs_api.py, jobs_ch.py, jobs_fr.py, jobs_eures.py, jobs_lhr.py, jobs_jdp.py, jobs_skill.py, jobs_induce.py, forge_forms.py und die Tests geprueft; Adapter, Lattice, Transfer und Grenzen stimmen."
+    "note": "Codepr\u00fcfung 02.11.2026: tests/test_jobs_induce.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
   },
   "doc": "knowledge/system/jobs-agent.md",
   "schema": 1

@@ -115,7 +115,7 @@ jobs:
 
       - name: .env (CI-Dummy, keine echten Secrets)
         run: |
-          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
+          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\nKMHR_AUDIT_SECRET=ci-nur-fuer-tests\n' > .env
 
       - name: pytest
         # Ausgeschlossen (Daten nicht im Repo, DSGVO): Tests, die die

@@ -1,0 +1,13 @@
+[Unit]
+Description=KM-HR-Agent Healthcheck alle 30 Sekunden
+Documentation=file:/opt/km-hr-agent/knowledge/system/observability.md
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+AccuracySec=1s
+Persistent=false
+Unit=kmhr-healthcheck.service
+
+[Install]
+WantedBy=timers.target

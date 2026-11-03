@@ -151,6 +151,49 @@ def _page_dashboard(s: dict) -> None:
         if not _brows:
             ui.label(_("Keine Zustellfehler erfasst.")).classes("text-xs text-gray-500")
 
+    # ─── Lern-Dashboard (30 Tage) + Audit-Log (02.11.2026) ─────────────
+    try:
+        _ls = db.get_learning_stats(30)
+        with ui.card().classes(C.CARD + " w-full mt-4"):
+            ui.label(_("Lern-Dashboard (30 Tage)")).classes(C.CARD_TITLE + " mb-2")
+            ui.label(_("Menschliche Entscheidungen: {n}").format(
+                n=_ls["entscheidungen_summe"])).classes("text-sm")
+            _e = _ls["entscheidungen"]
+            ui.label(_("Eingeladen: {a} · Abgelehnt: {b} · Eingestellt: {c}").format(
+                a=_e.get("eingeladen", 0), b=_e.get("abgelehnt", 0),
+                c=_e.get("eingestellt", 0))).classes("text-sm")
+            ui.label(_("Gewichts-Anpassungen: {n} (Feedback-Einträge: {f})").format(
+                n=_ls["gewichtsaenderungen"],
+                f=_ls["feedback_summe"])).classes("text-sm")
+            if _ls["letzte_aenderung"]:
+                ui.label(_("Letzte Anpassung: {t}").format(
+                    t=_ls["letzte_aenderung"])).classes("text-xs text-gray-500")
+            for _d, _k, _alt, _neu, _g in _ls["letzte_aenderungen"]:
+                ui.label(f"{_d} · {_k}: {_alt} → {_neu} ({_g})").classes("text-xs")
+            if not _ls["letzte_aenderungen"]:
+                ui.label(_("Noch keine Gewichts-Anpassung — der Lern-Loop wartet auf HR-Entscheidungen.")).classes(
+                    "text-xs text-gray-500")
+    except Exception as ex:
+        print(f"[admin] Lern-Dashboard fehlgeschlagen: {ex!r}")
+
+    try:
+        _as = db.get_audit_stats(10)
+        _chain = _as.get("chain", {})
+        _ok = _chain.get("ok")
+        with ui.card().classes(C.CARD + " w-full mt-4"):
+            ui.label(_("Audit-Log (Hash-Kette)")).classes(C.CARD_TITLE + " mb-2")
+            ui.label(_("Einträge: {n} · Kette: {s}").format(
+                n=_as.get("count", 0),
+                s=_("unversehrt") if _ok else _("GEBROCHEN"))).classes(
+                "text-sm " + ("text-positive" if _ok else "text-negative"))
+            for _ts, _role, _aid, _act, _ps, _ns in _as.get("recent", []):
+                ui.label(f"{_ts} · {_role} · {_act}: {_ps or '–'} → {_ns or '–'}").classes(
+                    "text-xs")
+            if not _as.get("recent"):
+                ui.label(_("Noch keine Audit-Einträge.")).classes("text-xs text-gray-500")
+    except Exception as ex:
+        print(f"[admin] Audit-Log fehlgeschlagen: {ex!r}")
+
     # ─── Admin Charts ───────────────────────────────────────────────────
     try:
         conn = db.get_conn()

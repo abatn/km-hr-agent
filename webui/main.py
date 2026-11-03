@@ -54,7 +54,8 @@ KMHR_DEV = os.environ.get("KMHR_DEV", "").strip().lower() in ("1", "true", "yes"
 # Lokal (HTTP) bleibt das Flag aus, sonst wäre der Login dort cookie-los.
 COOKIE_SECURE = os.environ.get("KMHR_COOKIE_SECURE", "").strip().lower() in ("1", "true", "yes")
 _SESSION_MIDDLEWARE_KWARGS = {"https_only": True} if COOKIE_SECURE else None
-_missing = [k for k in ("KMHR_STORAGE_SECRET", "KMHR_ADMIN_SEED_PASSWORD")
+_missing = [k for k in ("KMHR_STORAGE_SECRET", "KMHR_ADMIN_SEED_PASSWORD",
+                        "KMHR_AUDIT_SECRET")
             if not os.environ.get(k, "").strip()]
 if _missing and not KMHR_DEV:
     print(
@@ -71,6 +72,10 @@ if _missing and not KMHR_DEV:
 
 # ─── Boot-Sequenz ────────────────────────────────────────────────────
 logic.app_bootstrap()
+# 02.11.2026 (Homöostase): WAL nach dem Bootstrap (data/ existiert dann) —
+# danach profitieren alle Verbindungen von mehr Schreibparallelität.
+db.enable_wal()
+db.init_audit_log_table()  # Append-only Hash-Kette für HR-Entscheidungen
 db.init_notifications_table()
 db.init_mentoring_table()  # Phase D P10, User-GO 24.09.2026 (Spec §3C)
 db.init_compliance_protokoll_table()  # N-K, 01.10.2026 (Writer + Berichte, application_id)
@@ -141,6 +146,19 @@ async def _handle_404(request, exc):
 from webui.asgi_guard import SocketioAbortGuard  # noqa: E402
 
 app.add_middleware(SocketioAbortGuard)
+
+
+# ─── Health-Endpunkt (02.11.2026) ────────────────────────────────────
+# 24/7-Beobachtung ohne Login: DB-Erreichbarkeit, Queue-Rückstau,
+# Runner-PID und Audit-Kette. 503 nur bei DB-Fehler; "degraded" (200)
+# signalisiert: App läuft, aber Runner tot / neue failed-Tasks / Audit
+# gebrochen. Bewusst ohne Auth (Monitoring muss anonym prüfen können).
+@app.get("/healthz")
+def healthz():
+    from fastapi.responses import JSONResponse
+    snap = db.health_snapshot()
+    code = 200 if snap.get("db", {}).get("ok") else 503
+    return JSONResponse(snap, status_code=code)
 
 
 # ─── Run ──────────────────────────────────────────────────────────────

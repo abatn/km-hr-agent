@@ -41,6 +41,10 @@ import os
 import shutil
 import sqlite3
 import tempfile
+
+# 02.11.2026: Audit-Kette ist fail-closed (kein Default-Secret). Die Tests
+# setzen ein eigenes Secret; einzelne Tests entfernen es gezielt.
+os.environ.setdefault("KMHR_AUDIT_SECRET", "kmhr-test-audit-secret")
 from datetime import datetime
 from pathlib import Path
 
@@ -205,6 +209,9 @@ _db.init_consents_table()
 
 # 26.10.2026 (Entgelt-Schema): Parität zu main.py::init_billing_migrations.
 _db.init_billing_migrations()
+
+# 02.11.2026 (Audit-Hashkette): Parität zu main.py::init_audit_log_table.
+_db.init_audit_log_table()
 
 
 def pytest_sessionfinish(session, exitstatus):

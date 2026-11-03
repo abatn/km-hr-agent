@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p data /tmp/opencode
           cp tests/fixtures/seed.db data/feedback.db
-          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\n' > .env
+          printf 'KMHR_STORAGE_SECRET=ci-nur-fuer-tests\nKMHR_ADMIN_SEED_PASSWORD=ci-nur-fuer-tests\nKMHR_AUDIT_SECRET=ci-nur-fuer-tests\n' > .env
       - name: E2E-Fixtures erzeugen (synthetisch, ohne PII)
         # `testdaten/` und `ergebnisse/` sind gitignored und fehlen im Checkout.
         # Acht Skripte brauchen sie (Admin-Downloads, Compliance, Profile,

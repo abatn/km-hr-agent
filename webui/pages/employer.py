@@ -863,6 +863,7 @@ def _page_stellen(s: dict) -> None:
                                     # R3-5: Benachrichtigung des Kandidaten NACH commit
                                     # (Stellen-Seite: eigener HR-Klick-Übergang)
                                     _notify_statuswechsel(conn2, _a_id, _ns)
+                                    _record_decision(conn2, s, _a_id, _k_id, _j_id, _old, _ns)
                                     conn2.close()
                                     if _ns == "eingestellt":
                                         from webui import billing as _billing
@@ -1136,6 +1137,30 @@ def _notify_statuswechsel(conn, app_id: int, status: str) -> None:
         print(f"[notify_statuswechsel] Fehler application={app_id} status={status}: {ex}")
 
 
+def _record_decision(conn, s, app_id, cid, job_id, old_status, new_status) -> None:
+    """Audit + Lern-Loop für jeden menschlichen Entscheidungs-Klick (02.11.2026).
+
+    Reihenfolge: (1) append-only Audit-Eintrag in die Hash-Kette,
+    (2) Feedback in `gewichtung_historie` (Lern-Loop). Fehler dürfen den
+    Handler nie sprengen (Muster `_notify_statuswechsel`).
+    """
+    try:
+        db.append_audit(
+            conn, actor_role="employer",
+            actor_id=(s or {}).get("employer_email"),
+            action="status_change", application_id=app_id,
+            candidate_id=cid, job_id=job_id,
+            prev_status=old_status, new_status=new_status,
+            payload={"trigger": "hr_klick_portal"})
+        conn.commit()
+    except Exception as ex:
+        print(f"[audit] Eintrag fehlgeschlagen application={app_id}: {ex!r}")
+    try:
+        logic.record_hr_decision(conn, app_id, new_status)
+    except Exception as ex:
+        print(f"[decision] Lern-Loop fehlgeschlagen application={app_id}: {ex!r}")
+
+
 def _bar_pct(key: str, punkte) -> int:
     """Balken-Prozent einer Score-Kategorie = Punkte / KATEGORIE_MAX[key] x 100 (0..100).
     Quelle der Maxima: webui/logic.py KATEGORIE_MAX (roh_scores in berechne_match_score)."""
@@ -1312,10 +1337,12 @@ def _page_match(s: dict) -> None:
                     "termin_dauer_min": int(invite_dauer.value),
                 }
                 conn = db.get_conn()
+                _old = (conn.execute("SELECT status FROM applications WHERE id=?", (app_id,)).fetchone() or [None])[0]
                 conn.execute("UPDATE applications SET status='eingeladen', aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?", (app_id,))
                 conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'eingeladen', 'arbeitgeber')", (app_id,))
                 conn.commit()
                 _notify_statuswechsel(conn, app_id, "eingeladen")  # R3-5 nach commit
+                _record_decision(conn, s, app_id, cid, job_id, _old, "eingeladen")
                 conn.close()
                 db.queue_agent_task("create_invitation", {"application_id": app_id, "candidate_id": cid, "job_id": job_id, "trigger": "hr_klick_portal", **_inv_vals})
                 ui.notify(_('Eingeladen - Termin {0} {1} geplant.').format(_inv_vals['termin_datum'], _inv_vals['termin_uhrzeit']), type="positive")
@@ -1358,10 +1385,12 @@ def _page_match(s: dict) -> None:
                     return
                 _notiz = (reject_reason.value or "").strip()[:500] or None
                 conn = db.get_conn()
+                _old = (conn.execute("SELECT status FROM applications WHERE id=?", (app_id,)).fetchone() or [None])[0]
                 conn.execute("UPDATE applications SET status='abgelehnt', aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?", (app_id,))
                 conn.execute("INSERT INTO application_status_history (application_id, status, changed_by, notizen) VALUES (?, 'abgelehnt', 'arbeitgeber', ?)", (app_id, _notiz))
                 conn.commit()
                 _notify_statuswechsel(conn, app_id, "abgelehnt")  # R3-5 nach commit
+                _record_decision(conn, s, app_id, cid, job_id, _old, "abgelehnt")
                 conn.close()
                 _tid = db.queue_agent_task("send_rejection", {"application_id": app_id, "candidate_id": cid, "job_id": job_id, "trigger": "hr_klick_portal"})
                 if _tid is None:
@@ -1400,10 +1429,12 @@ def _page_match(s: dict) -> None:
                     _refresh_now()
                     return
                 conn = db.get_conn()
+                _old = (conn.execute("SELECT status FROM applications WHERE id=?", (app_id,)).fetchone() or [None])[0]
                 conn.execute("UPDATE applications SET status='eingestellt', aktualisiert_am=CURRENT_TIMESTAMP WHERE id=?", (app_id,))
                 conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'eingestellt', 'arbeitgeber')", (app_id,))
                 conn.commit()
                 _notify_statuswechsel(conn, app_id, "eingestellt")  # R3-5 nach commit
+                _record_decision(conn, s, app_id, cid, job_id, _old, "eingestellt")
                 conn.close()
                 from webui import billing as _billing
                 _billing.billing_on_eingestellt(app_id)  # Entgelt Schritt 3 (Flag-gesteuert)
@@ -2056,6 +2087,7 @@ def _page_einladen(s: dict) -> None:
         conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'eingeladen', 'arbeitgeber')", (_ap,))
         conn.commit()
         _notify_statuswechsel(conn, _ap, "eingeladen")
+        _record_decision(conn, s, _ap, _cnd, _job, _old, "eingeladen")
         _pl = {"application_id": _ap, "candidate_id": _cnd, "job_id": _job,
                "trigger": "hr_klick_portal",
                "termin_datum": str(_dat.value),
@@ -3320,6 +3352,7 @@ def _page_board(s: dict) -> None:
                     conn.execute("INSERT INTO application_status_history (application_id, status, changed_by) VALUES (?, 'eingestellt', 'arbeitgeber')", (app_id,))
                     conn.commit()
                     _notify_statuswechsel(conn, app_id, "eingestellt")  # R3-5 nach commit
+                    _record_decision(conn, s, app_id, cid, job_id, old_status, "eingestellt")
                 finally:
                     conn.close()
                 from webui import billing as _billing

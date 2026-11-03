@@ -15,6 +15,7 @@ Diese Datei ist die MD-Wahrheit für die Laufzeit-Konfiguration des NiceGUI-Fron
 | `KMHR_STORAGE_SECRET` | Signiert die NiceGUI-Session-/Browser-Storage-Cookies (`storage_secret=`) | `km-hr-agent-phase0-secret` (**Entwicklung**, unsicher) | `webui/main.py` (gemessen 10.10.2026) |
 | `KMHR_ADMIN_SEED_EMAIL` | E-Mail des Admin-Seed-Kontos | `admin@km-hr-agent.local` | `webui/pages/login.py` (gemessen 10.10.2026) |
 | `KMHR_ADMIN_SEED_PASSWORD` | Passwort des Admin-Seed-Kontos — seit R3-4 **Pflicht** (ohne `KMHR_DEV`) | `admin-agent-2026` (**Entwicklung**, unsicher, nur noch unter `KMHR_DEV`) | `webui/pages/login.py` (gemessen 10.10.2026) |
+| `KMHR_AUDIT_SECRET` | HMAC-Schlüssel der Audit-Hashkette — seit 02.11.2026 **Pflicht**, **kein Default** (fail-closed) | nicht gesetzt → `append_audit()` wirft `RuntimeError`, kein unsignierter Eintrag | `webui/db.py` `_audit_secret` (02.11.2026), Spec `knowledge/system/observability.md` §5 |
 | `KMHR_DEV` | Schalter: hebt das Fail-closed-Gate für beide Pflicht-Variablen auf | nicht gesetzt → **Gate aktiv** | `webui/main.py` (Codemarke `KMHR_DEV`, gemessen 10.10.2026) |
 | `KMHR_BILLING_ENABLED` | Entgeltmodell ein-/ausschalten (`billing_on_eingestellt`, UI-Sektionen, Visum-/Termingebühren) | `0` (**aus**) | `webui/billing.py` `billing_enabled` (26.10.2026) |
 | `KMHR_WELCOME_MAIL` | Willkommensmail bei Registrierung (Kandidat/Arbeitgeber) | `0` (**aus**) | `webui/db.py` `welcome_mail_enabled` (30.10.2026) |
@@ -25,7 +26,8 @@ Diese Datei ist die MD-Wahrheit für die Laufzeit-Konfiguration des NiceGUI-Fron
 | `KMHR_BANK_BIC` | BIC (optional, Anzeige) | leer → `—` | `webui/billing.py` `bank_details` (26.10.2026) |
 
 **R3-4 (30.09.2026): fail closed.** Ohne `KMHR_DEV` startet die App nur, wenn
-`KMHR_STORAGE_SECRET` **und** `KMHR_ADMIN_SEED_PASSWORD` gesetzt und nicht-leer sind.
+`KMHR_STORAGE_SECRET`, `KMHR_ADMIN_SEED_PASSWORD` **und** `KMHR_AUDIT_SECRET`
+(seit 02.11.2026) gesetzt und nicht-leer sind.
 Fehlt eine Variable, schreibt der Start eine **ABBRUCH-Meldung nach stderr** (mit den
 fehlenden Namen) und beendet sich mit `SystemExit(1)` — und zwar **vor**
 `logic.app_bootstrap()` (`webui/main.py` (gemessen 10.10.2026), erster DB-Zugriff) und **vor** `ui.run()`
@@ -312,3 +314,30 @@ in Ablage und Rückgabe, Welcome-Sperre).
 
 **Nachweis:** `tests/test_mcp_email_server.py` (Mock-SMTP: Header und Envelope, Fallback, Port 587 mit
 STARTTLS, Port 465 abgewiesen, adressfreie Rückgaben, Reply-To nur wenn gesetzt).
+
+## (k) Audit-Secret: `KMHR_AUDIT_SECRET` (02.11.2026)
+
+**Zweck:** HMAC-SHA256-Schlüssel für die Audit-Hashkette (`audit_log`). Jeder
+Eintrag wird mit `KMHR_AUDIT_SECRET` signiert; ohne Secret ist die Kette nicht
+verifizierbar.
+
+**Fail-closed:** Es gibt **keinen** Entwicklungs-Default. `webui/db.py`
+`_audit_secret()` wirft ohne Secret `RuntimeError`; `append_audit()` schreibt
+dann **keinen** Eintrag. Der App-Start prüft die Variable zusammen mit den
+beiden übrigen Pflicht-Secrets (`webui/main.py`); `KMHR_DEV=1` erlaubt den
+Entwicklungsstart, hebt aber die Signatur-Verweigerung **nicht** auf.
+
+**Erzeugen:**
+
+```bash
+python3 -c 'import secrets;print(secrets.token_urlsafe(48))'
+```
+
+**Ablage:** `.env` (WebUI/Server), `chmod 600`; nicht in `.env-email` oder
+`.env-runner` duplizieren. Rotation: neues Secret erzeugt eine neue Kette ab
+dem nächsten Eintrag; alte Einträge bleiben mit dem alten Secret prüfbar,
+sofern es archiviert wird. **Empfehlung:** Secret archivieren, nicht löschen.
+
+**Nachweis:** `tests/test_audit_secret_failclosed.py` (ohne Secret →
+`RuntimeError`, mit Secret → Signatur; Tabellenanlage bleibt erlaubt) und
+`tests/test_audit_chain.py` (Kette + Tamper-Erkennung).

@@ -926,6 +926,60 @@ def adjust_weights_from_feedback(eingeladen: str, score: int, grund: str, conn) 
     return _("✅ {0}: {1} → {2} (Rohgewicht, normalisiert auf 100)").format(_(label), roh[ziel], neu)
 
 
+def last_match_score(conn: sqlite3.Connection, application_id: int) -> int | None:
+    """Letzter Match-Score einer Bewerbung aus `agent_tasks` (result_json).
+
+    Grundlage für den Lern-Loop: Jede HR-Entscheidung soll den Score kennen,
+    damit `adjust_weights_from_feedback()` die richtige Kategorie bewegt.
+    Fallback: `ergebnisse/`-Text enthält "Match-Score: N" (Runner-Bericht).
+    """
+    try:
+        row = conn.execute(
+            "SELECT result_json FROM agent_tasks "
+            "WHERE task_type = 'match_candidate' AND status = 'done' "
+            "AND json_extract(payload, '$.application_id') = ? "
+            "ORDER BY id DESC LIMIT 1", (application_id,)).fetchone()
+    except sqlite3.Error:
+        return None
+    if not row or not row[0]:
+        return None
+    txt = row[0]
+    try:
+        obj = json.loads(txt)
+        if isinstance(obj, dict):
+            for key in ("score", "match_score", "gesamt_score"):
+                if isinstance(obj.get(key), (int, float)):
+                    return int(obj[key])
+            txt = str(obj.get("text") or "")
+    except (TypeError, ValueError):
+        pass
+    m = re.search(r"Match-Score\s*[:\-]?\s*(\d{1,3})", txt or "")
+    return int(m.group(1)) if m else None
+
+
+def record_hr_decision(conn: sqlite3.Connection, application_id: int,
+                       new_status: str, actor: str = "arbeitgeber") -> str:
+    """Lern-Loop (02.11.2026): menschliche Entscheidung → Gewichtsanpassung.
+
+    Jeder HR-Klick (einladen / ablehnen / einstellen) wird zu Feedback:
+      einladen/einstellen → "Ja", ablehnen → "Nein".
+    Der Score kommt aus dem letzten Match-Task; fehlt er, wird 60 (neutral)
+    verwendet — dann ändert der Regler nichts, die Entscheidung wird aber
+    trotzdem als `gewichtung_historie`-Zeile sichtbar (Nachweisbarkeit).
+    """
+    if new_status in ("eingeladen", "eingestellt"):
+        entscheidung = "Ja"
+    elif new_status == "abgelehnt":
+        entscheidung = "Nein"
+    else:
+        return ""
+    score = last_match_score(conn, application_id)
+    if score is None:
+        score = 60
+    grund = f"hr_entscheidung:{new_status}:{actor}"
+    return adjust_weights_from_feedback(entscheidung, score, grund, conn)
+
+
 def score_branche(branche: str, k_text: str) -> int:
     """Phase 4.6: Branchen-Score. app.py:631-650."""
     lt = (k_text or "").lower()

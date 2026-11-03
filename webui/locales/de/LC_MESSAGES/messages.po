@@ -3998,3 +3998,36 @@ msgstr "{rolle} · Konto #{id} · {zeit}"
 
 msgid "Keine Zustellfehler erfasst."
 msgstr "Keine Zustellfehler erfasst."
+
+msgid "Lern-Dashboard (30 Tage)"
+msgstr "Lern-Dashboard (30 Tage)"
+
+msgid "Menschliche Entscheidungen: {n}"
+msgstr "Menschliche Entscheidungen: {n}"
+
+msgid "Eingeladen: {a} · Abgelehnt: {b} · Eingestellt: {c}"
+msgstr "Eingeladen: {a} · Abgelehnt: {b} · Eingestellt: {c}"
+
+msgid "Gewichts-Anpassungen: {n} (Feedback-Einträge: {f})"
+msgstr "Gewichts-Anpassungen: {n} (Feedback-Einträge: {f})"
+
+msgid "Letzte Anpassung: {t}"
+msgstr "Letzte Anpassung: {t}"
+
+msgid "Noch keine Gewichts-Anpassung — der Lern-Loop wartet auf HR-Entscheidungen."
+msgstr "Noch keine Gewichts-Anpassung — der Lern-Loop wartet auf HR-Entscheidungen."
+
+msgid "Audit-Log (Hash-Kette)"
+msgstr "Audit-Log (Hash-Kette)"
+
+msgid "Einträge: {n} · Kette: {s}"
+msgstr "Einträge: {n} · Kette: {s}"
+
+msgid "unversehrt"
+msgstr "unversehrt"
+
+msgid "GEBROCHEN"
+msgstr "GEBROCHEN"
+
+msgid "Noch keine Audit-Einträge."
+msgstr "Noch keine Audit-Einträge."
