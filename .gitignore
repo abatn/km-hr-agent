@@ -31,6 +31,9 @@ __pycache__/
 .pytest_cache/
 .venv/
 .venv-*/
+# Symlink auf .venv-streamlit (deploy/provision-mcp.sh); Verzeichnis-Muster
+# greift bei einem Symlink nicht zuverlaessig.
+.venv-pdf
 
 # ── Lokale Tool-/Editor-Artefakte ──
 .nicegui/

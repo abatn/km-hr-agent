@@ -1,25 +1,33 @@
-Objet : {{STELLE}} – publication gratuite sur Jobs.hanibal-ai.com
+Objet : {{STELLE_KURZ}} – publication gratuite et sans engagement
 
 Bonjour {{ARBEITGEBER}},
 
-je m'appelle {{ABSENDER}}. Jobs.hanibal-ai.com est une plateforme RH assistée
-par IA qui met en relation les employeurs en Allemagne, en France et en Suisse
-avec des candidats qualifiés d'Afrique du Nord.
+je suis {{ABSENDER}}. Je suis en charge des relations employeurs chez
+Jobs.hanibal-ai.com. Nous sommes une plateforme RH multilingue spécialisée dans
+les talents d'Afrique du Nord (Maroc, Tunisie, Algérie, Égypte) pour les
+employeurs en Allemagne, en France et en Suisse.
 
-Nous avons trouvé votre offre « {{STELLE}} » ({{ORT}}) et souhaitons la publier
-gratuitement sur notre portail. L'offre comprend :
+Votre offre « {{STELLE}} »{{ORT_OPT}} nous a été signalée sur {{QUELLE}}. Nous
+vous proposons une publication gratuite et sans engagement sur notre portail :
 
-- publication gratuite du poste (sans frais, sans engagement de durée),
+- publication sans frais, sans abonnement et sans durée minimale,
 - présentation multilingue (allemand, anglais, français, arabe),
-- informations pour les candidats sur le visa, la reconnaissance des diplômes
-  et le niveau de langue.
+- pour les candidats : informations sur le visa, la reconnaissance des
+  diplômes et le niveau de langue.
 
-Si vous êtes intéressé, il suffit de répondre à cet e-mail ou d'utiliser notre
-formulaire de contact : {{PLATTFORM}}/kontakt
+Aucun frais, aucune obligation. Si vous êtes intéressé, répondez simplement à
+cet e-mail ou utilisez notre formulaire : {{PLATTFORM}}/kontakt.
 
-Si vous ne souhaitez plus recevoir de messages, répondez « Désabonner » et nous
-ne vous contacterons plus à des fins publicitaires.
+Vos coordonnées proviennent de l'offre publiée. Nous les utilisons uniquement
+pour cette demande ponctuelle ; détails : {{DATENSCHUTZ}}.
+
+Si vous ne souhaitez plus recevoir de messages, répondez « Désabonner » ; nous
+ne conserverons pas votre adresse pour de la prospection.
 
 Cordialement
 {{ABSENDER}}
-{{PLATTFORM}}
+{{ANBIETER}} · {{ADRESSE}}
+Téléphone : {{TELEFON}} · E-mail : {{EMAIL}}
+{{IMPRESSUM}}
+
+Représentant UE : Batnini Abdelkader · +49 1577 7774764 · batniniabdelkader@yahoo.com

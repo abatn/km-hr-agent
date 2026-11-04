@@ -85,7 +85,7 @@ def ort(treffer: dict) -> str:
     lok = treffer.get("stellenlokationen") or []
     if lok:
         adresse = lok[0].get("adresse") or {}
-        return adresse.get("ort") or adresse.get("region") or ""
+        return adresse.get("ort") or ""
     return ""
 
 

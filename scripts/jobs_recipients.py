@@ -99,7 +99,8 @@ def schreibe_entwuerfe(rows: list[dict]) -> int:
             continue
         lang = "fr" if r["land"] == "FR" else "de"
         job = ja.Job(title=r["stelle"], url=r["url"], country=r["land"],
-                     industry=r["branche"], employer=r["arbeitgeber"], location=r["ort"])
+                     industry=r["branche"], employer=r["arbeitgeber"],
+                     location=r["ort"], source=r["quelle"])
         betreff, body = ja.render_mail(lang, job, {"arbeitgeber": r["arbeitgeber"]})
         name = re.sub(r"[^a-z0-9]+", "-", r["arbeitgeber"].lower()).strip("-")[:50]
         p = OUTBOX / f"{r['land'].lower()}-{name}.eml"
@@ -118,7 +119,8 @@ def formular_nachrichten(rows: list[dict]) -> int:
         url = r["kontaktweg"].split("Kontaktformular:", 1)[1].strip()
         lang = "fr" if r["land"] == "FR" else "de"
         job = ja.Job(title=r["stelle"], url=r["url"], country=r["land"],
-                     industry=r["branche"], employer=r["arbeitgeber"], location=r["ort"])
+                     industry=r["branche"], employer=r["arbeitgeber"],
+                     location=r["ort"], source=r["quelle"])
         betreff, body = ja.render_mail(lang, job, {"arbeitgeber": r["arbeitgeber"]})
         name = re.sub(r"[^a-z0-9]+", "-", r["arbeitgeber"].lower()).strip("-")[:50]
         (ziel / f"{r['land'].lower()}-{name}.txt").write_text(

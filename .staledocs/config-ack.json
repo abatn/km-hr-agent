@@ -12,6 +12,7 @@
       "ignore": [
         "*-kandidat-{id}-*.md",
         ".venv-pdf",
+        ".venv-pdf/bin/python3",
         "POT-Creation-Date",
         "babel.cfg",
         "contract-preflight-*.md",
@@ -132,7 +133,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-11-03T15:35:09+00:00",
+  "at": "2026-11-04T00:16:57+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

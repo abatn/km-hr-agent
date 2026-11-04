@@ -48,9 +48,10 @@ def test_ba_job_ohne_lokation():
     assert api.ort(t) == ""
 
 
-def test_ort_region_fallback():
-    t = {"stellenlokationen": [{"adresse": {"region": "Berlin"}}]}
-    assert api.ort(t) == "Berlin"
+def test_ort_region_wird_ignoriert():
+    """Regionalcodes (DEG03, DE252 …) sind kein Ort; lieber leer lassen."""
+    t = {"stellenlokationen": [{"adresse": {"region": "DEG03"}}]}
+    assert api.ort(t) == ""
 
 
 def test_detail_url_base64_und_padding():

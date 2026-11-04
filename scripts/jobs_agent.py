@@ -30,6 +30,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import sys
 import urllib.error
@@ -92,6 +93,7 @@ class Job:
     industry: str
     employer: str = ""
     location: str = ""
+    source: str = ""
     contact_email: str = ""
     snippet: str = ""
     text: str = ""
@@ -407,20 +409,68 @@ def empfänger_aus_jobs(jobs: list[Job]) -> list[dict]:
     return zeilen
 
 
+def _kurz(text: str, max_len: int = 80) -> str:
+    """Kürzt an der letzten Wortgrenze und markiert die Kürzung mit …."""
+    text = (text or "").strip()
+    if len(text) <= max_len:
+        return text
+    cut = text[:max_len].rstrip()
+    if " " in cut:
+        cut = cut.rsplit(" ", 1)[0].rstrip()
+    return cut + "…"
+
+
 def render_mail(lang: str, job: Job | None, emp: dict) -> tuple[str, str]:
+    """Rendert die Arbeitgeber-Mail aus der Vorlage.
+
+    Platzhalter:
+      {{ARBEITGEBER}}, {{STELLE}}, {{STELLE_KURZ}}, {{ORT}}, {{ORT_OPT}},
+      {{QUELLE}}, {{PLATTFORM}}, {{ABSENDER}}, {{ANBIETER}}, {{ADRESSE}},
+      {{TELEFON}}, {{EMAIL}}, {{IMPRESSUM}}, {{DATENSCHUTZ}}
+    """
     lang = (lang or "de").lower()
     vorlage = VORLAGEN / f"mail_{lang}.md"
     text = vorlage.read_text(encoding="utf-8")
     arbeitgeber = (job.employer if job else emp.get("arbeitgeber")) or "Damen und Herren"
-    stelle = job.title if job else "Ihre offene Stelle"
-    ort = job.location if job else ""
+    stelle = ((job.title if job else emp.get("stelle")) or "Ihre offene Stelle").strip()
+    ort = ((job.location if job else emp.get("ort")) or "").strip()
+    quelle_raw = ((job.source if job else emp.get("quelle")) or "").strip()
+    quelle_map = {
+        "Bundesagentur": "der Bundesagentur für Arbeit",
+        "EURES": "EURES",
+        "Job-Room": "Job-Room",
+        "LHR": "LHR",
+        "Journal des Palaces": "Journal des Palaces",
+    }
+    quelle = quelle_map.get(quelle_raw, quelle_raw or "einem öffentlichen Stellenportal")
+    plattform = os.environ.get(
+        "KMHR_PUBLIC_BASE_URL", "https://jobs.hanibal-ai.com").rstrip("/")
+    absender = {
+        "de": "Mohamed Alarbi Nakti, Geschäftsführer",
+        "en": "Mohamed Alarbi Nakti, Managing Director",
+        "fr": "Mohamed Alarbi Nakti, Directeur général",
+    }.get(lang, "Mohamed Alarbi Nakti, Geschäftsführer")
+    # BA-Regionalcodes (DE252, DEG03, DEF0F …) nicht als Ort ausgeben.
+    if re.fullmatch(r"[A-Z]{2}[A-Z0-9]{2,4}", ort or ""):
+        ort = ""
+    ort_opt = f" ({ort})" if ort else ""
+    stelle_kurz = _kurz(stelle, 80)
     werte = {
         "{{ARBEITGEBER}}": arbeitgeber,
         "{{STELLE}}": stelle,
+        "{{STELLE_KURZ}}": stelle_kurz,
         "{{ORT}}": ort,
+        "{{ORT_OPT}}": ort_opt,
         "{{LAND}}": job.country if job else "",
-        "{{PLATTFORM}}": "https://jobs.hanibal-ai.com",
-        "{{ABSENDER}}": "Team Jobs.hanibal-ai.com",
+        "{{QUELLE}}": quelle,
+        "{{PLATTFORM}}": plattform,
+        "{{ABSENDER}}": absender,
+        "{{ANBIETER}}": "Agic Tunisie GmbH",
+        "{{ADRESSE}}": "13 rue des Usines, ZI Sidi Rezig, 2033 Ben Arous, Tunisie",
+        "{{TELEFON}}": "+49 1577 7774764",
+        "{{EMAIL}}": "batniniabdelkader@yahoo.com",
+        "{{IMPRESSUM}}": f"{plattform}/impressum",
+        "{{DATENSCHUTZ}}": f"{plattform}/datenschutz",
     }
     for k, v in werte.items():
         text = text.replace(k, v)
@@ -429,10 +479,10 @@ def render_mail(lang: str, job: Job | None, emp: dict) -> tuple[str, str]:
     if zeilen and zeilen[0].lower().startswith(("betreff:", "subject:", "objet :")):
         text = "\n".join(zeilen[1:]).lstrip()
     betreff = {
-        "de": f"Kostenlose Listung: {stelle} auf Jobs.hanibal-ai.com",
-        "en": f"Free listing: {stelle} on Jobs.hanibal-ai.com",
-        "fr": f"Publication gratuite : {stelle} sur Jobs.hanibal-ai.com",
-    }[lang]
+        "de": f"Ihre Stellenanzeige „{stelle_kurz}“ – kostenlose, unverbindliche Listung",
+        "en": f"Your job posting “{stelle_kurz}” – free, no-obligation listing",
+        "fr": f"Votre offre « {stelle_kurz} » – publication gratuite et sans engagement",
+    }.get(lang, f"Ihre Stellenanzeige „{stelle_kurz}“ – kostenlose, unverbindliche Listung")
     return betreff, text
 
 

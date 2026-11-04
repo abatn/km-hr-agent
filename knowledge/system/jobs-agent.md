@@ -54,10 +54,11 @@ solange kein Zugang bzw. keine Freigabe vorliegt – siehe Grenzen.
 
 ## Grenzen (bewusst, dokumentiert)
 
-- **Kein automatischer E-Mail-Versand.** `--send` ist nicht implementiert;
+- **Kein automatischer Versand im Suchlauf.** `run_all.sh` erzeugt nur
+  `.eml`-Entwürfe. Ein separater, bewusster Versand ist
+  `scripts/jobs_mail.py --send --yes` (bzw. `kmhr-jobs-send.timer`);
   werbliche Ansprache ohne Einwilligung ist in DE (UWG §7), FR (Code de la
-  consommation) und CH (UWG) riskant. Der Agent liefert fertige `.eml`-Dateien,
-  der Versand erfolgt nach Prüfung über `mcp-email-server.py`.
+  consommation) und CH (UWG) riskant und vorher zu prüfen.
 - **Keine erfundenen Adressen.** Adressen stammen ausschließlich aus dem
   Seitentext (mailto/Impressum) oder aus `jobs/empfaenger.csv`. Die vom Nutzer
   benannten Testkontakte (AmeSol Akademie, Asklepios, Helios) haben keine
@@ -76,6 +77,22 @@ solange kein Zugang bzw. keine Freigabe vorliegt – siehe Grenzen.
 ```
 
 Exit `0` = mindestens 10 belegte Stellen, `2` = weniger.
+
+## Arbeitgeber-Mail-Inhalt (02.11.2026)
+
+- **Quelle** wird genannt (`{{QUELLE}}`: Bundesagentur für Arbeit, EURES,
+  Job-Room) — aus `jobs/belege/*/index.md` über `jobs_recipients.py`.
+- **Ort** nur bei echtem Ortsnamen; BA-Regionalcodes (`DE252`, `DEG03`,
+  `DEF0F`) werden verworfen (`jobs_api.py::ort`, `render_mail`).
+- **Betreff:** `Ihre Stellenanzeige „…“ – kostenlose, unverbindliche Listung`;
+  Stellentitel auf 80 Zeichen an Wortgrenzen gekürzt.
+- **Absender:** Mohamed Alarbi Nakti, Geschäftsführer; **Anbieter** Agic
+  Tunisie GmbH, Ben Arous; **EU-Vertreter** Batnini Abdelkader.
+- **Transparenz:** kostenlose Listung, kein Abo, keine Laufzeitbindung; Daten
+  aus öffentlicher Ausschreibung, nur für diese Anfrage; Link `/datenschutz`;
+  Opt-out („Abmelden“/„Désabonner“/„Unsubscribe“).
+- **Lokaler Test:** `KMHR_PUBLIC_BASE_URL=http://127.0.0.1:8080 python3
+  scripts/jobs_recipients.py`; danach `jobs_mail.py --outbox …` als Dry-Run.
 
 ## Tests
 
