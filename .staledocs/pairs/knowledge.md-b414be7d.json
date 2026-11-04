@@ -168,7 +168,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-11-04T13:34:41+00:00",
+    "at": "2026-11-04T13:43:49+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -230,7 +230,7 @@
       "knowledge/system/event-loop-blockieren.md": "51d87670e1324b5f51b06e2110d05cd9305ba27e",
       "knowledge/system/i18n-runner-chain.md": "3b67bad8a19aa567823715b675bc3d91e516b49a",
       "knowledge/system/i18n.md": "45092c6bc976704ee4f245a4c9a621022a17e589",
-      "knowledge/system/jobs-agent.md": "ff838df8f8c65d20f01322f0785054495c2cad82",
+      "knowledge/system/jobs-agent.md": "2088458be70ccf3f43d8d718976cc9074c6bb611",
       "knowledge/system/mcp-agent-backlog.md": "f37d8ea92fca12ebae80c85623026f51afc7a374",
       "knowledge/system/mcp-connector-config.md": "51356a40a0ef5ada0bf26ab0c78ce0558c7f9577",
       "knowledge/system/mcp-tool-lazy-gating.md": "87d2869647174913b80eb993c5e2e54dd268fb9b",
@@ -251,9 +251,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "a19020510ffbead576f7a7890d2b2a2ba05de8ff",
+    "commit": "c53cdf60de20d4b7f502b2c755093e1406f354c0",
     "doc_blob": "8a6d908d7bf2c78a00b1deed00b2764df2e685df",
-    "note": "Geprueft: knowledge/system/jobs-agent.md wurde in b8ae869 um Outbox-Lebensdauer und Kontaktsperre ergaenzt und ist im Wissens-Index (L77, '## Wissens-Index') bereits gelistet; keine neue Datei, kein Index-Eintrag noetig."
+    "note": "Geprueft an c53cdf6: knowledge/system/jobs-agent.md wurde um Outbox-Lebensdauer und Kontaktsperre ergaenzt und ist im Wissens-Index L77 bereits gelistet; keine neue Datei noetig."
   },
   "doc": "knowledge.md",
   "schema": 1

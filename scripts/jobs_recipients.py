@@ -13,23 +13,88 @@ Ausgabe:
   jobs/empfaenger_final.csv
   jobs/outbox/final/*.eml   (nur Priorität 1, personalisiert DE/EN/FR)
 
+Outbox-Lebensdauer (Voll-Lauf, nicht `--prepare-only`):
+  alte Entwürfe -> jobs/outbox/backup-<YYYYMMDD-HHMMSS>/,
+  Backups älter als 1 Tag werden gelöscht, danach ist die Outbox leer.
+
+Kontaktsperre:
+  jobs/ansprache.jsonl (Firma + Anzeige) wird gelesen; gesperrte
+  Kombinationen erzeugen keinen Entwurf. Geschrieben wird die Liste
+  ausschließlich von `scripts/jobs_mail.py` nach erfolgreichem Versand.
+
 Aufruf:
     python3 scripts/jobs_recipients.py
 """
 from __future__ import annotations
 
 import csv
+import json
 import re
 import sys
+import time
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import jobs_agent as ja  # noqa: E402
+import jobs_keys as jk  # noqa: E402
 
 ROOT = ja.ROOT
 BELEGE = ROOT / "jobs" / "belege"
 CSV = ROOT / "jobs" / "empfaenger_final.csv"
 OUTBOX = ROOT / "jobs" / "outbox" / "final"
+SPERRE = ROOT / "jobs" / "ansprache.jsonl"
+BACKUP_PREFIX = "backup-"
+BACKUP_MAX_AGE = 24 * 60 * 60  # 1 Tag
+
+
+def lade_sperre(pfad: Path | None = None) -> set[str]:
+    """Liest alle bereits angeschriebenen Firma/Anzeige-Schlüssel."""
+    pfad = pfad or SPERRE
+    if not pfad.exists():
+        return set()
+    sperre: set[str] = set()
+    for zeile in pfad.read_text(encoding="utf-8").splitlines():
+        zeile = zeile.strip()
+        if not zeile:
+            continue
+        try:
+            satz = json.loads(zeile)
+        except json.JSONDecodeError:
+            continue
+        sperre.update(satz.get("keys") or [])
+    return sperre
+
+
+def rotate_backups(max_age: int = BACKUP_MAX_AGE, jetzt: float | None = None) -> list[str]:
+    """Löscht Backup-Ordner, die älter als `max_age` Sekunden sind."""
+    jetzt = time.time() if jetzt is None else jetzt
+    entfernt: list[str] = []
+    for p in sorted(OUTBOX.parent.glob(f"{BACKUP_PREFIX}*")):
+        if not p.is_dir():
+            continue
+        if jetzt - p.stat().st_mtime > max_age:
+            for kind in p.rglob("*"):
+                if kind.is_file():
+                    kind.unlink()
+            for kind in sorted(p.rglob("*"), reverse=True):
+                if kind.is_dir():
+                    kind.rmdir()
+            p.rmdir()
+            entfernt.append(p.name)
+    return entfernt
+
+
+def backup_outbox(jetzt: datetime | None = None) -> Path | None:
+    """Verschiebt alle Entwürfe in einen Backup-Ordner (leert damit die Outbox)."""
+    dateien = sorted(OUTBOX.glob("*.eml")) if OUTBOX.exists() else []
+    if not dateien:
+        return None
+    ziel = OUTBOX.parent / f"{BACKUP_PREFIX}{(jetzt or datetime.now()):%Y%m%d-%H%M%S}"
+    ziel.mkdir(parents=True, exist_ok=True)
+    for p in dateien:
+        p.replace(ziel / p.name)
+    return ziel
 
 
 def _quelle(pfad: Path) -> str:
@@ -91,11 +156,25 @@ def schreibe_csv(rows: list[dict]) -> None:
         w.writerows(rows)
 
 
-def schreibe_entwuerfe(rows: list[dict]) -> int:
+def schreibe_entwuerfe(rows: list[dict], prepare: bool = False) -> int:
+    """Rendert Entwürfe; im Voll-Lauf vorher Backup + Leeren der Outbox.
+
+    `prepare` (Aufruf `--prepare-only`) schreibt nur neu, ohne Backup/Leeren,
+    damit der zweite Durchlauf die eben erzeugten Entwürfe nicht wegsichert.
+    """
     OUTBOX.mkdir(parents=True, exist_ok=True)
+    if not prepare:
+        rotate_backups()
+        backup_outbox()
+    sperre = lade_sperre()
     n = 0
+    gesperrt = 0
     for r in rows:
         if not r["email"]:
+            continue
+        keys = jk.anzeige_keys(r.get("url", ""), r["arbeitgeber"], r["stelle"])
+        if jk.ist_gesperrt(keys, sperre):
+            gesperrt += 1
             continue
         lang = "fr" if r["land"] == "FR" else "de"
         job = ja.Job(title=r["stelle"], url=r["url"], country=r["land"],
@@ -104,8 +183,13 @@ def schreibe_entwuerfe(rows: list[dict]) -> int:
         betreff, body = ja.render_mail(lang, job, {"arbeitgeber": r["arbeitgeber"]})
         name = re.sub(r"[^a-z0-9]+", "-", r["arbeitgeber"].lower()).strip("-")[:50]
         p = OUTBOX / f"{r['land'].lower()}-{name}.eml"
-        p.write_text(f"To: {r['email']}\nSubject: {betreff}\n\n{body}", encoding="utf-8")
+        p.write_text(
+            f"To: {r['email']}\nSubject: {betreff}\n"
+            f"X-KMHR-Firma: {r['arbeitgeber']}\nX-KMHR-Keys: {' '.join(keys)}\n\n{body}",
+            encoding="utf-8")
         n += 1
+    if gesperrt:
+        print(f"[recipients] Kontaktsperre: {gesperrt} Entwurf/Entwuerfe uebersprungen")
     return n
 
 
@@ -142,7 +226,7 @@ def main() -> int:
     else:
         rows = sammle()
         schreibe_csv(rows)
-    n = schreibe_entwuerfe(rows)
+    n = schreibe_entwuerfe(rows, prepare=prepare)
     f = formular_nachrichten(rows)
     mit_mail = sum(1 for r in rows if r["email"])
     print(f"[recipients] Stellen: {len(rows)} | mit E-Mail: {mit_mail} | ohne: {len(rows) - mit_mail}")

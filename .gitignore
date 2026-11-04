@@ -53,6 +53,7 @@ jobs/outbox/
 jobs/belege-web/
 jobs/empfaenger*.csv
 jobs/kontakte_recherche.csv
+jobs/ansprache.jsonl
 logs/jobs-agent-*.log
 logs/jobs-cron.log
 jobs/outbox-web/

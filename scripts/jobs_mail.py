@@ -29,13 +29,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTBOX = ROOT / "jobs" / "outbox"
+ANSPRACHE = ROOT / "jobs" / "ansprache.jsonl"
 EMAIL_SERVER = ROOT / "mcp-email-server.py"
 PY = ROOT / ".venv-streamlit" / "bin" / "python3"
 ABMELDE = re.compile(r"(abmelden|unsubscribe|d[ée]sabonner)", re.I)
 
 
 def parse_eml(path: Path) -> dict:
-    """Sehr einfacher .eml-Parser (To, Subject, Body)."""
+    """Sehr einfacher .eml-Parser (To, Subject, Body, Zusatz-Header)."""
     text = path.read_text(encoding="utf-8")
     kopf, _, body = text.partition("\n\n")
     felder = {}
@@ -44,7 +45,37 @@ def parse_eml(path: Path) -> dict:
             k, v = zeile.split(":", 1)
             felder[k.strip().lower()] = v.strip()
     return {"pfad": path, "to": felder.get("to", ""), "subject": felder.get("subject", ""),
-            "body": body.strip()}
+            "body": body.strip(), "firma": felder.get("x-kmhr-firma", "").strip(),
+            "keys": felder.get("x-kmhr-keys", "").split()}
+
+
+def merke_ansprache(m: dict, ziel: Path | None = None) -> bool:
+    """Schreibt eine erfolgreich versendete Ansprache als JSONL-Zeile (Sperrliste).
+
+    Ohne Firma oder ohne Keys wird nichts geschrieben (False).
+    """
+    firma = (m.get("firma") or "").strip()
+    keys = list(m.get("keys") or [])
+    if not firma or not keys:
+        return False
+    # Modul liegt in scripts/; defensiv, damit ein fehlendes Modul nicht bricht.
+    try:
+        import jobs_keys as jk
+    except ImportError:
+        jk = None
+    firma_key = ""
+    if jk is not None:
+        fn = getattr(jk, "firma_key", None)
+        if fn is not None:
+            firma_key = fn(firma)
+    pfad = ziel or ANSPRACHE
+    pfad.parent.mkdir(parents=True, exist_ok=True)
+    satz = {"datum": datetime.now().strftime("%Y-%m-%d"), "firma": firma,
+            "firma_key": firma_key, "keys": keys, "email": m.get("to", ""),
+            "betreff": m.get("subject", "")}
+    with pfad.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(satz, ensure_ascii=False) + "\n")
+    return True
 
 
 def sammle(outbox: Path | None) -> list[dict]:
@@ -175,6 +206,9 @@ def run(args: argparse.Namespace) -> int:
         print(f"{status}: {to} — {subject[:50]} — {info[:60]}")
         zeilen.append(f"- {status}: {to} — {subject} — {info[:80]}")
         gesendet += 1 if ok_send else 0
+        # Nur echter Versand an Arbeitgeber wird gesperrt (kein Dry-Run, kein --to).
+        if ok_send and not args.to:
+            merke_ansprache(m)
         time.sleep(1.2)
     log.write_text("\n".join(zeilen) + "\n", encoding="utf-8")
     print(f"\nGesendet: {gesendet}/{min(len(ok), args.limit)} | Log: {log}")

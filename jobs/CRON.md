@@ -23,8 +23,12 @@
 4. `jobs_lhr.py` (LHR, FR Hotellerie) – 6
 5. `jobs_jdp.py` (Journal des Palaces RSS, FR) – 4
 6. `jobs_recipients.py` (Empfängerliste + Entwürfe)
+   - alte `outbox/final/*.eml` → `outbox/backup-<Zeitstempel>/`
+   - Backups älter als 1 Tag löschen
+   - Outbox leeren, gesperrte Firma+Anzeige (`jobs/ansprache.jsonl`) überspringen
 7. optional `jobs_enrich.py` (Impressum-Recherche, `JOBS_ENRICH=1`)
-8. `jobs_recipients.py --prepare-only` (Entwürfe/Formularnachrichten aktualisieren)
+8. `jobs_recipients.py --prepare-only` (Entwürfe/Formularnachrichten aktualisieren;
+   **kein** Backup, **kein** Leeren)
 9. `jobs_induce.py induce` / `transfer` / `forms` (Skill-Lattice)
 
 **Es wird nie automatisch eine E-Mail versendet.** Der Versand ist ein separater
@@ -130,3 +134,6 @@ verhindern, indem `--send` nicht aufgerufen wird (Cron tut das nie).
 2. Jede Mail enthält `Abmelden` / `Unsubscribe` / `Désabonner`.
 3. Ein Empfänger = eine Mail (Dedupe); maximal `--limit` pro Lauf.
 4. Kein automatischer Versand im Cron; echte Arbeitgeber nur mit `--allow-real`.
+5. Nach erfolgreichem Versand wird `Firma + Anzeige` in `jobs/ansprache.jsonl`
+   gesperrt; dieselbe Kombination wird nie wieder angeschrieben, eine neue
+   Anzeige derselben Firma schon. Dry-Run und `--to` schreiben nichts.

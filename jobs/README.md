@@ -35,7 +35,23 @@ Exit-Codes: `0` = mindestens 10 Stellen belegt, `2` = weniger als 10.
 | `jobs/belege/<datum>/<slug>.html` | HTML-Snapshot der Originalseite |
 | `jobs/empfaenger.csv` | Empfängerliste; E-Mail nur, wenn auf der Seite veröffentlicht |
 | `jobs/outbox/<datum>/*.eml` | gerenderte Anschreiben (DE/EN/FR) |
+| `jobs/outbox/final/*.eml` | versandfertige Entwürfe (nur aktueller Lauf) |
+| `jobs/outbox/backup-<YYYYMMDD-HHMMSS>/` | Entwürfe des Vorlaufs, wird nach 1 Tag gelöscht |
+| `jobs/ansprache.jsonl` | Kontaktsperre: bereits angeschriebene Firma + Anzeige |
 | `jobs/belege-web/<datum>/` | archivierter Lauf der allgemeinen Websuche |
+
+## Outbox-Lebensdauer und Kontaktsperre
+
+- Der Voll-Lauf (`jobs_recipients.py`) verschiebt alle vorhandenen
+  `jobs/outbox/final/*.eml` nach `jobs/outbox/backup-<Zeitstempel>/` und
+  arbeitet danach mit einer leeren Outbox. `versand-*.md` bleibt erhalten.
+- Backups, die älter als **1 Tag** sind, werden beim nächsten Voll-Lauf
+  gelöscht.
+- `jobs_mail.py` schreibt nach **erfolgreichem** Versand einen Datensatz nach
+  `jobs/ansprache.jsonl` (Firma + Anzeigen-Schlüssel). Gesperrte Kombinationen
+  erzeugen keinen neuen Entwurf; eine **neue** Anzeige derselben Firma wird
+  weiterhin angeschrieben.
+- Dry-Run und Testversand (`--to`) schreiben nichts in die Sperre.
 
 ## Eignungsprüfung
 

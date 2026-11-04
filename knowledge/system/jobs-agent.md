@@ -94,6 +94,23 @@ Exit `0` = mindestens 10 belegte Stellen, `2` = weniger.
 - **Lokaler Test:** `KMHR_PUBLIC_BASE_URL=http://127.0.0.1:8080 python3
   scripts/jobs_recipients.py`; danach `jobs_mail.py --outbox …` als Dry-Run.
 
+## Outbox-Lebensdauer und Kontaktsperre (04.11.2026)
+
+- **Outbox pro Lauf:** `jobs_recipients.py` verschiebt vorhandene
+  `jobs/outbox/final/*.eml` nach `jobs/outbox/backup-<YYYYMMDD-HHMMSS>/` und
+  leert damit die Outbox; `versand-*.md` bleibt erhalten. Backups älter als
+  24 h löscht `rotate_backups()`. `--prepare-only` sichert und leert **nicht**.
+- **Sperre auf Firma + Anzeige:** `scripts/jobs_keys.py` bildet
+  `firma_key()` (Rechtsform/ASCII normalisiert) und `anzeige_keys()`
+  (Anzeigen-ID aus der URL, zusätzlich Titel-Hash). `jobs_recipients.py`
+  überspringt gesperrte Kombinationen; `jobs_mail.py` schreibt den Datensatz
+  **nur nach erfolgreichem Versand** nach `jobs/ansprache.jsonl` (nicht bei
+  Dry-Run oder `--to`).
+- **Wirkung:** gleiche Firma + gleiche Anzeige → nie wieder; neue Anzeige
+  derselben Firma → erneut. Entwürfe tragen `X-KMHR-Firma` und `X-KMHR-Keys`.
+- **Tests:** `tests/test_jobs_keys.py`, `tests/test_jobs_recipients.py`
+  (Outbox/Rotation/Sperre), `tests/test_jobs_mail.py` (Sperr-Datensatz).
+
 ## Tests
 
 `tests/test_jobs_agent.py` prüft Eignungs-Score (Visum/Anerkennung, kurzer
