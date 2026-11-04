@@ -123,7 +123,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-04T13:30:32+00:00",
+    "at": "2026-11-04T13:34:24+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -169,10 +169,9 @@
       "scripts/jobs_fr.py": "8c33716c228ad5cd49b894c9e9ff48ff3b7e14b6",
       "scripts/jobs_induce.py": "4b839a69a640773be9707c1408360c6abe4ef165",
       "scripts/jobs_jdp.py": "2cf097e36f4f49d50c59e90a87fe84029a1ba0f1",
-      "scripts/jobs_keys.py": "a9314badbb6649a735493d1059e575acd908f350",
       "scripts/jobs_lhr.py": "ccd87b3d388bf64b8c7211f308c1d7f5aa5c0160",
-      "scripts/jobs_mail.py": "811fb658701e67e7a9c4469235cac23cfa1a70ed",
-      "scripts/jobs_recipients.py": "7af74ab79077c3344edc10b3ad03898ecbe95289",
+      "scripts/jobs_mail.py": "360b44685b61d2991a36d39d867134ca53c94eb0",
+      "scripts/jobs_recipients.py": "cc99bde1a69e98ac2022154d5e9a2af780f6e641",
       "scripts/jobs_skill.py": "0558289894246642aa1684be680909c57f88e53f",
       "scripts/jobs_x402_feed.py": "13c665fcf6e86945ff2bcf12677cf8eede07f1e1",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
@@ -297,10 +296,9 @@
       "tests/test_jobs_fr.py": "92f865ff401caedb358064d9e291a858f4c7c15b",
       "tests/test_jobs_induce.py": "8d4cdcd79a4833c05e39c2f8244b4f422e42f86f",
       "tests/test_jobs_jdp.py": "5b46bc33f5605b1a04d43c65989e295b7a1a114b",
-      "tests/test_jobs_keys.py": "5e45503d3c7f3c7934c8341e222c942b18d0a50a",
       "tests/test_jobs_lhr.py": "0cdef140a1da5ac2719d7391b9caae196b51a393",
-      "tests/test_jobs_mail.py": "9f3c88aedfa3077e962907f987e850ed6499342e",
-      "tests/test_jobs_recipients.py": "dbc1a0e403b6c994c5073a171479bf47416caef2",
+      "tests/test_jobs_mail.py": "84c2723600e681ba498dc977e1fd96cac9903f25",
+      "tests/test_jobs_recipients.py": "644932541c0f822ca8ac2f94528c3eaa0ed6c8c1",
       "tests/test_jobs_skill.py": "540889f19775d5011a7bf65a096612603ac73864",
       "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
@@ -385,9 +383,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "b8ae869b205e647103787972f8ac24701fddd1de",
+    "commit": "a19020510ffbead576f7a7890d2b2a2ba05de8ff",
     "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "L55 nennt die E2E-Pflicht (tests/e2e_*.py) und das Harness-Gebot; der neue isolierte Test tests/test_sprachtest_speicherfehler.py folgt AGENTS.md:41 (E2E nur ueber e2e_isolation.py). Keine Aussage in AGENTS.md ist veraltet."
+    "note": "Geprueft am Commit a190205: AGENTS.md L41 verlangt E2E nur ueber tests/e2e_isolation.py; der neue isolierte Test folgt dem, und der E2E-Teil D mit globalem chmod ist entfernt. Keine Aussage veraltet."
   },
   "doc": "AGENTS.md",
   "schema": 1
