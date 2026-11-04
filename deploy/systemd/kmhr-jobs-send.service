@@ -1,0 +1,10 @@
+[Unit]
+Description=KM-HR Job-Akquise – Einmalversand (08:05, Ruhezeit-konform)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/km-hr-agent
+Environment=JOBS_ALLOW_REAL=1
+ExecStart=/opt/km-hr-agent/.venv-streamlit/bin/python3 /opt/km-hr-agent/scripts/jobs_mail.py --outbox jobs/outbox/final --send --yes --limit 40
+TimeoutStartSec=1800

@@ -123,7 +123,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-04T14:19:40+00:00",
+    "at": "2026-11-04T14:42:23+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -141,6 +141,8 @@
       "deploy/systemd/kmhr-cleanup.timer": "a34c40603e3c53cb05e9b02cc1162f7e8fadbe06",
       "deploy/systemd/kmhr-healthcheck.service": "60316bc53654dc96d804a8401c5b6d53e0e31ca2",
       "deploy/systemd/kmhr-healthcheck.timer": "7362f80270e56b770b02254a4975653539f53834",
+      "deploy/systemd/kmhr-jobs-send.service": "55f4bbdea183e9ecf7783c71acbfbf76760d93e1",
+      "deploy/systemd/kmhr-jobs-send.timer": "aa5f790a52115d4ed491a278ee2c7f41fdc974c3",
       "deploy/systemd/kmhr-jobs.service": "9079c6b7bc6c3769d25af51956fad43ccc630779",
       "deploy/systemd/kmhr-jobs.timer": "634f602b8c8c64f064aaf9835f0ee2f65bfcda7f",
       "deploy/systemd/kmhr-social.service": "9d5a1ed292d4e26fc86b042c1439c3b818481572",
@@ -387,9 +389,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "7cf0ad5e30110c8902b8a480c4c2b2ac27f9fc3e",
+    "commit": "560d6bcd6fa609e703652640b68956473318a85a",
     "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "Geprueft an 7cf0ad5: scripts/jobs_seed_sperre.py und tests/test_jobs_seed_sperre.py sind neue Jobs-Werkzeuge; AGENTS.md L55 nennt nur die Gates fuer scripts/** und tests/**, die weiterhin gelten. Keine Aussage veraltet."
+    "note": "Geprueft an 560d6bc: deploy/systemd/kmhr-jobs-send.{service,timer} sind jetzt versioniert und werden im Deploy installiert; AGENTS.md L73 beschreibt den Deploy-Ablauf (git reset --hard + restart), was unveraendert gilt. Keine Aussage veraltet."
   },
   "doc": "AGENTS.md",
   "schema": 1

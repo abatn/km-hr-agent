@@ -152,3 +152,7 @@ verhindern, indem `--send` nicht aufgerufen wird (Cron tut das nie).
 5. Nach erfolgreichem Versand wird `Firma + Anzeige` in `jobs/ansprache.jsonl`
    gesperrt; dieselbe Kombination wird nie wieder angeschrieben, eine neue
    Anzeige derselben Firma schon. Dry-Run und `--to` schreiben nichts.
+6. Obergrenze pro Lauf: **40** (`--limit 40`, versioniert in
+   `deploy/systemd/kmhr-jobs-send.service`). Bei ~5 s/Mail dauert ein voller
+   Lauf ~3–4 min; `TimeoutStartSec=1800` deckt das ab. Mailtrap-Free erlaubt
+   150 Mails/Tag — 40/Tag lässt Reserve.

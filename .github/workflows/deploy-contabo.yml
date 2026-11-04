@@ -76,6 +76,12 @@ jobs:
             systemctl daemon-reload
             systemctl enable --now kmhr-social.timer
           fi
+          if [ -f deploy/systemd/kmhr-jobs-send.service ] && [ -f deploy/systemd/kmhr-jobs-send.timer ]; then
+            install -m 644 deploy/systemd/kmhr-jobs-send.service \
+              deploy/systemd/kmhr-jobs-send.timer /etc/systemd/system/
+            systemctl daemon-reload
+            systemctl enable --now kmhr-jobs-send.timer
+          fi
           if [ -f deploy/systemd/kmhr-cleanup.service ] && [ -f deploy/systemd/kmhr-cleanup.timer ]; then
             install -m 644 deploy/systemd/kmhr-cleanup.service \
               deploy/systemd/kmhr-cleanup.timer /etc/systemd/system/

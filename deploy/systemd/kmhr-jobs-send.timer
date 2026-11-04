@@ -1,0 +1,10 @@
+[Unit]
+Description=Taeglicher Versand der vorbereiteten Job-Akquise-Mails (08:05)
+
+[Timer]
+OnCalendar=*-*-* 08:05:00
+Persistent=true
+Unit=kmhr-jobs-send.service
+
+[Install]
+WantedBy=timers.target
