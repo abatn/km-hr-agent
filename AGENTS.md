@@ -10,14 +10,14 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
 - **Social-Agent** `scripts/social_agent.py` (Default Dry-Run, PII-Guard), OAuth-Bootstrap `scripts/social_oauth.py`, Spec `knowledge/system/social-automation.md`.
 - **Werbe-Agent**: `scripts/ads_agent.py` (Dry-Run für Google/Microsoft; Meta live nur PAUSED über `scripts/meta_ads.py`, Video via `advideos`/`video_data`, sonst Link-Ad; Aktivierung separat per `--activate --yes`), Vorabprüfung `--check-meta`, manuelles Startpaket `--kit`; x402-Zahlungsschicht `scripts/ads_x402.py`/`scripts/jobs_x402_feed.py` (eigenes Venv `.venv-ads`, `requirements-ads.txt`, nur Testnetz). Specs: `marketing/ADS_ENTSCHEIDUNG.md`, `marketing/ads-agent.md`.
 - **Entgeltmodell** (AGB § 5): `webui/billing.py` + `webui/pages/billing_ui.py`. Zahlung nur per Banküberweisung, kein Online-Zahlungsdienst. Flag `KMHR_BILLING_ENABLED` (Default 0). Ausbildung nur für Arbeitgeber (§ 296a SGB III). Spec: `knowledge/system/configuration-secrets.md` §(h), `knowledge/legal/agb.md` §5.
-- **MCP-Tools**: nur die in `opencode.json` registrierten Server/Tools nutzen und in Code/Doku nur deren Namen nennen (u. a. `anysearch`, `fetch`, `pdf-reader`, `email-sender`, `hr-benchmark`, `meeting-tools`). Root-MCP-Server (`mcp-*-server.py`) laufen mit `.venv-pdf/bin/python3`; `connectors/*` und `scripts/language-test-server.py` mit System-`python3`. Externe Dienste nur über diese Wege ansprechen. Ausnahmen: NVIDIA-API im Runner, LinkedIn/Meta/Instagram im Social-Agent.
+- **MCP-Tools**: nur die in `opencode.json` registrierten Server/Tools nutzen und in Code/Doku nur deren Namen nennen (u. a. `anysearch`, `fetch`, `pdf-reader`, `email-sender`, `hr-benchmark`, `meeting-tools`). Root-MCP-Server (`mcp-*-server.py`) laufen mit `.venv-pdf/bin/python3` (Symlink auf `.venv-streamlit`, kein zweites Env); `connectors/*` und `scripts/language-test-server.py` mit System-`python3`. Die absoluten Server-Pfade in `opencode.json` verweisen über einen Symlink auf diesen Checkout — nicht „reparieren“. Externe Dienste nur über diese Wege ansprechen. Ausnahmen: NVIDIA-API im Runner, LinkedIn/Meta/Instagram im Social-Agent.
 - **Wissensbasis**: `knowledge/` (Specs, Index `knowledge.md`), `skills/*/SKILL.md` (Index `skills/README.md`). `instructions.md` ist deskriptives Workflow-Handbuch/MCP-Census, keine Regelquelle. Logik gehört in Specs/Skills, Python nur wo nötig (UI, DB, API).
 - **Doku-Hierarchie** (`knowledge/system/doku-authority.md`): normative Specs (`knowledge/**`, `skills/*/SKILL.md`, `AGENTS.md`) schlagen deskriptive Doku; Code schlägt deskriptive Doku. Bei Konflikt normativ vs. Code wird **entschieden** (Code anpassen oder Spec als Ist bestätigen) und in `ergebnisse/entscheidungen.md` protokolliert — nicht pauschal „die Doku korrigieren".
 
 ## Setup & Start
 
 - Venv: `.venv-streamlit` (Prod: `requirements.txt`, Dev: `requirements-dev.txt`). Der Name „streamlit" ist historisch.
-- Start: `./start-webui.sh` (führt `python3 -m webui.main` aus). Ohne `KMHR_STORAGE_SECRET` und `KMHR_ADMIN_SEED_PASSWORD` in `.env` bricht er mit rc=1 ab (fail-closed). Nur lokal ohne Secrets: `KMHR_DEV=1 ./start-webui.sh`. Andere Env-Datei: `KMHR_ENV_FILE`.
+- Start: `./start-webui.sh` (führt `python3 -m webui.main` aus). Ohne `KMHR_STORAGE_SECRET`, `KMHR_ADMIN_SEED_PASSWORD` **und** `KMHR_AUDIT_SECRET` in `.env` bricht er mit rc=1 ab (fail-closed). Nur lokal ohne Secrets: `KMHR_DEV=1 ./start-webui.sh`. Andere Env-Datei: `KMHR_ENV_FILE`. Stop: `pkill -f "python3 -m webui.main"` (`data/webui.pid` pflegt nur der Live-Start; isolierte Test-Instanzen schreiben sie nicht).
 - Vier Secret-Dateien, nicht mischen:
   - `.env`: WebUI (Vorlage `.env.example`)
   - `.env-runner`: Runner und `scripts/language-test-server.py` (`NVIDIA_API_KEY`, `KMHR_LLM_MODEL`)
@@ -58,7 +58,7 @@ Es gibt keine Formatter- oder Linter-Konfiguration im Repo. Nicht nach ruff/blac
 
 ## Gotchas
 
-- `ergebnisse/`, `data/`, `testdaten/`, `.env*`, `.venv-*/`, `logs/` sind gitignored und nicht getrackt (Ausnahmen: `.env.example`, `.env-social.example`). `ergebnisse/entscheidungen.md` landet nie im Commit.
+- `ergebnisse/`, `data/`, `testdaten/`, `.env*`, `.venv-*/`, `logs/` sind gitignored und nicht getrackt (Ausnahmen: `.env.example`, `.env-social.example`, `.env-email.example`). `ergebnisse/entscheidungen.md` landet nie im Commit.
 - **NiceGUI-Callbacks**: nie eine `conn` nutzen, die der Seitenaufbau geschlossen hat. Jeder Callback öffnet seine eigene `conn` und schließt sie in `try/finally` (Muster `visa_info_section` in `webui/components.py`; Test `tests/test_conn_closure.py`).
 - **i18n**: kein f-String in `_()`, sondern `_('… {x}').format(x=…)`. Modul-Konstanten mit UI-Strings erst zur Renderzeit übersetzen, sonst bricht die Babel-Extraktion.
 - **Laufzeit-Schreiber** (Reports, Mails, MD-Artefakte): Ziel ist die Datei des heutigen Datums. Nie die neueste existierende nehmen, nichts aus anderen Dateien übernehmen, nichts abschneiden, nichts in `knowledge/**` oder `skills/**` schreiben (`tests/test_md_writer_discipline.py`).
@@ -70,7 +70,7 @@ Es gibt keine Formatter- oder Linter-Konfiguration im Repo. Nicht nach ruff/blac
 
 ## Git & Deploy
 
-- Lokaler Branch `master`; `origin.push = master:main`. Ablauf: `git push` → CI auf `main` grün → `deploy-contabo.yml` (SSH, `git reset --hard <CI-SHA>`, `systemctl restart km-hr-agent`, Health-Check). Öffentlich: Cloudflare → Caddy → `127.0.0.1:8080` (Caddy-Site `deploy/caddy/jobs.hanibal-ai.com.caddy`).
+- Lokaler Branch `main` (Tracking `origin/main`, Remote `abatn/km-hr-agent`); Push direkt auf `main`. Ablauf: `git push` → CI auf `main` grün → `deploy-contabo.yml` (SSH, `git reset --hard <CI-SHA>`, `systemctl restart km-hr-agent`, Health-Check). Öffentlich: Cloudflare → Caddy → `127.0.0.1:8080` (Caddy-Site `deploy/caddy/jobs.hanibal-ai.com.caddy`).
 - Rollback: `git reset --hard <SHA>` auf dem VPS.
 - Commits: kurz, imperativ, ein Thema, mit Spec-Bezug (`CONTRIBUTING.md` §6).
 - Nie synchronisieren oder committen: `.env*` (außer den Vorlagen), `data/`, `testdaten/`, `ergebnisse/`, `.venv-*/`, `logs/`. Keine personenbezogenen Daten (CVs, Bewerbungen, Reports) ins Repo.

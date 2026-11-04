@@ -8,6 +8,7 @@
       ".env",
       ".env*",
       ".env-email",
+      ".env-email.example",
       ".env-runner",
       ".env-social",
       ".env-social.example",
@@ -25,6 +26,7 @@
       "Datei:Zeile",
       "ERWARTETE_TABELLEN",
       "KMHR_ADMIN_SEED_PASSWORD",
+      "KMHR_AUDIT_SECRET",
       "KMHR_BILLING_ENABLED",
       "KMHR_COOKIE_SECURE=1",
       "KMHR_DB_PATH",
@@ -50,6 +52,7 @@
       "data/",
       "data/agent-runner.pid",
       "data/feedback.db",
+      "data/webui.pid",
       "deploy-contabo.yml",
       "deploy/caddy/jobs.hanibal-ai.com.caddy",
       "docs.yml",
@@ -123,7 +126,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-04T14:42:23+00:00",
+    "at": "2026-11-04T16:38:54+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -389,9 +392,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "560d6bcd6fa609e703652640b68956473318a85a",
-    "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "Geprueft an 560d6bc: deploy/systemd/kmhr-jobs-send.{service,timer} sind jetzt versioniert und werden im Deploy installiert; AGENTS.md L73 beschreibt den Deploy-Ablauf (git reset --hard + restart), was unveraendert gilt. Keine Aussage veraltet."
+    "commit": "e9bdb2655e2d497bdf6e3dd741fcb8a9c9016526",
+    "doc_blob": "ce423e643f147a46f43dd7aef8eaabb238d85928",
+    "note": "AGENTS.md: CODE_LAG durch eigene Edit-Runde verifiziert. Branch-Zeile master/origin.push auf main korrigiert (git config --list --local: nur branch.main.remote=origin, kein push-Refspec; git branch -a: nur main); KMHR_AUDIT_SECRET als drittes Pflicht-Secret erg\u00e4nzt (start-webui.sh pr\u00fcft alle drei, rc=1); .env-email.example in Gitignore-Ausnahmen (.gitignore !.env-email.example, git ls-files getrackt); .venv-pdf als Symlink auf .venv-streamlit (.staledocs.yaml anchors.ignore); Stop pkill -f aus start-webui.sh-Kopfkommentar."
   },
   "doc": "AGENTS.md",
   "schema": 1
