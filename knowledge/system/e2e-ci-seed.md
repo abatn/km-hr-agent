@@ -194,7 +194,29 @@ zurück (Muster `tests/e2e_cv_upload.py` Passwort-Fixture, `tests/e2e_housing.py
 
 | Skript | Fund | Fix |
 |---|---|---|
-| `e2e_sprachtest_flow.py` | Skip nicht zählbar; PASS-Text hardcoded | `skipped_parts`-Liste; PASS-Text dynamisch `(n/4 Teile)` |
+| `e2e_sprachtest_flow.py` | Skip nicht zählbar; PASS-Text hardcoded | `skipped_parts`-Liste; PASS-Text dynamisch (jetzt `(n/3 Teile)`) |
+
+### Speicherfehler-Test: raus aus E2E, rein in den User-Fixture (04.11.2026)
+
+Der frühere Teil D in `e2e_sprachtest_flow.py` setzte die **geteilte** Spiegel-DB per
+`chmod 444` schreibgeschützt. Lief die Wiederherstellung nicht durch (Timeout/Last),
+scheiterten alle Folgeskripte mit `sqlite3.OperationalError: attempt to write a
+readonly database` (CI-Lauf 41812956845, 04.11.2026).
+
+**Regel:** Ein E2E-Skript darf keinen globalen Harness-Zustand (Dateirechte der
+Spiegel-DB) verändern. Fehlerpfade werden isoliert geprüft:
+
+- `tests/test_sprachtest_speicherfehler.py` — eigene Temp-DB (Kopie), echter
+  Schreibfehler über Dateirechte 0444:
+  - `db.insert_language_test` liefert `None`, keine Zeile; nach 0644 genau eine Zeile.
+  - UI-Pfad über die NiceGUI-`user`-Fixture (in-process, ohne Browser): Fehlerkarte
+    sichtbar, keine Zeile; nach 0644 „Erneut speichern" -> genau eine Zeile.
+- `e2e_sprachtest_flow.py` deckt nur noch den Erfolgspfad ab (A/B/C).
+
+Begründung (NiceGUI-Doku, „Testing"): der `user`-Fixture führt die echte UI
+in-process aus („as fast as unit tests", ohne Browser) — der klassische
+Test-Pyramiden-Einwand gegen UI-Tests greift dort nicht. Laufzeit: ~1,5 s statt
+~40 s E2E-Anteil, ohne zusätzliche Instanz oder Port.
 | `e2e_isolation.py` | Skip-Namen nicht validiert; nicht im Summary; `--no-run` ohne Live-Diff | Warnung bei unbekannten Namen; Skip-Liste im Summary; Live-Diff wird ausgewertet |
 
 **CI-Parität:** Im Seed (`tests/fixtures/seed.db`) sind die Vorbedingungen erfüllt —

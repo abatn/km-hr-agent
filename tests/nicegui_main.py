@@ -223,6 +223,16 @@ def a4_match_focus():
     _ep._page_match(s)
 
 
+# ── Sprachtests-Speicherfehler (04.11.2026) ───────────────────────────
+# Ersatz für den früheren E2E-Teil D: Der Test patcht `db.DB_PATH`/`db.get_conn`
+# auf eine eigene Temp-DB (read-only) und öffnet diese Route. Kein `chmod` auf
+# der geteilten Spiegel-DB, kein Einfluss auf andere Skripte.
+
+@ui.page('/sprachtest-speicherfehler')
+def sprachtest_speicherfehler_demo():
+    candidate_page._tab_sprachtest(_cand_session(1))
+
+
 # ── Entgeltmodell (26.10.2026): Render-Routen für alle drei Profile ──
 # Regel R5-1: Demo-Routen gehören hierher, nicht ins Testmodul.
 # Der Feature-Flag wird im Test per monkeypatch gesetzt.

@@ -1,7 +1,6 @@
 """E2E A1 (30.09.2026): Sprachtest-Flow im Candidate-Portal (webui/pages/candidate.py::_tab_sprachtest).
 
-NUR gegen die Isolations-Instanz (schreibt language_tests, ändert die Datei-Rechte der
-Spiegel-DB im Teil D):
+NUR gegen die Isolations-Instanz (schreibt language_tests):
   .venv-streamlit/bin/python3 tests/e2e_isolation.py --port 8091 --only e2e_sprachtest_flow
 
 Ablauf:
@@ -11,14 +10,15 @@ Ablauf:
  B  Test 2 (Deutsch A1, 5 Fragen): jede Frage FALSCH -> "Score: 0%", DB-Zeile punkte=0.0.
  C  Englisch A1 (Seed-Pool leer): sichtbare Fehlerkarte + "Erneut versuchen", KEINE neue
     DB-Zeile (Sonderfall: liefert das LLM doch Fragen, wird der Teil mit Grund übersprungen).
- D  Speicherfehler: Spiegel-DB read-only (chmod 444) -> Test zu Ende -> Meldung "Ergebnis
-    konnte nicht gespeichert werden" statt "Test beendet!"; Rechte zurück -> "Erneut
-    speichern" -> "Test beendet!" + DB-Zeile.
+
+Der frühere Teil D (Speicherfehler per `chmod 444` auf der geteilten Spiegel-DB) ist
+entfernt: Er veränderte globalen Harness-Zustand und konnte Folgeskripte mit
+`attempt to write a readonly database` vergiften. Der Fehlerpfad wird jetzt isoliert
+geprüft — echter Schreibfehler gegen eine eigene Temp-DB (tests/test_sprachtest_speicherfehler.py).
 """
 from __future__ import annotations
 
 import importlib.util
-import os
 import re
 import sqlite3
 import sys
@@ -184,29 +184,6 @@ def main() -> int:
                 else:
                     print("C: keine neue DB-Zeile (OK)")
 
-            # ── D: Speicherfehler (DB read-only) ─────────────────────────
-            page.goto(f"{BASE}/candidate/sprachtest", wait_until="load", timeout=60000)
-            page.wait_for_timeout(2000)
-            pick_option(page, "Anzahl Fragen", str(N))
-            page.get_by_role("button", name="Test starten").click()
-            n_vorher = len(db_rows())
-            os.chmod(DB, 0o444)
-            try:
-                run_test(page, lookup, True, fehler, "D")
-                page.get_by_text("Ergebnis konnte nicht gespeichert werden").wait_for(timeout=15000)
-                print("D: Fehlermeldung 'Ergebnis konnte nicht gespeichert werden' sichtbar")
-                if page.get_by_text("Test beendet!").count() != 0:
-                    fehler.append("D: 'Test beendet!' trotz Speicherfehler angezeigt")
-            finally:
-                os.chmod(DB, 0o644)
-            if len(db_rows()) != n_vorher:
-                fehler.append("D: DB-Zeile trotz read-only geschrieben?")
-            page.get_by_role("button", name="Erneut speichern").click()
-            page.get_by_text("Test beendet!").wait_for(timeout=15000)
-            rows4 = db_rows()
-            print("D: nach 'Erneut speichern':", rows4[n_vorher:])
-            if len(rows4) != n_vorher + 1 or rows4[-1][4] != 1.0:
-                fehler.append(f"D: Retry-Speichern fehlgeschlagen: {rows4[n_vorher:]}")
         except Exception as ex:  # noqa: BLE001
             fehler.append(f"Exception: {ex!r}")
             try:
@@ -215,10 +192,6 @@ def main() -> int:
             except Exception:
                 pass
         finally:
-            try:
-                os.chmod(DB, 0o644)
-            except Exception:
-                pass
             browser.close()
 
     if fehler:
@@ -228,10 +201,10 @@ def main() -> int:
         return 1
     # Klasse b (14.10.2026): PASS-Text dynamisch (vorher hardcoded, log bei Skip)
     if skipped_parts:
-        print(f"PASS ({4 - len(skipped_parts)}/4 Teile): Sprachtest-Flow "
+        print(f"PASS ({3 - len(skipped_parts)}/3 Teile): Sprachtest-Flow "
               f"(übersprungen: {', '.join(skipped_parts)})")
     else:
-        print("PASS: Sprachtest-Flow (richtig 100%, falsch 0%, 0 Fragen, Speicherfehler+Retry, Liste aktuell)")
+        print("PASS: Sprachtest-Flow (richtig 100%, falsch 0%, 0 Fragen, Liste aktuell)")
     return 0
 
 
