@@ -123,7 +123,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-04T13:43:48+00:00",
+    "at": "2026-11-04T14:19:40+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -173,6 +173,7 @@
       "scripts/jobs_lhr.py": "ccd87b3d388bf64b8c7211f308c1d7f5aa5c0160",
       "scripts/jobs_mail.py": "811fb658701e67e7a9c4469235cac23cfa1a70ed",
       "scripts/jobs_recipients.py": "7af74ab79077c3344edc10b3ad03898ecbe95289",
+      "scripts/jobs_seed_sperre.py": "5ed3e4ba3c4f57bd0c95056f5c8ea2af4de352b6",
       "scripts/jobs_skill.py": "0558289894246642aa1684be680909c57f88e53f",
       "scripts/jobs_x402_feed.py": "13c665fcf6e86945ff2bcf12677cf8eede07f1e1",
       "scripts/language-test-server.py": "da4c1d978ff2d777473266fbc8cdea9157a6572f",
@@ -301,6 +302,7 @@
       "tests/test_jobs_lhr.py": "0cdef140a1da5ac2719d7391b9caae196b51a393",
       "tests/test_jobs_mail.py": "9f3c88aedfa3077e962907f987e850ed6499342e",
       "tests/test_jobs_recipients.py": "dbc1a0e403b6c994c5073a171479bf47416caef2",
+      "tests/test_jobs_seed_sperre.py": "161cccccfbd3a90f6336055670fa9071e1a18d32",
       "tests/test_jobs_skill.py": "540889f19775d5011a7bf65a096612603ac73864",
       "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
@@ -385,9 +387,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "c53cdf60de20d4b7f502b2c755093e1406f354c0",
+    "commit": "7cf0ad5e30110c8902b8a480c4c2b2ac27f9fc3e",
     "doc_blob": "64a2c5bf8c78f9902bd933f34d33b8117c49902b",
-    "note": "Geprueft an c53cdf6: scripts/jobs_keys.py ist neu und wird in AGENTS.md nicht als eigene Datei gefuehrt; L55 beschreibt nur die Gates fuer scripts/** und tests/**, die weiterhin gelten. Keine Aussage in AGENTS.md ist veraltet."
+    "note": "Geprueft an 7cf0ad5: scripts/jobs_seed_sperre.py und tests/test_jobs_seed_sperre.py sind neue Jobs-Werkzeuge; AGENTS.md L55 nennt nur die Gates fuer scripts/** und tests/**, die weiterhin gelten. Keine Aussage veraltet."
   },
   "doc": "AGENTS.md",
   "schema": 1

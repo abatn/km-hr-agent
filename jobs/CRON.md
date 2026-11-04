@@ -50,6 +50,21 @@ manueller Schritt (`scripts/jobs_mail.py --send --yes`).
 `scripts/jobs_mail.py` verweigert den Versand **vor 08:00 und ab 20:00 Uhr**
 (`--force` überschreibt nur bewusst). Der Cron-Job versendet ohnehin nicht.
 
+## Sperre nachrüsten (einmalig)
+
+`jobs/ansprache.jsonl` entsteht erst mit dem neuen Versand-Code. Für bereits
+angeschriebene Arbeitgeber rekonstruiert `scripts/jobs_seed_sperre.py` die Sperre
+aus den Versand-Logs:
+
+```sh
+python3 scripts/jobs_seed_sperre.py            # Dry-Run (Default)
+python3 scripts/jobs_seed_sperre.py --write    # schreibt jobs/ansprache.jsonl (mit Backup)
+```
+
+Quellen: `jobs/outbox/**/versand-*.md`, `jobs/empfaenger_final.csv`,
+`jobs/outbox/final/*.eml` + `backup-*/*.eml`. Ausgabe: eine Zeile pro E-Mail mit
+`firma_key` und `anzeige_keys` (Anzeigen-ID, sonst Titel-Hash).
+
 ## Log-Rotation
 
 - `deploy/logrotate/kmhr-jobs` → täglich, 14 Archive, komprimiert, `copytruncate`.

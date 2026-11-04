@@ -33,6 +33,7 @@
       "cleanup_test_job()",
       "cleanup_test_jobs()",
       "data/feedback.db",
+      "db.insert_language_test",
       "db_residue_report",
       "docs/sphinxats-github-app.py",
       "e2e-beweis-phase1@example.com",
@@ -136,10 +137,11 @@
       "tests/e2e_landing_chapters.py",
       "tests/fixtures/seed.db",
       "tests/test_r33_compliance_reports.py",
+      "tests/test_sprachtest_speicherfehler.py",
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-11-04T12:41:54+00:00",
+    "at": "2026-11-04T14:19:42+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -196,7 +198,7 @@
       "tests/e2e_rtl_drawer.py": "bb92fc839d8cd45c21aa314087eeb32906e9b996",
       "tests/e2e_smoke_all_pages.py": "7d00e812a8f06cfe2b0fb8de581e8a8514c17bc0",
       "tests/e2e_sprachtest_feedback.py": "0a718d640b5b970e3c3f7b71c56413c7c3e70c2b",
-      "tests/e2e_sprachtest_flow.py": "334ab6a4ef9a7ab06cd3b3eb13ed38218176718e",
+      "tests/e2e_sprachtest_flow.py": "751b1e4677eb13aa9f72f51fd468bae3f4484762",
       "tests/e2e_transition_guard.py": "2562e10dd8e29fe201ee4e3c49cbc7e921e9a3b6",
       "tests/e2e_ui_p0_p1.py": "da0e370afe84b6431d9cbf883d5599baa6fcd4c2",
       "tests/e2e_video_prescreen.py": "136b7fa602cf2e562baf17ac5525be659a81e33a",
@@ -211,7 +213,7 @@
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
       "tests/measure_timing.sh": "3e9a83fac12f406f31ceaadc162ad541f4791ef9",
-      "tests/nicegui_main.py": "1c004ce4f0d4c0d249003de1128a1e24bfa6a3f8",
+      "tests/nicegui_main.py": "1f763da378221cccf273af38a5da06d2dd61b465",
       "tests/run_nachweis.sh": "3cdcc5114047accc5601901af3ffe2fc049b6c3f",
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
@@ -258,6 +260,7 @@
       "tests/test_jobs_lhr.py": "0cdef140a1da5ac2719d7391b9caae196b51a393",
       "tests/test_jobs_mail.py": "9f3c88aedfa3077e962907f987e850ed6499342e",
       "tests/test_jobs_recipients.py": "dbc1a0e403b6c994c5073a171479bf47416caef2",
+      "tests/test_jobs_seed_sperre.py": "161cccccfbd3a90f6336055670fa9071e1a18d32",
       "tests/test_jobs_skill.py": "540889f19775d5011a7bf65a096612603ac73864",
       "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c",
       "tests/test_kandidaten_filter.py": "8cbca3cc61ade61a3cf88ff68a06103d95a86ffc",
@@ -304,6 +307,7 @@
       "tests/test_silent_errors.py": "18936a3ff6f5a6122ab5a1a6930530df128d73ff",
       "tests/test_social_agent.py": "b19f7ae02090f5895298a73f9bb8b3af3b302546",
       "tests/test_social_oauth.py": "42b62141b071d7c58d41741aab20a66d8a2503e1",
+      "tests/test_sprachtest_speicherfehler.py": "2b88dbd6753641889a183d3b164fde44260d5e7c",
       "tests/test_status_guards_md.py": "544699205a4b9d6daa7ca8bf0548bca6e86121a2",
       "tests/test_status_labels_complete.py": "94e67fed275c828932d2938c5b0178de1d7579c7",
       "tests/test_systemd_units.py": "3a773f76b9bda245b40b55f20d24cf823d8b8375",
@@ -314,9 +318,9 @@
       "tests/test_welcome_mail.py": "c12ab7aae1bcbc0a2cd7043ea5eb5aa0cc477a23",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "b8ae869b205e647103787972f8ac24701fddd1de",
-    "doc_blob": "bd57c7441484ec9b5126633f2c8af6dd47beceb7",
-    "note": "Neue Tests test_jobs_keys.py plus Outbox-/Sperr-Tests in test_jobs_recipients.py und test_jobs_mail.py sind reine Unit-Tests ohne Seed-DB-Abhaengigkeit; e2e-ci-seed.md (Seed-Daten) bleibt unveraendert gueltig."
+    "commit": "7cf0ad5e30110c8902b8a480c4c2b2ac27f9fc3e",
+    "doc_blob": "cb2a360ad426ba79cc10d3f9133c42853f788639",
+    "note": "Geprueft an 7cf0ad5: die Spec beschreibt die neue Regel (kein globaler chmod auf der Spiegel-DB) und den isolierten Test tests/test_sprachtest_speicherfehler.py; der neue Seed-Test tests/test_jobs_seed_sperre.py ist ein reiner Unit-Test ohne Seed-DB-Bezug. Spec ist aktuell."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1
