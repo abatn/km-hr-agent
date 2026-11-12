@@ -20,6 +20,7 @@
       "jobs/outbox/final/*.eml",
       "jobs_mail.py",
       "jobs_recipients.py",
+      "kmhr-jobs-send.timer",
       "render_mail",
       "robots.txt",
       "rotate_backups()",
@@ -27,6 +28,7 @@
       "scripts/jobs_agent.py",
       "scripts/jobs_api.py",
       "scripts/jobs_keys.py",
+      "scripts/mail_links.py",
       "suitability()",
       "tests/test_jobs_agent.py",
       "tests/test_jobs_keys.py",
@@ -34,7 +36,7 @@
       "tests/test_jobs_recipients.py",
       "versand-*.md"
     ],
-    "at": "2026-11-04T14:19:42+00:00",
+    "at": "2026-11-12T13:35:28+00:00",
     "code_blobs": {
       "scripts/forge_forms.py": "991a9e4f480eef7f654d8f2096b3ad4741872183",
       "scripts/jobs_agent.py": "d499ea1a4045d6027d8c7bfdbffca1fab6d0e362",
@@ -69,9 +71,9 @@
       "tests/test_jobs_skill.py": "540889f19775d5011a7bf65a096612603ac73864",
       "tests/test_jobs_x402_feed.py": "ff461b5d4489fdd7cfe85a92588dfdc2e205d15c"
     },
-    "commit": "7cf0ad5e30110c8902b8a480c4c2b2ac27f9fc3e",
-    "doc_blob": "2088458be70ccf3f43d8d718976cc9074c6bb611",
-    "note": "Geprueft an 7cf0ad5: die Spec nennt die Kontaktsperre und verweist auf scripts/jobs_keys.py; das neue scripts/jobs_seed_sperre.py ist die dokumentierte Einmal-Migration dafuer (jobs/CRON.md). Spec ist aktuell."
+    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
+    "doc_blob": "27b2f0d4508f7e2690553f2bf97093c6db6c9048",
+    "note": "Geprueft: der lokale Testbefehl in knowledge/system/jobs-agent.md ergaenzt KMHR_DEV=1 wegen der fail-closed Pruefung in scripts/mail_links.py; Outbox, Kontaktsperre und Quellen bleiben unveraendert."
   },
   "doc": "knowledge/system/jobs-agent.md",
   "schema": 1

@@ -145,7 +145,12 @@ zum Ausfall 2× grün durchgelaufen (`f984168`, 18.10.2026).
 4. **Laufzeit:** venv + `pip install -r requirements.txt`; die drei Secret-Dateien
    `.env` / `.env-runner` / `.env-email` **manuell** aus dem lokalen Stand
    (gitignored, **nie** über git) sowie `data/` (Live-DB) und `testdaten/`
-   (Profil-Dateien für den Skill-7-Generator) übertragen.
+   (Profil-Dateien für den Skill-7-Generator) übertragen. Der Austausch läuft
+   ausschließlich per `rsync` (z. B. `rsync -av .env root@<host>:/opt/km-hr-agent/`),
+   nicht über Commits oder Workflow-Artefakte. In der übertragenen `.env` muss
+   `KMHR_PUBLIC_BASE_URL=https://jobs.hanibal-ai.com` stehen — der Runner ist
+   seit 12.11.2026 fail-closed (`scripts/mail_links.py`) und verschickt mit
+   Loopback-/HTTP-Basis keine Mail-Links.
 5. **Dienst:** Unit `km-hr-agent.service` (`WorkingDirectory=/opt/km-hr-agent`,
    `ExecStart` = venv-Python `-m webui.main`); der **Agent-Runner startet mit der
    App** (`webui/logic.py::ensure_agent_runner`, Codemark) — kein zweiter Unit nötig.

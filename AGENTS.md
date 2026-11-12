@@ -25,6 +25,7 @@ HR-Agent für KMU (Bewerbungen extrahieren, matchen, prüfen, einladen, Onboardi
   - `.env-social`: `scripts/social_agent.py` (Vorlage `.env-social.example`)
   - Alle `chmod 600`.
 - Bindung: `KMHR_HOST` (Default `127.0.0.1`; `0.0.0.0` nur bewusst für LAN). `KMHR_COOKIE_SECURE=1` hinter HTTPS.
+- **Mail-Links sind fail-closed**: `KMHR_PUBLIC_BASE_URL` ist Pflicht (`scripts/mail_links.py`). Im Betrieb nur `https` und öffentliche Hosts — sonst baut der Runner keine Mail (Task `failed` mit Grund) und die WebUI warnt beim Start. Nur `KMHR_DEV=1` erlaubt Loopback/HTTP. Eine Dev-Instanz mit `http://127.0.0.1:8080` darf keine echten Mails senden (Vorfall 12.11.2026).
 - Das Live-Admin-Konto trägt noch das alte Seed-Passwort. Die App **nicht aus dem lokalen Netz erreichbar machen**, bis rotiert ist (`knowledge/system/configuration-secrets.md`).
 - DB: `data/feedback.db`. Pfad nur über `KMHR_DB_PATH` (WebUI und Runner teilen ihn). **Live-DB nie direkt beschreiben.**
 - i18n: `.venv-streamlit/bin/pybabel compile -d webui/locales`. Es gibt kein `babel.cfg`/`.pot`; Kataloge werden gepflegt, nicht extrahiert. Compile ändert die `.mo`-Header aller 4 Sprachen (de/en/fr/ar). Ohne Inhaltsänderung: `git checkout -- webui/locales`. Key-Gleichheit: `python3 scripts/ci/checks.py i18n`.

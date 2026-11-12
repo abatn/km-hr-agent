@@ -19,7 +19,7 @@ Diese Datei ist die MD-Wahrheit für die Laufzeit-Konfiguration des NiceGUI-Fron
 | `KMHR_DEV` | Schalter: hebt das Fail-closed-Gate für beide Pflicht-Variablen auf | nicht gesetzt → **Gate aktiv** | `webui/main.py` (Codemarke `KMHR_DEV`, gemessen 10.10.2026) |
 | `KMHR_BILLING_ENABLED` | Entgeltmodell ein-/ausschalten (`billing_on_eingestellt`, UI-Sektionen, Visum-/Termingebühren) | `0` (**aus**) | `webui/billing.py` `billing_enabled` (26.10.2026) |
 | `KMHR_WELCOME_MAIL` | Willkommensmail bei Registrierung (Kandidat/Arbeitgeber) | `0` (**aus**) | `webui/db.py` `welcome_mail_enabled` (30.10.2026) |
-| `KMHR_PUBLIC_BASE_URL` | Basis-URL für Links in Mails (Passwort-Reset, Willkommensmail) — wird vom Runner gelesen, nicht von der WebUI | `http://localhost:8080` | `scripts/agent-runner.py` `build_welcome_mail` / `send_password_reset` (30.10.2026) |
+| `KMHR_PUBLIC_BASE_URL` | Basis-URL für Links in Mails (Passwort-Reset, Willkommensmail) — **Pflicht**, wird vom Runner gelesen, nicht von der WebUI | kein Default → `public_base_url()` wirft, es wird keine Mail gebaut (fail-closed); Betrieb: `https://jobs.hanibal-ai.com` | `scripts/mail_links.py` `public_base_url` (12.11.2026), genutzt von `scripts/agent-runner.py` `build_welcome_mail` / `send_password_reset` (30.10.2026) |
 | `KMHR_BANK_HOLDER` | Kontoinhaber auf der Rechnung — Pflicht, sonst keine Zahlungsaufforderung | nicht gesetzt → Rechnung zeigt Warnhinweis | `webui/billing.py` `bank_details` (26.10.2026) |
 | `KMHR_BANK_IBAN` | IBAN für die Banküberweisung — Pflicht, kein Test-/Default-Wert | nicht gesetzt → `configured=False` | `webui/billing.py` `bank_details` (26.10.2026) |
 | `KMHR_BANK_NAME` | Bankname (optional, Anzeige) | leer → `—` | `webui/billing.py` `bank_details` (26.10.2026) |
@@ -136,6 +136,14 @@ Verhaltensregeln:
 5. **Tests/E2E:** `tests/test_secrets_from_env.py` prüft (a)-(c) als echte
    Sub-Prozess-Starts gegen isolierte Port-/DB-Pfade; `tests/e2e_isolation.py` trägt
    `KMHR_DEV=1` in die Env seiner isolierten Instanz (Server + Skripte).
+6. **Lokale Dev-Instanz (12.11.2026 dokumentiert):** Die User-Unit
+   `km-hr-agent-local.service` lädt zuerst `.env` und danach `.env.local`
+   (überschreibt u. a. `KMHR_DB_PATH` und `KMHR_HOST`); ein Drop-in
+   `public-ip.conf` kann `KMHR_HOST=0.0.0.0` erzwingen. Beide Dateien sind
+   gitignored und werden nie committet. `KMHR_PUBLIC_BASE_URL` darf dort **nicht**
+   auf Loopback stehen, wenn die Instanz echte Mails sendet — seit 12.11.2026
+   verweigert der Runner den Versand bei `http`/localhost ohne `KMHR_DEV=1`
+   (Abschnitt (j) Punkt 7, `scripts/mail_links.py`).
 
 > **Design-Entscheidung (keine externe Quelle):** Umgebungsvariablen-Name `KMHR_DEV`,
 > die akzeptierten Werte `1/true/yes`, die Tatsache, dass der Override BEIDE
@@ -207,6 +215,11 @@ SHA-256-Hash** in der neuen Tabelle `password_resets`) und schickt einen Link
   (30.10.2026: `to` aus `_MCP_LOG_ALLOWED_KEYS` entfernt).
 - **Zieltabelle aus dem Tab-Kontext** (`candidate`→`candidates`, `employer`→`employers`):
   dieselbe E-Mail kann in beiden Tabellen stehen, der Tab entscheidet.
+- **Basis-URL vor der Token-Erzeugung geprüft (12.11.2026):** `send_password_reset` ruft
+  zuerst `scripts/mail_links.py::public_base_url()` auf. Ist `KMHR_PUBLIC_BASE_URL` nicht
+  gesetzt, kein `https` oder ein lokaler/privater Host (ohne `KMHR_DEV=1`), entsteht
+  **kein Token** und **keine Mail** — der Task scheitert sichtbar mit Grund im Runner-Log.
+  Vorfall: Ein Reset-Link ging mit `http://127.0.0.1:8080` an einen Kandidaten.
 - Abgelaufene/verbrauchte Zeilen löscht `dsgvo_cleanup`.
 
 **Design-Entscheidungen (keine externe Quelle):** Ablauf 60 Min und Rate-Limit 3/10-Min
@@ -306,8 +319,12 @@ in Ablage und Rückgabe, Welcome-Sperre).
    (`knowledge/system/deploy-pipeline.md`). Rollback: die gesicherte Datei zurückkopieren.
 
 7. Mail-Links (Anmeldung, Datenschutz, Reset) kommen aus `KMHR_PUBLIC_BASE_URL`. Produktion:
-   `https://jobs.hanibal-ai.com`. Ohne Eintrag zeigen die Links auf `localhost`. Der Wert gehört in
-   `.env` (WebUI-Umgebung, vom Runner geerbt), nicht in `.env-email`.
+   `https://jobs.hanibal-ai.com`. Die Variable ist **Pflicht**; fehlt sie oder ist sie `http`,
+   `localhost` bzw. eine private Adresse, bricht der Runner den Mailaufbau ab (fail-closed,
+   `scripts/mail_links.py::public_base_url`) und die WebUI warnt beim Start. Nur `KMHR_DEV=1`
+   erlaubt Loopback/HTTP für lokale Entwicklung. Der Wert gehört in `.env` (WebUI-Umgebung,
+   vom Runner geerbt), nicht in `.env-email`. Vorfall 12.11.2026: Eine Dev-Instanz mit
+   `http://127.0.0.1:8080` verschickte einen unbrauchbaren Reset-Link.
 8. Versand über Mailtrap Shared IP. Dedicated IP erst ab rund 100.000 Mails pro Monat (Mailtrap-Doku);
    ein neuer Dedicated IP durchläuft 3 Wochen Warm-up (Tag 1: 300 Mails/Tag, max. 60/Stunde).
    Volumen bis dahin pro Tag und Stunde beobachten, Anstieg langsam halten.

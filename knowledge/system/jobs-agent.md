@@ -91,8 +91,10 @@ Exit `0` = mindestens 10 belegte Stellen, `2` = weniger.
 - **Transparenz:** kostenlose Listung, kein Abo, keine Laufzeitbindung; Daten
   aus öffentlicher Ausschreibung, nur für diese Anfrage; Link `/datenschutz`;
   Opt-out („Abmelden“/„Désabonner“/„Unsubscribe“).
-- **Lokaler Test:** `KMHR_PUBLIC_BASE_URL=http://127.0.0.1:8080 python3
+- **Lokaler Test:** `KMHR_PUBLIC_BASE_URL=http://127.0.0.1:8080 KMHR_DEV=1 python3
   scripts/jobs_recipients.py`; danach `jobs_mail.py --outbox …` als Dry-Run.
+  `KMHR_DEV=1` ist nötig, weil Mail-Links fail-closed geprüft werden
+  (`scripts/mail_links.py`); ohne Dev-Schalter nur `https` und öffentliche Hosts.
 
 ## Outbox-Lebensdauer und Kontaktsperre (04.11.2026)
 

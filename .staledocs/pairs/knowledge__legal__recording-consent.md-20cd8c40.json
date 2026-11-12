@@ -33,14 +33,14 @@
       "webui/pages/candidate.py",
       "webui/pages/employer.py"
     ],
-    "at": "2026-11-02T18:29:58+00:00",
+    "at": "2026-11-12T13:35:01+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d04c302e33efdc36d974aaf433cde5ef7192cef",
+      "scripts/agent-runner.py": "c29829b5f86b86980741ed22f7fb721dba069215",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
+    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
     "doc_blob": "fd015dee92234fc42568bdd67a9a3eaff46eefcf",
-    "note": "Codepr\u00fcfung 02.11.2026: scripts/agent-runner.py gepr\u00fcft; Doku-Aussagen weiterhin g\u00fcltig (Health/Audit/Lern-Loop additiv)."
+    "note": "Geprueft: vdo_ninja_gast_url und record=off in scripts/agent-runner.py sind unveraendert; die Aenderung fuegt nur public_base_url fuer Mail-Links hinzu."
   },
   "doc": "knowledge/legal/recording-consent.md",
   "schema": 1

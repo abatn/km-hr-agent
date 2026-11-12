@@ -45,6 +45,10 @@ import tempfile
 # 02.11.2026: Audit-Kette ist fail-closed (kein Default-Secret). Die Tests
 # setzen ein eigenes Secret; einzelne Tests entfernen es gezielt.
 os.environ.setdefault("KMHR_AUDIT_SECRET", "kmhr-test-audit-secret")
+
+# 12.11.2026: Mail-Links sind fail-closed (scripts/mail_links.py). Die Tests
+# laufen ohne echte Instanz-Env, darum eine feste, öffentliche Test-Basis.
+os.environ.setdefault("KMHR_PUBLIC_BASE_URL", "https://jobs.hanibal-ai.com")
 from datetime import datetime
 from pathlib import Path
 

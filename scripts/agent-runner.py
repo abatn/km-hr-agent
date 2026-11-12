@@ -45,6 +45,11 @@ sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 
 from ansvar_gateway import ansvar_search, get_ansvar_token
 
+# 12.11.2026: Basis-URL für Mail-Links ist fail-closed (kein Loopback/http im
+# Betrieb). Vorfall: Reset-Link ging mit http://127.0.0.1:8080 raus.
+# Geprüft wird `KMHR_PUBLIC_BASE_URL` in scripts/mail_links.py.
+from mail_links import public_base_url
+
 # ─── i18n (Variante B, P2/P3 07.10.2026) ────────────────────────────────
 # Spec: knowledge/system/i18n-runner-chain.md §7.1 Punkt 3–5. NUR die
 # framework-freie Kernschicht (gettext, kein NiceGUI) importieren — der Runner
@@ -518,9 +523,9 @@ def build_welcome_mail(role: str, lang: str, name: str = "", firma: str = "") ->
     Rein deterministisch: kein f-String im msgid, nur `.format` via `tr(...)`.
     Arbeitgebertext ohne Gebühren-/Erfolgs-/Garantieaussagen (AGB § 5).
     """
-    # Gleiche Mechanik wie send_password_reset: Basis-URL aus der Umgebung,
-    # Default identisch (http://localhost:8080).
-    base = (os.environ.get("KMHR_PUBLIC_BASE_URL") or "http://localhost:8080").rstrip("/")
+    # Gleiche Mechanik wie send_password_reset: fail-closed aus
+    # scripts/mail_links.py (Pflicht-Variable, https im Betrieb).
+    base = public_base_url()
     _anrede = (tr("Guten Tag {name},", lang, name=name)
                if (name or "").strip()
                else tr("Guten Tag,", lang))
@@ -630,6 +635,12 @@ def send_password_reset(payload: dict) -> dict:
     from datetime import timedelta as _td, timezone as _tz, datetime as _dt
     from webui import db as _db  # framework-frei (nur sqlite3)
 
+    # Fail-closed VOR Token-Erzeugung und DB-Arbeit (12.11.2026): ohne gültige
+    # öffentliche Basis-URL entsteht kein Reset-Token und keine Mail. Der Fehler
+    # landet als Task-Fehler im Runner-Log (Grund, ohne Token).
+    base = public_base_url()
+    log(f"   Passwort-Reset: Link-Basis {base}")
+
     role = payload.get("role")
     lang = _lang(payload)
     table = {"candidate": "candidates", "employer": "employers"}.get(role)
@@ -672,7 +683,6 @@ def send_password_reset(payload: dict) -> dict:
     finally:
         conn.close()
 
-    base = (os.environ.get("KMHR_PUBLIC_BASE_URL") or "http://localhost:8080").rstrip("/")
     link = f"{base}/login?reset={token}"
     # Erster Absatz bewusst > 120 Zeichen: der DRY-RUN-Preview des MCP-Aufrufs
     # (args[:120]) darf den Link/Token nie zeigen.

@@ -101,9 +101,9 @@
       "write_prescreen_md",
       "x[-1]"
     ],
-    "at": "2026-11-02T19:17:55+00:00",
+    "at": "2026-11-12T13:35:06+00:00",
     "code_blobs": {
-      "scripts/agent-runner.py": "1d04c302e33efdc36d974aaf433cde5ef7192cef",
+      "scripts/agent-runner.py": "c29829b5f86b86980741ed22f7fb721dba069215",
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "tests/test_md_writer_discipline.py": "364434878b68b55343e49a99a2b8c1a2adb30037",
       "tests/test_video_section.py": "e8f5b94458752b6613d4bcda4c6a3126267f24d7",
@@ -111,9 +111,9 @@
       "webui/logic.py": "7d16ee4d46a226cd45f5df9e7de353885a6af9ee",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "5ab85ac457caf51caa0e71aa1bda883e3271454e",
+    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
     "doc_blob": "f21adb53ccf2baddc767f92ebe72ec46592d1380",
-    "note": "md-schreib-konvention.md: Knowledge-MD-Zahl 80 gepr\u00fcft"
+    "note": "Geprueft: die R4-Regeln und CI-Pfadfilter sind unveraendert; scripts/agent-runner.py wurde nur um den Mail-Link-Import ergaenzt."
   },
   "doc": "knowledge/system/md-schreib-konvention.md",
   "schema": 1

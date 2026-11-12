@@ -70,6 +70,25 @@ if _missing and not KMHR_DEV:
     )
     raise SystemExit(1)
 
+# ─── Mail-Link-Basis (12.11.2026) ───────────────────────────────────────
+# Vorfall: Ein Passwort-Reset ging mit http://127.0.0.1:8080 raus, weil eine
+# Dev-Instanz KMHR_PUBLIC_BASE_URL auf Loopback stehen hatte. Der Runner ist
+# fail-closed (scripts/mail_links.py) und verschickt dann keine Mail; die WebUI
+# warnt hier beim Start, damit die Fehlkonfiguration sichtbar ist. Kein Abbruch:
+# der Dev-Betrieb bleibt startbar.
+sys.path.insert(0, str(BASE_DIR / "scripts"))
+try:
+    from mail_links import MailLinkConfigError, public_base_url  # noqa: E402
+except Exception as e:  # pragma: no cover - Importfehler darf den Start nicht kippen
+    print(f"[webui] WARNUNG: mail_links nicht ladbar: {e}", file=sys.stderr)
+else:
+    try:
+        _MAIL_BASE = public_base_url()
+    except MailLinkConfigError as e:
+        print(f"[webui] WARNUNG: Mail-Links deaktiviert — {e}", file=sys.stderr)
+    else:
+        print(f"[webui] Mail-Link-Basis: {_MAIL_BASE}")
+
 # ─── Boot-Sequenz ────────────────────────────────────────────────────
 logic.app_bootstrap()
 # 02.11.2026 (Homöostase): WAL nach dem Bootstrap (data/ existiert dann) —

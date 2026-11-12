@@ -141,12 +141,12 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-11-04T14:19:42+00:00",
+    "at": "2026-11-12T13:38:08+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
       "tests/_p2_state.py": "dedd33ae223b5bcbc207df9607b9213f0a8374e3",
-      "tests/conftest.py": "dc622c231900252570841812504dbaa07e599735",
+      "tests/conftest.py": "94f7f8df15385b7a9fb698a2b5008fab8e23512c",
       "tests/debug_row.sh": "8bbeb51dbffa58faa0db742ad61de0e2089b8f54",
       "tests/e2e_admin_downloads.py": "46a182ab90fbd75655b6b67ff14691ef8ecd16e7",
       "tests/e2e_agent_details.py": "4f5c5e2de860bbc8a413f1730568363580a416d6",
@@ -271,6 +271,7 @@
       "tests/test_logic_i18n.py": "f1b57af835765385f99d5cce44e51caea45b0813",
       "tests/test_m02_m14_closure.py": "942c1156f8b2210a80fd987b88ef776e6ed54d5b",
       "tests/test_mail_bounce.py": "9c4ce969a41740fea41ac3f69343d0ad811fa574",
+      "tests/test_mail_links.py": "43e19df94befc560cc531b30fd1312bd8668d026",
       "tests/test_match_actions.py": "7cae3e947c7a553d63dd7a2aadf5583fc297ab42",
       "tests/test_mcp_email_server.py": "9b12e260a8dc830a753c1c32721f204969413896",
       "tests/test_mcp_official_client.py": "c804c270140e520bc4a94334065dd5f3c35c2b5a",
@@ -318,9 +319,9 @@
       "tests/test_welcome_mail.py": "c12ab7aae1bcbc0a2cd7043ea5eb5aa0cc477a23",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "7cf0ad5e30110c8902b8a480c4c2b2ac27f9fc3e",
+    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
     "doc_blob": "cb2a360ad426ba79cc10d3f9133c42853f788639",
-    "note": "Geprueft an 7cf0ad5: die Spec beschreibt die neue Regel (kein globaler chmod auf der Spiegel-DB) und den isolierten Test tests/test_sprachtest_speicherfehler.py; der neue Seed-Test tests/test_jobs_seed_sperre.py ist ein reiner Unit-Test ohne Seed-DB-Bezug. Spec ist aktuell."
+    "note": "Geprueft: tests/conftest.py setzt nur zusaetzlich KMHR_PUBLIC_BASE_URL als Default; Seed-Spiegel, .env-Schritte und mode=ro-Lesen bleiben wie beschrieben. tests/test_mail_links.py ist ein neues Testmodul ohne Seed-Bezug."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1
