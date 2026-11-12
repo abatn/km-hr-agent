@@ -70,13 +70,37 @@ if _missing and not KMHR_DEV:
     )
     raise SystemExit(1)
 
+# ─── Bindungs-Guard (12.11.2026) ────────────────────────────────────────
+# Vorfall: Die lokale Dev-Instanz war per systemd-Drop-in auf 0.0.0.0:8080
+# öffentlich erreichbar, obwohl das Live-Admin-Konto noch das alte
+# Seed-Passwort trägt. Loopback ist Default; jede andere Adresse (auch
+# 0.0.0.0/::) bricht den Start ab, bis KMHR_ALLOW_PUBLIC_BIND=1 bewusst
+# gesetzt ist. Fail-closed VOR app_bootstrap() (keine DB, kein Server).
+# Spec: knowledge/system/configuration-secrets.md §(l)
+sys.path.insert(0, str(BASE_DIR / "scripts"))
+from bind_guard import BindConfigError, is_loopback_host, resolve_host  # noqa: E402
+
+try:
+    HOST = resolve_host()
+except BindConfigError as e:
+    print(f"[webui] ABBRUCH: {e}", file=sys.stderr)
+    raise SystemExit(1)
+
+if not is_loopback_host(HOST):
+    print(
+        f"[webui] WARNUNG: KMHR_HOST={HOST} lauscht nicht nur auf Loopback "
+        "(KMHR_ALLOW_PUBLIC_BIND ist gesetzt). Öffentlicher Zugang gehört "
+        "hinter den Reverse-Proxy; bis zur Passwort-Rotation nicht ins LAN "
+        "stellen. Details: knowledge/system/configuration-secrets.md §(l)",
+        file=sys.stderr,
+    )
+
 # ─── Mail-Link-Basis (12.11.2026) ───────────────────────────────────────
 # Vorfall: Ein Passwort-Reset ging mit http://127.0.0.1:8080 raus, weil eine
 # Dev-Instanz KMHR_PUBLIC_BASE_URL auf Loopback stehen hatte. Der Runner ist
 # fail-closed (scripts/mail_links.py) und verschickt dann keine Mail; die WebUI
 # warnt hier beim Start, damit die Fehlkonfiguration sichtbar ist. Kein Abbruch:
 # der Dev-Betrieb bleibt startbar.
-sys.path.insert(0, str(BASE_DIR / "scripts"))
 try:
     from mail_links import MailLinkConfigError, public_base_url  # noqa: E402
 except Exception as e:  # pragma: no cover - Importfehler darf den Start nicht kippen
@@ -183,9 +207,10 @@ def healthz():
 # ─── Run ──────────────────────────────────────────────────────────────
 # Port per Env KMHR_PORT übersteuerbar (E2E-Isolation 27.09.2026);
 # ohne Env weiterhin 8080. DB-Seite: webui/db.py (KMHR_DB_PATH).
-# Host per KMHR_HOST: Default 127.0.0.1 (loopback). Öffentlich nur über den
-# Reverse-Proxy (Caddy/Cloudflare); 0.0.0.0 muss bewusst gesetzt werden.
-ui.run(title="KM-HR-Agent", host=os.environ.get("KMHR_HOST", "127.0.0.1"),
+# Host per KMHR_HOST: Default 127.0.0.1 (loopback), geprüft vom Bind-Guard.
+# Öffentlich nur über den Reverse-Proxy (Caddy/Cloudflare); alles außer
+# Loopback braucht zusätzlich KMHR_ALLOW_PUBLIC_BIND=1.
+ui.run(title="KM-HR-Agent", host=HOST,
        port=int(os.environ.get("KMHR_PORT", "8080")),
        storage_secret=STORAGE_SECRET,
        session_middleware_kwargs=_SESSION_MIDDLEWARE_KWARGS,

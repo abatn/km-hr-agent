@@ -171,9 +171,9 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-11-12T13:35:09+00:00",
+    "at": "2026-11-12T14:57:40+00:00",
     "code_blobs": {
-      "webui/main.py": "6da84d1d97e1a3d4885ddbc3aeaf6cb3513f45e1",
+      "webui/main.py": "08378d6afe9c71e5b8bc2c32c3558fdf0444eebc",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "7834aa5d4777dacfb30e4814a5f445078651f5ad",
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
@@ -184,9 +184,9 @@
       "webui/pages/login.py": "dfca99708168cea929afd1b1a4b9494d864fc2d7",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b"
     },
-    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
+    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
     "doc_blob": "6bdce3bf21cc21002cc395cbdb8cb3de4bfd6aef",
-    "note": "Geprueft: die Start-Reihenfolge in webui/main.py (app_bootstrap, enable_wal, ui.run) ist unveraendert; neu ist nur die Warnung zur Mail-Link-Basis."
+    "note": "webui/main.py: app_bootstrap weiterhin im Entry-Point, nur Guard davorgesetzt"
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

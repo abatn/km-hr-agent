@@ -12,7 +12,8 @@
 #     und ist KMHR_DEV nicht ausdruecklich gesetzt, verweigert der Starter den Start (rc=1);
 #     webui/main.py bricht zusaetzlich selbst ab (R3-4, fail-closed).
 #   * Entwicklung ohne Secrets: bewusst `KMHR_DEV=1 ./start-webui.sh`.
-#   * Host: Default 127.0.0.1 (loopback). Für LAN bewusst KMHR_HOST=0.0.0.0 setzen;
+#   * Host: Default 127.0.0.1 (loopback). Für LAN bewusst KMHR_HOST=0.0.0.0
+#     UND KMHR_ALLOW_PUBLIC_BIND=1 setzen (sonst bricht webui/main.py ab);
 #     öffentlich nur über den Reverse-Proxy (Caddy/Cloudflare).
 # Spec: knowledge/system/configuration-secrets.md (Abschnitt (f)).
 cd "$(dirname "$0")" || exit 1

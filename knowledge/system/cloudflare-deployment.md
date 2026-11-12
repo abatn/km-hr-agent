@@ -18,7 +18,9 @@ NiceGUI-App (uvicorn, KMHR_HOST=127.0.0.1)
 ```
 
 - **Port 8080 ist nicht öffentlich**; die App bindet per Default an `127.0.0.1`.
-  `KMHR_HOST=0.0.0.0` nur bewusst für LAN/Diagnose.
+  `KMHR_HOST=0.0.0.0` nur bewusst für LAN/Diagnose **und** mit
+  `KMHR_ALLOW_PUBLIC_BIND=1` — sonst bricht der Start ab
+  (`knowledge/system/configuration-secrets.md` §(l)).
 - **Caddy** terminiert TLS am Origin und proxyt HTTP + Socket.IO/WebSocket.
   Site-Datei: `deploy/caddy/jobs.hanibal-ai.com.caddy` → `/etc/caddy/conf.d/`.
 - **systemd**: `deploy/systemd/km-hr-agent.service` setzt `KMHR_HOST=127.0.0.1` und

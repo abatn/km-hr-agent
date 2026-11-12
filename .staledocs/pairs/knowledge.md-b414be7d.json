@@ -17,6 +17,7 @@
       ".staledocs/pairs/",
       "AGENTS.md",
       "Datei:Zeile",
+      "KMHR_ALLOW_PUBLIC_BIND=1",
       "KMHR_HOST",
       "NVIDIA_API_KEY",
       "PAGE_MAP",
@@ -168,7 +169,7 @@
       "webui/asgi_guard.py::SocketioAbortGuard",
       "webui/logic.py"
     ],
-    "at": "2026-11-12T13:35:26+00:00",
+    "at": "2026-11-12T14:57:44+00:00",
     "code_blobs": {
       "knowledge/error-statistics.md": "9dd5977e65ed4e0095a97c3cc4acda3655f450a6",
       "knowledge/export-templates/README.md": "76fff4bb5821bab74a33b2242a2ec5b07cd41629",
@@ -221,8 +222,8 @@
       "knowledge/system/agent-automation.md": "f58384b2804d78f438653afe55efef12d9245bfc",
       "knowledge/system/asgi-guard.md": "3966b6fb918be26f75767f818444e97b5a6a85e2",
       "knowledge/system/c2-service.md": "4cd4f7824c04a351d691ea625711b1ba2d1582b7",
-      "knowledge/system/cloudflare-deployment.md": "6c4cef6bd843fe3f0eab4efc0eab1a97a62c0406",
-      "knowledge/system/configuration-secrets.md": "58e77fe3f15091c1ae11a015240006d5f28017a4",
+      "knowledge/system/cloudflare-deployment.md": "de0308e58d3d0caba5ed865f7b64a3861689b8a3",
+      "knowledge/system/configuration-secrets.md": "9b5060162ca61461227c16660f73b34342929cee",
       "knowledge/system/dependency-pinning.md": "2c5e276d7b22734b3740e73a4a1d998c99481697",
       "knowledge/system/deploy-pipeline.md": "8c4ff8982dc9eebec27b26db8892e42477640384",
       "knowledge/system/doku-authority.md": "c7cf290fbc1f424f89a8be796d5cb1bd8b46c273",
@@ -251,9 +252,9 @@
       "knowledge/templates/onboarding-templates/onboarding-fr.md": "a355361a8f520ba2a4b3216d752c40fdcb5ada0e",
       "knowledge/ui-design-system.md": "142ad8545324acda8017029393f8a3b1d196d344"
     },
-    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
-    "doc_blob": "8a6d908d7bf2c78a00b1deed00b2764df2e685df",
-    "note": "Geprueft: Index-Verweise auf knowledge/system/agent-automation.md, knowledge/system/configuration-secrets.md, knowledge/system/deploy-pipeline.md und knowledge/system/jobs-agent.md zeigen weiter auf existierende Dateien; dort kam nur die fail-closed Mail-Link-Regel hinzu."
+    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
+    "doc_blob": "0e4430fbf557ad730478c58c78625f9f48ff9e1f",
+    "note": "knowledge/system/configuration-secrets.md: Bindungs-Zeile nennt KMHR_ALLOW_PUBLIC_BIND"
   },
   "doc": "knowledge.md",
   "schema": 1

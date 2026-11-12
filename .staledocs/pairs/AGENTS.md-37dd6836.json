@@ -26,6 +26,7 @@
       "Datei:Zeile",
       "ERWARTETE_TABELLEN",
       "KMHR_ADMIN_SEED_PASSWORD",
+      "KMHR_ALLOW_PUBLIC_BIND=1",
       "KMHR_AUDIT_SECRET",
       "KMHR_BILLING_ENABLED",
       "KMHR_COOKIE_SECURE=1",
@@ -93,6 +94,7 @@
       "scripts/ads_agent.py",
       "scripts/ads_x402.py",
       "scripts/agent-runner.py",
+      "scripts/bind_guard.py",
       "scripts/ci/checks.py",
       "scripts/jobs_x402_feed.py",
       "scripts/language-test-server.py",
@@ -129,7 +131,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-12T13:44:49+00:00",
+    "at": "2026-11-12T14:57:53+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -165,6 +167,7 @@
       "scripts/asgi_trace_run.py": "383a6023e25294243f3e0e78e475be0905148159",
       "scripts/benchmark_hf.py": "b7e93d2a60b2beb78ab5cbcaa658f73d725fa9d7",
       "scripts/benchmark_hf_config.json": "883b990b6f14e6367b793f20acc967fe1c1fa8fd",
+      "scripts/bind_guard.py": "2aa15bac96f832795213db6c75d8364678238d80",
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "scripts/ci/mcp_handshake.py": "cff87055f1f8062fb02739cdaaac8a8aab776fc5",
       "scripts/facebook_reel.py": "6a1e0231d8152ed5daad39fd29db4f993f54feeb",
@@ -281,6 +284,7 @@
       "tests/test_billing.py": "259aa486df3d1052b4a8f151e232d2945a5a2ce4",
       "tests/test_billing_i18n.py": "05ff347ac2777c768c3ec56cce4d70ea410175f0",
       "tests/test_billing_render.py": "eed32d2b18bc37efde676b7ca1a1e8a38af7eacf",
+      "tests/test_bind_guard.py": "eebb70953029dade140e962327016b6951a5e302",
       "tests/test_board_actions.py": "da7b3f9661d02d7e4dda60501a963dd69aedba1e",
       "tests/test_circuit_breaker.py": "e7b75606cc2cc68372774803ecd3ed144e3d1d16",
       "tests/test_compliance_scope.py": "de899a6a1409e827650142fa33cdcde793d0b01b",
@@ -383,7 +387,7 @@
       "webui/locales/en/LC_MESSAGES/messages.po": "bf00b8243309dc5099ee89939a0324a61ee22fe0",
       "webui/locales/fr/LC_MESSAGES/messages.po": "fb7f5035b713da4395a94d928df88e53c3c4c6a9",
       "webui/logic.py": "7d16ee4d46a226cd45f5df9e7de353885a6af9ee",
-      "webui/main.py": "6da84d1d97e1a3d4885ddbc3aeaf6cb3513f45e1",
+      "webui/main.py": "08378d6afe9c71e5b8bc2c32c3558fdf0444eebc",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
       "webui/pages/admin.py": "7834aa5d4777dacfb30e4814a5f445078651f5ad",
       "webui/pages/billing_ui.py": "dd2026ee9b1dd2f964a1b67be96e51465f2c1fd3",
@@ -398,9 +402,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "74d616f141e8912e8faeba741dbe7e74b6acf257",
-    "doc_blob": "3a547cb1b0f1d282a558e77d162796bd769ad479",
-    "note": "Geprueft: AGENTS.md beschreibt die neue fail-closed Mail-Link-Regel (KMHR_PUBLIC_BASE_URL Pflicht, scripts/mail_links.py, KMHR_DEV=1 fuer Loopback); die uebrigen Setup-, Test- und Deploy-Aussagen sind unveraendert."
+    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
+    "doc_blob": "2a3b924bba30c144b6eb3af8fc83dfa0e35b98d1",
+    "note": "AGENTS.md: Bindungs-Bullet nennt KMHR_ALLOW_PUBLIC_BIND und scripts/bind_guard.py"
   },
   "doc": "AGENTS.md",
   "schema": 1

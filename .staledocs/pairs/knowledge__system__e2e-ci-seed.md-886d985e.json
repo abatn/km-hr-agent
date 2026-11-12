@@ -141,7 +141,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-11-12T13:38:08+00:00",
+    "at": "2026-11-12T14:57:41+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -229,6 +229,7 @@
       "tests/test_billing.py": "259aa486df3d1052b4a8f151e232d2945a5a2ce4",
       "tests/test_billing_i18n.py": "05ff347ac2777c768c3ec56cce4d70ea410175f0",
       "tests/test_billing_render.py": "eed32d2b18bc37efde676b7ca1a1e8a38af7eacf",
+      "tests/test_bind_guard.py": "eebb70953029dade140e962327016b6951a5e302",
       "tests/test_board_actions.py": "da7b3f9661d02d7e4dda60501a963dd69aedba1e",
       "tests/test_circuit_breaker.py": "e7b75606cc2cc68372774803ecd3ed144e3d1d16",
       "tests/test_compliance_scope.py": "de899a6a1409e827650142fa33cdcde793d0b01b",
@@ -319,9 +320,9 @@
       "tests/test_welcome_mail.py": "c12ab7aae1bcbc0a2cd7043ea5eb5aa0cc477a23",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
+    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
     "doc_blob": "cb2a360ad426ba79cc10d3f9133c42853f788639",
-    "note": "Geprueft: tests/conftest.py setzt nur zusaetzlich KMHR_PUBLIC_BASE_URL als Default; Seed-Spiegel, .env-Schritte und mode=ro-Lesen bleiben wie beschrieben. tests/test_mail_links.py ist ein neues Testmodul ohne Seed-Bezug."
+    "note": "tests/test_bind_guard.py: .env/Path-Tokens aus neuem Unit-Test, CI-Setup unver\u00e4ndert"
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

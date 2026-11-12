@@ -75,7 +75,7 @@
       "webui/main.py",
       "webui/main.py::healthz"
     ],
-    "at": "2026-11-12T13:35:06+00:00",
+    "at": "2026-11-12T14:57:39+00:00",
     "code_blobs": {
       "deploy/cron/kmhr-healthcheck.cron": "05a8f6dc6e4484548d3b6792084a7f903604eb92",
       "deploy/systemd/kmhr-healthcheck.service": "60316bc53654dc96d804a8401c5b6d53e0e31ca2",
@@ -90,13 +90,13 @@
       "webui/circuit_breaker.py": "42136dfa1404ee3b874c48a1e08cbc68208cb813",
       "webui/db.py": "1223884daa4872bec116c3edb2baf33641016b6f",
       "webui/logic.py": "7d16ee4d46a226cd45f5df9e7de353885a6af9ee",
-      "webui/main.py": "6da84d1d97e1a3d4885ddbc3aeaf6cb3513f45e1",
+      "webui/main.py": "08378d6afe9c71e5b8bc2c32c3558fdf0444eebc",
       "webui/pages/admin.py": "7834aa5d4777dacfb30e4814a5f445078651f5ad",
       "webui/pages/employer.py": "b7571e0d27ba60b4763e6f67ad6dd565e6104b37"
     },
-    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
+    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
     "doc_blob": "da32f62f58f2658047d053476a6d8b40b04da02c",
-    "note": "Geprueft: _llm_complete/CircuitBreaker und healthz/health_snapshot bleiben unveraendert; in scripts/agent-runner.py und webui/main.py kam nur die Mail-Link-Pruefung bzw. Startwarnung hinzu."
+    "note": "webui/main.py: healthz, enable_wal nach app_bootstrap und Audit-Gate unver\u00e4ndert"
   },
   "doc": "knowledge/system/observability.md",
   "schema": 1

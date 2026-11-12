@@ -139,7 +139,9 @@ Verhaltensregeln:
 6. **Lokale Dev-Instanz (12.11.2026 dokumentiert):** Die User-Unit
    `km-hr-agent-local.service` lädt zuerst `.env` und danach `.env.local`
    (überschreibt u. a. `KMHR_DB_PATH` und `KMHR_HOST`); ein Drop-in
-   `public-ip.conf` kann `KMHR_HOST=0.0.0.0` erzwingen. Beide Dateien sind
+   `public-ip.conf` kann `KMHR_HOST` überschreiben. Seit 12.11.2026 greift
+   davor der Bind-Guard §(l): Nicht-Loopback bricht ohne
+   `KMHR_ALLOW_PUBLIC_BIND=1` ab. Beide Dateien sind
    gitignored und werden nie committet. `KMHR_PUBLIC_BASE_URL` darf dort **nicht**
    auf Loopback stehen, wenn die Instanz echte Mails sendet — seit 12.11.2026
    verweigert der Runner den Versand bei `http`/localhost ohne `KMHR_DEV=1`
@@ -358,3 +360,37 @@ sofern es archiviert wird. **Empfehlung:** Secret archivieren, nicht löschen.
 **Nachweis:** `tests/test_audit_secret_failclosed.py` (ohne Secret →
 `RuntimeError`, mit Secret → Signatur; Tabellenanlage bleibt erlaubt) und
 `tests/test_audit_chain.py` (Kette + Tamper-Erkennung).
+
+---
+
+## (l) Bindungs-Guard: `KMHR_HOST` (12.11.2026)
+
+**Quelle: Auftrag „Schritt 1 der Härtung" (12.11.2026).** Vorfall: Die lokale
+Dev-Instanz `km-hr-agent-local.service` bezog `KMHR_HOST=0.0.0.0` aus einem
+systemd-Drop-in (`public-ip.conf`) und war über die öffentliche IP erreichbar —
+während das Live-Admin-Konto noch das alte Seed-Passwort trägt (§(f)).
+
+**Regel** (`scripts/bind_guard.py::resolve_host`, aufgerufen in `webui/main.py`
+vor `logic.app_bootstrap()`):
+
+| `KMHR_HOST` | `KMHR_ALLOW_PUBLIC_BIND` | Ergebnis |
+|---|---|---|
+| nicht gesetzt / leer | egal | `127.0.0.1` |
+| `127.0.0.1`, `127.0.1.1`, `::1`, `localhost` | egal | erlaubt (Loopback) |
+| `0.0.0.0`, `::`, LAN-/öffentliche Adresse, Hostname | nicht gesetzt | stderr `ABBRUCH`, `SystemExit(1)` — **keine DB, kein Server** |
+| wie oben | `1`/`true`/`yes` | Start erlaubt, stderr-`WARNUNG` |
+
+- **Wildcard ist kein Loopback:** `0.0.0.0` und `::` lauschen auf allen
+  Interfaces und brauchen deshalb dasselbe Opt-in wie eine LAN-Adresse.
+- **Betrieb bleibt Loopback** hinter Caddy/Cloudflare
+  (`knowledge/system/cloudflare-deployment.md`); das Opt-in ist für bewusstes
+  LAN/Diagnose gedacht, nicht für Port-Freigaben im Internet.
+- **Reihenfolge:** Der Guard liegt vor `app_bootstrap()`, damit ein
+  Fehlstart keine DB anfasst; er ersetzt keine Firewall-Regel.
+- **Nachweis:** `tests/test_bind_guard.py` (Loopback-Varianten, Wildcard ohne
+  Opt-in, Opt-in, echter Sub-Prozess-Start mit Abbruch vor der DB-Anlage).
+
+> **Design-Entscheidung (keine externe Quelle):** Name `KMHR_ALLOW_PUBLIC_BIND`,
+> die akzeptierten Werte `1/true/yes` und die Fail-closed-Wahl (Abbruch statt
+> reiner Warnung) sind frei gewählt; Quelle des Verhaltens ist der Auftrag
+> „Schritt 1 der Härtung" (12.11.2026).

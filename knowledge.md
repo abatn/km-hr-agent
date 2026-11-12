@@ -91,7 +91,7 @@ Skill-Definitionen: `skills/README.md` (Übersicht) + `skills/*/SKILL.md` (je Sk
 ## Secrets & Test-Setup (Kurzfassung)
 
 - **Vier getrennte Env-Dateien:** `.env` (WebUI), `.env-runner` (Runner, `NVIDIA_API_KEY`), `.env-email` (`SMTP_*`), `.env-social` (Social-Agent, Default Dry-Run). Falsche Datei ⇒ Fehler. Details: `knowledge/system/configuration-secrets.md`.
-- **Bindung:** `KMHR_HOST` (Default `127.0.0.1`; `0.0.0.0` nur bewusst für LAN). Live-Admin trägt noch das alte Seed-Passwort — nicht aus dem LAN erreichbar machen, bis rotiert ist.
+- **Bindung:** `KMHR_HOST` (Default `127.0.0.1`; Nicht-Loopback inkl. `0.0.0.0` nur mit `KMHR_ALLOW_PUBLIC_BIND=1`, sonst Startabbruch). Live-Admin trägt noch das alte Seed-Passwort — nicht aus dem LAN erreichbar machen, bis rotiert ist.
 - **pytest:** `pytest.ini` setzt `asyncio_mode = auto`; `pytest_plugins` für NiceGUI steht in der Root-`conftest.py`. NiceGUI-Demo-Routen gehören nach `tests/nicegui_main.py`, nicht ins Testmodul.
 - **Test-DB:** `tests/conftest.py` spiegelt `tests/fixtures/seed.db` nach `/tmp/opencode` und leitet `sqlite3.connect` dorthin um. `tests/fixtures/seed.db` ist handgepflegt — nicht mit `scripts/seed_ci_db.py` neu erzeugen.
 - **Handler-Connection:** Ein NiceGUI-Callback nutzt nie eine `conn`, die der Seitenaufbau geschlossen hat; jeder Callback öffnet seine eigene `conn` und schließt sie in `try/finally` (Test `tests/test_conn_closure.py`).
