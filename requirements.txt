@@ -8,6 +8,10 @@ babel>=2.11               # i18n-Katalog-Kompilierung (webui/locales/*.po → .m
 # Sicherheit / HTTP
 argon2-cffi>=23.1         # argon2id-Passwort-Hashing (webui/logic.py)
 requests>=2.31            # direkte NVIDIA-API im Runner (scripts/agent-runner.py)
+# Registrierungs-Haertung (Maßnahme 6, 12.11.2026): RFC-nahe Syntaxpruefung
+# ohne DNS (`check_deliverability=False`). Zieht dnspython + idna transitiv.
+# Vorher nur transitiv vorhanden — jetzt explizit, weil direkt importiert.
+email-validator==2.3.0    # webui/registration_guard.py
 
 # Dokumente / PDF
 PyMuPDF>=1.23.0           # PDF-Textextraktion (mcp-pdf-server.py, verify-documents)

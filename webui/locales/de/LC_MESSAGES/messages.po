@@ -4031,3 +4031,6 @@ msgstr "GEBROCHEN"
 
 msgid "Noch keine Audit-Einträge."
 msgstr "Noch keine Audit-Einträge."
+
+msgid "Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut."
+msgstr "Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut."

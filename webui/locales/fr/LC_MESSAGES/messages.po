@@ -4026,3 +4026,6 @@ msgstr "ROMPUE"
 
 msgid "Noch keine Audit-Einträge."
 msgstr "Aucune entrée d'audit pour l'instant."
+
+msgid "Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut."
+msgstr "L'inscription n'est actuellement pas possible. Veuillez réessayer plus tard."

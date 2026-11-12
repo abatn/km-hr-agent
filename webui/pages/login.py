@@ -9,11 +9,12 @@ from __future__ import annotations
 import os
 import sqlite3
 import sys
+import time
 from uuid import uuid4
 
 from nicegui import run, ui
 
-from webui import db, logic
+from webui import db, logic, registration_guard as reg_guard
 from webui.theme import C
 from webui.i18n import _, apply_direction, get_language, language_switcher
 
@@ -36,7 +37,7 @@ def _reset_token_param() -> str | None:
         return None
 
 
-def _consent_checkbox() -> ui.checkbox:
+def _consent_checkbox(marker: str = "reg-consent") -> ui.checkbox:
     """Pflicht-Einwilligung in AGB + Datenschutzerklaerung (Purposes `terms`/`privacy`).
 
     NICHT vorangehakt: Art. 7 Abs. 2 DSGVO / Erwaegungsgrund 32+43 — ein bereits
@@ -51,12 +52,33 @@ def _consent_checkbox() -> ui.checkbox:
     cb = ui.checkbox(
         _("Ich akzeptiere die AGB und die Datenschutzerklärung"),
         value=False,
-    ).classes("text-sm text-gray-800 dark:text-gray-200")
+    ).classes("text-sm text-gray-800 dark:text-gray-200").mark(marker)
     with ui.row().classes("items-center gap-2 -mt-2 text-xs"):
         ui.link(_("AGB"), "/agb").classes("text-amber-800 dark:text-amber-300")
         ui.label("·").classes("text-gray-500")
         ui.link(_("Datenschutz"), "/datenschutz").classes("text-amber-800 dark:text-amber-300")
     return cb
+
+
+def _honeypot_field(marker: str) -> ui.input:
+    """Unsichtbares Lockfeld gegen naive Form-Bots (Maßnahme 5a).
+
+    Off-screen statt `display:none`: `display:none` wird von vielen Bots
+    uebersprungen, ein per CSS weggeschobenes Feld dagegen ausgefuellt.
+    `tabindex=-1` haelt es aus der Tastatur-Reihenfolge, `aria-hidden` aus dem
+    Screenreader-Baum; der Name ist bewusst plausibel ("Website").
+
+    Nur gerendert, gefuellt und geprueft, wenn `KMHR_REGISTRATION_HONEYPOT`
+    nicht 0 ist (`reg_guard.registration_blocked`).
+    """
+    hp = ui.input(_("Website")).props(
+        'autocomplete=off tabindex=-1 aria-hidden=true'
+    ).mark(marker)
+    hp.style(
+        "position:absolute;left:-10000px;top:auto;width:1px;height:1px;"
+        "overflow:hidden;"
+    )
+    return hp
 
 
 def _record_registration_consents(subject_type: str, subject_id: int, language: str) -> None:
@@ -186,7 +208,7 @@ def create() -> None:
                             email = ui.input(
                                 _("E-Mail"),
                                 placeholder=_("name@beispiel.de"),
-                                validation={_("E-Mail gueltig"): lambda v: "@" in v and "." in v},
+                                validation={_("E-Mail gueltig"): reg_guard.email_field_valid},
                             ).classes("w-full")
                             pw = ui.input(
                                 _("Passwort"),
@@ -240,25 +262,39 @@ def create() -> None:
                         # ── Candidate Register ───────────────────────────
                         with ui.tab_panel(_("Registrieren")):
                             ui.label(_("Neues Konto erstellen")).classes(C.CARD_TITLE + " mb-4")
+                            # Startzeit der Mindest-Fuellzeit + Lockfeld (Maßnahme 5a).
+                            r_t0 = time.monotonic()
+                            r_hp = _honeypot_field("hp-register-candidate")
+                            # Marker fuer tests/test_registration_ui.py (NiceGUI-Test-API).
                             r_email = ui.input(
                                 _("E-Mail"),
                                 placeholder=_("name@beispiel.de"),
-                                validation={_("E-Mail gueltig"): lambda v: "@" in v and "." in v},
-                            ).classes("w-full")
-                            r_name = ui.input(_("Name"), placeholder=_("Vor- und Nachname")).classes("w-full")
+                                validation={_("E-Mail gueltig"): reg_guard.registration_email_field_valid},
+                            ).classes("w-full").mark("reg-email")
+                            r_name = ui.input(_("Name"), placeholder=_("Vor- und Nachname")).classes("w-full").mark("reg-name")
                             r_pw = ui.input(
                                 _("Passwort"),
                                 password=True,
                                 placeholder=_("Mindestens 8 Zeichen"),
                                 validation={_("Mindestens 8 Zeichen"): lambda v: len(v) >= 8},
-                            ).classes("w-full")
+                            ).classes("w-full").mark("reg-pw")
                             # Pflicht-Einwilligung (nicht vorangehakt) — Nachweis nach dem INSERT.
-                            r_consent = _consent_checkbox()
+                            r_consent = _consent_checkbox("reg-consent")
                             r_msg = ui.label("").classes("text-sm")
 
                             async def do_register():
+                                if reg_guard.registration_blocked(r_hp.value, time.monotonic() - r_t0):
+                                    # Eine Meldung fuer Honeypot und Timing: kein Bot-Feedback.
+                                    r_msg.text = _("Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut.")
+                                    r_msg.classes(replace="text-red-400 text-sm")
+                                    return
                                 if not r_email.value or not r_pw.value:
                                     r_msg.text = _("E-Mail und Passwort sind Pflichtfelder.")
+                                    r_msg.classes(replace="text-red-400 text-sm")
+                                    return
+                                if reg_guard.registration_email_blocked(r_email.value):
+                                    # Server-seitig bindend; die Client-Validierung ist nur UX.
+                                    r_msg.text = _("Bitte eine gueltige E-Mail eingeben.")
                                     r_msg.classes(replace="text-red-400 text-sm")
                                     return
                                 if not r_consent.value:
@@ -297,14 +333,14 @@ def create() -> None:
                                 finally:
                                     conn.close()
 
-                            ui.button(_("Registrieren"), icon="person_add", on_click=do_register).classes(C.BTN_PRIMARY + " w-full mt-2")
+                            ui.button(_("Registrieren"), icon="person_add", on_click=do_register).classes(C.BTN_PRIMARY + " w-full mt-2").mark("reg-submit")
 
                         # ── Employer Login ───────────────────────────────
                         with ui.tab_panel(_("Arbeitgeber")):
                             ui.label(_("Arbeitgeber-Login")).classes(C.CARD_TITLE + " mb-4")
                             e_email = ui.input(
                                 _("E-Mail"),
-                                validation={_("E-Mail gueltig"): lambda v: "@" in v and "." in v},
+                                validation={_("E-Mail gueltig"): reg_guard.email_field_valid},
                             ).classes("w-full")
                             e_pw = ui.input(
                                 _("Passwort"),
@@ -336,25 +372,39 @@ def create() -> None:
                         # ── Employer Register ────────────────────────────
                         with ui.tab_panel(_("Arbeitgeber+")):
                             ui.label(_("Arbeitgeber registrieren")).classes(C.CARD_TITLE + " mb-4")
+                            # Startzeit der Mindest-Fuellzeit + Lockfeld (Maßnahme 5a).
+                            er_t0 = time.monotonic()
+                            er_hp = _honeypot_field("hp-register-employer")
+                            # Marker fuer tests/test_registration_ui.py (NiceGUI-Test-API).
                             er_email = ui.input(
                                 _("Firmen-E-Mail"),
-                                validation={_("E-Mail gueltig"): lambda v: "@" in v and "." in v},
-                            ).classes("w-full")
-                            er_firma = ui.input(_("Firma")).classes("w-full")
-                            er_kontakt = ui.input(_("Kontaktperson")).classes("w-full")
+                                validation={_("E-Mail gueltig"): reg_guard.registration_email_field_valid},
+                            ).classes("w-full").mark("reg-emp-email")
+                            er_firma = ui.input(_("Firma")).classes("w-full").mark("reg-emp-firma")
+                            er_kontakt = ui.input(_("Kontaktperson")).classes("w-full").mark("reg-emp-kontakt")
                             er_pw = ui.input(
                                 _("Passwort"),
                                 password=True,
                                 placeholder=_("Mindestens 8 Zeichen"),
                                 validation={_("Mindestens 8 Zeichen"): lambda v: len(v) >= 8},
-                            ).classes("w-full")
+                            ).classes("w-full").mark("reg-emp-pw")
                             # Pflicht-Einwilligung (nicht vorangehakt) — Nachweis nach dem INSERT.
-                            er_consent = _consent_checkbox()
+                            er_consent = _consent_checkbox("reg-emp-consent")
                             er_msg = ui.label("").classes("text-sm")
 
                             async def do_employer_register():
+                                if reg_guard.registration_blocked(er_hp.value, time.monotonic() - er_t0):
+                                    # Eine Meldung fuer Honeypot und Timing: kein Bot-Feedback.
+                                    er_msg.text = _("Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut.")
+                                    er_msg.classes(replace="text-red-400 text-sm")
+                                    return
                                 if not er_email.value or not er_firma.value or not er_kontakt.value or not er_pw.value:
                                     er_msg.text = _("Alle Felder sind Pflichtfelder.")
+                                    er_msg.classes(replace="text-red-400 text-sm")
+                                    return
+                                if reg_guard.registration_email_blocked(er_email.value):
+                                    # Server-seitig bindend; die Client-Validierung ist nur UX.
+                                    er_msg.text = _("Bitte eine gueltige E-Mail eingeben.")
                                     er_msg.classes(replace="text-red-400 text-sm")
                                     return
                                 if not er_consent.value:
@@ -394,14 +444,14 @@ def create() -> None:
                                 finally:
                                     conn.close()
 
-                            ui.button(_("Als Arbeitgeber registrieren"), icon="business", on_click=do_employer_register).classes(C.BTN_PRIMARY + " w-full mt-2")
+                            ui.button(_("Als Arbeitgeber registrieren"), icon="business", on_click=do_employer_register).classes(C.BTN_PRIMARY + " w-full mt-2").mark("reg-emp-submit")
 
                         # ── Admin Login ──────────────────────────────────
                         with ui.tab_panel(_("Admin")):
                             ui.label(_("Admin-Login")).classes(C.CARD_TITLE + " mb-4")
                             a_email = ui.input(
                                 _("Admin-E-Mail"),
-                                validation={_("E-Mail gueltig"): lambda v: "@" in v and "." in v},
+                                validation={_("E-Mail gueltig"): reg_guard.email_field_valid},
                             ).classes("w-full")
                             a_pw = ui.input(
                                 _("Passwort"),

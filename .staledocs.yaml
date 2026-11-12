@@ -106,6 +106,12 @@ pairs:
     code: ["webui/asgi_guard.py"]
   - doc: knowledge/system/configuration-secrets.md
     code: ["scripts/ci/checks.py", "tests/test_secrets_from_env.py"]
+  # Registrierungs-Härtung (12.11.2026): Guard, UI-Verdrahtung, Tests, Kataloge.
+  - doc: knowledge/system/registration-hardening.md
+    code: ["webui/registration_guard.py", "webui/pages/login.py", "webui/locales/**",
+           "tests/test_registration_guard.py", "tests/test_registration_ui.py",
+           "tests/test_registration_wiring.py", "tests/e2e_notifications_flow.py",
+           "tests/nicegui_main.py"]
   - doc: knowledge/system/dependency-pinning.md
     code: ["tests/test_requirements_pinned.py"]
   - doc: knowledge/system/vdo-ninja-migration.md

@@ -42,7 +42,13 @@ TESTDATEN = ROOT / "testdaten"
 
 EMPLOYER_ID = 1                     # TechVision GmbH (Ersteller der Stellen)
 TS = time.strftime("%H%M%S")
-EMAIL = f"r35-e2e-{TS}@example.invalid"
+# Registrierungs-Haertung (12.11.2026, webui/registration_guard.py): Die
+# strikte Pruefung lehnt `example.com` sowie die TLDs `.invalid`/`.test`/
+# `.localhost` ab. Die Test-Adresse liegt daher auf einer Subdomain der
+# Betreiber-Domain; es wird keine Mail zugestellt (`KMHR_WELCOME_MAIL` Default 0).
+# Der Flow wartet 2,5 s nach dem Laden plus 1,2 s nach dem Tab-Wechsel — ueber
+# der Mindest-Fuellzeit von 3 s.
+EMAIL = f"r35-e2e-{TS}@e2e.hanibal-ai.com"
 NAME = f"R35 E2E Kandidat {TS}"
 PW = "R35E2EPasswort2026!"
 

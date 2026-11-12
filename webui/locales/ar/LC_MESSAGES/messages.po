@@ -4026,3 +4026,6 @@ msgstr "مكسورة"
 
 msgid "Noch keine Audit-Einträge."
 msgstr "لا توجد إدخالات تدقيق بعد."
+
+msgid "Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut."
+msgstr "التسجيل غير متاح حاليًا. يرجى المحاولة مرة أخرى لاحقًا."

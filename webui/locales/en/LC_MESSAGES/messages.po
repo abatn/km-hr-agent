@@ -4026,3 +4026,6 @@ msgstr "BROKEN"
 
 msgid "Noch keine Audit-Einträge."
 msgstr "No audit entries yet."
+
+msgid "Registrierung derzeit nicht möglich. Bitte versuchen Sie es später erneut."
+msgstr "Registration is currently not possible. Please try again later."

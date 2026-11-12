@@ -394,3 +394,24 @@ vor `logic.app_bootstrap()`):
 > die akzeptierten Werte `1/true/yes` und die Fail-closed-Wahl (Abbruch statt
 > reiner Warnung) sind frei gewählt; Quelle des Verhaltens ist der Auftrag
 > „Schritt 1 der Härtung" (12.11.2026).
+
+---
+
+## (m) Registrierungs-Härtung: `KMHR_REGISTRATION_STRICT_EMAIL` und `KMHR_REGISTRATION_HONEYPOT` (12.11.2026)
+
+**Zweck:** Zwei Verhaltens-Flags der Registrierung (keine Geheimnisse).
+Fachliche Spec: `knowledge/system/registration-hardening.md`.
+
+| Variable | Default | Wirkung | Abschalten (Rollback) |
+|---|---|---|---|
+| `KMHR_REGISTRATION_STRICT_EMAIL` | `1` | strikte E-Mail-Prüfung im Registrierungs-Handler (`webui/registration_guard.py::registration_email_blocked`) | `0` = log-only (Ablehnung wird nur geloggt) |
+| `KMHR_REGISTRATION_HONEYPOT` | `1` | unsichtbares Lockfeld + Mindest-Füllzeit 3 s (`registration_blocked`) | `0` = beides aus (Altverhalten) |
+
+- **Ablage:** `.env` (WebUI), kein Duplikat in `.env-runner`/`.env-email`.
+  Es sind keine Secrets, `chmod 600` gilt nur wegen der Datei.
+- **Default ist der sichere Zustand:** nur `0`/`false`/`no`/`off` schalten ab;
+  ein Tippfehler lässt die Schicht **an**.
+- **Kein Schema:** beide Schichten laufen ohne neue Tabelle; `ERWARTETE_TABELLEN`
+  bleibt bei 21 (`scripts/ci/checks.py`).
+- **Login unberührt:** die drei Login-Felder nutzen weiter die tolerante
+  Altregel, damit Bestandskonten mit `@example.invalid` sich anmelden können.

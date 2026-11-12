@@ -255,6 +255,16 @@ def billing_admin_demo():
     admin_billing_section()
 
 
+# ── Registrierungs-Haertung (12.11.2026): die ECHTE /login-Seite rendern ──
+# Keine Kopie der Panels: `login.create()` registriert genau die Seite aus
+# webui/pages/login.py — inklusive Honeypot, Timing-Start und E-Mail-Guards.
+# Regel R5-1: Render-/Demo-Routen stehen hier, nicht im Testmodul.
+
+from webui.pages import login as login_page  # noqa: E402
+
+login_page.create()
+
+
 # user_simulation führt diese Datei via runpy mit run_name='__main__' aus und
 # erwartet ui.run() (NICEGUI_USER_SIMULATION=true verhindert den echten Serverstart).
 if __name__ in {"__main__", "__mp_main__"}:

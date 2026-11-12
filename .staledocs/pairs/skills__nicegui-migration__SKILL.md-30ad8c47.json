@@ -171,7 +171,7 @@
       "webui/pages/employer.py",
       "webui/theme.py"
     ],
-    "at": "2026-11-12T14:57:40+00:00",
+    "at": "2026-11-12T17:05:45+00:00",
     "code_blobs": {
       "webui/main.py": "08378d6afe9c71e5b8bc2c32c3558fdf0444eebc",
       "webui/pages/__init__.py": "452c9c7e009e4c3b0b86cd9a49b1f0677e2f5468",
@@ -181,12 +181,12 @@
       "webui/pages/employer.py": "b7571e0d27ba60b4763e6f67ad6dd565e6104b37",
       "webui/pages/landing.py": "3e15b602b0c9a334002d3c5526686da85e303398",
       "webui/pages/legal.py": "0d5e75003ef4a5b8c096f8b7f26f925ddc75b3b1",
-      "webui/pages/login.py": "dfca99708168cea929afd1b1a4b9494d864fc2d7",
+      "webui/pages/login.py": "469aecfbf1cdcc79bfc2b892b90d9b4125821151",
       "webui/pages/not_found.py": "485605d1d3466b0767c00acb7dccab3ccf97030b"
     },
-    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
+    "commit": "2d4ec0bcf8ca7e4941aa38d16bc2f08aae0737ae",
     "doc_blob": "6bdce3bf21cc21002cc395cbdb8cb3de4bfd6aef",
-    "note": "webui/main.py: app_bootstrap weiterhin im Entry-Point, nur Guard davorgesetzt"
+    "note": "webui/pages/login.py: D34-Regel weiter erfuellt \u2014 beide Registrierungs-Handler oeffnen ihre conn in db.get_conn() und schliessen sie in try/finally; die neuen Guards laufen davor, ohne conn."
   },
   "doc": "skills/nicegui-migration/SKILL.md",
   "schema": 1

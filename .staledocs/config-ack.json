@@ -85,6 +85,7 @@
       "knowledge/system/mcp-connector-config.md",
       "knowledge/system/md-schreib-konvention.md",
       "knowledge/system/observability.md",
+      "knowledge/system/registration-hardening.md",
       "knowledge/system/social-automation.md",
       "knowledge/system/vdo-ninja-migration.md",
       "knowledge/ui-design-system.md",
@@ -133,7 +134,7 @@
       "webui/**"
     ]
   },
-  "at": "2026-11-12T14:57:53+00:00",
+  "at": "2026-11-12T17:13:43+00:00",
   "note": "advanced by pair ack (no weakening)",
   "schema": 1
 }

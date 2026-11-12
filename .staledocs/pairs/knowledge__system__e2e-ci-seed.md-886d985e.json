@@ -141,7 +141,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-11-12T14:57:41+00:00",
+    "at": "2026-11-12T17:13:43+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -186,7 +186,7 @@
       "tests/e2e_mentoring.py": "51a00261054eff3f97993fe421f09089cde5ca00",
       "tests/e2e_na1_queue_filter.py": "bcdee7c957e2c6b16b17effa77b9650f4045d037",
       "tests/e2e_nm2_expansion_persist.py": "c516cdbf0e32ed7385d67a86ecfab368fec71b93",
-      "tests/e2e_notifications_flow.py": "69b95aeb19e0ddc28f772f6f88b17151b62813cb",
+      "tests/e2e_notifications_flow.py": "3bec823953890c7b4bef00d338afc792884070b5",
       "tests/e2e_p1_3_onboarding_action.py": "2a955a0f472d3395c0accf65ad7be66b55c04896",
       "tests/e2e_p2_8_pseudonym.py": "5ad3e54690914b44073f77c98b0f8a1e5cd3bdab",
       "tests/e2e_passive_on_match.py": "c8ffbe05c73e264df54f70ab9ded75dd32fe3654",
@@ -213,7 +213,7 @@
       "tests/m16_measure.py": "b47ff40363fc36827ec02f058fe4ac29230bb7cf",
       "tests/m17_navigation_measure.py": "b8d73d861ba794f90f0f6bbb4559142af0958f32",
       "tests/measure_timing.sh": "3e9a83fac12f406f31ceaadc162ad541f4791ef9",
-      "tests/nicegui_main.py": "1f763da378221cccf273af38a5da06d2dd61b465",
+      "tests/nicegui_main.py": "73b0f2f27c302ba2dcff26a579f1bd05b2215f9a",
       "tests/run_nachweis.sh": "3cdcc5114047accc5601901af3ffe2fc049b6c3f",
       "tests/test-ansvar-connectors.py": "4b8067f1e3ea58cf4b08de3fd7065b2cdf9e6d46",
       "tests/test_a4_language_block_guard.py": "d9620f2600384534862df60055152dff024d2499",
@@ -297,6 +297,9 @@
       "tests/test_r35_apply_notify.py": "c9ecfc27fe45b3bd0c586822f130a2e505c17ccd",
       "tests/test_r35_status_notify.py": "430a482bb77077640a7e9f8af0708be939977c96",
       "tests/test_reapply_after_withdraw.py": "502f35d0c7d5a8e449ab98901d1c845cfe04347e",
+      "tests/test_registration_guard.py": "429fee1eab4491efc590fdd220de20145fa4cb92",
+      "tests/test_registration_ui.py": "76a58e58e249aa7b24a26fc965260eb847789465",
+      "tests/test_registration_wiring.py": "b096858525e97c54b6aa637bcf6778e84c8f7029",
       "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
       "tests/test_run_all.py": "88927731ad7b57742d8094d443639788bfb6a784",
       "tests/test_runner_backoff.py": "9278372521defd379e9b22400afafa585293b2a6",
@@ -320,9 +323,9 @@
       "tests/test_welcome_mail.py": "c12ab7aae1bcbc0a2cd7043ea5eb5aa0cc477a23",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "258ee3edd2a429971c40cd35b7b485f0b4117e3a",
+    "commit": "2d4ec0bcf8ca7e4941aa38d16bc2f08aae0737ae",
     "doc_blob": "cb2a360ad426ba79cc10d3f9133c42853f788639",
-    "note": "tests/test_bind_guard.py: .env/Path-Tokens aus neuem Unit-Test, CI-Setup unver\u00e4ndert"
+    "note": "tests/e2e_notifications_flow.py: nur Registrierungsadresse/Kommentar; L32 Seed-Konten @example.invalid und L80/81 E2E-Bestand unveraendert."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

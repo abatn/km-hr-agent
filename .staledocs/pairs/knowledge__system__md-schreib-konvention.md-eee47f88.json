@@ -72,6 +72,7 @@
       "read_bytes()",
       "read_text()",
       "recherche-plan-restpunkte-{STAND}.md",
+      "registration-hardening.md",
       "save_",
       "scripts/**",
       "selbstpraesentation_je_kandidat(ergebnisse)",
@@ -101,7 +102,7 @@
       "write_prescreen_md",
       "x[-1]"
     ],
-    "at": "2026-11-12T13:35:06+00:00",
+    "at": "2026-11-12T17:05:53+00:00",
     "code_blobs": {
       "scripts/agent-runner.py": "c29829b5f86b86980741ed22f7fb721dba069215",
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
@@ -111,9 +112,9 @@
       "webui/logic.py": "7d16ee4d46a226cd45f5df9e7de353885a6af9ee",
       "webui/pages/candidate.py": "ae22213fb386ed3ff813edba1d946188c0286f4c"
     },
-    "commit": "484c275ebbcd5ed239b3fb3adf96168d5bc9b004",
-    "doc_blob": "f21adb53ccf2baddc767f92ebe72ec46592d1380",
-    "note": "Geprueft: die R4-Regeln und CI-Pfadfilter sind unveraendert; scripts/agent-runner.py wurde nur um den Mail-Link-Import ergaenzt."
+    "commit": "2d4ec0bcf8ca7e4941aa38d16bc2f08aae0737ae",
+    "doc_blob": "25fc53cd0c82bae0432a1ce5c1f5bd8e5526aa89",
+    "note": "knowledge/system/md-schreib-konvention.md: Zaehlwert-Zeile auf live 81 aktualisiert (find knowledge -name *.md = 81, +1 registration-hardening.md); 21 Tabellen und 14 MCP-Server per Gate bestaetigt."
   },
   "doc": "knowledge/system/md-schreib-konvention.md",
   "schema": 1
