@@ -131,7 +131,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-12T17:13:41+00:00",
+    "at": "2026-11-14T14:12:12+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -157,6 +157,9 @@
       "deploy/systemd/kmhr-social.timer": "a7ab8fe8115b45cd37f7efe674c0e18512cddd96",
       "deploy/verify_mcp.py": "960c61d4adb04df079f5995f3f2b6a646e00516b",
       "docs/GOLF_RECHERCHE.md": "f7463f61b64c97223d6e5db4f1066542dcee146b",
+      "docs/JOBS_MARKT_ANALYSE.md": "7d745e5f810c4eb205572edc5590605bdc52f291",
+      "docs/JOBS_URSACHEN.md": "e1ee2950d0123bafec7b7e9f52f1ac9a5f73146a",
+      "docs/JOBS_VERBESSERUNG.md": "4944a54c291253ebaecd28f25362e21e335514ae",
       "docs/sphinxats-github-app.py": "3e80cade931023a124b3058a776e22b82a1d73e3",
       "scripts/ads_agent.py": "d7f24f2ba88fca4d9b18d317f9478c05dbddb22c",
       "scripts/ads_x402.py": "641e0d29abb32926d3d235c3846a69c4f354ef05",
@@ -207,7 +210,7 @@
       "tests/e2e_agent_details.py": "4f5c5e2de860bbc8a413f1730568363580a416d6",
       "tests/e2e_applicants_first.py": "171c040f31d0c134a9b358f8e1e5b8639943a8ae",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
-      "tests/e2e_apply_dialog_multi.py": "c852947278c20532062dd47bc7b2879df323641c",
+      "tests/e2e_apply_dialog_multi.py": "0c0761bb2e353062611e39a3151d0b41a385e6e0",
       "tests/e2e_board_actions.py": "ec7166fc1e7a93f3621da6dc1e408fd9227ece90",
       "tests/e2e_board_passiv_filter.py": "26b2f2c9f23813026bb6e808b362df781bb4d8ea",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
@@ -230,7 +233,7 @@
       "tests/e2e_i18n_runner_chain.py": "83a1b3cd3246822e1015c1f035e3c2f151469c33",
       "tests/e2e_invitation_termin.py": "370fd5a0d9b52ee614e6b3856395b43b83fd27c2",
       "tests/e2e_invitation_termin_admin.py": "68e47c19fc32f6af2d1ac26967abe5bbdb461690",
-      "tests/e2e_isolation.py": "c79df91f6814245c332b9dbaf0943e8e8675fc4b",
+      "tests/e2e_isolation.py": "c59b303518aa027421955ce9675bb616590062ee",
       "tests/e2e_kandidaten_filter.py": "7703ec56e76e2eb0468215caef118a6ab3d45f7c",
       "tests/e2e_landing_chapters.py": "8659af0e5f032d2a7134c70ff15d1070e122f3ff",
       "tests/e2e_m07_row_click.py": "b9da1786cb5bf258e98b9ee37f074c60fbc2fe8c",
@@ -406,9 +409,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "2d4ec0bcf8ca7e4941aa38d16bc2f08aae0737ae",
+    "commit": "16983b46cef5fb05743e56f94bd00499937e3581",
     "doc_blob": "2a3b924bba30c144b6eb3af8fc83dfa0e35b98d1",
-    "note": "tests/e2e_notifications_flow.py: nur die E2E-Registrierungsadresse + Kommentar geaendert; L7 Einstieg/Seitenbau, L38 UI-Test-Regel und L56 Gate-Liste bleiben unveraendert gueltig."
+    "note": "14.11.2026 geprueft: L56 (E2E nur ueber tests/e2e_isolation.py) bleibt korrekt nach env-Ergaenzung KMHR_PUBLIC_BASE_URL; Isolationslauf --only e2e_password_reset,e2e_apply_dialog_multi rc=0 (/tmp/opencode/e2e-iso-20261114-140202); Pfad-Claims .env/.env-email/data/knowledge/webui in L20-77 unveraendert, die JOBS-Docs zitieren dieselben Pfade"
   },
   "doc": "AGENTS.md",
   "schema": 1

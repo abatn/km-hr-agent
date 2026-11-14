@@ -33,6 +33,25 @@ PASSWORD = "Abdel15121978!"
 TEST_JOB_IDS: list[int] = []  # Klasse a: gesäte TEST-Jobs (14.10.2026)
 
 
+def goto_stable(page, url, versuche=3):
+    """page.goto mit Retry (14.11.2026).
+
+    Bekanntes Playwright-Race: "Navigation to <url> is interrupted by another
+    navigation to <url>" (microsoft/playwright#13651, #35944) — die App
+    navigiert nach "Jetzt bewerben" selbst, waehrend der naechste goto startet.
+    Nicht behebbar, also die laufende Navigation abwarten und erneut versuchen.
+    """
+    for i in range(versuche):
+        try:
+            page.goto(url, wait_until="load", timeout=90000)
+            return
+        except Exception as ex:  # noqa: BLE001
+            if "interrupted by another navigation" in str(ex) and i < versuche - 1:
+                page.wait_for_timeout(1500)
+                continue
+            raise
+
+
 def login(page):
     page.goto(f"{BASE}/login", wait_until="load")
     page.wait_for_timeout(2500)
@@ -146,7 +165,7 @@ def main() -> int:
             try:
                 login(page)
                 for jid, titel, firma in ziele:
-                    page.goto(f"{BASE}/candidate/stellen", wait_until="load", timeout=90000)
+                    goto_stable(page, f"{BASE}/candidate/stellen")
                     card = page.locator(".q-card").filter(has_text=re.compile(rf"#{jid} ")).first
                     card.wait_for(timeout=30000)
                     card.get_by_role("button", name="Bewerben").click()

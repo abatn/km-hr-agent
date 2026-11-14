@@ -130,6 +130,11 @@ def main() -> int:
         # R3-4 (30.09.2026): Fail-closed-Gate in webui/main.py — der isolierte
         # Server UND alle Skripte starten mit diesem env, also KMHR_DEV=1.
         "KMHR_DEV": "1",
+        # 14.11.2026: scripts/mail_links.py ist fail-closed. tests/conftest.py
+        # setzt das nur fuer pytest — E2E-Skripte laufen als eigene Prozesse
+        # (subprocess, conftest wird nie geladen), sonst wirft
+        # e2e_password_reset MailLinkConfigError. Gleicher Wert wie conftest.
+        "KMHR_PUBLIC_BASE_URL": "https://jobs.hanibal-ai.com",
     })
     server_log = (logdir / "server.log").open("w")
     print(f"[iso] Log-Verzeichnis : {logdir}")
