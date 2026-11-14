@@ -210,6 +210,11 @@ mirror:
 # Docs that intentionally have no code counterpart (ops runbooks, philosophy).
 # Wird aus dem Rest der unklassifizierten Doku automatisch gefüllt (C1).
 standalone:
+  # Job-Akquise Marktanalyse (13./14.11.2026): Analyse/ursachen/Vorschlag —
+  # beschreibt Markt und Prozess, kein 1:1-Code-Paar.
+  - docs/JOBS_MARKT_ANALYSE.md
+  - docs/JOBS_URSACHEN.md
+  - docs/JOBS_VERBESSERUNG.md
   # Job-Akquise: Betriebs-/Laufdokumentation ohne 1:1-Code-Paar
   - jobs/README.md
   - jobs/CRON.md
