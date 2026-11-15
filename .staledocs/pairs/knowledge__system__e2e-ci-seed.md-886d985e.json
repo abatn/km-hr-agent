@@ -142,7 +142,7 @@
       "tests/test_ui_fixes_p0.py",
       "validate_target"
     ],
-    "at": "2026-11-14T14:12:58+00:00",
+    "at": "2026-11-15T15:37:44+00:00",
     "code_blobs": {
       "scripts/ci/checks.py": "d2bf279f4fa45a7ddcefaa31f176c21f41ba1472",
       "scripts/seed_ci_db.py": "90bca0c3e11ae3497793042745e66be5678d7b06",
@@ -153,7 +153,7 @@
       "tests/e2e_agent_details.py": "4f5c5e2de860bbc8a413f1730568363580a416d6",
       "tests/e2e_applicants_first.py": "171c040f31d0c134a9b358f8e1e5b8639943a8ae",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
-      "tests/e2e_apply_dialog_multi.py": "0c0761bb2e353062611e39a3151d0b41a385e6e0",
+      "tests/e2e_apply_dialog_multi.py": "b2d0c75070f3f0eadb618a1d6415afb53da76757",
       "tests/e2e_board_actions.py": "ec7166fc1e7a93f3621da6dc1e408fd9227ece90",
       "tests/e2e_board_passiv_filter.py": "26b2f2c9f23813026bb6e808b362df781bb4d8ea",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
@@ -301,7 +301,7 @@
       "tests/test_registration_guard.py": "429fee1eab4491efc590fdd220de20145fa4cb92",
       "tests/test_registration_ui.py": "76a58e58e249aa7b24a26fc965260eb847789465",
       "tests/test_registration_wiring.py": "b096858525e97c54b6aa637bcf6778e84c8f7029",
-      "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
+      "tests/test_requirements_pinned.py": "392516dc85ccd190f8dfc52275d24487ca4b4075",
       "tests/test_run_all.py": "88927731ad7b57742d8094d443639788bfb6a784",
       "tests/test_runner_backoff.py": "9278372521defd379e9b22400afafa585293b2a6",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
@@ -324,9 +324,9 @@
       "tests/test_welcome_mail.py": "c12ab7aae1bcbc0a2cd7043ea5eb5aa0cc477a23",
       "tests/ui_measure.py": "87a3f22d5408c5749d44dddfe47310a6122c3fdc"
     },
-    "commit": "16983b46cef5fb05743e56f94bd00499937e3581",
+    "commit": "9dbead7d8f48021c5e48708d7f495244d8cdfc3d",
     "doc_blob": "cb2a360ad426ba79cc10d3f9133c42853f788639",
-    "note": "14.11.2026: tests/e2e_apply_dialog_multi.py \u2014 L80 Navigations-Race bestaetigt, goto_stable-Retry ergaenzt, Einzel-Lauf rc=0 (/tmp/opencode/e2e-iso-20261114-140202); tests/e2e_isolation.py \u2014 L224 Isolationslauf unveraendert ausser env-Eintrag KMHR_PUBLIC_BASE_URL; Fixture-Tabelle L182 unveraendert"
+    "note": "Geprueft 15.11.2026: Aussage L80 (e2e_apply_dialog_multi Navigations-Race, Einzel-Lauf rc=0) bleibt korrekt \u2014 heute am Quellort behoben (goto einmal vor die Schleife statt in der Schleife), Einzellauf 15.11. wieder rc=0 (/tmp/opencode/e2e-iso-20261115-153402). Zitat L152 (Path(...).exists() fuer Seed-Pfade) unberuehrt: die Neuierung in tests/test_requirements_pinned.py betrifft REQ_DEV = Path(...) fuer den requirements-dev-Pfad, das Seed-Pfad-Verhalten ist unveraendert (Live-sha vor==nach)."
   },
   "doc": "knowledge/system/e2e-ci-seed.md",
   "schema": 1

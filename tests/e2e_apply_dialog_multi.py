@@ -34,12 +34,13 @@ TEST_JOB_IDS: list[int] = []  # Klasse a: gesäte TEST-Jobs (14.10.2026)
 
 
 def goto_stable(page, url, versuche=3):
-    """page.goto mit Retry (14.11.2026).
+    """page.goto mit Retry (14.11.2026, 15.11.2026 ueberarbeitet).
 
-    Bekanntes Playwright-Race: "Navigation to <url> is interrupted by another
-    navigation to <url>" (microsoft/playwright#13651, #35944) — die App
-    navigiert nach "Jetzt bewerben" selbst, waehrend der naechste goto startet.
-    Nicht behebbar, also die laufende Navigation abwarten und erneut versuchen.
+    Wird nur noch EINMAL vor der Schleife aufgerufen. Nach "Jetzt bewerben"
+    navigiert die App selbst (candidate.py: Toast -> sleep(1.5) -> navigate_to);
+    ein goto IN der Schleife kollidierte damit (microsoft/playwright#13651,
+    #35944 — "interrupted by another navigation" am 14.11., 90-s-Timeout am
+    15.11.2026). Retry bleibt als Sicherheitsnetz erhalten.
     """
     for i in range(versuche):
         try:
@@ -164,8 +165,13 @@ def main() -> int:
             page.set_default_timeout(60000)
             try:
                 login(page)
+                # Einmaliges goto VOR der Schleife (15.11.2026): Die App navigiert
+                # nach jedem Bewerben selbst auf /candidate/stellen — ein zweites
+                # goto in der Schleife lieferte das Navigations-Race der Läufe
+                # 14.11. (interrupted) und 15.11. (90-s-Timeout). Render-Synchronisation
+                # der Folge-Iteration übernimmt card.wait_for unten.
+                goto_stable(page, f"{BASE}/candidate/stellen")
                 for jid, titel, firma in ziele:
-                    goto_stable(page, f"{BASE}/candidate/stellen")
                     card = page.locator(".q-card").filter(has_text=re.compile(rf"#{jid} ")).first
                     card.wait_for(timeout=30000)
                     card.get_by_role("button", name="Bewerben").click()
@@ -180,7 +186,9 @@ def main() -> int:
                     vorher = apps_for(jid)
                     page.get_by_role("button", name="Jetzt bewerben").click()
                     page.get_by_text("Bewerbung gesendet!").wait_for(timeout=8000)
-                    page.wait_for_timeout(1500)
+                    # App navigiert 1,5 s nach Toast selbst (candidate.py); jetzt
+                    # deren Routenwechsel + Reload abwarten statt eigenes goto.
+                    page.wait_for_timeout(2500)
                     nachher = apps_for(jid)
                     print(f"job {jid}: Bewerbungen vorher={len(vorher)} nachher={len(nachher)}")
                     if len(vorher) != 0 or len(nachher) != 1:

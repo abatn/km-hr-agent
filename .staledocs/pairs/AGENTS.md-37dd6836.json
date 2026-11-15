@@ -131,7 +131,7 @@
       "webui/pages/",
       "webui/pages/billing_ui.py"
     ],
-    "at": "2026-11-14T14:12:12+00:00",
+    "at": "2026-11-15T15:36:48+00:00",
     "code_blobs": {
       "connectors/README.md": "5c7cf71028800e6ab8638c8c77bb7df775edabcc",
       "connectors/hr-api-connectors.md": "67c28704a97b54358512481537acfeeabbed607e",
@@ -210,7 +210,7 @@
       "tests/e2e_agent_details.py": "4f5c5e2de860bbc8a413f1730568363580a416d6",
       "tests/e2e_applicants_first.py": "171c040f31d0c134a9b358f8e1e5b8639943a8ae",
       "tests/e2e_apply_dialog.py": "4eeb970bff9867edb108187cd7d788554cf3ece7",
-      "tests/e2e_apply_dialog_multi.py": "0c0761bb2e353062611e39a3151d0b41a385e6e0",
+      "tests/e2e_apply_dialog_multi.py": "b2d0c75070f3f0eadb618a1d6415afb53da76757",
       "tests/e2e_board_actions.py": "ec7166fc1e7a93f3621da6dc1e408fd9227ece90",
       "tests/e2e_board_passiv_filter.py": "26b2f2c9f23813026bb6e808b362df781bb4d8ea",
       "tests/e2e_c7_downloads.py": "147c837c301039c6fe90028d2bfc65c6c5f59468",
@@ -358,7 +358,7 @@
       "tests/test_registration_guard.py": "429fee1eab4491efc590fdd220de20145fa4cb92",
       "tests/test_registration_ui.py": "76a58e58e249aa7b24a26fc965260eb847789465",
       "tests/test_registration_wiring.py": "b096858525e97c54b6aa637bcf6778e84c8f7029",
-      "tests/test_requirements_pinned.py": "ffe309f93fbe8137fa8cc5c98fccb7649252957e",
+      "tests/test_requirements_pinned.py": "392516dc85ccd190f8dfc52275d24487ca4b4075",
       "tests/test_run_all.py": "88927731ad7b57742d8094d443639788bfb6a784",
       "tests/test_runner_backoff.py": "9278372521defd379e9b22400afafa585293b2a6",
       "tests/test_runner_i18n.py": "4df1927257bcf81d4034c912c0938796e425627b",
@@ -409,9 +409,9 @@
       "webui/static/three/three.module.js": "c52087acfabae80efabb8cc05e3a1d96e35a1426",
       "webui/theme.py": "bde64793bc61fe35fcc9d85e3e8cbcdba8a74fce"
     },
-    "commit": "16983b46cef5fb05743e56f94bd00499937e3581",
+    "commit": "9dbead7d8f48021c5e48708d7f495244d8cdfc3d",
     "doc_blob": "2a3b924bba30c144b6eb3af8fc83dfa0e35b98d1",
-    "note": "14.11.2026 geprueft: L56 (E2E nur ueber tests/e2e_isolation.py) bleibt korrekt nach env-Ergaenzung KMHR_PUBLIC_BASE_URL; Isolationslauf --only e2e_password_reset,e2e_apply_dialog_multi rc=0 (/tmp/opencode/e2e-iso-20261114-140202); Pfad-Claims .env/.env-email/data/knowledge/webui in L20-77 unveraendert, die JOBS-Docs zitieren dieselben Pfade"
+    "note": "Geprueft 15.11.2026: tests/e2e_apply_dialog_multi.py (goto_stable aus der Schleife gezogen, einmal nach login; Wartezeit 1500->2500ms) und tests/test_requirements_pinned.py (neuer Guard test_playwright_dev_exakt_fixiert, playwright==1.65.2) geaendert. Verifikation: pytest CI-Paeritaet 1127 passed/7 skipped/1 deselected, lokaler E2E-Einzellauf e2e_apply_dialog_multi rc=0 unter playwright 1.65.2/Chromium 159 (15.11.2026)."
   },
   "doc": "AGENTS.md",
   "schema": 1
